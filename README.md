@@ -31,13 +31,30 @@ The files and folders required are as they should be and should be extracted fro
 
 ##### Online Players
 ##### Online Session
+##### Player Functions
+##### Clean Shit Up!
+##### Options
+
+
+### Online Session:
+
 ##### Online Protection
 ##### Orbital Room Block
-##### Player Functions
+
+#### Player Functions:
+
 ##### Player Ped Functions
 ##### Player Vehicle Functions
-##### Markers
-##### Options
+
+#### Clean Shit Up!
+
+##### Markers **(list of markers to delete made to highlight players)**
+		
+#### World Cleanup
+
+- `Delete Ped Spawns`
+- `Delete Ped Spawns + Vehicles`
+
 
 ## Functions
 
@@ -144,12 +161,17 @@ The files and folders required are as they should be and should be extracted fro
 							`mk2 rapid fire hotkey
 
 		
-`Clean Shit Up!
+`
 		`Markers (list of markers to delete made to highlight players)
 		
 		`World Cleanup
 				`Fetch all World Entities
 				`Fetched World Entities Move & Delete
+Force Removal (Missed Anything?)",				
+Fetch all Peds Move & Delete
+Fetch all objects Move & Delete
+Fetch all Vehicles Move & Delete
+
 				`Force Removal
 				`Fetch all Peds into Table
 				`Move & Delete Peds
@@ -199,6 +221,5 @@ The files and folders required are as they should be and should be extracted fro
 						
 
 
-`Delete Ped Spawns
-`Delete Ped Spawns + Vehicles
+
 
