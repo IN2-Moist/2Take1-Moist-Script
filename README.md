@@ -41,14 +41,14 @@ The files and folders required are as they should be and should be extracted fro
 ##### Online Protection
 ##### Orbital Room Block
 
-#### Player Functions:
+### Player Functions:
 
 ##### Player Ped Functions
 ##### Player Vehicle Functions
 
-#### Clean Shit Up!
+### Clean Shit Up!
 
-##### Markers **(list of markers to delete made to highlight players)**
+#### Markers *(list of markers to delete made to highlight players)*
 		
 #### World Cleanup
 
