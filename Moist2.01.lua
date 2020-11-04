@@ -29,10 +29,17 @@ toggle_setting[#toggle_setting+1] = "osd_date_time"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "force_wPara"
 setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "force_wBPH"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "lag_out"
 setting[toggle_setting[#toggle_setting]] = true
-toggle_setting[#toggle_setting+1] = "force_wBPH"
+toggle_setting[#toggle_setting+1] = "global_func.mk1boostrefill"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "global_func.mk2boostrefill"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "global_func.veh_rapid_fire"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "global_func.rapidfire_hotkey1"
 
 
 
@@ -45,22 +52,22 @@ if not utils.file_exists(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_set
 end
 
 for line in io.lines(save_ini) do
-				local line = string.gsub(line, toggle_setting[toggle] .."=", "")
-				if toggle == 1 and setting["MoistsScript"] ~= line then
-			
-				end
-				if line == "true" then
-					setting[toggle_setting[toggle]] = true
-		        elseif line == "false" then
-		            setting[toggle_setting[toggle]] = false
-		        elseif line ~= "nil" then
-		        	if tonumber(line) ~= nil then
-		            	setting[toggle_setting[toggle]] = tonumber(line)
-		       		else
-		       			setting[toggle_setting[toggle]] = line
-		       		end
-		        end
-		        toggle = toggle + 1
+		local line = string.gsub(line, toggle_setting[toggle] .. "=", "")
+		if toggle == 1 and setting["MoistsScript"] ~= line then
+		end
+		if line == "true" then
+			setting[toggle_setting[toggle]] = true
+		elseif line == "false" then
+			setting[toggle_setting[toggle]] = false
+		elseif line ~= "nil" then
+			if tonumber(line) ~= nil then
+				setting[toggle_setting[toggle]] = tonumber(line)
+			else
+				setting[toggle_setting[toggle]] = line
+			end
+		end
+		toggle = toggle + 1
+
 end
 
 	
@@ -77,6 +84,7 @@ tracking.playerped_speed3 = {}
 tracking.HP_tracker1 = {}
 tracking.HP_tracker2 = {}
 tracking.HP_tracker3 = {}
+
 local OSD = {}
 local PlyTracker = {}
 local OptionsVar = {}
@@ -197,6 +205,8 @@ end
 
 
 
+--Options Toggles etc
+
 global_func.lag_out = menu.add_feature("Lag Self out of session", "toggle", globalFeatures.moistopt, function(feat)
 	setting["lag_out"] = true
 		if feat.on then			
@@ -215,6 +225,10 @@ global_func.lag_out = menu.add_feature("Lag Self out of session", "toggle", glob
 		return HANDLER_POP
 end)
 global_func.lag_out.on = setting["lag_out"]
+
+
+
+--Self Functions
 
 global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
 	local pped = player.get_player_ped(player.player_id())
@@ -272,6 +286,80 @@ global_func.force_wBPH = menu.add_feature("Force White BPH On", "toggle", global
 	
 end)
 global_func.force_wBPH.on = setting["force_wBPH"]
+
+
+global_func.mk1boostrefill = menu.add_feature("Boost Recharge v.2 MK1 Opressor (self)", "toggle", globalFeatures.selfveh.id, function(feat)
+		setting["global_func.mk1boostrefill"] = true
+		if feat.on then
+			local myped = player.get_player_ped(player.player_id())
+			if ped.is_ped_in_any_vehicle(myped) == true then
+				local Curveh = ped.get_vehicle_ped_is_using(myped)
+				if vehicle.is_vehicle_rocket_boost_active(Curveh) == false then
+					return HANDLER_CONTINUE
+				end
+				system.wait(2000)
+				vehicle.set_vehicle_rocket_boost_percentage(Curveh, 100.00)
+			end
+			return HANDLER_CONTINUE
+		end
+		setting["global_func.mk1boostrefill"] = false
+		return HANDLER_POP
+
+end)
+global_func.mk1boostrefill.on = setting["global_func.mk1boostrefill"]
+
+global_func.mk2boostrefill = menu.add_feature("MK2 Boost Insta-Recharge (self)", "toggle", globalFeatures.selfveh.id, function(feat)
+		setting["global_func.mk2boostrefill"] = true
+
+		if feat.on then
+			local myped = player.get_player_ped(player.player_id())
+			if ped.is_ped_in_any_vehicle(myped) == true then
+				local Curveh = ped.get_vehicle_ped_is_using(myped)
+				vehicle.set_vehicle_rocket_boost_refill_time(Curveh, 0.000001)
+			end
+			return HANDLER_CONTINUE
+		end
+		setting["global_func.mk2boostrefill"] = false
+		return HANDLER_POP
+
+end)
+global_func.mk2boostrefill.on = setting["global_func.mk2boostrefill"]
+
+global_func.veh_rapid_fire = menu.add_feature("MK2 Rapid Fire Missiles (self)", "toggle", globalFeatures.selfveh.id, function(feat)
+	setting["global_func.veh_rapid_fire"] = true
+	if feat.on then
+		local myped = player.get_player_ped(player.player_id())
+		if ped.is_ped_in_any_vehicle(myped) == true then
+			local Curveh = ped.get_vehicle_ped_is_using(myped)
+			vehicle.set_vehicle_fixed(Curveh)
+			vehicle.set_vehicle_deformation_fixed(Curveh)
+		end
+		return HANDLER_CONTINUE
+	end
+	setting["global_func.veh_rapid_fire"] = false
+	return HANDLER_POP
+end)
+global_func.veh_rapid_fire.on = setting["global_func.veh_rapid_fire"]
+
+global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggle", globalFeatures.self_options.id, function(feat)
+	setting["global_func.rapidfire_hotkey1"] = true
+	if feat.on then
+		local key = MenuKey()
+		key:push_str("LCONTROL")
+		key:push_str("r")
+		if key:is_down() then
+			mk2_rapid_fire.on = not mk2_rapid_fire.on
+				notify_above_map(string.format("Switching Rapid Fire %s\n%s for your Current Vehicle", mk2_rapid_fire.on and "ON" or "OFF", mk2_rapid_fire.on and "Glitch On" or "Set Repaired"))
+			system.wait(1200)
+		end
+	end
+	return HANDLER_CONTINUE
+	setting["global_func.rapidfire_hotkey1"] = false
+	return HANDLER_POP
+end)
+global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
+
+
 
 
 --Util functions
