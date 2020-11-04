@@ -2,6 +2,8 @@
 ### GTAV Script for 2Take1's lua Engine by -IN2-Moist-
 
 ## Installation
+- TODO
+# TODO: Update for Rewrite 2.0.1
 
 **Required Files & Folders**:
 
@@ -23,7 +25,7 @@ Inside the Scripts Folder you need another Folder called :
 - `Moist_Kicks2.data`
 
 The files and folders required are as they should be and should be extracted from the archive as above.
-
+TODO -
 
 ## Script Basic Layout
 
@@ -35,24 +37,9 @@ The files and folders required are as they should be and should be extracted fro
 ##### Clean Shit Up!
 ##### Options
 
+```
 
-### Online Session:
-
-##### Online Protection
-##### Orbital Room Block
-
-### Player Functions:
-
-##### Player Ped Functions
-##### Player Vehicle Functions
-
-### Clean Shit Up!
-
-#### Markers *(list of markers to delete made to highlight players)*
-		
-#### World Cleanup
-
-
+```
 
 
 ## Local Script Features
@@ -76,9 +63,9 @@ The files and folders required are as they should be and should be extracted fro
 
 - `Weapon list / Vehicle list`
 
-###### Selected Weapon / Vehicle
+##### Selected Weapon / Vehicle
 
-##### Ped + Weapon Functions`
+##### Ped + Weapon Functions
 
 - `Send Attacker via Parachute`
 (Spawns in the air above Player Parachutes down to kill the player with selected weapon)
@@ -99,6 +86,28 @@ The files and folders required are as they should be and should be extracted fro
 
 
 ````
+
+
+### Online Session:
+##### Online Protection
+##### Orbital Room Block
+
+### Player Functions:
+##### Player Ped Functions
+##### Player Vehicle Functions
+
+### Clean Shit Up!
+
+#### Markers *(list of markers to delete made to highlight players)*
+		
+#### World Cleanup
+
+
+
+
+
+
+
 --TODO: Update and adjust
 
 ##### Vehicle Options
