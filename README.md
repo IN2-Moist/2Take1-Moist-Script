@@ -56,11 +56,11 @@ The files and folders required are as they should be and should be extracted fro
 - `Delete Ped Spawns + Vehicles`
 
 
-## Functions
+## Local Script Features
 
 ### Moists Script
 
-#### Online Players
+#### Online Player Script Features
 
 
 #### Spawn Options 
