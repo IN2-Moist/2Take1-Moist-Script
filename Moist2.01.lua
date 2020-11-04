@@ -4,6 +4,9 @@ utils.make_dir(rootPath .. "\\lualogs")
 utils.make_dir(rootPath .. "\\scripts\\MoistsLUA_cfg")
 
 --DATA FILES
+local data = {}
+local data2 = {}
+
 local scidFile = rootPath .. "\\Blacklist\\scid.list"
 local kickdata = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.data"
 local kickdata2 = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.data"
@@ -281,7 +284,7 @@ local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 
 --Event Data Arrays
 
-local NetEvents = {
+local NetEvents = {}
 NetEvents[0] = "OBJECT_ID_FREED_EVENT"
 NetEvents[1] = "OBJECT_ID_REQUEST_EVENT"
 NetEvents[2] = "ARRAY_DATA_VERIFY_EVENT"
@@ -370,7 +373,7 @@ NetEvents[84] = "REPORT_CASH_SPAWN_EVENT"
 NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
 NetEvents[86] = "BLOCK_WEAPON_SELECTION"
 NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
-}
+
 
 --Feature & Variable Arrays
 local globalFeatures = {}
@@ -496,20 +499,21 @@ global_func.lag_out.on = setting["lag_out"]
 
 --Self modifiers --Max Health 0:0 1: 2: 3: 4: 5: 6:
 local HP_modifiers = {
-{"Set max Health 0 (UnDead OTR)", "0"},
-{"Set Health to 500", "500"},
-{"Set Health to 10000", "1000"},
-{"Set Health Freemode Beast 2500", "2500"},
-{"Set Health BallisticArmour 2600", "2600"},
-{"Set Health to 10000", "10000"},
-{"Set Health to 90000", "90000"},
-{"Set Health to 328 (lvl 120)", "328"},
+{"Set max Health 0 (UnDead OTR)", 0},
+{"Set Health to 500", 500},
+{"Set Health to 10000", 1000},
+{"Set Health Freemode Beast 2500", 2500},
+{"Set Health BallisticArmour 2600", 2600},
+{"Set Health to 10000", 10000},
+{"Set Health to 90000", 90000},
+{"Set Health to 328 (lvl 120)", 328},
 }
 
-globalFeatures.self_ped_modify = menu.add_feature(HP_modifiers[i][1], globalFeatures.self_ped).id
+globalFeatures.self_ped_modify = menu.add_feature("Health Modifiers", "parent", globalFeatures.self_ped).id
 
 for i = 1, #HP_modifiers do
-	menu.add_feature(HP_modifiers[i][1], globalFeatures.self_ped_modify, function(feat)
+	
+	menu.add_feature("set: " ..HP_modifiers[i][1], "action", globalFeatures.self_ped_modify, function(feat)
 	
 	local me = player.get_player_ped(player.player_id())
 	
@@ -583,7 +587,7 @@ end)
 global_func.force_wBPH.on = setting["force_wBPH"]
 
 
-global_func.mk1boostrefill = menu.add_feature("Boost Recharge v.2 MK1 Opressor (self)", "toggle", globalFeatures.selfveh, function(feat)
+global_func.mk1boostrefill = menu.add_feature("Boost Recharge v.2 MK1 Opressor (self)", "toggle", globalFeatures.self_veh, function(feat)
 		setting["global_func.mk1boostrefill"] = true
 		if feat.on then
 			local myped = player.get_player_ped(player.player_id())
@@ -603,7 +607,7 @@ global_func.mk1boostrefill = menu.add_feature("Boost Recharge v.2 MK1 Opressor (
 end)
 global_func.mk1boostrefill.on = setting["global_func.mk1boostrefill"]
 
-global_func.mk2boostrefill = menu.add_feature("MK2 Boost Insta-Recharge (self)", "toggle", globalFeatures.selfveh, function(feat)
+global_func.mk2boostrefill = menu.add_feature("MK2 Boost Insta-Recharge (self)", "toggle", globalFeatures.self_veh, function(feat)
 		setting["global_func.mk2boostrefill"] = true
 
 		if feat.on then
@@ -620,7 +624,7 @@ global_func.mk2boostrefill = menu.add_feature("MK2 Boost Insta-Recharge (self)",
 end)
 global_func.mk2boostrefill.on = setting["global_func.mk2boostrefill"]
 
-global_func.veh_rapid_fire = menu.add_feature("MK2 Rapid Fire Missiles (self)", "toggle", globalFeatures.selfveh, function(feat)
+global_func.veh_rapid_fire = menu.add_feature("MK2 Rapid Fire Missiles (self)", "toggle", globalFeatures.self_veh, function(feat)
 	setting["global_func.veh_rapid_fire"] = true
 	if feat.on then
 		local myped = player.get_player_ped(player.player_id())
@@ -636,7 +640,7 @@ global_func.veh_rapid_fire = menu.add_feature("MK2 Rapid Fire Missiles (self)", 
 end)
 global_func.veh_rapid_fire.on = setting["global_func.veh_rapid_fire"]
 
-global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggle", globalFeatures.self_options.id, function(feat)
+global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggle", globalFeatures.self_options, function(feat)
 	setting["global_func.rapidfire_hotkey1"] = true
 	if feat.on then
 		local key = MenuKey()
@@ -647,8 +651,9 @@ global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggl
 				notify_above_map(string.format("Switching Rapid Fire %s\n%s for your Current Vehicle", mk2_rapid_fire.on and "ON" or "OFF", mk2_rapid_fire.on and "Glitch On" or "Set Repaired"))
 			system.wait(1200)
 		end
-	end
+	
 	return HANDLER_CONTINUE
+	end
 	setting["global_func.rapidfire_hotkey1"] = false
 	return HANDLER_POP
 end)
@@ -1988,6 +1993,178 @@ for pid=0,31 do
 		pos = player.get_player_coords(pid)
 		dump_onplayer(pid, pos)
 	end), type = "action"}
+
+		
+	features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggle", featureVars.k.id, function(feat)
+	if not feat.on then
+		features["Kick1_Type1"].feat.on = false
+		features["Kick1_Type2"].feat.on = false
+		features["Kick2_Type1"].feat.on = false
+		features["Kick2_Type2"].feat.on = false
+	return HANDLER_POP end
+	while feat.on do
+		features["Kick1_Type1"].feat.on = true
+		features["Kick1_Type2"].feat.on = true
+		features["Kick2_Type1"].feat.on = true
+		features["Kick2_Type2"].feat.on = true
+		return HANDLER_CONTINUE
+	end
+	
+	end), type = "toggle", callback = function()
+	end}
+	features["EventSpam_toggle"].feat.threaded = false
+	features["EventSpam_toggle"].feat.on = false
+	
+	features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "value_i", featureVars.k.id, function(feat)
+		if feat.on then
+
+			local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data then b = #data end
+			print(b .. ", "..a)
+			
+			for i = a, b do
+			par1 = math.random(-1000, 99999999)
+			par2 = math.random(-1, 9)
+			par3 = math.random(-1, 1)
+			par4 = math.random(-1, 9)
+			par5 = math.random(-1, 1)
+			
+			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2})
+			print("[" ..i .."] " .. "script.trigger_script_event(" ..data[i] .."," .."[pid:]" .. pid .."," .. "{ ".. par3 ..", " .. par5 ..", " .. par2 ..", " .. par3 ..", " .. par2 .."})")
+			-- system.wait(500)
+			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+			
+			print("[" ..i .."] " .. "script.trigger_script_event(" ..data[i] .."," .."[pid:]" .. pid .."," .. "{" .. par3 ..", " .. par5 ..", " .. par2 ..", " .. par3 ..", " .. par2 ..", " .. par1 ..", " .. par3 ..", " .. par1 .."})" )
+			-- system.wait(500)
+			
+			end
+	return HANDLER_CONTINUE
+		end
+			return HANDLER_POP
+	end), type = "value_i"}
+	features["Kick1_Type1"].feat.max_i = #data
+	features["Kick1_Type1"].feat.min_i = 1
+	features["Kick1_Type1"].feat.value_i = 1
+	features["Kick1_Type1"].feat.mod_i = 100
+	features["Kick1_Type1"].feat.on = false
+	
+	features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_i", featureVars.k.id, function(feat)
+	if feat.on then
+		
+			local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data then b = #data end
+			print(b .. ", "..a)
+			
+			for i = a, b do
+
+			par1 = math.random(-1000, 99999999)
+			par2 = math.random(-1, 9)
+			par3 = math.random(-1, 1)
+			par4 = math.random(-1, 9)
+			par5 = math.random(-1, 1)
+			par6 = math.random(-1000, 99999999)
+			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+			
+			print(data[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
+
+			script.trigger_script_event(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
+			
+			print(data[i] .."," .. pid .."," .. par1 ..","  .. par4 .."," .. par3 .."," .. par5 .."," .. par6 ..","  .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
+
+					end
+			return HANDLER_CONTINUE
+	end
+			return HANDLER_POP
+
+	end), type = "value_i"}
+	features["Kick1_Type2"].feat.max_i = #data
+	features["Kick1_Type2"].feat.min_i = 1
+	features["Kick1_Type2"].feat.value_i = 1
+	features["Kick1_Type2"].feat.mod_i = 99
+	features["Kick1_Type2"].feat.on = false
+
+	features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_i", featureVars.k.id, function(feat)
+		if feat.on then	
+	local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data2 then b = #data2 end
+			print(b .. ", "..a)
+			
+			for i = a, b do
+
+			par1 = math.random(-1000, 99999999)
+			par2 = math.random(-1, 9)
+			par3 = math.random(-1, 1)
+			par4 = math.random(-1, 9)
+			par5 = math.random(-1, 1)
+			
+			script.trigger_script_event(data2[i], pid, {par3, par5, par2, par3, par2})
+			print(data2[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2)
+			end
+			return HANDLER_CONTINUE
+		end
+			return HANDLER_POP
+
+	end), type = "value_i"}
+	features["Kick2_Type1"].feat.max_i = #data2
+	features["Kick2_Type1"].feat.min_i = 1
+	features["Kick2_Type1"].feat.value_i = 1
+	features["Kick2_Type1"].feat.mod_i = 99	
+	features["Kick2_Type1"].feat.on = false
+	
+	features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "value_i", featureVars.k.id, function(feat)
+		if feat.on then
+		
+			local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data2 then b = #data2 end
+			print(b .. ", "..a)
+			
+			for i = a, b do
+
+			par1 = math.random(-1000, 99999999)
+			par2 = math.random(-1, 9)
+			par3 = math.random(-1, 1)
+			par4 = math.random(-1, 9)
+			par5 = math.random(-1, 1)
+			
+			script.trigger_script_event(data2[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+			
+			print(data2[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
+
+			end
+			return HANDLER_CONTINUE
+		end
+			return HANDLER_POP
+	end), type = "value_i"}
+	features["Kick2_Type2"].feat.max_i = #data2
+	features["Kick2_Type2"].feat.min_i = 1
+	features["Kick2_Type2"].feat.value_i = 1
+	features["Kick2_Type2"].feat.mod_i = 99
+	features["Kick2_Type2"].feat.on = false
+	
+	features["netkick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
+			if feat.on then
+			local scid = player.get_player_scid(pid)
+			
+			local name = tostring(player.get_player_name(pid))
+			script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
+			
+			return HANDLER_CONTINUE
+		end
+			return HANDLER_POP
+		end), type = "action"}
 	
 	
 	
