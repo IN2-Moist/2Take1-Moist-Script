@@ -70,15 +70,15 @@ The files and folders required are as they should be and should be extracted fro
 
 ######  Ped Spawns
 
-> - `Ped List` 
+- `Ped List` 
 
-###### Ped + Weapon / Ped + Vehicle
+##### Ped + Weapon / Ped + Vehicle
 
-> - `Weapon list / Vehicle list`
+- `Weapon list / Vehicle list`
 
 ###### Selected Weapon / Vehicle
 
-> `Ped + Weapon Functions`
+##### Ped + Weapon Functions`
 
 - `Send Attacker via Parachute`
 (Spawns in the air above Player Parachutes down to kill the player with selected weapon)
