@@ -1,5 +1,43 @@
 local rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 utils.make_dir(rootPath .. "\\lualogs")
+utils.make_dir(rootPath .. "\\MoistsLUA_cfg")
+
+--output functions
+
+
+function get_date_time()
+	
+	local d = os.date()
+	
+	local dtime = string.match(d, "%d%d:%d%d:%d%d")
+	
+	local dt = os.date("%d/%m/%y%y")
+	Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
+end
+
+function debug_out(text)
+	get_date_time()
+	
+	local file = io.open(rootPath.."\\lualogs\\Moists_debug.log", "a")
+	io.output(file)
+	io.write("\n"..Cur_Date_Time .."\n")
+	io.write(text)
+	io.close()
+end
+
+
+--Util functions
+local notif = ui.notify_above_map
+
+local function notify_above_map(msg)
+	ui.notify_above_map(tostring("<font size='10'>~l~~o~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 203)
+end
+
+local function moist_notify(msg, color)
+
+	ui.notify_above_map(tostring("<font size='10'>~l~~h~" ..msg), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+end
+
 
 
 --Script Settings Set & save
@@ -70,6 +108,17 @@ for line in io.lines(save_ini) do
 
 end
 
+function saveSettings()
+
+			local save_ini = io.open(save_ini, "w")
+			io.output(save_ini)
+			for i, k in pairs(toggle_setting) do
+				io.write(k.."="..tostring(setting[k]).."\n")
+			end
+			io.close(save_ini)
+end
+
+
 	
 
 
@@ -104,47 +153,28 @@ local groupIDs = {}
 -- NoWaypoint.y = 16000
 
 --Arrays
-
 local presets = {{"beyond_limits", -173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)", -1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",  -5784.258301,-8289.385742,-136.411270},{"Chiliad", 491.176,5529.808,777.503},{"Lesters House", 1275.544,-1721.774,53.967},{"arena", -264.297,-1877.562,27.756},{"ElysianIslandBridge", -260.923,-2414.139,124.008},{"LSIAFlightTower", -983.292,-2636.995,89.524},{"TerminalCargoShip", 983.303,-2881.645,21.619},{"ElBurroHeights", 1583.022,-2243.034,93.265},{"CypressFlats", 552.672,-2218.876,68.981},{"LaMesa", 1116.815,-1539.787,52.146},{"SupplyStreet", 777.631,-695.813,28.763},{"Noose", 2438.874,-384.409,92.993},{"TatavianMountains", 2576.999,445.654,108.456},{"PowerStation", 2737.046,1526.873,57.494},{"WindFarm", 2099.765,1766.219,102.698},{"Prison", 1693.473,2652.971,61.335},{"SandyShoresRadioTower", 1847.034,3772.019,33.151},{"AlamoSea", 719.878,4100.993,39.154},{"RebelRadioTower", 744.500,2644.334,44.400},{"GreatChaparral", -291.035,2835.124,55.530},{"ZancudoControlTower", -2361.625,3244.962,97.876},{"NorthChumash(Hookies)", -2205.838,4298.805,48.270},{"AltruistCampRadioTower", -1036.141,4832.858,251.595},{"CassidyCreek", -509.942,4425.454,89.828},{"MountChiliad", 462.795,5602.036,781.400},{"PaletoBayFactory", -125.284,6204.561,40.164},{"GreatOceanHwyCafe", 1576.385,6440.662,24.654},{"MountGordoRadioTower", 2784.536,5994.213,354.275},{"MountGordoLighthouse", 3285.519,5153.820,18.527},{"GrapeSeedWaterTower", 1747.518,4814.711,41.666},{"TatavianMountainsDam", 1625.209,-76.936,166.651},{"VinewoodHillsTheater", 671.748,512.226,133.446},{"VinewoodSignRadioTowerTop", 751.179,1245.13,353.832},{"Hawik", 472.588,-96.376,123.705},{"PacificSrandardBank", 195.464,224.341,143.946},{"WestVinewoodCrane", -690.273,219.728,137.518},{"ArcadiasRadioTower", -170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010, -1419.530,5.001},{"DelperoFerrisWheel", -1644.193,-1114.271,13.029},{"VespucciCanalsClockTower", -1238.729,-853.861,77.758},{"DelPeroNrMazebankwest", -1310.777,-428.985,103.465},{"pacifficBluffs", -2254.199,326.088,192.606},{"GWC&GolfingSociety", -1292.052,286.209,69.407},{"Burton", -545.979,-196.251,84.733},{"LosSantosMedicalCenter", 431.907,-1348.709,44.673},{"BanhamCanyon", -3085.451,774.426,20.237},{"TongvaHills", -1874.280,2064.565,150.852},{"SanChianskiMountainRange", 2900.166,4325.987,102.101},{"HumaineLabs", 3537.104,3689.238,45.228},{"YouToolStoreSanChianski", 2761.944,3466.951,55.679},{"GalileoObservatory", -422.917,1133.272,325.855},{"GrndSeroraDesertCementwks", 1236.649,1869.214,84.824}}
-
 local escort_ped = {{"juggalo_01", 0xDB134533},{"topless_01", 0x9CF26183},{"lestercrest_2", 0x6E42FD26},}
-
 local escort_ped = {{"juggalo_01", 0xDB134533},{"topless_01", 0x9CF26183},{"juggalo_02", 0x91CA3E2C},{"lester crest", 0xB594F5C3},{"cop", 0x9AB35F63},{"mp_agent14", 0x6DBBFC8B},{"ramp_marine", 0x616C97B9},{"trafficwarden", 0xDE2937F3},{"lestercrest_2", 0x6E42FD26},{"lestercrest", 0x4DA6E849},{"agent14", 0xFBF98469},{"m_pros_01", 0x6C9DD7C9},{"waremech_01", 0xF7A74139},{"weapexp_01", 0x36EA5B09},{"weapwork_01", 0x4186506E},{"securoguard_01", 0xDA2C984E},{"armoured_01", 0xCDEF5408},{"armoured_01", 0x95C76ECD},{"armoured_02", 0x63858A4A},{"marine_01", 0xF2DAA2ED},{"marine_02", 0xF0259D83},{"security_01", 0xD768B228},{"snowcop_01", 0x1AE8BB58},{"prisguard_01", 0x56C96FC6},{"pilot_01", 0xE75B4B1C},{"pilot_02", 0xF63DE8E1},{"blackops_01", 0xB3F3EE34},{"blackops_02", 0x7A05FA59},{"blackops_03", 0x5076A73B},{"hwaycop_01", 0x739B1EF5},{"marine_01", 0x65793043},{"marine_02", 0x58D696FE},{"marine_03", 0x72C0CAD2},{"ranger_01", 0xEF7135AE},{"robber_01", 0xC05E1399},{"sheriff_01", 0xB144F9B9},{"pilot_01", 0xAB300C07},{"swat_01", 0x8D8F1B10},{"fibmugger_01", 0x85B9C668},{"juggernaut_01", 0x90EF5134},{"rsranger_01", 0x3C438CD2},}
-
 local veh_list = {{"buzzard", 0x2F03547B, nil, nil},{"savage", 0xFB133A17, nil, nil},{"seasparrow", 0xD4AE63D9, 10, 1},{"valkyrie2", 0x5BFA5C4B, nil, nil},{"valkyrie", 0xA09E15FD, nil, nil},{"boxville5", 0x28AD20E1, nil, nil},{"apc", 0x2189D250, 10, 0},{"oppressor2", 0x7B54A9D3, 10, 1},{"oppressor", 0x34B82784, 10, 0},{"ruiner2", 0x381E10BD, nil, nil},{"scramjet", 0xD9F0503D, 10, 0},{"stromberg", 0x34DBA661},{"tampa3", 0xB7D9F7F1},{"khanjali", 0xAA6F980A, nil, nil},{"insurgent3", 0x8D4B7A8A, nil, nil},{"insurgent", 0x9114EADA, nil, nil},{"limo2", 0xF92AEC4D, nil, nil},{"mower", 0x6A4BD8F6, nil, nil},{"police2", 0x9F05F101, nil, nil},{"police3", 0x71FA16EA, nil, nil},{"police4", 0x8A63C7B9, nil, nil},{"police", 0x79FBB0C5, nil, nil},{"policeb", 0xFDEFAEC3, nil, nil},{"policeold1", 0xA46462F7, nil, nil},{"policeold2", 0x95F4C618, nil, nil},{"policet", 0x1B38E955, nil, nil},{"polmav", 0x1517D4D9, nil, nil},{"sheriff2", 0x72935408, nil, nil},{"sheriff", 0x9BAA707C, nil, nil},{"phantom2", 0x9DAE1398, nil, nil},{"ruiner3", 0x2E5AFD37, nil, nil},}
-
 local ped_wep = {{"unarmed", 0xA2719263},{"weapon_handcuffs", 0xD04C944D},{"stone_hatchet", 0x3813FC08},{"knife", 0x99B507EA},{"bat", 0x958A4A8F},{"weapon_machinepistol", 0xDB1AA450},	{"raypistol", 0xAF3696A1},{"stungun", 0x3656C8C1},{"raycarbine", 0x476BF15},{"combatmg_mk2", 0xDBBD7280},{"rpg", 0xB1CA77B1},{"railgun", 0x6D544C99},{"minigun", 0x42BF8A85},{"rayminigun", 0xB62D1F6},}
-
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Half Track","Force to Night Shark AAT","Force to Night Shark AAT","Force to APC Mission","Force to APC Mission","Force to MOC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission1","Force to Opressor Mission2","Force to Opressor Mission2"}
 
+--Feature & Variable Arrays
 local globalFeatures = {}
-
-globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id
-
 local playerFeatures = {}
-
-playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent, function()
-		if showfriends.on then
-		if not friendsshown then
-		friendscheck() end
-		friendsshown = true
-		else end
-end)
-
 playerfeatVars = {} 
 playerFeat = {}
 playerFeatParent = {}
 playerFeatParent2 = {}
-
 playerFeat1 = {}
 playerFeat2 = {}
 playerFeat3 = {}
 playerFeat4 = {}
-playerfeatVars.f = menu.add_player_feature("Spawn Options", "parent", 0).id
-playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", playerfeatVars.f).id 
-playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
 
-
+--local Menu Functions
+globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id
+playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 -- globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
 -- globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
@@ -156,9 +186,25 @@ globalFeatures.self_wep = menu.add_feature("Player Ped Weapons", "parent", globa
 -- globalFeatures.self_veh = menu.add_feature("Player Vehicle Functions", "parent", globalFeatures.self).id
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
+
 -- globalFeatures.moist_test = menu.add_feature("Test", "parent", 0)
 -- globalFeatures.moist_test.hidden = false
+
+--save settings			
+menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
+	saveSettings()
+	moist_notify("Settings saved!", 212)
+end) 
+	
+
+--online Menu Functions
+
+
+playerfeatVars.f = menu.add_player_feature("Spawn Options", "parent", 0).id
+playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", playerfeatVars.f).id 
+playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
 -- globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
+
 
 
 
@@ -195,13 +241,22 @@ end
 local global_func = {}
 
 function playervehspd(pid, speed)
-	local plyveh 
-	local pedd = player.get_player_ped(pid)
-	plyveh = player.get_player_vehicle(pid)
-	network.request_control_of_entity(plyveh)
-	entity.set_entity_max_speed(plyveh, speed)
+    local plyveh
+    local pedd = player.get_player_ped(pid)
+    plyveh = player.get_player_vehicle(pid)
+    network.request_control_of_entity(plyveh)
+    entity.set_entity_max_speed(plyveh, speed)
 end
 
+
+function playvehspdboost(pid, reftime)
+    --- lag 100000.000010
+    --- fast 0.000010
+    local plyveh
+    plyveh = player.get_player_vehicle(pid)
+    network.request_control_of_entity(plyveh)
+    vehicle.set_vehicle_rocket_boost_refill_time(plyveh, reftime)
+end
 
 
 
@@ -229,6 +284,8 @@ global_func.lag_out.on = setting["lag_out"]
 
 
 --Self Functions
+
+--Self modifiers --Max Health 1:500 2:1000 3:2500 4:2600 5:10000 6:90000
 
 global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
 	local pped = player.get_player_ped(player.player_id())
@@ -364,8 +421,14 @@ global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
 
 --Util functions
 local notif = ui.notify_above_map
+
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring(msg), "Moists Script 2.0\nPrivate Edition", 140)
+	ui.notify_above_map(tostring("<font size='10'>~l~~o~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 203)
+end
+
+local function moist_notify(msg, color)
+
+	ui.notify_above_map(tostring("<font size='10'>~l~~h~" ..msg), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 end
 
 --Better Randomisation for Math functions
@@ -654,9 +717,6 @@ OptionsVar.aim_control = menu.add_feature("Detonate Vehicle Aiming at(DPAD-R)", 
 end)
 OptionsVar.aim_control.on = setting["aimDetonate_control"]
 
-
-
-
 PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globalFeatures.moistopt, function(feat)
 		setting["PlyTracker.track_all"] = true
 		if feat.on then
@@ -685,8 +745,6 @@ PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globa
 end)
 PlyTracker.track_all.on = setting["PlyTracker.track_all"]
 
-
-
 PlyTracker.track_all_HP = menu.add_feature("Track all Players HP", "toggle", globalFeatures.moistopt, function(feat)
 		setting["PlyTracker.track_all_HP"] = true
 	if feat.on then
@@ -704,7 +762,6 @@ PlyTracker.track_all_HP = menu.add_feature("Track all Players HP", "toggle", glo
 
 end)
 PlyTracker.track_all_HP.on = setting["PlyTracker.track_all_HP"]
-
 
 OSD.modvehgod_osd = menu.add_feature("Vehicle God OSD", "toggle", globalFeatures.moistopt, function(feat)
 		setting["OSD.modvehgod_osd"] = true
@@ -743,7 +800,6 @@ OSD.modvehgod_osd = menu.add_feature("Vehicle God OSD", "toggle", globalFeatures
 		return HANDLER_POP
 end)
 OSD.modvehgod_osd.on = setting["OSD.modvehgod_osd"]
-
 
 OSD.modvehspeed_osd = menu.add_feature("Modded Vehicle Speed OSD", "toggle", globalFeatures.moistopt, function(feat)
 	setting["OSD.modvehspeed_osd"] = true
@@ -794,7 +850,6 @@ OSD.modvehspeed_osd = menu.add_feature("Modded Vehicle Speed OSD", "toggle", glo
 
 end)
 OSD.modvehspeed_osd.on = setting["OSD.modvehspeed_osd"]
-
 
 OSD.modspec_osd = menu.add_feature("Spectate OSD", "toggle", globalFeatures.moistopt, function(feat)
 			setting["OSD.modspec_osd"] = true
@@ -875,7 +930,6 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 	return HANDLER_POP
 end)
 OSD.Player_bar.on = setting["OSD.Player_bar"]
-
 
 OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures.moistopt, function(feat)
 	setting["osd_date_time"] = true
@@ -1222,15 +1276,6 @@ end
 end
 load_spawn_options()
 
-		-- menu.add_player_feature("Spawn This Vehicle Behind Player", "action", playerfeatVars.featvvar.id, function(feat, pid)
-			
-			-- spawn_veh(pid, vehhash, -8, mod, modvalue)
-			-- local y = #escortveh
-			-- entity.set_entity_god_mode(escortveh[y], false)
-		-- end)
-	-- end
--- end
-
 friendsshown = false
 
 showfriends = menu.add_feature("Show Friends Notify", "toggle", globalFeatures.moistopt, function(feat)
@@ -1290,28 +1335,6 @@ function friendscheck()
 		end
 	end
 end
-
-
-
---save settings
-			
-menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
-	saveSettings()
-	notif("Settings saved!", "", 212)
-end) 
-	
-
-
-function saveSettings()
-
-			local save_ini = io.open(save_ini, "w")
-			io.output(save_ini)
-			for i, k in pairs(toggle_setting) do
-				io.write(k.."="..tostring(setting[k]).."\n")
-			end
-			io.close(save_ini)
-end
-
 
 
 --Player list
