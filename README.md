@@ -64,25 +64,37 @@ The files and folders required are as they should be and should be extracted fro
 
 
 #### Spawn Options 
-####	 Ped Spawns
+###  Ped Spawns
+
 - `Ped List` 
-- `Weapon list`
+
+##### Ped + Weapon / Ped + Vehicle
+
+- `Weapon list` / Vehicle list
+
+##### Selected Weapon / Vehicle
+
+> Ped + Weapon Functions
+
+- `Send Attacker via Parachute`
+(Spawns in the air above Player Parachutes down to kill the player with selected weapon)
+
+- `Spawn Attacker & Task`
+(Spawns nearby onfoot with Weapon & Attacks Player)
+
+- `Spawn Support Ped`
+ (Can sometimes attack player but should attack enemy players/peds)
+
+> Ped + Selected Vehicle Options
+
+- `Spawn as Escort & Task`
+(Spawns Ped in Selected Vehicle Behind Player & follows, will attack player sometimes if they fire weapons.  Certain Vehicles have Multiple Peds)
+
+- `Spawn as Attacker & Task`
+(Spawns Ped in Selected Vehicle Behind Player & Attacks, will follow player until they are dead Peds may attack each other if too many are spawned and they shoot in each other direction)
 
 
 ````
-
-- `Send Attacker via Parachute`
--				`Spawn Attacker & Task`
--				`Spawn Support Ped`
-
-
-
-#####	Ped + Vehicle Spawns
-######			`Ped List
-######				`Vehicle List
-					`Spawn as Escort & Task
-					`Spawn as Attacker & Task
-					`Spawn This Vehicle Behind Player
 
 
 ##### Vehicle Options
