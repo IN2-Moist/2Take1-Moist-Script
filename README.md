@@ -52,8 +52,7 @@ The files and folders required are as they should be and should be extracted fro
 		
 #### World Cleanup
 
-- `Delete Ped Spawns`
-- `Delete Ped Spawns + Vehicles`
+
 
 
 ## Local Script Features
@@ -64,17 +63,22 @@ The files and folders required are as they should be and should be extracted fro
 
 
 #### Spawn Options 
-###  Ped Spawns
+#####  Ped Spawns
 
-- `Ped List` 
+- `Delete Ped Spawns`
+- `Delete Ped Spawns + Vehicles`
 
-##### Ped + Weapon / Ped + Vehicle
+######  Ped Spawns
 
-- `Weapon list` / Vehicle list
+> - `Ped List` 
 
-##### Selected Weapon / Vehicle
+###### Ped + Weapon / Ped + Vehicle
 
-> Ped + Weapon Functions
+> - `Weapon list / Vehicle list`
+
+###### Selected Weapon / Vehicle
+
+> `Ped + Weapon Functions`
 
 - `Send Attacker via Parachute`
 (Spawns in the air above Player Parachutes down to kill the player with selected weapon)
@@ -85,17 +89,17 @@ The files and folders required are as they should be and should be extracted fro
 - `Spawn Support Ped`
  (Can sometimes attack player but should attack enemy players/peds)
 
-> Ped + Selected Vehicle Options
+> `Ped + Selected Vehicle Options`
 
 - `Spawn as Escort & Task`
 (Spawns Ped in Selected Vehicle Behind Player & follows, will attack player sometimes if they fire weapons.  Certain Vehicles have Multiple Peds)
 
 - `Spawn as Attacker & Task`
-(Spawns Ped in Selected Vehicle Behind Player & Attacks, will follow player until they are dead Peds may attack each other if too many are spawned and they shoot in each other direction)
+(Spawns Ped in Selected Vehicle Behind Player & Attacks, will follow player until they are dead Ped's may attack each other if too many are spawned and they shoot in each other direction)
 
 
 ````
-
+--TODO: Update and adjust
 
 ##### Vehicle Options
 		`ToggleOFF Player Vehicle God Mode
