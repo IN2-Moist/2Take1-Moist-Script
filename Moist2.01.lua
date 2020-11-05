@@ -18,13 +18,13 @@ local debugfile = rootPath.."\\lualogs\\Moists_debug.log"
 local dataload = function()
 	if not utils.file_exists(kickdata) then	return end
 	for line in io.lines(kickdata) do data[#data + 1] = line end
-	ui.notify_above_map(string.format("Moists Kick Data File 1 Loaded"), "Moists Script 2.0\nFile Load", 066)
+	moist_notify("Moists Kick Data File 1 Loaded\n",  "Kick Type 1 Now Available")
 end
 
 local dataload2 = function()
 	if not utils.file_exists(kickdata2) then	return end
 	for line in io.lines(kickdata2) do data2[#data2 + 1] = line end
-	ui.notify_above_map(string.format("Moists Kick Data File 2 Loaded"), "Moists Script 2.0\nFile Load", 066)
+moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
 end
 
 
@@ -50,20 +50,6 @@ function debug_out(text)
 	io.write("\n"..Cur_Date_Time .."\n")
 	io.write(text)
 	io.close()
-end
-
-
---Util functions
-local notif = ui.notify_above_map
-
-local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='10'>~l~~o~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 203)
-end
-
-local function moist_notify(msg, color)
-	color = color or preset_color
-
-	ui.notify_above_map(tostring("<font size='10'>~l~~h~" ..msg), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 end
 
 --Get Offset to self POS
@@ -93,39 +79,38 @@ setting[toggle_setting[#toggle_setting]] = "2.0"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all_HP"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "OSD.modvehgod_osd"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modspec_osd"
 setting[toggle_setting[#toggle_setting]] = true
-toggle_setting[#toggle_setting+1] = "showfriends"
-setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.Player_bar"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "aimDetonate_control"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "osd_date_time"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "force_wPara"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "force_wBPH"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "lag_out"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "global_func.mk1boostrefill"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "global_func.mk2boostrefill"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "global_func.veh_rapid_fire"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "global_func.rapidfire_hotkey1"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "NotifyColorDefault"
-setting[toggle_setting[#toggle_setting]] = 016
-toggle_setting[#toggle_setting+1] = "NotifyColor.on"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = 001
+toggle_setting[#toggle_setting+1] = "NotifyVarDefault"
+setting[toggle_setting[#toggle_setting]] = 1
+
 
 
 local save_ini_file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini", "a")
@@ -202,7 +187,8 @@ local pos_bool
 local myplygrp
 local plygrp
 local Cur_Date_Time
-local preset_color = 016
+local preset_color = setting["NotifyColorDefault"]
+local notifytype = setting["NotifyVarDefault"]
 local AnonymousBounty = true
 local trigger_time = nil
 local cleanup_done = true
@@ -232,6 +218,41 @@ local hookID6 = 07
 -- NoWaypoint.x = 16000
 -- NoWaypoint.y = 16000
 
+--Util functions
+local notif = ui.notify_above_map
+
+local function notify_above_map(msg)
+	ui.notify_above_map(tostring("<font size='10'>~l~~o~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 203)
+end
+
+function moist_notify(msg1, msg2)
+	
+	local color = preset_color
+	msg1 = msg1 or "na"
+	msg2 = msg2 or "na"
+	
+		if notifytype == 1 then
+			ui.notify_above_map(string.format("<font size='10'>~h~~r~" ..msg1 .."~h~~y~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		end
+		if notifytype == 2 then
+			ui.notify_above_map(string.format("<font size='10'>~h~~l~" ..msg1 .."~h~~w~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+end
+	
+		if notifytype == 3 then
+			ui.notify_above_map(string.format("<font size='10'>~h~~y~" ..msg1 .."~h~~l~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		end
+		if notifytype == 4 then
+			ui.notify_above_map(string.format("<font size='10'>~h~~w~" ..msg1 .."~h~~r~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+end
+	
+		if notifytype == 5 then
+			ui.notify_above_map(string.format("<font size='10'>~h~~l~" ..msg1 .."~h~~y~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		end
+		if notifytype == 6 then
+			ui.notify_above_map(string.format("<font size='10'>~h~~w~" ..msg1 .."~h~~l~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+end
+
+end
 
 
 --Modder Flagging
@@ -288,7 +309,6 @@ local ped_wep = {{"unarmed", 0xA2719263},{"weapon_handcuffs", 0xD04C944D},{"ston
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Half Track","Force to Night Shark AAT","Force to Night Shark AAT","Force to APC Mission","Force to APC Mission","Force to MOC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission1","Force to Opressor Mission2","Force to Opressor Mission2"}
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
-
 --Event Data Arrays
 
 local NetEvents = {}
@@ -410,26 +430,42 @@ globalFeatures.self_options = menu.add_feature("Player Options", "parent", globa
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
-globalFeatures.notify = menu.add_feature("Set Default Notify Color", "value_i", globalFeatures.moistopt, function(feat)
-	setting["NotifyColorDefault"] = feat.value_i
-	setting["NotifyColor.on"] = true
-	moist_notify("Test Color:\n" ..feat.value_i, feat.value_i)
-	if feat.on then
-	preset_color = feat.value_i
+globalFeatures.notifyParent = menu.add_feature("Notify Custiomisation", "parent", globalFeatures.moistopt).id
+--TODO:Notify settings
+
+globalFeatures.nottyp = menu.add_feature("Set Notify Variant", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
 	
-	return HANDLER_CONTINUE
-	end
-	setting["NotifyColorDefault"] = nil
-	setting["NotifyColor.on"] = false
+		notifytype = feat.value_i
+	setting["NotifyVarDefault"] = feat.value_i
+	notifytype = feat.value_i
+	moist_notify("Test Variant Set:\n", feat.value_i)
+	return HANDLER_POP
+end)
+globalFeatures.nottyp.max_i = 6
+globalFeatures.nottyp.min_i = 1
+globalFeatures.nottyp.value_i = setting["NotifyVarDefault"]
+
+globalFeatures.notify = menu.add_feature("Set Default Notify Color", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
+	setting["NotifyColorDefault"] = feat.value_i
+
+	preset_color = feat.value_i	
+	moist_notify("Test Color:\n", feat.value_i)
 	return HANDLER_POP
 end)
 globalFeatures.notify.max_i = #colorindex
 globalFeatures.notify.min_i = 1
 globalFeatures.notify.value_i = setting["NotifyColorDefault"]
-globalFeatures.notify.on = setting["NotifyColor.on"]
 
+-- globalFeatures.notify = menu.add_feature("Set Default Notify Color", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
+	-- setting["NotifyColorDefault"] = feat.value_i
 
-
+	-- preset_color = feat.value_i	
+	-- notifytype("Test Color:\n" ..feat.value_i, "")
+	-- return HANDLER_POP
+-- end)
+-- globalFeatures.notify.max_i = #colorindex
+-- globalFeatures.notify.min_i = 1
+-- globalFeatures.notify.value_i = setting["NotifyColorDefault"]
 
 -- globalFeatures.moist_test = menu.add_feature("Test", "parent", 0)
 -- globalFeatures.moist_test.hidden = false
@@ -437,7 +473,7 @@ globalFeatures.notify.on = setting["NotifyColor.on"]
 --save settings			
 menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
 	saveSettings()
-	moist_notify("Settings saved!", 212)
+	moist_notify("Settings: ",  "saved!")
 end) 
 	
 
@@ -547,7 +583,7 @@ for i = 1, #HP_modifiers do
 	local chp
 	ped.set_ped_max_health(me, HP_modifiers[i][2])
 	chp = tostring(ped.get_ped_max_health(me))
-	ui.notify_above_map(string.format("Max Health %s Set and filled", chp), "Self Modifier", 23)
+	moist_notify(string.format("Max Health %s Set and filled: \n", chp))
 	ped.set_ped_max_health(me, HP_modifiers[i][2])
 	ped.set_ped_health(me, HP_modifiers[i][2])
 	return HANDLER_POP
@@ -675,7 +711,7 @@ global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggl
 		key:push_str("r")
 		if key:is_down() then
 			mk2_rapid_fire.on = not mk2_rapid_fire.on
-				notify_above_map(string.format("Switching Rapid Fire %s\n%s for your Current Vehicle", mk2_rapid_fire.on and "ON" or "OFF", mk2_rapid_fire.on and "Glitch On" or "Set Repaired"))
+		moist_notify("Switching Rapid Fire %s\n%s for your Current Vehicle", mk2_rapid_fire.on and "ON" or "OFF", mk2_rapid_fire.on and "Glitch On" or "Set Repaired")
 			system.wait(1200)
 		end
 	
@@ -1253,23 +1289,37 @@ end)
 --OSD Functions
 local entity_control
 
-OptionsVar.aim_control = menu.add_feature("Detonate Vehicle Aiming at(DPAD-R)", "toggle", globalFeatures.moistopt, function(feat)
+--[[
+21	INPUT_SPRINT	LEFT SHIFT			A
+22	INPUT_JUMP		SPACEBAR			X
+24	INPUT_ATTACK	LEFT MOUSE BUTTON	RT
+25	INPUT_AIM		RIGHT MOUSE BUTTON	LT
+]]
+
+OptionsVar.aim_control = menu.add_feature("DetonateVehicle Aiming@(LShift or PS:X XBC:A)", "toggle", globalFeatures.moistopt, function(feat)
 	setting["aimDetonate_control"] = true
 		if feat.on then
-		if not controls.is_control_pressed(6,54) then
-			return HANDLER_CONTINUE
-		end
+			
+		
+		if player.is_player_free_aiming(player.player_id()) and controls.is_control_pressed(1,21) then
+			
+		
 	entity_control = player.get_entity_player_is_aiming_at(player.player_id())
 	
 	if entity.is_entity_a_ped(entity_control) then
 	--ped.clear_ped_tasks_immediately(entity_control)
-	if entity.get_entity_god_mode(entity_control) then entity.set_entity_god_mode(entity_control, false)
+	if entity.get_entity_god_mode(entity_control) then
+	network.request_control_of_entity(entity_control)
+	entity.set_entity_god_mode(entity_control, false)
 	end
 	if entity.is_entity_attached(entity_control) then
 	entity_control = entity.get_entity_attached_to(entity_control)
 	end
+	network.request_control_of_entity(entity_control)
 	end
-	if entity.get_entity_god_mode(entity_control) then entity.set_entity_god_mode(entity_control, false)
+	if entity.get_entity_god_mode(entity_control) then
+	network.request_control_of_entity(entity_control)
+	entity.set_entity_god_mode(entity_control, false)
 	end
 	if entity.is_entity_a_vehicle(entity_control) then
 		network.request_control_of_entity(entity_control)
@@ -1283,11 +1333,15 @@ OptionsVar.aim_control = menu.add_feature("Detonate Vehicle Aiming at(DPAD-R)", 
 	end
 	return HANDLER_CONTINUE
 	end
+		return HANDLER_CONTINUE
+	end
+	
 	setting["aimDetonate_control"] = false
 	return HANDLER_POP
 
 end)
 OptionsVar.aim_control.on = setting["aimDetonate_control"]
+
 
 PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globalFeatures.moistopt, function(feat)
 		setting["PlyTracker.track_all"] = true
@@ -2318,16 +2372,17 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						tags[#tags + 1] = "H"
 						if SessionHost ~= pid then
 							SessionHost = pid
-							notify_above_map("The session host is now " .. (isYou and "you" or name) .. ".")
+							moist_notify("The session host is now " .. (isYou and "you" or name) .. ".")
 						end
 					end
 					if pid == script.get_host_of_this_script() then
 						tags[#tags + 1] = "S"
 						if ScriptHost ~= pid then
 							ScriptHost = pid
-							notify_above_map("The script host is now " .. (isYou and "you" or name) .. ".")
+							moist_notify("The script host is now " .. (isYou and "you" or name) .. ".")
 						end
 					end
+					
 					if tbl.scid ~= scid then
 						for cf_name,cf in pairs(tbl.features) do
 							if cf.type == "toggle" and cf.feat.on then
@@ -2336,7 +2391,22 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						end
 						tbl.scid = scid
 						if not isYou then
-							--TODO: Modder shit
+							if not isYou then
+							if  not player.is_player_modder(pid, -1) then
+									if player.is_player_spectating(pid) and player.is_player_playing(pid) and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
+										tags[#tags + 1] = "[SPEC]"
+										--notify_above_map("Modded Specate Detected from " .. (isYou and "you " or name) .. " ")
+										player.set_player_as_modder(pid, mod_flag_3)
+									end
+								end
+						if player.is_player_vehicle_god(pid) then
+							tags[#tags + 1] = "[VG]"
+						if not logsent then
+						debug_out(string.format("Player: " ..name .." [Vehicle Godmode]"))
+						logsent = true
+						end
+						end
+					end
 						end
 					end
 				end
@@ -2348,7 +2418,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 					if (cf.type ~= "toggle" or cf.feat.on) and cf.callback then
 						local status, err = pcall(cf.callback)
 						if not status then
-							notify_above_map("Error running feature " .. i .. " on pid " .. pid)
+							moist_notify("Error running feature " .. i .. " on pid " .. pid)
 							print(err)
 						end
 					end
