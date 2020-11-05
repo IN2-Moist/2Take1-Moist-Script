@@ -415,10 +415,16 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id
+if Moist == nil then
+globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id	
+	else
+	Moist.hidden = false
+	globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", Moist.id).id
+end
+
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
--- globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
+globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
 -- globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
 -- globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
@@ -456,20 +462,6 @@ globalFeatures.notify.max_i = #colorindex
 globalFeatures.notify.min_i = 1
 globalFeatures.notify.value_i = setting["NotifyColorDefault"]
 
--- globalFeatures.notify = menu.add_feature("Set Default Notify Color", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
-	-- setting["NotifyColorDefault"] = feat.value_i
-
-	-- preset_color = feat.value_i	
-	-- notifytype("Test Color:\n" ..feat.value_i, "")
-	-- return HANDLER_POP
--- end)
--- globalFeatures.notify.max_i = #colorindex
--- globalFeatures.notify.min_i = 1
--- globalFeatures.notify.value_i = setting["NotifyColorDefault"]
-
--- globalFeatures.moist_test = menu.add_feature("Test", "parent", 0)
--- globalFeatures.moist_test.hidden = false
-
 --save settings			
 menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
 	saveSettings()
@@ -482,7 +474,584 @@ end)
 playerfeatVars.f = menu.add_player_feature("Spawn Options", "parent", 0).id
 playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", playerfeatVars.f).id 
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
--- globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
+globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
+
+-- -- **BLACK LIST SHIT**
+joining_players_logger = event.add_event_listener("player_join", function(e)
+        local pid = e.player
+        local scid = player.get_player_scid(pid)
+        local name = tostring(player.get_player_name(pid))
+
+        local ip = player.get_player_ip(pid)
+		local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
+		joined_data("[Player: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]")
+
+        return
+    end
+)
+
+function joined_data(text)
+    local d = os.date()
+    local dtime = string.match(d, "%d%d:%d%d:%d%d")
+    local dt = os.date("%d/%m/%y%y")
+    local CurDateTime = (string.format("[" .. dt .. "]" .. "[" .. dtime .. "]"))
+    local file = io.open(rootPath .. "\\lualogs\\PlayerJoins.md", "a")
+    io.output(file)
+    io.write("\n[" .. CurDateTime .. "]")
+    io.write("\n" .. text)
+    io.close()
+end
+
+function Joined_players(text)
+    local file = io.open(rootPath .. "\\lualogs\\PlayerJoins.md", "a")
+    io.output(file)
+    io.write(text)
+    io.close()
+end
+
+local hookID
+local hookID1
+local hookID2
+local hookID3
+local hookID4
+local hookID5
+local hookID6
+local script_hook = 09
+
+function log_net()
+    if net_log.on then
+        hookID6 = hook.register_net_event_hook(log_neteventHook)
+    else
+        hook.remove_net_event_hook(hookID6)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+function netcheck()
+    if neteventlogger.on then
+        hookID = hook.register_net_event_hook(neteventHook)
+    else
+        hook.remove_net_event_hook(hookID)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+function netcheck1()
+    if neteventlogger.on then
+        hookID1 = hook.register_net_event_hook(neteventHook1)
+    else
+        hook.remove_net_event_hook(hookID1)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+function netcheck2()
+    if neteventlogger.on then
+        hookID2 = hook.register_net_event_hook(neteventHook2)
+    else
+        hook.remove_net_event_hook(hookID2)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+function netcheck3()
+    if neteventlogger.on then
+        hookID3 = hook.register_net_event_hook(neteventHook3)
+    else
+        hook.remove_net_event_hook(hookID3)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+function netcheck4()
+    if neteventlogger.on then
+        hookID4 = hook.register_net_event_hook(neteventHook4)
+    else
+        hook.remove_net_event_hook(hookID4)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+function netcheck5()
+    if neteventlogger.on then
+        hookID5 = hook.register_net_event_hook(neteventHook5)
+    else
+        hook.remove_net_event_hook(hookID5)
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end
+
+local SEid
+local scriptlog_pid = menu.add_feature("Log player script events", "value_i", 0, function(feat)
+        if feat.on then
+            script_check_logger.on = true
+            SEid = feat.value_i
+            system.wait(100)
+            return HANDLER_CONTINUE
+        end
+        SEid = nil
+        script_check_logger.on = falser
+        return HANDLER_POP
+    end)
+scriptlog_pid.on = false
+scriptlog_pid.max_i = 32
+scriptlog_pid.min_i = 0
+scriptlog_pid.value_i = 0
+
+local params = {}
+script_event_hook = function(source, target, params, count)
+    local player_source = player.get_player_name(source)
+    local scid = player.get_player_scid(source)
+    local player_target = player.get_player_name(target)
+    get_date_time()
+
+    if scriptlog_pid.on then
+        if source == SEid then
+			scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
+            local cnt = 0
+            for k, v in pairs(params) do
+                scriptlog_out("[P: " .. cnt .. "] = " .. "[" .. k .. "] " .. v)
+                cnt = cnt + 1
+            end
+
+            -- system.wait(3000)
+            return true
+        end
+	else
+	scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
+
+	
+        local cnt = 0
+        for k, v in pairs(params) do
+            scriptlog_out("[P: " .. cnt .. "] = " .. "[" .. k .. "] " .. v)
+            cnt = cnt + 1
+        end
+        return true
+    end
+end
+
+local hook_id = 0
+script_check = function(feat)
+    if feat.on == true then
+        hook_id = hook.register_script_event_hook(script_event_hook)
+        return HANDLER_POP
+    end
+
+    if hook_id ~= 0 then
+        hook.remove_script_event_hook(hook_id)
+        hook_id = 0
+    end
+end
+
+function log_neteventHook(source, target, id)
+    local player_source = player.get_player_name(source)
+    local player_target = player.get_player_name(target)
+    netlog_out("\n" .. Cur_Date_Time)
+    netlog_out(NetEvents[id])
+    netlog_out("from [" .. source .. "] " .. player_source)
+    system.wait(3000)
+    return true
+end
+
+function scriptlog_out(text)
+    get_date_time()
+    local file = io.open(rootPath .. "\\lualogs\\scriptevent_logger.log", "a")
+    io.output(file)
+    io.write("\n" .. text)
+    io.close()
+end
+
+function netlog_out(text)
+    get_date_time()
+    local file = io.open(rootPath .. "\\lualogs\\netevent_logger.log", "a")
+    io.output(file)
+    io.write("\n" .. text)
+    io.close()
+end
+
+function neteventHook1(source, target, id)
+    local player_source = player.get_player_name(source)
+
+    if id == 10 then
+        modder_detected1(source, 10)
+
+        return false
+    end
+end
+
+function neteventHook2(source, target, id)
+    local player_source = player.get_player_name(source)
+    if id == 12 then
+        modder_detected(source, 12)
+    else
+        return false
+    end
+end
+
+function neteventHook3(source, target, id)
+    local player_source = player.get_player_name(source)
+    if id == 13 then
+        modder_detected(source, 13)
+    else
+        return false
+    end
+end
+
+function neteventHook4(source, target, id)
+    local player_source = player.get_player_name(source)
+    if id == 14 then
+        modder_detected(source, 14)
+    else
+        return false
+    end
+end
+
+function neteventHook5(source, target, id)
+    local player_source = player.get_player_name(source)
+    if id == 43 then
+        modder_detected(source, 43)
+    else
+        return false
+    end
+end
+
+function neteventHook(source, target, id)
+    local player_source = player.get_player_name(source)
+    if id == 78 then
+        modder_detected(source, 78)
+    else
+        return false
+    end
+end
+
+local count = 0
+
+function modder_detected1(pid, net_id)
+    if count < 1 then
+        count = count + 1
+        local player_source = player.get_player_name(pid)
+        player.set_player_as_modder(pid, 1)
+
+        debug_out("NetEvent: " .. net_id .. "[ " .. NetEvents[net_id] .. " ]")
+        debug_out("from " .. pid .. "[ " .. player_source .. " ]")
+
+	ui.notify_above_map(string.format("NetEvent: " ..NetEvents[net_id] .. "\nFrom : " ..player_source), "Moists Modder Detection", 024)
+	end
+end
+
+function modder_detected(pid, net_id)
+    local player_source = player.get_player_name(pid)
+    player.set_player_as_modder(pid, 1)
+    debug_out("NetEvent: " .. net_id .. "[ " .. NetEvents[net_id] .. " ]")
+    debug_out("from " .. pid .. "[ " .. player_source .. " ]")
+
+
+	ui.notify_above_map(string.format("NetEvent: " ..NetEvents[net_id] .. "\nFrom : " ..player_source), "Moists Modder Detection", 024)
+end
+
+function chat(name, text)
+    local d = os.date()
+    local t = string.match(d, "%d%d:%d%d:%d%d")
+    local dt = os.date("%d/%m/%y%y")
+
+    local file = io.open(rootPath .. "\\lualogs\\chat.md", "a")
+
+    io.output(file)
+    io.write("[" .. dt .. " " .. t .. "]" .. " [" .. name .. "]")
+    io.write("\n" .. text .. "\n")
+    io.close()
+end
+
+local ChatEventID = event.add_event_listener("chat", function(e)
+        if player.get_player_ped(e.player) == 0 then
+            return
+        end
+        local sender = player.get_player_name(e.player)
+        chat(sender, e.body)
+end)
+
+event.add_event_listener("exit", function()
+        event.remove_event_listener("chat", ChatEventID)
+end)
+
+
+local function ValidScid(scid)
+    return scid ~= -1 and scid ~= 4294967295
+end
+local function RemoveScid(scid)
+    if scids[scid] then
+        scids[scid] = nil
+        local file = io.open(scidFile, "w+")
+
+        io.output(file)
+        for k, v in pairs(scids) do
+            if v then
+                io.write(k .. "|" .. v .. "\n")
+            end
+        end
+        io.close()
+        for i = RemoveBlacklistFeature.child_count, 1, -1 do
+            local f = RemoveBlacklistFeature.children[i]
+            if f.data == scid then
+                menu.delete_feature(f.id)
+                break
+            end
+        end
+        scidN = scidN - 1
+        debug_out(string.format("Removed " .. scid .. " from blacklist."))
+        print("Removed " .. scid .. " from blacklist.")
+    end
+end
+
+local function RemoveScidByPid(pid)
+    if pid == player.player_id() then
+        return
+    end
+    local scid = player.get_player_scid(pid)
+    if ValidScid(scid) then
+        RemoveScid(scid)
+    end
+end
+
+local function RemoveScidByFeature(f)
+    menu.create_thread(RemoveScid, f.data)
+end
+
+local function AddScid(scid, name)
+    if scids[scid] then
+        return
+    end
+    name = name or "Unknown"
+    scids[scid] = name
+    local file = io.open(scidFile, "a")
+
+    io.output(file)
+    io.write(scid .. "|" .. name .. "\n")
+    io.close()
+    scidN = scidN + 1
+    menu.add_feature(scid .. " (" .. name .. ")", "action", RemoveBlacklistFeature.id, RemoveScidByFeature).data = scid
+    debug_out(string.format("Added " .. scid .. " (" .. name .. ")" .. "to blacklist"))
+    print("Added " .. scid .. " (" .. name .. ") to blacklist.")
+end
+
+local function AddScidByPid(pid)
+    if pid == player.player_id() then
+        return
+    end
+    local scid = player.get_player_scid(pid)
+    if ValidScid(scid) then
+        AddScid(scid, player.get_player_name(pid))
+    end
+end
+
+local function LoadBlacklist()
+    scids = {}
+    scidN = 0
+    for i = RemoveBlacklistFeature.child_count, 1, -1 do
+        menu.delete_feature(RemoveBlacklistFeature.children[i].id)
+    end
+    if not utils.file_exists(scidFile) then
+        return
+    end
+    for line in io.lines(scidFile) do
+        local scid, name = line:match("(%x+)|?(.-)$")
+        name = name or "Unknown"
+        if scid then
+            local scid = tonumber(scid) or tonumber(scid, 16)
+            if scid then
+                scids[scid] = name
+                menu.add_feature(scid .. " (" .. name .. ")", "action", RemoveBlacklistFeature.id, RemoveScidByFeature).data =
+                    scid
+                scidN = scidN + 1
+            end
+        end
+    end
+    print("Loaded blacklist with " .. scidN .. " entries.")
+end
+
+local function KickPid(pid)
+    if pid == player.player_id() then
+        return
+    end
+    local name = player.get_player_name(pid)
+    if network.network_is_host() then
+        network.network_session_kick_player(pid)
+        debug_out(string.format("Host kicked " .. pid .. " (" .. name .. ")"))
+        print("Host kicked " .. pid .. " (" .. name .. ").")
+    else
+        for i = 1, #scriptEvents do
+            player.set_player_as_modder(pid, mod_flag_2)
+           	script.trigger_script_event(scriptEvents[i], pid, {0, -1, 0})
+			script.trigger_script_event(scriptEvents[i], pid, {-1, 0, -1, -1, 0, -1, 0, -1, -10000, 0})
+			script.trigger_script_event(scriptEvents[i], pid, {0, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1})
+			
+        end
+        player.set_player_as_modder(pid, mod_flag_2)
+        script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+
+        debug_out(string.format("Non-Host kicked " .. pid .. " (" .. name .. ")"))
+        print("Non-Host kicked " .. pid .. " (" .. name .. ").")
+    end
+end
+
+local function MarkPidAsModder(pid)
+    if pid == player.player_id() then
+        return
+    end
+    local name = player.get_player_name(pid)
+    player.set_player_as_modder(pid, mod_flag_4)
+    debug_out(string.format("Marked " .. pid .. " (" .. name .. ") as modder"))
+    print("Marked " .. pid .. " (" .. name .. ") as modder.")
+end
+
+menu.add_feature("Reload blacklist", "action", globalFeatures.parentID, function()
+        LoadBlacklist()
+        ui.notify_above_map("Loaded blacklist. " .. scidN .. " entries.", "Blacklist", 140)
+end)
+
+local MarkAsModderFeature
+local KickFeature
+
+
+local EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", globalFeatures.parentID, function(feat)
+        if feat.on then
+            local lp = player.player_id()
+            for pid = 0, 31 do
+                if pid ~= lp then
+                    local scid = player.get_player_scid(pid)
+                    if ValidScid(scid) and scids[scid] then
+                        if MarkAsModderFeature.on then
+                            MarkPidAsModder(pid)
+                        end
+                        if KickFeature.on then
+                            KickPid(pid)
+                        end
+                    end
+                end
+            end
+        end
+    end
+)
+EnabledBlacklistFeature.on = true
+
+MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID)
+MarkAsModderFeature.on = true
+
+KickFeature = menu.add_feature("Kick", "toggle", globalFeatures.parentID)
+KickFeature.on = true
+
+menu.add_feature("Manually add scid", "action", globalFeatures.parentID, function(feat)
+        local r, s = input.get("Enter SCID to add", "", 64, 3)
+        if r == 1 then
+            return HANDLER_CONTINUE
+        end
+
+        if r == 2 then
+            return HANDLER_POP
+        end
+
+        AddScid(tonumber(s), "Manual add")
+        ui.notify_above_map("Added " .. s .. " to blacklist.", "Blacklist", 140)
+ end)
+
+RemoveBlacklistFeature = menu.add_feature("Remove blacklist", "parent", globalFeatures.parentID)
+
+menu.add_player_feature("Add to blacklist", "action", 0, function(feat, pid)
+        AddScidByPid(pid)
+        if EnabledBlacklistFeature.on then
+            if MarkAsModderFeature.on then
+                MarkPidAsModder(pid)
+            end
+            if KickFeature.on then
+                KickPid(pid)
+            end
+        end
+end)
+
+menu.add_player_feature("Remove from blacklist", "action", 0, function(feat, pid)
+        RemoveScidByPid(pid)
+        player.unset_player_as_modder(pid, mod_flag_4)
+end)
+
+event.add_event_listener("player_join", function(e)
+        if not EnabledBlacklistFeature.on then
+            return
+        end
+        local pid = e.player
+        local scid = player.get_player_scid(pid)
+        if ValidScid(scid) and scids[scid] then
+            local name = player.get_player_name(pid)
+         		ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "Moists Blacklist", 024)
+            if MarkAsModderFeature.on then
+                MarkPidAsModder(pid)
+            end
+            if KickFeature.on then
+                KickPid(pid)
+            end
+        end
+end)
+
+LoadBlacklist()
+
+function main()
+	
+	test = menu.add_feature("Modder Protex Detect", "parent", globalFeatures.protex, cb)	
+	-- Moists_Modder_Alert = menu.add_feature("Custom SEP", "toggle", test.id, sep)
+	-- Moists_Modder_Alert.on = false
+	infoip = menu.add_feature("Log IP INFO", "toggle", test.id)
+	infoip.on = false
+
+	neteventlogger = menu.add_feature("Netevent Hook", "toggle", test.id, function(feat)
+		netcheck()
+		netcheck1()
+		netcheck2()
+		netcheck3()
+		netcheck4()
+		netcheck5()
+		if feat.on then
+		netevent_timer.on = true
+		return HANDLER_CONTINUE
+		end
+		netevent_timer.on = false
+		return HANDLER_POP
+	end)		
+	neteventlogger.on = false
+	
+	netevent_timer = menu.add_feature("Weather Timer", "toggle", test.id, function(feat)
+
+if feat.on then
+	if count > 0 then
+	system.yield(30000)
+	count = 0
+	end
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+	end)		
+	netevent_timer.on = false
+	
+	logging = menu.add_feature("Logging Shit", "parent", test.id, cb)
+	
+	chat_log = menu.add_feature("Log in Game Chat", "toggle", logging.id, log_chat)
+	chat_log.on = true
+		
+	net_log = menu.add_feature("Log Netevents to File", "toggle", logging.id, log_net)
+	net_log.on = false
+	
+	scripteventblocker = menu.add_feature("Block Logged Script Events", "toggle", logging.id, nil)
+	scripteventblocker.on = false
+	
+	script_check_logger = menu.add_feature("Hook Script Events & Log to File", "toggle", logging.id, script_check)
+	
+end
+main()
 
 
 
