@@ -61,7 +61,7 @@ local function notify_above_map(msg)
 end
 
 local function moist_notify(msg, color)
-	if color == nil then color = preset_color end
+	color = color or preset_color
 
 	ui.notify_above_map(tostring("<font size='10'>~l~~h~" ..msg), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 end
@@ -123,7 +123,7 @@ setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "global_func.rapidfire_hotkey1"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "NotifyColorDefault"
-setting[toggle_setting[#toggle_setting]] = true
+setting[toggle_setting[#toggle_setting]] = 016
 toggle_setting[#toggle_setting+1] = "NotifyColor.on"
 setting[toggle_setting[#toggle_setting]] = true
 
@@ -202,7 +202,7 @@ local pos_bool
 local myplygrp
 local plygrp
 local Cur_Date_Time
-local preset_color
+local preset_color = 016
 local AnonymousBounty = true
 local trigger_time = nil
 local cleanup_done = true
@@ -413,20 +413,23 @@ globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.p
 globalFeatures.notify = menu.add_feature("Set Default Notify Color", "value_i", globalFeatures.moistopt, function(feat)
 	setting["NotifyColorDefault"] = feat.value_i
 	setting["NotifyColor.on"] = true
-	
+	moist_notify("Test Color:\n" ..feat.value_i, feat.value_i)
 	if feat.on then
 	preset_color = feat.value_i
-	moist_notify("Test Color:\n" ..feat.value_i, nil)
+	
 	return HANDLER_CONTINUE
 	end
 	setting["NotifyColorDefault"] = nil
 	setting["NotifyColor.on"] = false
 	return HANDLER_POP
 end)
-globalFeatures.notify.on = setting["NotifyColor.on"]
-globalFeatures.notify.value_i = setting["NotifyColorDefault"]
-globalFeatures.notify.max_i = #preset_color
+globalFeatures.notify.max_i = #colorindex
 globalFeatures.notify.min_i = 1
+globalFeatures.notify.value_i = setting["NotifyColorDefault"]
+globalFeatures.notify.on = setting["NotifyColor.on"]
+
+
+
 
 -- globalFeatures.moist_test = menu.add_feature("Test", "parent", 0)
 -- globalFeatures.moist_test.hidden = false
