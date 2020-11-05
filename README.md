@@ -2,8 +2,6 @@
 ### GTAV Script for 2Take1's lua Engine by -IN2-Moist-
 
 ## Installation
-- TODO
-# TODO: Update for Rewrite 2.0.1
 
 **Required Files & Folders**:
 
@@ -11,7 +9,12 @@ These must be inside the Folder :
 
 **-** scripts
 
-- `MoistScript2.0.1.lua`
+- `MoistScript2.0.1.lua` (Main Script)
+
+Optionally Include :
+
+- `autoexec.lua` (Script loader Autoload with this if you like)
+- `settings.lua` (**This is a Dependent file for Script loader to function)
 
 
 Inside the Scripts Folder you need another Folder called : 

@@ -426,14 +426,13 @@ playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.par
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
 -- globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
--- globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
+globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
 globalFeatures.cleanup = menu.add_feature("Clean Shit Up!", "parent", globalFeatures.parent).id
-globalFeatures.self_ped = menu.add_feature("Player Ped Functions", "parent", globalFeatures.self).id
-globalFeatures.self_wep = menu.add_feature("Player Ped Weapons", "parent", globalFeatures.self_ped).id
-globalFeatures.self_veh = menu.add_feature("Player Vehicle Functions", "parent", globalFeatures.self).id
+globalFeatures.self_ped = menu.add_feature("Ped Functions", "parent", globalFeatures.self).id
+globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
+globalFeatures.self_veh = menu.add_feature("Vehicle Functions", "parent", globalFeatures.self).id
 globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
-globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.notifyParent = menu.add_feature("Notify Custiomisation", "parent", globalFeatures.moistopt).id
@@ -475,6 +474,175 @@ playerfeatVars.f = menu.add_player_feature("Spawn Options", "parent", 0).id
 playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", playerfeatVars.f).id 
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
 globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
+
+
+
+--Orbital Room Protection
+menu.add_feature("Teleport to block location?", "action", globalFeatures.orbital, function(feat)
+	
+local pos = v3()
+	pos.x = 339.379
+	pos.y = 4836.629
+	pos.z = -58.999
+	heading = 136.27784729004
+	entity.set_entity_coords_no_offset(player.get_player_ped(player.player_id()), pos)
+	entity.set_entity_heading(player.get_player_ped(player.player_id()), heading)
+	return HANDLER_POP
+end)
+
+--block orbital doorway with wall
+local blockplaces03 = menu.add_feature("Block Orbital Entrance with Wall", "action", globalFeatures.orbital, function(feat)
+	
+local pos = v3()
+	
+local rot = v3()
+	
+local pos1 = v3()
+	
+local rot1 = v3()
+	pos.x = 335.719
+	pos.y = 4834.571
+	pos.z = -60.206
+	rot.x = 0.000
+	rot.y = -0.000
+	rot.z = 125.000
+	pos1.x = 335.71899414062
+	pos1.y = 4834.5708007812
+	pos1.z = -60.206390380859
+	rot1.x = 0.0
+	rot1.y = -0.0
+	rot1.z = 125.0
+	orb2block = object.create_object(561365155, pos1, true, false)
+	entity.set_entity_as_mission_entity(orb2block, true, false)
+	entity.set_entity_rotation(orb2block, rot1)
+	ui.add_blip_for_entity(orb2block)
+	return HANDLER_POP
+end)
+--Inactive Orbital Screens over blocked doorway
+--dmaged sub 3544215092
+local orbscreens = menu.add_feature("Orbital Inactive Screens over Block", "action", globalFeatures.orbital, function(feat)
+	
+local pos1 = v3()
+	
+local pos2 = v3()
+	
+local pos3 = v3()
+	
+local pos4 = v3()
+	
+local pos5 = v3()
+	
+local rot1 = v3()
+	
+local rot2 = v3()
+	
+local rot3 = v3()
+	
+local rot4 = v3()
+	
+local rot5 = v3()
+	pos1.x = 336.016083
+	pos1.y = 4834.12988
+	pos1.z = -58.0754662
+	rot1.x = -25.160162
+	rot1.y = 2.82980454e-06
+	rot1.z = 122.541527
+	pos2.x = 336.016083
+	pos2.y = 4834.12988
+	pos2.z = -58.9853134
+	rot2.x = -25.160162
+	rot2.y = 2.82980454e-06
+	rot2.z = 122.541527
+	pos3.x = 336.016083
+	pos3.y = 4834.12988
+	pos3.z = -59.5252228
+	rot3.x = -25.160162
+	rot3.y = 2.82980454e-06
+	rot3.z = 122.541527
+	pos4.x = 336.016083
+	pos4.y = 4834.12988
+	pos4.z = -57.5355568
+	rot4.x = -25.160162
+	rot4.y = 2.82980454e-06
+	rot4.z = 122.541527
+	pos5.x = 336.28463745117
+	pos5.y = 4833.7241210938
+	pos5.z = -80.422435760498
+	rot5.x = 25.0
+	rot5.y = 5.0000004768372
+	rot5.z = -94.999992370605
+	damagedsub = object.create_object(3544215092, pos5, true, false)
+	entity.set_entity_as_mission_entity(damagedsub, true, false)
+	
+
+
+	entity.set_entity_rotation(damagedsub, rot5)
+	ui.add_blip_for_entity(damagedsub)
+	screen1 = object.create_object(2895140982, pos1, true, false)
+	entity.set_entity_as_mission_entity(screen1, true, false)
+	
+
+
+	entity.set_entity_rotation(screen1, rot1)
+	ui.add_blip_for_entity(screen1)
+	screen2 = object.create_object(2895140982, pos2, true, false)
+	entity.set_entity_as_mission_entity(screen2, true, false)
+	entity.set_entity_rotation(screen2, rot2)
+
+
+	ui.add_blip_for_entity(screen2)
+	screen3 = object.create_object(-1399826314, pos3, true, true)
+	entity.set_entity_as_mission_entity(screen3, true, false)
+	entity.set_entity_rotation(screen3, rot3)
+
+	ui.add_blip_for_entity(screen3)
+	screen4 = object.create_object(2895140982, pos4, true, false)
+	entity.set_entity_as_mission_entity(screen4, true, false)
+	
+
+
+	entity.set_entity_rotation(screen4, rot4)
+	ui.add_blip_for_entity(screen4)
+	return HANDLER_POP
+end)
+
+	
+world_force = menu.add_feature("Apply force to world entities", "action", globalFeatures.lobby, function(feat)
+	get_everything()
+	system.wait(100)
+	local vel = v3()
+	vel.x = math.random(1000.0, 10000.0)
+	vel.y = math.random(1000.0, 10000.0)
+	vel.z = math.random(100.0, 750.0)
+
+	local myveh = player.get_player_vehicle(player.player_id())
+
+for i = 1, #allpeds do
+
+	if not ped.is_ped_a_player(allpeds[i]) then
+	entity.freeze_entity(allpeds[i], false)
+	
+	entity.apply_force_to_entity(allpeds[i], 5, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, true, true)
+
+	entity.set_entity_velocity(allpeds[i], vel)
+end
+end
+
+for y = 1, #allveh do
+	
+	if y ~= myveh then
+	entity.freeze_entity(allveh[y], false)
+	entity.set_entity_velocity(allveh[y], vel)
+end
+end
+
+for x = 1, #allobj do
+	entity.freeze_entity(allobj[x], false)
+	entity.set_entity_velocity(allobj[x], vel)
+end
+end)
+
+
 
 -- -- **BLACK LIST SHIT**
 joining_players_logger = event.add_event_listener("player_join", function(e)
@@ -1291,20 +1459,6 @@ global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggl
 end)
 global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
 
-
-
-
---Util functions
-local notif = ui.notify_above_map
-
-local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='10'>~l~~o~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 203)
-end
-
-local function moist_notify(msg, color)
-
-	ui.notify_above_map(tostring("<font size='10'>~l~~h~" ..msg), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
-end
 
 --Better Randomisation for Math functions
 math.randomseed(utils.time_ms())
@@ -2941,14 +3095,14 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						tags[#tags + 1] = "H"
 						if SessionHost ~= pid then
 							SessionHost = pid
-							moist_notify("The session host is now " .. (isYou and "you" or name) .. ".")
+							moist_notify("The session host is now: \n", (isYou and "you" or name))
 						end
 					end
 					if pid == script.get_host_of_this_script() then
 						tags[#tags + 1] = "S"
 						if ScriptHost ~= pid then
 							ScriptHost = pid
-							moist_notify("The script host is now " .. (isYou and "you" or name) .. ".")
+							moist_notify("The script host is now: \n ", (isYou and "you" or name))
 						end
 					end
 					
