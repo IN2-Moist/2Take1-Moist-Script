@@ -61,6 +61,7 @@ local function notify_above_map(msg)
 end
 
 local function moist_notify(msg, color)
+	if color == nil then color = preset_color end
 
 	ui.notify_above_map(tostring("<font size='10'>~l~~h~" ..msg), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 end
@@ -120,7 +121,11 @@ setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "global_func.veh_rapid_fire"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "global_func.rapidfire_hotkey1"
-
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "NotifyColorDefault"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "NotifyColor.on"
+setting[toggle_setting[#toggle_setting]] = true
 
 
 local save_ini_file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini", "a")
@@ -197,6 +202,7 @@ local pos_bool
 local myplygrp
 local plygrp
 local Cur_Date_Time
+local preset_color
 local AnonymousBounty = true
 local trigger_time = nil
 local cleanup_done = true
@@ -281,6 +287,7 @@ local veh_list = {{"buzzard", 0x2F03547B, nil, nil},{"savage", 0xFB133A17, nil, 
 local ped_wep = {{"unarmed", 0xA2719263},{"weapon_handcuffs", 0xD04C944D},{"stone_hatchet", 0x3813FC08},{"knife", 0x99B507EA},{"bat", 0x958A4A8F},{"weapon_machinepistol", 0xDB1AA450},	{"raypistol", 0xAF3696A1},{"stungun", 0x3656C8C1},{"raycarbine", 0x476BF15},{"combatmg_mk2", 0xDBBD7280},{"rpg", 0xB1CA77B1},{"railgun", 0x6D544C99},{"minigun", 0x42BF8A85},{"rayminigun", 0xB62D1F6},}
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Half Track","Force to Night Shark AAT","Force to Night Shark AAT","Force to APC Mission","Force to APC Mission","Force to MOC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission1","Force to Opressor Mission2","Force to Opressor Mission2"}
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
+local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
 
 --Event Data Arrays
 
@@ -403,6 +410,23 @@ globalFeatures.self_options = menu.add_feature("Player Options", "parent", globa
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
+globalFeatures.notify = menu.add_feature("Set Default Notify Color", "value_i", globalFeatures.moistopt, function(feat)
+	setting["NotifyColorDefault"] = feat.value_i
+	setting["NotifyColor.on"] = true
+	
+	if feat.on then
+	preset_color = feat.value_i
+	moist_notify("Test Color:\n" ..feat.value_i, nil)
+	return HANDLER_CONTINUE
+	end
+	setting["NotifyColorDefault"] = nil
+	setting["NotifyColor.on"] = false
+	return HANDLER_POP
+end)
+globalFeatures.notify.on = setting["NotifyColor.on"]
+globalFeatures.notify.value_i = setting["NotifyColorDefault"]
+globalFeatures.notify.max_i = #preset_color
+globalFeatures.notify.min_i = 1
 
 -- globalFeatures.moist_test = menu.add_feature("Test", "parent", 0)
 -- globalFeatures.moist_test.hidden = false
@@ -962,6 +986,72 @@ clear_world = function()
     cleanup_done = true
     return HANDLER_POP
 end
+	
+function move_delete_obj()
+	
+    local pos = v3()
+    pos.x = -5784.258301
+    pos.y = -8289.385742
+    pos.z = -136.411270
+	for i = 1, #allobj do
+			if not #allobj == nil or 0 then
+		network.request_control_of_entity(allobj[i])
+		entity.set_entity_coords_no_offset(allobj[i], pos)
+		entity.set_entity_as_no_longer_needed(allobj[i])
+		entity.delete_entity(allobj[i])
+		system.wait(25)
+			end
+	end
+	cleanup_done = true
+    return HANDLER_POP
+end
+
+function move_delete_peds()
+	
+    local pos = v3()
+    pos.x = -5784.258301
+    pos.y = -8289.385742
+    pos.z = -136.411270
+	
+    for i = 1, #allpeds do
+		if not #allpeds == nil or 0 then
+        if not ped.is_ped_a_player(allpeds[i]) then
+			network.request_control_of_entity(allpeds[i])
+            entity.set_entity_coords_no_offset(allpeds[i], pos)
+            entity.set_entity_as_no_longer_needed(allpeds[i])
+            entity.delete_entity(allpeds[i])
+			system.wait(25)
+		end
+		end
+
+	end
+	cleanup_done = true
+    return HANDLER_POP
+end
+
+function move_delete_veh()
+	
+    local pos = v3()
+    pos.x = -5784.258301
+    pos.y = -8289.385742
+    pos.z = -136.411270
+	
+    for i = 1, #allveh do
+		if not #allveh == nil or 0 then
+		network.request_control_of_entity(allveh[i])
+		entity.set_entity_coords_no_offset(allveh[i], pos)
+		entity.set_entity_as_no_longer_needed(allveh[i])
+		entity.delete_entity(allveh[i])
+		system.wait(25)
+	end
+	end
+    cleanup_done = true
+    return HANDLER_POP
+
+end
+
+
+
 
 force_delete2 = function()
     local pos = v3()
@@ -1022,6 +1112,7 @@ force_delete2 = function()
             end
         end
     end
+	cleanup_done = true
     return HANDLER_POP
 end
 
@@ -1157,7 +1248,7 @@ pedveh_cleanup = menu.add_player_feature("Delete Ped Spawns + Vehicles", "action
 end)
 
 --OSD Functions
-
+local entity_control
 
 OptionsVar.aim_control = menu.add_feature("Detonate Vehicle Aiming at(DPAD-R)", "toggle", globalFeatures.moistopt, function(feat)
 	setting["aimDetonate_control"] = true
