@@ -1645,28 +1645,30 @@ local cleanup_done = true
 clear_World_ent = menu.add_feature("Fetched World Entities Move & Delete", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
+	
+	moist_notify("Trying to Removal All Cunts in the World\n", "Cleanup Functions\nWill not run until Done!")
 	get_everything()
 	system.wait(500)
 	clear_world()
-	notif("Cleanup complete", "Clean the World", 6)
+	moist_notify("Cunt Removal End\n", "Your the only Cunt Remaining\nCleanups Enabled")
+
 end)
 
 Force_clear_all = menu.add_feature("Force Removal (Missed Anything?)", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
-	moist_notify("Cunts Cleared: \n", "Ped Cleanup Complete\n Other Cleanups Enabled Again" )
 
-	moist_notify("Force Removal of\nRemaining Cunts\n Run 1 Started: \n", "Other Cleanup Functions\nWill not run until Done!")
-	
+	moist_notify("Force Removal of Remaining Cunts Run 1 Started:", " ")
+	moist_notify("Cleanup Functions Will not Run until Done!")
 	
 	force_delete2()
 	
 	system.wait(250)
 	
-	moist_notify("Force Removal of\nRemaining Cunts\n Run 2 Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+	moist_notify("Force Removal of\nRemaining Cunts\n Run 2 Started:\n", "Please Be Patient!")
 	
 	force_delete2()
-	moist_notify("Cunt Force End\n", "Remiaining Cunts Should be gone\n Other Cleanups Enabled Again" )
+	moist_notify("Cunt Force End\n", "Remiaining Cunts Should be gone\nCleanups Enabled" )
 
 	
 end)
@@ -1676,14 +1678,14 @@ local clear_peds = menu.add_feature("Fetch all Peds Move & Delete", "action", gl
 	cleanup_done = false
 
 
-	moist_notify("Removal of Cunts Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+	moist_notify("Removal of Cunts Started:\n", "Cleanup Functions Will not run\nuntil Done!")
 
 
 	
 	get_allpeds()
 	system.wait(250)
 	move_delete_peds()
-	moist_notify("Cunts Cleared: \n", "Ped Cleanup Complete\n Other Cleanups Enabled Again")
+	moist_notify("Cunts Cleared: \n", "Ped Cleanup Complete\nCleanups Enabled Again")
 end)
 
 
@@ -1691,21 +1693,21 @@ local fetch_obj = menu.add_feature("Fetch all objects Move & Delete", "action", 
 	if not cleanup_done == true then return end
 	cleanup_done = false
 	
-	moist_notify("Cunt Cleaning Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+	moist_notify("Cunt Cleaning Started: \n", "Cleanup Functions\nWill not run until Done!")
 	get_allobj()
 	system.wait(250)
 	move_delete_obj()
-	moist_notify("Fucked off Cunt Objects: \n", "Cleanup Complete\nOther Cleanups Enabled Again")
+	moist_notify("Fucked off Cunt Objects: \n", "Cleanup Complete\nCleanups Enabled Again")
 end)
 
 local fetch_veh = menu.add_feature("Fetch all Vehicles Move & Delete", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
-	moist_notify("Cunt Cleanup Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+	moist_notify("Cunt Cleanup Started:\n", "Cleanup Functions\nWill not run until Done!")
 	get_allveh()
 	system.wait(250)
 	move_delete_veh()
-	moist_notify("Cunt Cleanup Done: \n", "Vehicle Cleanup complete\n Other Cleanups Enabled Again")
+	moist_notify("Cunt Cleanup Done: \n", "Vehicle Cleanup complete\nCleanups Enabled")
 end)
 
 function get_allpeds()
@@ -1914,8 +1916,14 @@ force_delete2 = function()
 end
 
 dump_onplayer = function(pid, pos)
-	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ Spectating Player\n~h~~w~3 Seconds\nUntil ~r~~h~Cunt Dump ~g~~h~Starts" , 204)
-	system.wait(3000)
+	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ Spectating Player\n~h~~w~3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
+	system.wait(1000)
+	moist_notify("Cunt Dump Starts in:", "2 Seconds")
+	system.wait(1000)
+	
+	moist_notify("Cunt Dump Starts in:", "1 Second")
+	system.wait(1000)
+	moist_notify("Cunt Dump Initiated", "\nSpectating now could crash you")
 	allpeds = ped.get_all_peds()
 		system.wait(200)
 	allveh = vehicle.get_all_vehicles()
@@ -1955,7 +1963,7 @@ dump_onplayer = function(pid, pos)
 			end
 			system.wait(400)
 		end
-		moist_notify("World Dumped On That Cunt!\n GG <font size='18'>~ex_r*~ ", 200)
+		moist_notify("World Dumped On That Cunt!\n GG <font size='18'>~ex_r*~ ", "\nCarefull Spectating")
 end
 
 
@@ -2725,7 +2733,7 @@ marker_pos_thread = function(context)
 		local size = v2()
 		local offset = v3()
 		local pid = context.pid
-		local coord = tracking.playerped_posi[pid+1]		
+		local coord = tracking.playerped_posi[pid+1]
 		local update = context.CTRL_ID
 		
 		if mkidbool[update] == true then
@@ -2741,13 +2749,11 @@ marker_pos_thread = function(context)
 		offset.y = 0.0
 		offset.z = context.z
 		end
-
-		graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
 			
 			system.wait(0)
 			
-		end
-		
+		end	
 end
 
 marker_pos1_thread = function(context)
@@ -3709,10 +3715,6 @@ for pid=0,31 do
 			marker_pos1(pid, i)
 			mkidbool[i] = false
 			changRGB.on = true
-			local i = #mkidbool + 1
-			mkidbool[i] = false
-			marker1(pid, i)
-			changRGBA.on = true
 			features["Mark_Control"].feat.max_i = #mkidbool
 		end), type = "action"}
 		
@@ -3723,10 +3725,6 @@ for pid=0,31 do
 			marker_pos(pid, i)
 			mkidbool[i] = false
 			changRGBA.on = true
-			local i = #mkidbool + 1
-			mkidbool[i] = false
-			marker(pid, i)
-			changeRGBA.on = true
 			features["Mark_Control"].feat.max_i = #mkidbool
 		end), type = "action"}
 
@@ -3736,10 +3734,6 @@ for pid=0,31 do
 			local i = #mkidbool + 1
 			marker_pos(pid, i)
 			mkidbool[i] = false
-			local i = #mkidbool + 1
-			mkidbool[i] = false
-			marker(pid, i)
-			change_RGBA.on = true
 			changRGB.on = true
 			features["Mark_Control"].feat.max_i = #mkidbool
 		end), type = "action"}
