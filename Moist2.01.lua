@@ -429,12 +429,14 @@ globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFe
 globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
 globalFeatures.cleanup = menu.add_feature("Clean Shit Up!", "parent", globalFeatures.parent).id
+globalFeatures.entity_removal = menu.add_feature("World Cleanup", "parent", globalFeatures.cleanup).id
 globalFeatures.self_ped = menu.add_feature("Ped Functions", "parent", globalFeatures.self).id
 globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
 globalFeatures.self_veh = menu.add_feature("Vehicle Functions", "parent", globalFeatures.self).id
 globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
 globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeatures.cleanup).id
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
+globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Custiomisation", "parent", globalFeatures.moistopt).id
 --TODO:Notify settings
 
@@ -1626,8 +1628,6 @@ end
 --World Cleanup stuff
 local cleanup_done = true
 
-globalFeatures.entity_removal = menu.add_feature("World Cleanup", "parent", globalFeatures.cleanup).id
-
 clear_World_ent = menu.add_feature("Fetched World Entities Move & Delete", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
@@ -1640,37 +1640,58 @@ end)
 Force_clear_all = menu.add_feature("Force Removal (Missed Anything?)", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
+	moist_notify("Cunts Cleared: \n", "Ped Cleanup Complete\n Other Cleanups Enabled Again" )
+
+	moist_notify("Force Removal of\nRemaining Cunts\n Run 1 Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+	
+	
 	force_delete2()
+	
 	system.wait(250)
+	
+	moist_notify("Force Removal of\nRemaining Cunts\n Run 2 Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+	
 	force_delete2()
+	moist_notify("Cunt Force End\n", "Remiaining Cunts Should be gone\n Other Cleanups Enabled Again" )
+
+	
 end)
 
 local clear_peds = menu.add_feature("Fetch all Peds Move & Delete", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
+
+
+	moist_notify("Removal of Cunts Started: \n", "Other Cleanup Functions\nWill not run until Done!")
+
+
+	
 	get_allpeds()
 	system.wait(250)
 	move_delete_peds()
-	notif("Ped Cleanup complete", "Clean the World", 6)
+	moist_notify("Cunts Cleared: \n", "Ped Cleanup Complete\n Other Cleanups Enabled Again")
 end)
 
 
 local fetch_obj = menu.add_feature("Fetch all objects Move & Delete", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
+	
+	moist_notify("Cunt Cleaning Started: \n", "Other Cleanup Functions\nWill not run until Done!")
 	get_allobj()
 	system.wait(250)
 	move_delete_obj()
-	notif("Object Cleanup complete", "Clean the World", 6)
+	moist_notify("Fucked off Cunt Objects: \n", "Cleanup Complete\nOther Cleanups Enabled Again")
 end)
 
 local fetch_veh = menu.add_feature("Fetch all Vehicles Move & Delete", "action", globalFeatures.entity_removal, function(feat)
 	if not cleanup_done == true then return end
 	cleanup_done = false
+	moist_notify("Cunt Cleanup Started: \n", "Other Cleanup Functions\nWill not run until Done!")
 	get_allveh()
 	system.wait(250)
 	move_delete_veh()
-	notif("Vehicle Cleanup complete", "Clean the World", 6)
+	moist_notify("Cunt Cleanup Done: \n", "Vehicle Cleanup complete\n Other Cleanups Enabled Again")
 end)
 
 function get_allpeds()
@@ -2361,9 +2382,713 @@ end
 give_weapon()
 
 
+--TODO: Markers	
+-- **MARKERS**
+pid_pos = {}
+thread = {}
+feat = {}
+del_mk = {}
+del_mk_done = false
+BobUPnDown = true
+ROTMRK = true
+mkidbool = {}
+local size_marker = 1.0
+local marker_type = 0
+local mk_id
+local offsetz_marker = 1.5
+
+function pos_pid(pid)
+		
+		pid_pos[pid+1] = player.get_player_coords(pid)
+end
+
+local m_id	
+m_id = 0
+
+marker_thread = function(context)
+		while true do
+			local pos = v2()
+			local size = v2()
+			local playerID = pid
+
+			graphics.draw_marker(0, context.coord, v3(), v3(), v3(1.5), 255, 0, 0, 255, BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			system.wait(0)
+		end
+end
+
+
+local RGB = {255,0}
+local changeR = 255
+local changeG = 0
+local changeB = 0
+local changeA = 255
+local RGBA_R = 255
+local RGBA_G = 255
+local RGBA_B = 255
+local RGBA_A = 255
+
+changRGB = menu.add_feature("fading red white Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+	
+	if feat.on then
+	RGBA_G = RGB[1]
+	RGBA_B = RGB[1]
+	system.wait(100)
+	RGBA_A = 180
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 25
+	system.wait(25)
+	RGBA_A = 0
+	RGBA_G = RGB[2]
+	RGBA_B = RGB[2]
+	system.wait(25)
+	RGBA_A = 25
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 180
+	system.wait(25)
+	RGBA_A = 255
+	system.wait(100)
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+changRGB.on = false
+
+
+chang_RGBA = menu.add_feature("flash red white Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+	
+	if feat.on then
+	RGBA_G = RGB[1]
+	RGBA_B = RGB[1]
+	system.wait(500)
+	RGBA_G = RGB[2]
+	RGBA_B = RGB[2]
+	system.wait(500)
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+chang_RGBA.on = false
+
+changRGBA = menu.add_feature("multi fading colors Marker RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+	if feat.on then
+	changeR = RGB[1]
+	changeG = RGB[2]
+	changeB = RGB[2]
+	system.wait(100)
+	changeA = 180
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 25
+	system.wait(25)
+	changeA = 0
+	changeR = RGB[1]
+	changeG = RGB[1]
+	changeB = RGB[2]
+	system.wait(5)
+	changeA = 25
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 180
+	system.wait(25)
+	changeA = 255
+	system.wait(100)
+	changeA = 180
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 25
+	system.wait(25)
+	changeA = 0
+	changeR = RGB[2]
+	changeG = RGB[1]
+	changeB = RGB[2]
+	system.wait(5)
+	changeA = 25
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 180
+	system.wait(25)
+	changeA = 255
+	system.wait(100)
+	changeA = 180
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 25
+	system.wait(25)
+	changeA = 0
+	changeR = RGB[2]
+	changeG = RGB[2]
+	changeB = RGB[1]
+	
+	system.wait(5)
+	changeA = 25
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 180
+	system.wait(25)
+	changeA = 255
+	system.wait(100)
+	changeA = 180
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 25
+	system.wait(25)
+	changeA = 0
+	changeR = RGB[1]
+	changeG = RGB[1]
+	changeB = RGB[1]
+	system.wait(5)
+	changeA = 25
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 180
+	system.wait(25)
+	changeA = 255
+	
+	
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+changRGBA.on = false
+
+changeRGB = menu.add_feature("Above Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+	
+	if feat.on then
+	changeG = RGB[1]
+	changeB = RGB[1]
+	system.wait(100)
+	changeA = 180
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 25
+	system.wait(25)
+	changeA = 0
+	changeG = RGB[2]
+	changeB = RGB[2]
+	system.wait(25)
+	changeA = 25
+	system.wait(75)
+	changeA = 100
+	system.wait(75)
+	changeA = 180
+	system.wait(25)
+	changeA = 255
+	system.wait(100)
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+changeRGB.on = false
+
+
+change_RGBA = menu.add_feature("Marker RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+	
+	if feat.on then
+	changeG = RGB[1]
+	changeB = RGB[1]
+	system.wait(500)
+	changeG = RGB[2]
+	changeB = RGB[2]
+	system.wait(500)
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+change_RGBA.on = false
+
+
+changeRGBA = menu.add_feature("Ground Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+	if feat.on then
+	RGBA_R = RGB[1]
+	RGBA_G = RGB[2]
+	RGBA_B = RGB[2]
+	system.wait(100)
+	RGBA_A = 180
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 25
+	system.wait(25)
+	RGBA_A = 0
+	RGBA_R = RGB[1]
+	RGBA_G = RGB[1]
+	RGBA_B = RGB[2]
+	system.wait(5)
+	RGBA_A = 25
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 180
+	system.wait(25)
+	RGBA_A = 255
+	system.wait(100)
+	RGBA_A = 180
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 25
+	system.wait(25)
+	RGBA_A = 0
+	RGBA_R = RGB[2]
+	RGBA_G = RGB[1]
+	RGBA_B = RGB[2]
+	system.wait(5)
+	RGBA_A = 25
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 180
+	system.wait(25)
+	RGBA_A = 255
+	system.wait(100)
+	RGBA_A = 180
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 25
+	system.wait(25)
+	RGBA_A = 0
+	RGBA_R = RGB[2]
+	RGBA_G = RGB[2]
+	RGBA_B = RGB[1]
+	
+	system.wait(5)
+	RGBA_A = 25
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 180
+	system.wait(25)
+	RGBA_A = 255
+	system.wait(100)
+	RGBA_A = 180
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 25
+	system.wait(25)
+	RGBA_A = 0
+	RGBA_R = RGB[1]
+	RGBA_G = RGB[1]
+	RGBA_B = RGB[1]
+	system.wait(5)
+	RGBA_A = 25
+	system.wait(75)
+	RGBA_A = 100
+	system.wait(75)
+	RGBA_A = 180
+	system.wait(25)
+	RGBA_A = 255
+	
+	
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+changeRGBA.on = false
+
+size_marker = 1.0
+marker_type = 0
+local mk_id
+offsetz_marker = 1.5
+		
+marker_pos_thread = function(context)
+		while true do
+		local pos = v2()
+		local size = v2()
+		local offset = v3()
+		local pid = context.pid
+		local coord = tracking.playerped_posi[pid+1]		
+		local update = context.CTRL_ID
+		local x = context.x
+		size = context.size
+		x = context.x
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = context.z
+		if mkidbool[update] == true then
+		x = marker_type
+		size = size_marker
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = offsetz_marker
+		
+
+	end
+		end
+			graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			
+			system.wait(0)
+
+		
+end
+
+marker_pos1_thread = function(context)
+		while true do
+		local pos = v2()
+		local size = v2()
+		local offset = v3()
+		local pid = context.pid
+		local coord = tracking.playerped_posi[pid+1]		
+		local update = context.CTRL_ID
+		
+		if mkidbool[update] == true then
+		x = marker_type
+		size = size_marker
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = offsetz_marker
+		else
+		size = context.size
+		x = context.x
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = context.z
+		end
+
+		graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			
+			system.wait(0)
+			
+		end
+end
+
+RGB_A_A = 255
+RGB_A_R = 255
+RGB_A_G = 255
+RGB_A_B = 255
 
 
 
+marker1_pos_thread = function(context)
+		while true do
+		pos = v2()
+		size = v2()
+		offset = v3()
+		pid = context.pid
+		coord = tracking.playerped_posi[pid+1]		
+		update = context.CTRL_ID
+		
+		if mkidbool[update] == true then
+		x = marker_type
+		size = size_marker
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = offsetz_marker
+		else
+		size = context.size
+		x = context.x
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = context.z
+		end
+			graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), RGB_A_R, RGB_A_G, RGB_A_B, RGB_A_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			
+			system.wait(0)
+		end
+end
+runs = 0
+
+local rgb_rand = menu.add_feature("rand rgb on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
+	if feat.on then		
+
+	RGB_A_G = math.random(0, 255)
+
+	system.wait(feat.value_i)
+
+RGB_A_R = math.random(0, 255)
+
+system.wait(feat.value_i)
+
+
+RGB_A_B = math.random(0, 255)
+
+system.wait(feat.value_i)
+
+return HANDLER_CONTINUE
+	end
+end)
+rgb_rand.on = false
+rgb_rand.max_i = 500
+rgb_rand.min_i = 1
+rgb_rand.value_i = 5
+
+local rgb_rand1 = menu.add_feature("rand rgb on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
+	if feat.on then		
+
+	RGB_A_A = math.random(0, 255)
+
+	system.wait(feat.value_i / 2)
+
+	RGB_A_G = math.random(0, 255)
+
+	system.wait(feat.value_i)
+
+RGB_A_R = math.random(0, 255)
+
+system.wait(feat.value_i)
+
+
+RGB_A_B = math.random(0, 255)
+
+system.wait(feat.value_i)
+
+return HANDLER_CONTINUE
+	end
+end)
+rgb_rand1.on = false
+rgb_rand1.max_i = 500
+rgb_rand1.min_i = 1
+rgb_rand1.value_i = 15
+
+
+marker1_rgb_thread = function(context)
+	while true do
+	local RGB_A = {255,0}
+
+	RGB_A_R = RGB_A[1]
+	RGB_A_G = RGB_A[2]
+	RGB_A_B = RGB_A[2]
+	system.wait(100)
+	RGB_A_A = 180
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 25
+	system.wait(25)
+	RGB_A_A = 0
+	RGB_A_R = RGB_A[1]
+	RGB_A_G = RGB_A[1]
+	RGB_A_B = RGB_A[2]
+	system.wait(5)
+	RGB_A_A = 25
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 180
+	system.wait(25)
+	RGB_A_A = 255
+	system.wait(100)
+	RGB_A_A = 180
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 25
+	system.wait(25)
+	RGB_A_A = 0
+	RGB_A_R = RGB_A[2]
+	RGB_A_G = RGB_A[1]
+	RGB_A_B = RGB_A[2]
+	system.wait(5)
+	RGB_A_A = 25
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 180
+	system.wait(25)
+	RGB_A_A = 255
+	system.wait(100)
+	RGB_A_A = 180
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 25
+	system.wait(25)
+	RGB_A_A = 0
+	RGB_A_R = RGB_A[2]
+	RGB_A_G = RGB_A[2]
+	RGB_A_B = RGB_A[1]
+	system.wait(5)
+	RGB_A_A = 25
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 180
+	system.wait(25)
+	RGB_A_A = 255
+	system.wait(100)
+	RGB_A_A = 180
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 25
+	system.wait(25)
+	RGB_A_A = 0
+	RGB_A_R = RGB_A[1]
+	RGB_A_G = RGB_A[1]
+	RGB_A_B = RGB_A[1]
+	system.wait(5)
+	RGB_A_A = 25
+	system.wait(75)
+	RGB_A_A = 100
+	system.wait(75)
+	RGB_A_A = 180
+	system.wait(25)
+	RGB_A_A = 255
+	
+return HANDLER_CONTINUE
+			end
+			
+end
+
+local marker1_pos1_thread = function(context)
+	
+		local pos = v2()
+		local size = v2()
+		local offset = v3()
+		local pid = context.pid
+		local coord = tracking.playerped_posi[pid+1]		
+		local update = context.CTRL_ID
+		local size = context.size
+		local x = context.x
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = context.z
+		
+		while true do
+	
+		if mkidbool[update] == true then
+		x = marker_type
+		size = size_marker
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = offsetz_marker
+		else
+		size = context.size
+		x = context.x
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = context.z
+
+		graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			
+			system.wait(0)
+			
+		end
+		return
+end
+end
+	
+local delete_marker = function(feat, data)
+		menu.delete_thread(feat.data.thread)
+		menu.create_thread(function(id) menu.delete_feature(id) end, feat.id)
+end
+	
+	
+	
+local function marker1(pid, controlID)
+		if del_mk[pid+1] == nil then
+		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
+		end
+		local player_id = pid
+		local ctrlID = controlID
+		size = size_marker
+		offset = offsetz_marker
+		mk_id = marker_type
+		local name =  player.get_player_name(pid)
+		local coord = tracking.playerped_posi[pid+1]
+		local y = #thread + 1
+		thread[y] = menu.create_thread(marker1_pos1_thread, { pid = player_id, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
+
+		local i = #feat + 1
+		feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action",  del_mk[pid+1].id, delete_marker)
+		feat[i].data = {thread = thread[y]}
+end
+
+
+	
+local function marker_pos1(pid, controlID)
+		if del_mk[pid+1] == nil then
+		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
+		end
+		local player_id = pid
+		local ctrlID = controlID
+		size = size_marker
+		offset = offsetz_marker 
+		mk_id = marker_type
+		rgb_rand.on = true
+		local name =  player.get_player_name(pid)
+		local coord = tracking.playerped_posi[pid+1]
+		local y = #thread + 1
+		thread[y] = menu.create_thread(marker1_pos_thread, { pid = player_id, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
+		local i = #feat + 1
+		feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action",  del_mk[pid+1].id, delete_marker)
+		feat[i].data = {thread = thread[y]}
+		
+end
+
+
+local function marker(pid, controlID)
+		local pid1 = pid + 1
+		if del_mk[pid+1] == nil then
+		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
+		end
+		local player_id = pid
+		local ctrlID = controlID
+		size = size_marker
+		offset = offsetz_marker
+		marker_type = mk_id
+		local name =  player.get_player_name(pid)
+		local coord = tracking.playerped_posi[pid+1]
+		local y = #thread + 1
+		thread[y] = menu.create_thread(marker_pos1_thread, { pid = player_id, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
+
+		local i = #feat + 1
+		feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action", del_mk[pid+1].id, delete_marker)
+		feat[i].data = {thread = thread[y]}
+
+end
+
+local function marker_pos(pid, controlID)
+		if del_mk[pid+1] == nil then
+		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
+		end
+		local player_id = pid
+		local ctrlID = controlID
+		size = size_marker
+		offset = offsetz_marker
+		marker_type = mk_id
+		local name =  player.get_player_name(pid)
+		local coord = tracking.playerped_posi[pid+1]
+		local y = #thread + 1
+		thread[y] = menu.create_thread(marker_pos_thread, { pid = player_id, CTRL_ID = ctrlID, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
+		local i = #feat + 1
+		feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action", del_mk[pid+1].id, delete_marker)
+		feat[i].data = {thread = thread[y]}
+end
+
+--TODO: Marks on all
+Markers_forall = menu.add_feature("Add Markers for all Size", "action", globalFeatures.lobby, function(feat)
+			
+			for i = 0, 32 do
+			if player.get_player_ped(i) ~= 0 then
+			if i ~= player.player_id() then
+			mk_id = 0
+			offsetz_marker = 1.5
+			size_marker = 1.0
+			local y = #mkidbool + 1
+			
+			marker_pos(i, y)
+			-- marker(pid)
+			change_RGBA.on = true
+			changRGB.on = true
+			end
+			end
+			end
+end)
 
 
 
@@ -2716,6 +3441,201 @@ for pid=0,31 do
 	
 	featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id)
 	featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)	
+	
+	--TODO: Highight Controls
+	featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function()
+		marker_type = 0
+		PlyTracker.track_all.on = true
+	features["Mark_Control"].feat.max_i = #mkidbool
+	end)
+	featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
+			
+
+
+	features["Mark_Control"] = {feat = menu.add_feature("Created Marker ID  to Control", "value_i", featureVars.ch.id, function(feat)
+		features["Mark_Control"].feat.max_i = #mkidbool
+		for i = 1, #mkidbool do
+			mkidbool[i] = false
+			end
+		if feat.on then
+			local i = feat.value_i
+		mkidbool[i] = true
+				return HANDLER_CONTINUE
+			end
+		for i = 1, #mkidbool do
+			mkidbool[i] = false
+			end
+		return HANDLER_POP
+
+	end), type = "value_i"}
+	features["Mark_Control"].feat.max_i = #mkidbool
+	features["Mark_Control"].feat.min_i = 1
+	
+
+	features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "action", featureVars.h.id, function(feat)
+		changeRGBA.on = false
+		change_RGBA.on = false
+		changeRGB.on = false
+		changRGBA.on = false	
+		chang_RGBA.on = false	
+		changRGB.on = false	
+			
+		end), type = "action"}
+		
+	features["cprecision"] = {feat = menu.add_feature("Precision Multipliers", "toggle", featureVars.ch.id, function(feat)
+		if feat.on then
+		features["MarkSize"].feat.value_i = 120
+		size_marker = tonumber(120 / 100)
+		features["MarkZoff"].feat.value_i = 150
+		offsetz_marker = tonumber(150 / 100)
+		return HANDLER_POP
+		end
+		if feat.on then
+		return HANDLER_CONTINUE
+		end
+		features["MarkSize"].feat.value_i = 2
+		size_marker = tonumber(3 / 2)
+		features["MarkZoff"].feat.value_i = 1
+		offsetz_marker = 1.5
+		return HANDLER_POP
+	end), type = "toggle"}
+
+	features["MarkerID"] = {feat = menu.add_feature("Change Type of Marker", "action_value_i", featureVars.ch.id, function(feat)
+		marker_type = tonumber(feat.value_i)
+		mk_id = tonumber(feat.value_i)
+		if feat.value_i == 1 then
+		features["MarkZoff"].feat.value_i = -4
+		offsetz_marker = tonumber(-4 / 2)
+		if features["cprecision"].feat.on then
+		features["MarkZoff"].feat.value_i = -400
+		offsetz_marker = tonumber(-400 / 100)
+		end
+		end
+			
+		
+	end), type = "action_value_i"}
+	features["MarkerID"].feat.max_i = 44
+	features["MarkerID"].feat.min_i = 0
+	features["MarkerID"].feat.value_i = 0
+	
+	features["MarkSize"] = {feat = menu.add_feature("Marker Size Muliplier", "action_value_i", featureVars.ch.id, function(feat)
+	if features["cprecision"].feat.on then
+	features["MarkSize"].feat.value_i = 150
+	size_marker = tonumber(feat.value_i / 100)
+		else
+	size_marker = tonumber(feat.value_i / 2)
+	end
+	end), type = "action_value_i"}
+	features["MarkSize"].feat.max_i = 30000
+	features["MarkSize"].feat.min_i = 1
+	features["MarkSize"].feat.value_i = 2
+	
+	features["MarkZoff"] = {feat = menu.add_feature("Marker Z Offset Multiplier", "action_value_i", featureVars.ch.id, function(feat)
+	if features["cprecision"].feat.on then
+	offsetz_marker = tonumber(feat.value_i / 100)
+	else
+	offsetz_marker = tonumber(feat.value_i / 2)
+	end	
+	end), type = "action_value_i"}
+	features["MarkZoff"].feat.max_i = 30000
+	features["MarkZoff"].feat.min_i = -30000
+	features["MarkZoff"].feat.value_i = 1
+	
+	features["BOB_Marker"] = {feat = menu.add_feature("Bob Marker Up & Down", "toggle", featureVars.ch.id, function(feat)
+		BobUPnDown = true
+		if feat.on then
+		return HANDLER_CONTINUE
+		end BobUPnDown = false
+		return HANDLER_POP
+	end)}
+	
+	features["ROT_Marker"] = {feat = menu.add_feature("Rotate Marker", "toggle", featureVars.ch.id, function(feat) 
+		ROTMRK = true
+		if feat.on then
+		return HANDLER_CONTINUE
+		end ROTMRK = false
+		return HANDLER_POP
+	end)}
+	
+
+	features["Add_Mark1"] = {feat = menu.add_feature("WhiteMarker Around Player", "action", featureVars.h.id, function(feat)
+			local pped = player.get_player_ped(pid)
+			ui.add_blip_for_entity(pped)
+			mk_id = 1
+			offsetz_marker = -2.0
+			size_marker = 1.5
+			local i = #mkidbool + 1
+			mkidbool[i] = false
+			marker(pid, i)
+			features["Mark_Control"].feat.max_i = #mkidbool
+			
+	end), type = "action"}
+
+	features["Add_Mark2"] = {feat = menu.add_feature("Red Marker Above Player POS", "action", featureVars.h.id, function(feat)
+			local pped = player.get_player_ped(pid)
+			ui.add_blip_for_entity(pped)
+			mk_id = 0
+			offsetz_marker = 1.5
+			size_marker = 1.0
+			local i = #mkidbool + 1
+			mkidbool[i] = false
+			marker_pos(pid, i)
+			features["Mark_Control"].feat.max_i = #mkidbool
+			
+	end), type = "action"}
+	
+	features["Add_Mark3"] = {feat = menu.add_feature("Highlight Player RGB Markers v1", "action", featureVars.ch.id, function(feat)
+			local pped = player.get_player_ped(pid)
+			ui.add_blip_for_entity(pped)
+			local i = #mkidbool + 1
+			marker_pos(pid, i)
+			mkidbool[i] = false
+			change_RGBA.on = true
+
+			features["Mark_Control"].feat.max_i = #mkidbool
+		end), type = "action"}
+		
+	features["Add_Mark4"] = {feat = menu.add_feature("RGB Random Color Markers", "action", featureVars.ch.id, function(feat)
+			local pped = player.get_player_ped(pid)
+			ui.add_blip_for_entity(pped)
+			local i = #mkidbool + 1
+			marker_pos1(pid, i)
+			mkidbool[i] = false
+			changRGB.on = true
+			local i = #mkidbool + 1
+			mkidbool[i] = false
+			marker1(pid, i)
+			changRGBA.on = true
+			features["Mark_Control"].feat.max_i = #mkidbool
+		end), type = "action"}
+		
+	features["Add_Mark5"] = {feat = menu.add_feature("(Multicolor) Markers v3", "action", featureVars.ch.id, function(feat)
+			local pped = player.get_player_ped(pid)
+			ui.add_blip_for_entity(pped)
+			local i = #mkidbool + 1
+			marker_pos(pid, i)
+			mkidbool[i] = false
+			changRGBA.on = true
+			local i = #mkidbool + 1
+			mkidbool[i] = false
+			marker(pid, i)
+			changeRGBA.on = true
+			features["Mark_Control"].feat.max_i = #mkidbool
+		end), type = "action"}
+
+	features["Add_Mark6"] = {feat = menu.add_feature("Above:FlashRedWhiteGround:Fading", "action", featureVars.ch.id, function(feat)
+			local pped = player.get_player_ped(pid)
+			ui.add_blip_for_entity(pped)
+			local i = #mkidbool + 1
+			marker_pos(pid, i)
+			mkidbool[i] = false
+			local i = #mkidbool + 1
+			mkidbool[i] = false
+			marker(pid, i)
+			change_RGBA.on = true
+			changRGB.on = true
+			features["Mark_Control"].feat.max_i = #mkidbool
+		end), type = "action"}
 
 		
 	features["ceo money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.f.id, function(feat)
