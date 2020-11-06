@@ -61,7 +61,7 @@ TODO -
 ##### Selected Weapon / Vehicle
 
 ##### Ped + Weapon Functions
-`
+
 - Send Attacker via Parachute
 
 `Spawns in the air above Player Parachutes down
@@ -73,7 +73,7 @@ to kill the player with selected weapon`
 
 - Spawn Support Ped
 
-`Can sometimes attack player, but should attack enemy players/peds
+`Can sometimes attack player, but should attack enemy players/peds`
 
 #### Ped + Selected Vehicle Options
 
