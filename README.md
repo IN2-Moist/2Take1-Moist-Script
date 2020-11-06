@@ -37,11 +37,6 @@ TODO -
 ##### Clean Shit Up!
 ##### Options
 
-```
-
-```
-
-
 ## Local Script Features
 
 ### Moists Script
@@ -77,13 +72,14 @@ TODO -
  (Can sometimes attack player but should attack enemy players/peds)
 
 #### Ped + Selected Vehicle Options
-`
+
 - `Spawn as Escort & Task`
 (Spawns Ped in Selected Vehicle Behind Player & follows, will attack player sometimes if they fire weapons.  Certain Vehicles have Multiple Peds)
 
 - `Spawn as Attacker & Task`
 (Spawns Ped in Selected Vehicle Behind Player & Attacks, will follow player until they are dead Ped's may attack each other if too many are spawned and they shoot in each other direction)
-`
+
+
 
 ### Online Session:
 ##### Online Protection
@@ -97,11 +93,11 @@ TODO -
 
 #### Ped Functions 
 ##### - Player Weapons
-`
+
 - `Small list of weapons`
-`
+
 ##### - Health Modifiers
-`
+
 - `Set Max Health 0 (UnDead OTR)`
 - `Set Health to 500`
 - `Set Health to 10000`
@@ -110,22 +106,24 @@ TODO -
 - `Set Health to 10000`
 - `Set Health to 90000`
 - `Set Health to 328 (lvl 120)`
-`
+
+
 
 ##### Ped Functions
-`
+
 - `Put Handcuffs on Self`
 - `Set Handcuffs Locked Position`
 - `White Team parachute Pack`
-`
+
 
 ##### Player Options
-`
+
 
 - `Force White parachute On`
 - `Force White BPH On`
 - `Mk2 Rapid Fire Hot key`
-`
+
+
 
 ### Clean Shit Up!
 
