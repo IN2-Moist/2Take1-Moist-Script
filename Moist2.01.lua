@@ -1916,12 +1916,14 @@ force_delete2 = function()
 end
 
 dump_onplayer = function(pid, pos)
-	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ Spectating Player\n~h~~w~3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
+	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ \nSpectating Player", "!")
+	moist_notify("~h~~w~ 3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
+	
 	system.wait(1000)
-	moist_notify("Cunt Dump Starts in:", "2 Seconds")
+	moist_notify("Cunt Dump Starts in: ", "~y~~h~2 ~r~Seconds")
 	system.wait(1000)
 	
-	moist_notify("Cunt Dump Starts in:", "1 Second")
+	moist_notify("Cunt Dump Starts in: ", "~y~~h~1 ~r~Second")
 	system.wait(1000)
 	moist_notify("Cunt Dump Initiated", "\nSpectating now could crash you")
 	allpeds = ped.get_all_peds()
