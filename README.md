@@ -45,10 +45,9 @@ TODO -
 
 
 #### Spawn Options 
-#####  Ped Spawns
 
-- Delete Ped Spawns
-- Delete Ped Spawns + Vehicles
+`*** This Section is empty until you turn on the Show & Load SpawnOptions
+in the Main Options Section under Local Script Features! ***`
 
 
 ##### Ped Spawns
@@ -157,6 +156,15 @@ are spawned and they shoot in each others direction`
 
 - `Fetch all Vehicles Move & Delete`
 (Slowly Removes all Vehicles in Controllable distance Also you if your inside one!)
+
+
+- Delete Ped Spawns
+
+`Remove Just Peds Spawned via the OnlinePlayer Features`
+
+- Delete Ped Spawns + Vehicles
+
+`Remove Both Spawned Ped & Vehicles Created via the OnlinePlayer Features`
 
 
 
