@@ -427,7 +427,9 @@ globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id
 	globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", Moist.id).id
 end
 
-playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
+playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent, function()
+	friendscheck()
+end)
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
 -- globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
@@ -476,21 +478,34 @@ menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
 	moist_notify("Settings: ",  "saved!")
 end) 
 	
---TODO: Online Functions
+--TODO Online Functions
 --online Menu Functions
 
-local spawn_parent = menu.add_player_feature("Spawn Options", "parent", 0)
-	
-function spawnoptions_on()
-local spawnoptions_loaded = false	
-b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id, function(feat)
-	if not spawnoptions_loaded then
-	load_spawn_options()
-	spawnoptions_loaded = true
-	end
+
+
+
+spawnoptions_loaded = false
+--TODO: Show Spawn option
+Show_Spawn_Options = menu.add_feature("Show & Load SpawnOptions", "toggle", globalFeatures.moistopt, function(feat)
+	if not feat.on then
+	setting["showSpawns"] = false
+	spawnoptions_loaded = false
 	return HANDLER_POP
+	end	
+		setting["showSpawns"] = true
+	if not spawnoptions_loaded then
+	spawn_parent = menu.add_player_feature("Spawn Options", "parent", 0)
+	playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id).id
+		load_spawn_options()
+	spawnoptions_loaded = true
+		return HANDLER_CONTINUE
+		end
+
+
 end)
-end
+Show_Spawn_Options.on = setting["showSpawns"]
+
+	
 
 
 
@@ -2110,7 +2125,6 @@ end
 
 --Spawn Cleanups
 
-
 ped_cleanup = menu.add_feature("Delete Ped Spawns", "action", globalFeatures.cleanup, function(feat)
 	
 	if #escort == 0 or nil then return end
@@ -3292,7 +3306,7 @@ end)
 function load_spawn_options()
 	
 for i = 1, #escort_ped do 
- playerFeat1[i] = menu.add_player_feature("Ped: " .. escort_ped[i][1], "parent", b.id, function() 
+ playerFeat1[i] = menu.add_player_feature("Ped: " .. escort_ped[i][1], "parent", playerfeatVars.b, function() 
  model = escort_ped[i][2] 
  end).id
 
@@ -3544,28 +3558,6 @@ end)
 end
 
 end
-
-
---TODO: Show Spawn option
-spawnoptions_loaded = false
-Show_Spawn_Options = menu.add_feature("Show & Load SpawnOptions", "toggle", globalFeatures.moistopt, function(feat)
-	if not feat.on then
-		spawnoptions_loaded = false
-				return HANDLER_POP
-			end
-			if not spawnoptions_loaded then
-	
-b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id)
-
-	load_spawn_options()
-	spawnoptions_loaded = true
-
-	end
-	
-	return HANDLER_CONTINUE
-
-end)
-Show_Spawn_Options.on = setting["showSpawns"]
 
 menu.add_feature("Any Friends Online?", "action", globalFeatures.parent, function(feat)
     for i=0,network.get_friend_count()-1 do
@@ -4379,4 +4371,3 @@ end)
 loopFeat.hidden = true
 loopFeat.threaded = false
 loopFeat.on = true
-friendscheck()
