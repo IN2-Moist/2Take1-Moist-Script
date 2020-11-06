@@ -82,6 +82,8 @@ toggle_setting[#toggle_setting+1] = "global_func.veh_rapid_fire"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "global_func.rapidfire_hotkey1"
 setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "showSpawns"
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "NotifyColorDefault"
 setting[toggle_setting[#toggle_setting]] = 001
 toggle_setting[#toggle_setting+1] = "NotifyVarDefault"
@@ -474,12 +476,23 @@ menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
 	moist_notify("Settings: ",  "saved!")
 end) 
 	
-
+--TODO: Online Functions
 --online Menu Functions
 
-playerfeatVars.f = menu.add_player_feature("Spawn Options", "parent", 0).id
-playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", playerfeatVars.f).id 
-playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
+local spawn_parent = menu.add_player_feature("Spawn Options", "parent", 0)
+	
+function spawnoptions_on()
+local spawnoptions_loaded = false	
+b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id, function(feat)
+	if not spawnoptions_loaded then
+	load_spawn_options()
+	spawnoptions_loaded = true
+	end
+	return HANDLER_POP
+end)
+end
+
+
 
 local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, function(feat, pid)
 	local ip = player.get_player_ip(pid)
@@ -488,6 +501,8 @@ local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, fun
 	
 end)
 ip_clip.threaded = false
+
+playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
 
 local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", 0, function(feat, pid)
 	while feat.on do
@@ -519,7 +534,7 @@ friends_donotmod.on = false
 
 
 
---Orbital Room Protection
+--TODO:Orbital Room Protection
 menu.add_feature("Teleport to block location?", "action", globalFeatures.orbital, function(feat)
 	
 local pos = v3()
@@ -648,44 +663,7 @@ local rot5 = v3()
 	return HANDLER_POP
 end)
 
-	
-world_force = menu.add_feature("Apply force to world entities", "action", globalFeatures.lobby, function(feat)
-	get_everything()
-	system.wait(100)
-	local vel = v3()
-	vel.x = math.random(1000.0, 10000.0)
-	vel.y = math.random(1000.0, 10000.0)
-	vel.z = math.random(100.0, 750.0)
-
-	local myveh = player.get_player_vehicle(player.player_id())
-
-for i = 1, #allpeds do
-
-	if not ped.is_ped_a_player(allpeds[i]) then
-	entity.freeze_entity(allpeds[i], false)
-	
-	entity.apply_force_to_entity(allpeds[i], 5, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, true, true)
-
-	entity.set_entity_velocity(allpeds[i], vel)
-end
-end
-
-for y = 1, #allveh do
-	
-	if y ~= myveh then
-	entity.freeze_entity(allveh[y], false)
-	entity.set_entity_velocity(allveh[y], vel)
-end
-end
-
-for x = 1, #allobj do
-	entity.freeze_entity(allobj[x], false)
-	entity.set_entity_velocity(allobj[x], vel)
-end
-end)
-
-
-
+--TODO: Modder Detection Protection shit
 -- -- **BLACK LIST SHIT**
 joining_players_logger = event.add_event_listener("player_join", function(e)
         local pid = e.player
@@ -697,8 +675,8 @@ joining_players_logger = event.add_event_listener("player_join", function(e)
 		joined_data("[Player: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]")
 
         return
-    end
-)
+end)
+
 
 function joined_data(text)
     local d = os.date()
@@ -806,11 +784,10 @@ end
 
 
 local scriptlog_pid = menu.add_feature("Log player script events", "value_i", 0, function(feat)
-        if feat.on then
+
 			script_check_pid(feat.value_i)
             system.wait(100)
-            return HANDLER_CONTINUE
-        end
+
         return HANDLER_POP
 end)
 scriptlog_pid.on = false
@@ -836,7 +813,8 @@ script_event_hook = function(source, target, params, count)
       end
 	
 	-- system.wait(3000)
-	return true
+	return false
+
 
 end
 
@@ -873,10 +851,9 @@ script_event_hook_pid = function(source, target, params, count)
 	  scriptlog_out_pid("[P: " .. cnt .. "] = " .."[".. k .."] " ..v, player_source)
         cnt = cnt + 1
       end
-	return true
+	return false
 	else
-	  return false
-	end
+	  end
 	-- system.wait(3000)
 
 end
@@ -1013,7 +990,7 @@ function modder_detected(pid, net_id)
 
 	ui.notify_above_map(string.format("NetEvent: " ..NetEvents[net_id] .. "\nFrom : " ..player_source), "Moists Modder Detection", 024)
 end
-
+--TODO:Chat Logger
 function chat(name, text)
     local d = os.date()
     local t = string.match(d, "%d%d:%d%d:%d%d")
@@ -1039,7 +1016,7 @@ event.add_event_listener("exit", function()
         event.remove_event_listener("chat", ChatEventID)
 end)
 
-
+--TODO:Blacklist
 local function ValidScid(scid)
     return scid ~= -1 and scid ~= 4294967295
 end
@@ -1255,14 +1232,33 @@ event.add_event_listener("player_join", function(e)
             end
         end
 end)
-
 LoadBlacklist()
+
+script_event_hook = function(source, target, params, count)
+	
+	local player_source = player.get_player_name(source)
+	-- local player_target = player.get_player_name(target)
+	
+	if params[1] == 0xF83B520C then
+		ui.notify_above_map("Fucked off vehicle kick From:\n" ..player_source, "Lua SEP", 6)
+		
+		--	debug_out("\n[".. source .."]"..": " ..player_source .. player_target .."\n".." <"..params[1]..">: (Vehicle Kick) ".."\n["..Params.."]: "..count)
+		return true
+	end
+	
+	return false
+end
+
+
+
+
+
 --TODO:Blacklist Main function
 function main()
 	
 	test = menu.add_feature("Modder Protex Detect", "parent", globalFeatures.protex, cb)	
-	-- Moists_Modder_Alert = menu.add_feature("Custom SEP", "toggle", test.id, sep)
-	-- Moists_Modder_Alert.on = false
+	Moists_Modder_Alert = menu.add_feature("Custom SEP", "toggle", test.id, sep)
+	Moists_Modder_Alert.on = false
 	infoip = menu.add_feature("Log IP INFO", "toggle", test.id)
 	infoip.on = false
 
@@ -1583,136 +1579,6 @@ function get_offset(pid, dist)
 end
 
 
---spawn variables defaults set
-model = 0xDB134533
-vehhash = 788747387
-wephash = 0xA2719263
-local mod
-local modvalue
-local pedspawns
-
-
---Spawn Functions
-
-local function spawn_ped(pid, pedhash, offdist, attack)
-	local hash = pedhash
-	plygrp =  player.get_player_group(pid)
-	local pedp = player.get_player_ped(pid)
-    local pos = player.get_player_coords(pid)
-    local offset = v3()
-	local offset2 = v3()
-
-    local headtype = math.random(0, 2)
-
-	offset = get_offset(pid, offdist)
-	
-
-	streaming.request_model(hash)
-	while not streaming.has_model_loaded(hash) do
-		
-		system.wait(10)
-	end
-    local p = #escort + 1
-	print(hash)
-
-    escort[p] = ped.create_ped(26, hash, offset, 0, true, false)
-	print(escort[p])		
-	entity.set_entity_god_mode(escort[p], true)
-	ui.add_blip_for_entity(escort[p])
-	ped.set_ped_component_variation(escort[p], 0, 1, 0, 0)
-    ped.set_ped_component_variation(escort[p], 2, 0, 0, 0)
-    ped.set_ped_component_variation(escort[p], 3, 1, 0, 0)
-    ped.set_ped_component_variation(escort[p], 4, 1, 0, 0)
-    ped.set_ped_component_variation(escort[p], 0, 2, 2, 0)
-	ped.set_ped_component_variation(escort[p], 8, 1, 0, 0)
-	
-    ped.set_ped_can_switch_weapons(escort[p], true)
-    ped.set_ped_combat_attributes(escort[p], 46, true)
-    ped.set_ped_combat_attributes(escort[p], 52, true)
-    ped.set_ped_combat_attributes(escort[p], 1, true)
-    ped.set_ped_combat_attributes(escort[p], 2, true)
-    ped.set_ped_combat_range(escort[p], 2)
-    ped.set_ped_combat_ability(escort[p], 2)
-    ped.set_ped_combat_movement(escort[p], 2)
-	ped.set_ped_can_switch_weapons(escort[p], true)
-	
-	if not attack == true then
-	ped.set_ped_combat_attributes(escort[p], 1424, false)
-	pedgroup = ped.get_ped_group(escort[p])
-	ped.set_ped_as_group_member(escort[p], plygrp)
-	pedgroup = ped.get_ped_group(escort[p])
-	ped.set_ped_never_leaves_group(escort[p], true)
-
-	else
-	end
-	streaming.set_model_as_no_longer_needed(hash)	
-end
-
-local function spawn_ped_v2(pid, pedhash, attack)
-	local hash = pedhash
-	plygrp =  player.get_player_group(pid)
-	local pedp = player.get_player_ped(pid)
-	local parachute = 0xfbab5776
-	local pos = player.get_player_coords(pid)
-    pos.x = pos.x + 10
-	pos.y = pos.y + 20
-	
-    local offset = v3()
-	local offset2 = v3()
-	local rot = v3()
-	-- offset = Self_offsetPos
-	local offset_z = math.random(10, 40)
-	offset.z = offset_z
-    local headtype = math.random(0, 2)
-
-
-	rot = entity.get_entity_rotation(pedp)
-	streaming.request_model(hash)
-	while not streaming.has_model_loaded(hash) do
-		
-		system.wait(10)
-	end
-    local p = #escort + 1
-	print(hash)
-
-    escort[p] = ped.create_ped(26, hash, pos + offset, 0, true, false)
-	print(escort[p])		
-	entity.set_entity_god_mode(escort[p], true)
-	ui.add_blip_for_entity(escort[p])
-	ped.set_ped_component_variation(escort[p], 0, 1, 0, 0)
-    ped.set_ped_component_variation(escort[p], 2, 0, 0, 0)
-    ped.set_ped_component_variation(escort[p], 3, 1, 0, 0)
-    ped.set_ped_component_variation(escort[p], 4, 1, 0, 0)
-    ped.set_ped_component_variation(escort[p], 0, 2, 2, 0)
-	ped.set_ped_component_variation(escort[p], 8, 1, 0, 0)
-	
-    ped.set_ped_can_switch_weapons(escort[p], true)
-    ped.set_ped_combat_attributes(escort[p], 46, true)
-    ped.set_ped_combat_attributes(escort[p], 52, true)
-    ped.set_ped_combat_attributes(escort[p], 1, true)
-    ped.set_ped_combat_attributes(escort[p], 2, true)
-    ped.set_ped_combat_attributes(escort[p], 3, false)
-    ped.set_ped_combat_range(escort[p], 2)
-    ped.set_ped_combat_ability(escort[p], 2)
-    ped.set_ped_combat_movement(escort[p], 2)
-	ped.set_ped_can_switch_weapons(escort[p], true)
-	weapon.give_delayed_weapon_to_ped(escort[p], parachute, 1, 0)
-	
-	if not attack == true then
-	ped.set_ped_combat_attributes(escort[p], 1424, false)
-	pedgroup = ped.get_ped_group(escort[p])
-	ped.set_ped_as_group_member(escort[p], plygrp)
-	pedgroup = ped.get_ped_group(escort[p])
-	ped.set_ped_never_leaves_group(escort[p], true)
-
-	else
-	end
-		streaming.set_model_as_no_longer_needed(hash)	
-end
-
---Spawn Cleanups
-
-
 --World Cleanup stuff
 local cleanup_done = true
 
@@ -1989,6 +1855,44 @@ force_delete2 = function()
     return HANDLER_POP
 end
 
+
+	
+world_force = menu.add_feature("Apply force to world entities", "action", globalFeatures.lobby, function(feat)
+	get_everything()
+	system.wait(100)
+	local vel = v3()
+	vel.x = math.random(1000.0, 10000.0)
+	vel.y = math.random(1000.0, 10000.0)
+	vel.z = math.random(100.0, 750.0)
+
+	local myveh = player.get_player_vehicle(player.player_id())
+
+for i = 1, #allpeds do
+
+	if not ped.is_ped_a_player(allpeds[i]) then
+	entity.freeze_entity(allpeds[i], false)
+	
+	entity.apply_force_to_entity(allpeds[i], 5, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, true, true)
+
+	entity.set_entity_velocity(allpeds[i], vel)
+end
+end
+
+for y = 1, #allveh do
+	
+	if y ~= myveh then
+	entity.freeze_entity(allveh[y], false)
+	entity.set_entity_velocity(allveh[y], vel)
+end
+end
+
+for x = 1, #allobj do
+	entity.freeze_entity(allobj[x], false)
+	entity.set_entity_velocity(allobj[x], vel)
+end
+end)
+
+
 dump_onplayer = function(pid, pos)
 	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ \nSpectating Player", "!")
 	moist_notify("~h~~w~ 3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
@@ -2042,6 +1946,135 @@ dump_onplayer = function(pid, pos)
 		moist_notify("World Dumped On That Cunt!\n GG <font size='18'>~ex_r*~ ", "\nCarefull Spectating")
 end
 
+--TODO: Ped Spawn functions
+--Spawn Functions
+
+--spawn variables defaults setup
+model = 0xDB134533
+vehhash = 788747387
+wephash = 0xA2719263
+local mod
+local modvalue
+local pedspawns
+
+
+
+local function spawn_ped(pid, pedhash, offdist, attack)
+	local hash = pedhash
+	plygrp =  player.get_player_group(pid)
+	local pedp = player.get_player_ped(pid)
+    local pos = player.get_player_coords(pid)
+    local offset = v3()
+	local offset2 = v3()
+
+    local headtype = math.random(0, 2)
+
+	offset = get_offset(pid, offdist)
+	
+
+	streaming.request_model(hash)
+	while not streaming.has_model_loaded(hash) do
+		
+		system.wait(10)
+	end
+    local p = #escort + 1
+	print(hash)
+
+    escort[p] = ped.create_ped(26, hash, offset, 0, true, false)
+	print(escort[p])		
+	entity.set_entity_god_mode(escort[p], true)
+	ui.add_blip_for_entity(escort[p])
+	ped.set_ped_component_variation(escort[p], 0, 1, 0, 0)
+    ped.set_ped_component_variation(escort[p], 2, 0, 0, 0)
+    ped.set_ped_component_variation(escort[p], 3, 1, 0, 0)
+    ped.set_ped_component_variation(escort[p], 4, 1, 0, 0)
+    ped.set_ped_component_variation(escort[p], 0, 2, 2, 0)
+	ped.set_ped_component_variation(escort[p], 8, 1, 0, 0)
+	
+    ped.set_ped_can_switch_weapons(escort[p], true)
+    ped.set_ped_combat_attributes(escort[p], 46, true)
+    ped.set_ped_combat_attributes(escort[p], 52, true)
+    ped.set_ped_combat_attributes(escort[p], 1, true)
+    ped.set_ped_combat_attributes(escort[p], 2, true)
+    ped.set_ped_combat_range(escort[p], 2)
+    ped.set_ped_combat_ability(escort[p], 2)
+    ped.set_ped_combat_movement(escort[p], 2)
+	ped.set_ped_can_switch_weapons(escort[p], true)
+	
+	if not attack == true then
+	ped.set_ped_combat_attributes(escort[p], 1424, false)
+	pedgroup = ped.get_ped_group(escort[p])
+	ped.set_ped_as_group_member(escort[p], plygrp)
+	pedgroup = ped.get_ped_group(escort[p])
+	ped.set_ped_never_leaves_group(escort[p], true)
+
+	else
+	end
+	streaming.set_model_as_no_longer_needed(hash)	
+end
+
+local function spawn_ped_v2(pid, pedhash, attack)
+	local hash = pedhash
+	plygrp =  player.get_player_group(pid)
+	local pedp = player.get_player_ped(pid)
+	local parachute = 0xfbab5776
+	local pos = player.get_player_coords(pid)
+    pos.x = pos.x + 10
+	pos.y = pos.y + 20
+	
+    local offset = v3()
+	local offset2 = v3()
+	local rot = v3()
+	-- offset = Self_offsetPos
+	local offset_z = math.random(10, 40)
+	offset.z = offset_z
+    local headtype = math.random(0, 2)
+
+
+	rot = entity.get_entity_rotation(pedp)
+	streaming.request_model(hash)
+	while not streaming.has_model_loaded(hash) do
+		
+		system.wait(10)
+	end
+    local p = #escort + 1
+	print(hash)
+
+    escort[p] = ped.create_ped(26, hash, pos + offset, 0, true, false)
+	print(escort[p])		
+	entity.set_entity_god_mode(escort[p], true)
+	ui.add_blip_for_entity(escort[p])
+	ped.set_ped_component_variation(escort[p], 0, 1, 0, 0)
+    ped.set_ped_component_variation(escort[p], 2, 0, 0, 0)
+    ped.set_ped_component_variation(escort[p], 3, 1, 0, 0)
+    ped.set_ped_component_variation(escort[p], 4, 1, 0, 0)
+    ped.set_ped_component_variation(escort[p], 0, 2, 2, 0)
+	ped.set_ped_component_variation(escort[p], 8, 1, 0, 0)
+	
+    ped.set_ped_can_switch_weapons(escort[p], true)
+    ped.set_ped_combat_attributes(escort[p], 46, true)
+    ped.set_ped_combat_attributes(escort[p], 52, true)
+    ped.set_ped_combat_attributes(escort[p], 1, true)
+    ped.set_ped_combat_attributes(escort[p], 2, true)
+    ped.set_ped_combat_attributes(escort[p], 3, false)
+    ped.set_ped_combat_range(escort[p], 2)
+    ped.set_ped_combat_ability(escort[p], 2)
+    ped.set_ped_combat_movement(escort[p], 2)
+	ped.set_ped_can_switch_weapons(escort[p], true)
+	weapon.give_delayed_weapon_to_ped(escort[p], parachute, 1, 0)
+	
+	if not attack == true then
+	ped.set_ped_combat_attributes(escort[p], 1424, false)
+	pedgroup = ped.get_ped_group(escort[p])
+	ped.set_ped_as_group_member(escort[p], plygrp)
+	pedgroup = ped.get_ped_group(escort[p])
+	ped.set_ped_never_leaves_group(escort[p], true)
+
+	else
+	end
+		streaming.set_model_as_no_longer_needed(hash)	
+end
+
 
 local function spawn_veh(pid, vehhash, offdist, mod, modvalue)
 	local hash = vehhash
@@ -2075,9 +2108,10 @@ local function spawn_veh(pid, vehhash, offdist, mod, modvalue)
 
 end
 
+--Spawn Cleanups
 
 
-ped_cleanup = menu.add_player_feature("Delete Ped Spawns", "action", playerfeatVars.f, function(feat)
+ped_cleanup = menu.add_feature("Delete Ped Spawns", "action", globalFeatures.cleanup, function(feat)
 	
 	if #escort == 0 or nil then return end
 	local pos = v3()
@@ -2097,7 +2131,7 @@ ped_cleanup = menu.add_player_feature("Delete Ped Spawns", "action", playerfeatV
 	end
 end)
 
-pedveh_cleanup = menu.add_player_feature("Delete Ped Spawns + Vehicles", "action", playerfeatVars.f, function(feat)
+pedveh_cleanup = menu.add_feature("Delete Ped Spawns + Vehicles", "action", globalFeatures.cleanup, function(feat)
 	if #escort == 0 or nil then return end
 	local pos = v3()
 				pos.x = presets[1][2]
@@ -2128,7 +2162,73 @@ pedveh_cleanup = menu.add_player_feature("Delete Ped Spawns + Vehicles", "action
 	
 end)
 
---OSD Functions
+
+
+dumpfreeze_onplayer = function(pid, pos)
+	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ \nSpectating Player", "!")
+	moist_notify("~h~~w~ 3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
+	
+	system.wait(1000)
+	moist_notify("Cunt Dump Starts in: ", "~y~~h~2 ~r~Seconds")
+	system.wait(1000)
+	
+	moist_notify("Cunt Dump Starts in: ", "~y~~h~1 ~r~Second")
+	system.wait(1000)
+	moist_notify("Cunt Dump Initiated", "\nSpectating now could crash you")
+	allpeds = ped.get_all_peds()
+		system.wait(200)
+	allveh = vehicle.get_all_vehicles()
+		system.wait(200)
+    allobj = object.get_all_objects()
+		system.wait(200)
+    allpickups = object.get_all_pickups()
+		system.wait(400)
+
+	for i = 1, #allpickups do
+		network.request_control_of_entity(allpickups[i])
+		entity.freeze_entity(allpickups[i], false)
+		entity.set_entity_coords_no_offset(allpickups[i], pos)
+		entity.freeze_entity(allpickups[i], true)
+		--entity.set_entity_as_no_longer_needed(allpickups[i])
+		-- entity.delete_entity(allpickups[i])
+	end
+	system.wait(400)
+	for i = 1, #allobj do
+		entity.freeze_entity(allobj[i], false)
+		network.request_control_of_entity(allobj[i])
+		entity.set_entity_coords_no_offset(allobj[i], pos)
+		entity.freeze_entity(allobj[i], true)
+		--entity.set_entity_as_no_longer_needed(allobj[i])
+		-- entity.delete_entity(allobj[i])
+	end
+	system.wait(400)
+	    for i = 1, #allveh do
+			network.request_control_of_entity(allveh[i])
+			entity.freeze_entity(allveh[i], false)
+			entity.set_entity_coords_no_offset(allveh[i], pos)
+			entity.freeze_entity(allveh[i], true)
+			--entity.set_entity_as_no_longer_needed(allveh[i])
+			-- entity.delete_entity(allveh[i])
+		end
+		system.wait(400)
+	    for i = 1, #allpeds do
+	        if not ped.is_ped_a_player(allpeds[i]) then
+				entity.freeze_entity(allpeds[i], false)
+				network.request_control_of_entity(allpeds[i])
+	            entity.set_entity_coords_no_offset(allpeds[i], pos)
+				entity.freeze_entity(allpeds[i], true)
+	            --entity.set_entity_as_no_longer_needed(allpeds[i])
+	            -- entity.delete_entity(allpeds[i])
+			end
+			system.wait(400)
+		end
+		moist_notify("World Dumped On That Cunt!\n GG <font size='18'>~ex_r*~ ", "\nCarefull Spectating")
+end
+
+
+
+
+--Option Functions
 local entity_control
 
 --[[
@@ -3192,7 +3292,7 @@ end)
 function load_spawn_options()
 	
 for i = 1, #escort_ped do 
- playerFeat1[i] = menu.add_player_feature("Ped: " .. escort_ped[i][1], "parent", playerfeatVars.b, function() 
+ playerFeat1[i] = menu.add_player_feature("Ped: " .. escort_ped[i][1], "parent", b.id, function() 
  model = escort_ped[i][2] 
  end).id
 
@@ -3444,22 +3544,28 @@ end)
 end
 
 end
-load_spawn_options()
 
-friendsshown = false
 
-showfriends = menu.add_feature("Show Friends Notify", "toggle", globalFeatures.moistopt, function(feat)
-	setting["showfriends"] = true
+--TODO: Show Spawn option
+spawnoptions_loaded = false
+Show_Spawn_Options = menu.add_feature("Show & Load SpawnOptions", "toggle", globalFeatures.moistopt, function(feat)
+	if not feat.on then
+		spawnoptions_loaded = false
+				return HANDLER_POP
+			end
+			if not spawnoptions_loaded then
 	
-	while feat.on do
-		system.wait(1000)
-	return HANDLER_CONTINUE
+b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id)
+
+	load_spawn_options()
+	spawnoptions_loaded = true
+
 	end
-	setting["showfriends"] = false
-	friendsshown = false
-	return HANDLER_POP
+	
+	return HANDLER_CONTINUE
+
 end)
-showfriends.on = setting["showfriends"]
+Show_Spawn_Options.on = setting["showSpawns"]
 
 menu.add_feature("Any Friends Online?", "action", globalFeatures.parent, function(feat)
     for i=0,network.get_friend_count()-1 do
@@ -3962,6 +4068,14 @@ for pid=0,31 do
 		dump_onplayer(pid, pos)
 	end), type = "action"}
 
+			
+
+	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.f.id, function(feat)
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		dumpfreeze_onplayer(pid, pos)
+	end), type = "action"}
+
 		
 	features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggle", featureVars.k.id, function(feat)
 	if not feat.on then
@@ -4265,3 +4379,4 @@ end)
 loopFeat.hidden = true
 loopFeat.threaded = false
 loopFeat.on = true
+friendscheck()
