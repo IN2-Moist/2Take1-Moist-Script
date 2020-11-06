@@ -90,15 +90,17 @@ TODO -
 ##### Orbital Room Block
 
 ## Player Functions:
-##### - Ped Functions
-##### Vehicle Functions
-##### Player Options
+
+#### - Ped Functions
+#### - Vehicle Functions
+#### - Player Options
 
 #### Ped Functions 
-#### Player Weapons 
+##### - Player Weapons
+
 - `Small list of weapons`
 
-#### Health Modifiers
+##### - Health Modifiers
 
 - `Set Max Health 0 (UnDead OTR)`
 - `Set Health to 500`
@@ -109,21 +111,34 @@ TODO -
 - `Set Health to 90000`
 - `Set Health to 328 (lvl 120)`
 
-###### Ped Functions 
+##### Ped Functions 
 - `Put Handcuffs on Self`
 - `Set Handcuffs Locked Position`
 - `White Team parachute Pack`
 
-###### Player Options
+##### Player Options
 - `Force White parachute On`
 - `Force White BPH On`
 
 
 ### Clean Shit Up!
 
-#### Markers *(list of markers to delete made to highlight players)*
-		
-#### World Cleanup
+#### - World Cleanup
+
+- `Fetched World Entities Move & Delete`
+(Slowly Removes all Entities in Controllable distance)
+
+- `Force Removal (Missed Anything?)`
+(For anything control could not be obtained for and is left does nothing if there is nothing left over)
+
+- `Fetch all Peds Move & Delete` 
+(Slowly Removes all Peds in Controllable distance)
+
+- `Fetch all objects Move & Delete`
+(Slowly Removes all Objects in Controllable distance)
+
+- `Fetch all Vehicles Move & Delete`
+(Slowly Removes all Vehicles in Controllable distance Also you if your inside one!)
 
 
 
