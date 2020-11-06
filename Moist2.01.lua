@@ -168,7 +168,8 @@ local notifytype = setting["NotifyVarDefault"]
 local AnonymousBounty = true
 local trigger_time = nil
 local cleanup_done = true
-
+local kicklogsent = false
+local logsent = false
 
 
 
@@ -428,6 +429,8 @@ playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.par
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
 -- globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
+globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
+
 globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
 globalFeatures.cleanup = menu.add_feature("Clean Shit Up!", "parent", globalFeatures.parent).id
@@ -477,7 +480,42 @@ end)
 playerfeatVars.f = menu.add_player_feature("Spawn Options", "parent", 0).id
 playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", playerfeatVars.f).id 
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
-globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
+
+local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, function(feat, pid)
+	local ip = player.get_player_ip(pid)
+	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
+	utils.to_clipboard(sip)
+	
+end)
+ip_clip.threaded = false
+
+local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", 0, function(feat, pid)
+	while feat.on do
+	if player.is_player_modder(pid, -1) == true
+		then
+		player.unset_player_as_modder(pid, -1)
+		
+	end
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end) 
+
+local friends_donotmod = menu.add_feature("My Friends DO NOT MOD! MarkOFF", "toggle", globalFeatures.protex, function(feat)
+	if feat.on then
+	-- 
+	for i = 0, 32 do
+	
+	if player.is_player_friend(i) and player.is_player_modder(i, -1) then	
+			player.unset_player_as_modder(i, -1)
+	end
+		end
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+friends_donotmod.threaded = false
+friends_donotmod.on = false
 
 
 
@@ -766,72 +804,97 @@ function netcheck5()
     return HANDLER_POP
 end
 
-local SEid
+
 local scriptlog_pid = menu.add_feature("Log player script events", "value_i", 0, function(feat)
         if feat.on then
-            script_check_logger.on = true
-            SEid = feat.value_i
+			script_check_pid(feat.value_i)
             system.wait(100)
             return HANDLER_CONTINUE
         end
-        SEid = nil
-        script_check_logger.on = false
         return HANDLER_POP
-    end)
+end)
 scriptlog_pid.on = false
 scriptlog_pid.max_i = 32
 scriptlog_pid.min_i = 0
 scriptlog_pid.value_i = 0
 
-params = {}
+
+local params = {}
 script_event_hook = function(source, target, params, count)
-	params = {}
-    local player_source = player.get_player_name(source)
-    local scid = player.get_player_scid(source)
-    local player_target = player.get_player_name(target)
-    get_date_time()
-
-    if scriptlog_pid.on then
-        if source == SEid then
-			get_date_time()
-			scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
-            local cnt = 0
-            for k, v in pairs(params) do
-                scriptlog_out("[P: " .. cnt .. "] = " .. "[" .. k .. "] " .. v)
-                cnt = cnt + 1
-            end
-
-            -- system.wait(3000)
-            return true
-        end
-	else
-	params = {}
+	
+	
+	local player_source = player.get_player_name(source)
+	local scid = player.get_player_scid(source)
+	local player_target = player.get_player_name(target)
 	get_date_time()
 	scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
-
 	
-        local cnt = 0
-        for k, v in pairs(params) do
-			get_date_time()
-            scriptlog_out("[P: " .. cnt .. "] = " .. "[" .. k .. "] " .. v)
-            cnt = cnt + 1
-        end
-        return true
-    end
+	local cnt = 0
+      for k, v in pairs(params) do 
+	  scriptlog_out("[P: " .. cnt .. "] = " .."[".. k .."] " ..v)
+        cnt = cnt + 1
+      end
+	
+	-- system.wait(3000)
+	return true
+
 end
+
+
+local hook_pid = 0
+local lastpid_hooked = 0
+script_check_pid  = function(pid)
+	if scriptlog_pid.on == true then
+		hook_pid = hook.register_script_event_hook(script_event_hook_pid)
+		lastpid_hooked = pid
+		return HANDLER_POP
+	end
+	
+	if hook_pid ~= 0 then
+		hook.remove_script_event_hook(hook_pid)
+		hook_pid = 0
+	end
+end
+
+
+local params = {}
+script_event_hook_pid = function(source, target, params, count)
+	
+	
+	local player_source = player.get_player_name(source)
+	local scid = player.get_player_scid(source)
+	local player_target = player.get_player_name(target)
+	get_date_time()
+	if source == lastpid_hooked then
+	scriptlog_out_pid(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]", player_source)
+	
+	local cnt = 0
+      for k, v in pairs(params) do 
+	  scriptlog_out_pid("[P: " .. cnt .. "] = " .."[".. k .."] " ..v, player_source)
+        cnt = cnt + 1
+      end
+	return true
+	else
+	  return false
+	end
+	-- system.wait(3000)
+
+end
+
 
 local hook_id = 0
-script_check = function(feat)
-    if feat.on == true then
-        hook_id = hook.register_script_event_hook(script_event_hook)
-        return HANDLER_POP
-    end
-
-    if hook_id ~= 0 then
-        hook.remove_script_event_hook(hook_id)
-        hook_id = 0
-    end
+script_check  = function()
+	if script_check_logger.on == true then
+		hook_id	= hook.register_script_event_hook(script_event_hook)
+		return HANDLER_POP
+	end
+	
+	if hook_id ~= 0 then
+		hook.remove_script_event_hook(hook_id)
+		hook_id	= 0
+	end
 end
+
 
 function log_neteventHook(source, target, id)
     local player_source = player.get_player_name(source)
@@ -844,7 +907,18 @@ function log_neteventHook(source, target, id)
     return true
 end
 
+function scriptlog_out_pid(text, name)
+	if not script_check_logger.on then return end
+    get_date_time()
+	local playerfile = tostring(name..".log")
+    local file = io.open(rootPath .."\\lualogs\\" .. playerfile, "a")
+    io.output(file)
+    io.write("\n" .. text)
+    io.close()
+end
+
 function scriptlog_out(text)
+	if not script_check_logger.on then return end
     get_date_time()
     local file = io.open(rootPath .. "\\lualogs\\scriptevent_logger.log", "a")
     io.output(file)
@@ -1183,7 +1257,7 @@ event.add_event_listener("player_join", function(e)
 end)
 
 LoadBlacklist()
-
+--TODO:Blacklist Main function
 function main()
 	
 	test = menu.add_feature("Modder Protex Detect", "parent", globalFeatures.protex, cb)	
@@ -1233,7 +1307,7 @@ if feat.on then
 	scripteventblocker.on = false
 	
 	script_check_logger = menu.add_feature("Hook Script Events & Log to File", "toggle", logging.id, script_check)
-	
+	script_check_logger.on = false
 end
 main()
 
@@ -4047,18 +4121,22 @@ for pid=0,31 do
 	features["Kick2_Type2"].feat.mod_i = 99
 	features["Kick2_Type2"].feat.on = false
 	
-	features["netkick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
-			if feat.on then
-			local scid = player.get_player_scid(pid)
-			
+	features["netkick"] = {feat = menu.add_feature("Network Bail Kick", "toggle", featureVars.k.id, function(feat)
+		if not feat.on then
+				kicklogsent = false
+				return HANDLER_POP
+			end
+			if not logsent then
+				
+			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
-			script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
-			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 			
+				script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+				debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
+				kicklogsent = true
+			end
 			return HANDLER_CONTINUE
-		end
-			return HANDLER_POP
-		end), type = "action"}
+	end), type = "toggle"}
 	
 	
 	
