@@ -95,8 +95,23 @@ are spawned and they shoot in each others direction`
 
 
 ### Online Session:
-##### Online Protection
+
+#### Online Protection
+
 ##### Orbital Room Block
+
+- Teleport to block location?
+`Teleports you directly in front of the orbital entrance you need to be inside your facility
+otherwise game kicks you out of the interior`
+
+- Block Orbital Entrance with Wall
+
+`Puts a invisible wall inside the room blocking players ability to go past the doorway`
+
+- Orbital Inactive Screens over Block
+
+`Places the TV Screens you see inside the orbital showing you the Orbital cannons state or activity these show by default Orbital Inactive
+RIP ORBITAL WARRIORS!!`
 
 ## Player Functions:
 
@@ -104,37 +119,38 @@ are spawned and they shoot in each others direction`
 #### - Vehicle Functions
 #### - Player Options
 
-#### Ped Functions 
-##### - Player Weapons
+##### Ped Functions 
 
-- `Small list of weapons`
+###### - Player Weapons
+
+- Small list of weapons
 
 ##### - Health Modifiers
 
-- `Set Max Health 0 (UnDead OTR)`
-- `Set Health to 500`
-- `Set Health to 10000`
-- `Set Health Free mode Beast 2500`
-- `Set Health Ballistic Armour 2600`
-- `Set Health to 10000`
-- `Set Health to 90000`
-- `Set Health to 328 (lvl 120)`
+- Set Max Health 0 (UnDead OTR)
+- Set Health to 500
+- Set Health to 10000
+- Set Health Free mode Beast 2500
+- Set Health Ballistic Armour 2600
+- Set Health to 10000
+- Set Health to 90000
+- Set Health to 328 (lvl 120)
 
 
 
 ##### Ped Functions
 
-- `Put Handcuffs on Self`
-- `Set Handcuffs Locked Position`
-- `White Team parachute Pack`
+- Put Handcuffs on Self
+- Set Handcuffs Locked Position
+- White Team parachute Pack
 
 
 ##### Player Options
 
 
-- `Force White parachute On`
-- `Force White BPH On`
-- `Mk2 Rapid Fire Hot key`
+- Force White parachute On
+- Force White BPH On
+- Mk2 Rapid Fire Hot key
 
 
 
@@ -142,20 +158,25 @@ are spawned and they shoot in each others direction`
 
 #### - World Cleanup
 
-- `Fetched World Entities Move & Delete`
-(Slowly Removes all Entities in Controllable distance)
+- Fetched World Entities Move & Delete
 
-- `Force Removal (Missed Anything?)`
-(For anything control could not be obtained for and is left does nothing if there is nothing left over)
+`Slowly Removes all Entities in Controllable distance`
 
-- `Fetch all Peds Move & Delete` 
-(Slowly Removes all Peds in Controllable distance)
+- Force Removal (Missed Anything?)
 
-- `Fetch all objects Move & Delete`
-(Slowly Removes all Objects in Controllable distance)
+`For anything control could not be obtained for and is left does nothing if there is nothing left over`
 
-- `Fetch all Vehicles Move & Delete`
-(Slowly Removes all Vehicles in Controllable distance Also you if your inside one!)
+- Fetch all Peds Move & Delete
+
+`Slowly Removes all Peds in Controllable distance`
+
+- Fetch all objects Move & Delete
+
+`Slowly Removes all Objects in Controllable distance`
+
+- Fetch all Vehicles Move & Delete
+
+`Slowly Removes all Vehicles in Controllable distance Also you if your inside one!`
 
 
 - Delete Ped Spawns
@@ -168,19 +189,49 @@ are spawned and they shoot in each others direction`
 
 
 
-
-
-
-
 --TODO: Update and adjust
 
 ##### Vehicle Options
-		`ToggleOFF Player Vehicle God Mode
-		`Set Boost & Forward Speed
-		`Vehicle Explode OnImpact
-		`Set Max Speed 5
-		`Reset Max Speed
-		`Add Explosive Device
+
+- ToggleOFF Player Vehicle God Mode
+
+`Turns off players vehicle God Mode if it is on. Requires you to be in range of their vehicle`
+
+- Set Boost & Forward Speed
+
+`For Voltic Boost Enabled Vehicles this will Trigger the Boost then Force the Vehicle Forward at high speed,
+Sets the forward speed to a stupid number! Requires you to be in range of their vehicle`
+
+- Vehicle Explode OnImpact
+
+`Sets the vehicle to explode on impact and will Trigger the Boost if it has one then Force the Vehicle Forward at high speed,
+Requires you to be in range of their vehicle vehicle should fly forward fast hit something and explode sending it flying!
+Range and Ability to gain control determines success or not`
+
+
+- Input Custom Max Speed
+
+`Set their Vehicle's Max Possible Speed to a Value you can input`
+
+- Set Max Speed 5
+
+`Sets their Vehicle to a slow speed looks weird on aircraft going that slow in the air XD`
+
+- Reset Max Speed
+
+`Sets Max Possible Speed over Normal values to ensure speed is not restricted any more does not mean they can go that fast!`
+
+- Add Explosive Device
+
+`Adds an Explosive Device to the players vehicle
+(this is like the LSC Remote Bomb added to their vehicle but its Registered with your name)
+So unless you want your name over their Death when you detonate it probably not an idea to add it XD
+
+- Detonate Explosive Device
+
+`Explodes the Explosive Device you installed in the Previous Function  (Named or Blamed Explosion)`
+
+--TODO: update for new Highlight controls
 
 ##### Highlight Options
 		`Turn off all RGB Changers
@@ -191,22 +242,46 @@ are spawned and they shoot in each others direction`
 		`Red & White Above: Flash Ground: Fading
 
 ##### Teleport Options
-		`Teleport in front of Me
-		`Teleport Beyond World Limits
+
+**Teleport Instructions**
+
+`For all Teleport Functions to work Player must be in a vehicle!
+Requires you to be in range of their vehicle if the online player
+info window shows them as in a vehicle then they are in range.
+When not in Range you can try to force it by turning on a
+Teleport toggle then go to online player and Spectate them until
+you see them next to you then toggle off spectate. T
+hey should then be next to you.`
 
 
-`CEO 10k money loop
+- Teleport Next2me (old Version)
+
+`Teleports the player next to you.`
+
+- Teleport in front of Me
+
+`Teleports them directly in front of you`
+
+
+- Teleport Beyond World Limits
+
+`Teleports them outside the world boundary limits of the GTA Map`
+
+
+`CEO 10k money loop`
+
 `Block Passive Mode
 `Unblock Passive Mode
 
 ##### Remove Player Options
-			`Kick Data 1 Type 1
-			`Kick Data 1 Type 2
-			`Kick Data 2 Type 1
-			`Kick Data 2 Type 2
-			`Network Bail Kick
 
+`Various ways to try and force remove the player from your session`
 
+- Kick Data 1 Type 1
+- Kick Data 1 Type 2
+- Kick Data 2 Type 1
+- Kick Data 2 Type 2
+- Network Bail Kick
 
 
 
