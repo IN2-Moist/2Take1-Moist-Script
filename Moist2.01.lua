@@ -1354,7 +1354,7 @@ global_func.self = menu.add_feature("White Team parachute Pack", "action", globa
 
 end)
 	
-global_func.force_wPara = menu.add_feature("Force White parachute On", "toggle", globalFeatures.self_ped, function(feat)
+global_func.force_wPara = menu.add_feature("Force White parachute On", "toggle", globalFeatures.self_options, function(feat)
 	setting["force_wPara"] = true
 	if feat.on then
 	local pped = player.get_player_ped(player.player_id())
@@ -1371,7 +1371,7 @@ global_func.force_wPara = menu.add_feature("Force White parachute On", "toggle",
 end)
 global_func.force_wPara.on = setting["force_wPara"]
 	
-global_func.force_wBPH = menu.add_feature("Force White BPH On", "toggle", globalFeatures.self_ped, function(feat)
+global_func.force_wBPH = menu.add_feature("Force White BPH On", "toggle", globalFeatures.self_options, function(feat)
 	setting["force_wBPH"] = true
 	if feat.on then
 	local pped = player.get_player_ped(player.player_id())
@@ -3440,6 +3440,99 @@ for pid=0,31 do
     end)
 	
 	featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id)
+	
+	features["godvehoff"] = {feat = menu.add_feature("ToggleOFF Player Vehicle God Mode", "toggle", featureVars.v.id, function(feat)
+			if feat.on then	
+				
+				local plyped = player.get_player_ped(pid)	
+				
+				local plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(ped.get_vehicle_ped_is_using(plyped))
+				network.request_control_of_entity(plyveh)
+				entity.set_entity_god_mode(plyveh, false)
+			end
+			return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	
+		
+	features["set_Boost"] = {feat = menu.add_feature("Set Boost & Forward Speed", "action", featureVars.v.id, function(feat)
+		local plyveh = player.get_player_vehicle(pid)
+		local plyveh = player.get_player_vehicle(pid)
+		if plyveh ~= nil then
+			network.request_control_of_entity(plyveh)
+			vehicle.set_vehicle_rocket_boost_active(plyveh, true)
+			vehicle.set_vehicle_forward_speed(plyveh, 200000.00) 
+			
+		end
+		
+		network.request_control_of_entity(plyveh)
+		vehicle.set_vehicle_rocket_boost_active(plyveh, true)
+		vehicle.set_vehicle_forward_speed(plyveh, 200000.00) 
+
+	end), type = "action"}
+
+	features["vehicleexplode1"] = {feat = menu.add_feature("Vehicle Explode OnImpact", "toggle", featureVars.v.id, function(feat)
+		if feat.on then		
+				
+				local plyped = player.get_player_ped(pid)
+				
+				local plyveh = player.get_player_vehicle(pid)
+				if plyveh ~= nil then
+					network.request_control_of_entity(plyveh)
+					vehicle.set_vehicle_out_of_control(plyveh, false, true)
+				end
+				network.request_control_of_entity(plyveh)
+				vehicle.set_vehicle_rocket_boost_percentage(plyveh, 100)
+				vehicle.set_vehicle_rocket_boost_active(plyveh, true)
+				vehicle.set_vehicle_out_of_control(plyveh, false, true)
+				vehicle.set_vehicle_forward_speed(plyveh, 200000.00)                                                    
+			end
+			return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	
+	features["vehspdslow"] = {feat = menu.add_feature("Input Custom Max Speed", "action", featureVars.v.id, function()
+	
+				playervehspd(pid, 5.0)
+	
+	end), type = "action"}
+			
+	features["vehspdcust"] = {feat = menu.add_feature("Set Max Speed 5", "action", featureVars.v.id, function()
+			local r,s = input.get("Enter a Name to Label POS", "1.0", 64, 5)
+					if r == 1 then
+						return HANDLER_CONTINUE
+					end
+					if r == 2 then
+						return HANDLER_POP
+					end	
+					playervehspd(pid, s)
+	end), type = "action"}
+		
+	features["vehspdfast"] = {feat = menu.add_feature("Reset Max Speed", "action", featureVars.v.id, function()
+			playervehspd(pid, 10000.0)
+		end), type = "action"}
+	
+	features["vehaddexpl"] = {feat = menu.add_feature("Add Explosive Device", "action", featureVars.v.id, function(feat)
+			
+			local plyveh = player.get_player_vehicle(pid)
+			if plyveh == 0 or nil then return end
+			network.request_control_of_entity(plyveh)
+			vehicle.add_vehicle_phone_explosive_device(plyveh)
+
+	end), type = "action"}
+		
+	features["vehdetonate"] = {feat = menu.add_feature("Detonate Explosive Device (named)", "action", featureVars.v.id, function()
+			
+			local plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(plyveh)
+				print(vehicle.has_vehicle_phone_explosive_device())
+				if vehicle.has_vehicle_phone_explosive_device() then
+				vehicle.detonate_vehicle_phone_explosive_device()
+	
+			end
+	end), type = "action"}
+	
 	featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)	
 	
 	--TODO: Highight Controls
