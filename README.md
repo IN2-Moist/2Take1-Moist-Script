@@ -89,31 +89,35 @@ TODO -
 ##### Online Protection
 ##### Orbital Room Block
 
-### Player Functions:
-##### Player Ped Functions
-##### Player Vehicle Functions
+## Player Functions:
+### Ped Functions
+##### Vehicle Functions
+##### Player Options
 
-#### Player Ped Functions 
-##### Player Ped Weapons 
+#### Ped Functions 
+#### Player Weapons 
 - `Small list of weapons`
 
-##### Health Modifiers
+#### Health Modifiers
 
-- `Set max Health 0 (UnDead OTR)`
+- `Set Max Health 0 (UnDead OTR)`
 - `Set Health to 500`
 - `Set Health to 10000`
-- `Set Health Freemode Beast 2500`
-- `Set Health BallisticArmour 2600`
+- `Set Health Free mode Beast 2500`
+- `Set Health Ballistic Armour 2600`
 - `Set Health to 10000`
 - `Set Health to 90000`
 - `Set Health to 328 (lvl 120)`
 
-###### Player Ped Functions 
+###### Ped Functions 
 - `Put Handcuffs on Self`
 - `Set Handcuffs Locked Position`
 - `White Team parachute Pack`
+
+###### Player Options
 - `Force White parachute On`
 - `Force White BPH On`
+
 
 ### Clean Shit Up!
 
