@@ -28,30 +28,6 @@ moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
 end
 
 
-
---output functions
-
-
-function get_date_time()
-	
-	local d = os.date()
-	
-	local dtime = string.match(d, "%d%d:%d%d:%d%d")
-	
-	local dt = os.date("%d/%m/%y%y")
-	Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
-end
-
-function debug_out(text)
-	get_date_time()
-	
-	local file = io.open(rootPath.."\\lualogs\\Moists_debug.log", "a")
-	io.output(file)
-	io.write("\n"..Cur_Date_Time .."\n")
-	io.write(text)
-	io.close()
-end
-
 --Get Offset to self POS
 local SelfoffsetPos = v3()
 
@@ -217,6 +193,32 @@ local hookID6 = 07
 -- local NoWaypoint = v2()
 -- NoWaypoint.x = 16000
 -- NoWaypoint.y = 16000
+
+
+
+--output functions
+
+
+function get_date_time()
+	
+	local d = os.date()
+	
+	local dtime = string.match(d, "%d%d:%d%d:%d%d")
+	
+	local dt = os.date("%d/%m/%y%y")
+	Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
+end
+
+function debug_out(text)
+	get_date_time()
+	
+	local file = io.open(rootPath.."\\lualogs\\Moists_debug.log", "a")
+	io.output(file)
+	io.write("\n"..Cur_Date_Time .."\n")
+	io.write(text)
+	io.close()
+end
+
 
 --Util functions
 local notif = ui.notify_above_map
@@ -688,14 +690,20 @@ local hookID5
 local hookID6
 local script_hook = 09
 
+local netlog_start = false
 function log_net()
-    if net_log.on then
+    if not net_log.on then
+		netlog_start = false
+		 hook.remove_net_event_hook(hookID6)
+	return HANDLER_POP
+	end
+	if not netlog_start then
         hookID6 = hook.register_net_event_hook(log_neteventHook)
-    else
-        hook.remove_net_event_hook(hookID6)
-        return HANDLER_CONTINUE
+    
+       
+       
     end
-    return HANDLER_POP
+  return HANDLER_CONTINUE
 end
 
 function netcheck()
@@ -767,7 +775,7 @@ local scriptlog_pid = menu.add_feature("Log player script events", "value_i", 0,
             return HANDLER_CONTINUE
         end
         SEid = nil
-        script_check_logger.on = falser
+        script_check_logger.on = false
         return HANDLER_POP
     end)
 scriptlog_pid.on = false
@@ -775,8 +783,9 @@ scriptlog_pid.max_i = 32
 scriptlog_pid.min_i = 0
 scriptlog_pid.value_i = 0
 
-local params = {}
+params = {}
 script_event_hook = function(source, target, params, count)
+	params = {}
     local player_source = player.get_player_name(source)
     local scid = player.get_player_scid(source)
     local player_target = player.get_player_name(target)
@@ -784,6 +793,7 @@ script_event_hook = function(source, target, params, count)
 
     if scriptlog_pid.on then
         if source == SEid then
+			get_date_time()
 			scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
             local cnt = 0
             for k, v in pairs(params) do
@@ -795,11 +805,14 @@ script_event_hook = function(source, target, params, count)
             return true
         end
 	else
+	params = {}
+	get_date_time()
 	scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
 
 	
         local cnt = 0
         for k, v in pairs(params) do
+			get_date_time()
             scriptlog_out("[P: " .. cnt .. "] = " .. "[" .. k .. "] " .. v)
             cnt = cnt + 1
         end
@@ -823,10 +836,11 @@ end
 function log_neteventHook(source, target, id)
     local player_source = player.get_player_name(source)
     local player_target = player.get_player_name(target)
+	get_date_time()
     netlog_out("\n" .. Cur_Date_Time)
     netlog_out(NetEvents[id])
-    netlog_out("from [" .. source .. "] " .. player_source)
-    system.wait(3000)
+    netlog_out("from: [" .. source .. "] " .. player_source.. "to: [" .. target .. "] " .. player_target)
+   
     return true
 end
 
@@ -2713,26 +2727,26 @@ marker_pos_thread = function(context)
 		local pid = context.pid
 		local coord = tracking.playerped_posi[pid+1]		
 		local update = context.CTRL_ID
-		local x = context.x
-		size = context.size
-		x = context.x
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = context.z
+		
 		if mkidbool[update] == true then
 		x = marker_type
 		size = size_marker
 		offset.x = 0.0
 		offset.y = 0.0
 		offset.z = offsetz_marker
-		
-
-	end
+		else
+		size = context.size
+		x = context.x
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = context.z
 		end
-			graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+
+		graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
 			
 			system.wait(0)
-
+			
+		end
 		
 end
 
