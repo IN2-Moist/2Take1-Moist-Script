@@ -9,7 +9,7 @@ These must be inside the Folder :
 
 **-** scripts
 
-- `MoistScript2.0.1.lua` (Main Script)
+- `MoistScript2.01.lua` (Main Script)
 
 Optionally Include :
 
