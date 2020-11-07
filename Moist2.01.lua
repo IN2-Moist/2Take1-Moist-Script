@@ -13,6 +13,30 @@ local kickdata2 = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.data"
 local debugfile = rootPath.."\\lualogs\\Moists_debug.log"
 
 
+--output functions
+local Cur_Date_Time
+function get_date_time()
+
+	local d = os.date()
+
+	local dtime = string.match(d, "%d%d:%d%d:%d%d")
+
+	local dt = os.date("%d/%m/%y%y")
+	Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
+end
+
+function debug_out(text)
+	get_date_time()
+
+	local file = io.open(rootPath.."\\lualogs\\Moists_debug.log", "a")
+	io.output(file)
+	io.write("\n"..Cur_Date_Time .."\n")
+	io.write(text)
+	io.close()
+end
+
+
+
 
 
 local dataload = function()
@@ -173,7 +197,8 @@ local trigger_time = nil
 local cleanup_done = true
 local kicklogsent = false
 local logsent = false
-
+local spawnoptions_loaded = false
+local AnonymousBounty = true
 
 
 --Modder Flag Variables
@@ -200,35 +225,12 @@ local hookID6 = 07
 
 
 
---output functions
-
-
-function get_date_time()
-
-	local d = os.date()
-
-	local dtime = string.match(d, "%d%d:%d%d:%d%d")
-
-	local dt = os.date("%d/%m/%y%y")
-	Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
-end
-
-function debug_out(text)
-	get_date_time()
-
-	local file = io.open(rootPath.."\\lualogs\\Moists_debug.log", "a")
-	io.output(file)
-	io.write("\n"..Cur_Date_Time .."\n")
-	io.write(text)
-	io.close()
-end
-
 
 --Util functions
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='10'>~l~~o~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 203)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -238,24 +240,24 @@ function moist_notify(msg1, msg2)
 	msg2 = msg2 or "na"
 
 	if notifytype == 1 then
-		ui.notify_above_map(string.format("<font size='10'>~h~~r~" ..msg1 .."~h~~y~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		ui.notify_above_map(string.format("<font size='10'>~h~~r~ " ..msg1 .."<font size='8'>~h~~y~ " .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 	end
 	if notifytype == 2 then
-		ui.notify_above_map(string.format("<font size='10'>~h~~l~" ..msg1 .."~h~~w~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		ui.notify_above_map(string.format("<font size='10'>~h~~l~ " ..msg1 .."<font size='8'>~h~~w~ " .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 	end
 
 	if notifytype == 3 then
-		ui.notify_above_map(string.format("<font size='10'>~h~~y~" ..msg1 .."~h~~l~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		ui.notify_above_map(string.format("<font size='10'>~h~~y~ " ..msg1 .."<font size='8'>~h~~l~ " .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 	end
 	if notifytype == 4 then
-		ui.notify_above_map(string.format("<font size='10'>~h~~w~" ..msg1 .."~h~~r~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		ui.notify_above_map(string.format("<font size='10'>~h~~w~ " .. msg1 .."<font size='8'>~h~~r~ " .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 	end
 
 	if notifytype == 5 then
-		ui.notify_above_map(string.format("<font size='10'>~h~~l~" ..msg1 .."~h~~y~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		ui.notify_above_map(string.format("<font size='10'>~h~~l~ " ..msg1 .."<font size='8'>~h~~y~ " .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(string.format("<font size='10'>~h~~w~" ..msg1 .."~h~~l~" .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
+		ui.notify_above_map(string.format("<font size='10'>~h~~w~ " ..msg1 .."<font size='8'>~h~~l~ " .. msg2), "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", color)
 	end
 
 end
@@ -315,6 +317,9 @@ local ped_wep = {{"unarmed", 0xA2719263},{"weapon_handcuffs", 0xD04C944D},{"ston
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Half Track","Force to Night Shark AAT","Force to Night Shark AAT","Force to APC Mission","Force to APC Mission","Force to MOC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission1","Force to Opressor Mission2","Force to Opressor Mission2"}
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
+local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
+
+
 --Event Data Arrays
 
 local NetEvents = {}
@@ -423,17 +428,17 @@ playerFeat4 = {}
 --local Menu Functions
 if  Moist == nil then
 	globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent",0).id
-	end
+end
 if not  Moist == nil then	
 	globalFeatures.parent = Moist
 end
 
+--TODO: local Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
--- globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
+globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
 globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
-
 globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
 globalFeatures.cleanup = menu.add_feature("Clean Shit Up!", "parent", globalFeatures.parent).id
@@ -446,8 +451,14 @@ globalFeatures.createdmarkers = menu.add_feature("Markers", "parent", globalFeat
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Custiomisation", "parent", globalFeatures.moistopt).id
---TODO:Notify settings
 
+--TODO:online Player Feature Parents
+local Player_Tools = menu.add_player_feature("Tools", "parent", 0).id
+local BountyId = menu.add_player_feature("Bounty Options", "parent", 0).id
+playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
+
+
+--TODO:Notify settings
 globalFeatures.nottyp = menu.add_feature("Set Notify Variant", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
 
                                          notifytype = feat.value_i
@@ -480,15 +491,12 @@ menu.add_feature("Save settings", "action", globalFeatures.moistopt, function()
 --TODO Online Functions
 --online Menu Functions
 
-
-
-
 spawnoptions_loaded = false
 --TODO: Show Spawn option
 Show_Spawn_Options = menu.add_feature("Show & Load SpawnOptions", "toggle", globalFeatures.moistopt, function(feat)
                                       if not feat.on then
                                       	setting["showSpawns"] = false
-                                      	spawnoptions_loaded = false
+                                      	-- spawnoptions_loaded = false
                                       	return HANDLER_POP
                                       end	
                                       setting["showSpawns"] = true
@@ -516,9 +524,7 @@ local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, fun
                                     end)
 ip_clip.threaded = false
 
-playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
-
-local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", 0, function(feat, pid)
+local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", Player_Tools, function(feat, pid)
                                         while feat.on do
                                         	if player.is_player_modder(pid, -1) == true
                                         		then
@@ -1348,6 +1354,58 @@ for i = 1, #missions do
 end
 
 
+local function AddBounty(pid, value, anonymous)
+	if not network.is_session_started() then return end
+	local npc_bit = anonymous and 1 or 0
+	for i = 0, 31 do
+		if player.get_player_scid(i) ~= 4294967295 then
+
+			script.trigger_script_event(544453591 , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+
+		end
+	end
+end
+
+
+menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, pid)
+                        if feat.on ~= AnonymousBounty then
+                        	AnonymousBounty = feat.on
+                        	local pf = menu.get_player_feature(feat.id)
+                        	for i=1,#pf.feats do
+                        		if pf.feats[i].on ~= AnonymousBounty then
+                        			pf.feats[i].on = AnonymousBounty
+                        		end
+                        	end
+                        end
+                        return HANDLER_POP
+                    end).threaded = false
+
+menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
+                        local r,s = input.get("Custom Bounty Value", "", 64, 3)
+                        if r == 1 then
+                        	return HANDLER_CONTINUE
+                        end
+
+                        if r == 2 then
+                        	return HANDLER_POP
+                        end
+
+                        local value = tonumber(s)
+                        value = math.max(0, value)
+                        value = math.min(10000, value)
+                        AddBounty(pid, value, AnonymousBounty)
+                        notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+                    end).threaded = false
+
+for i = 1, #BountyPresets do
+	menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId, function(feat, pid)
+	                        AddBounty(pid, BountyPresets[i], AnonymousBounty)
+	                        --notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+	                    end).threaded = false
+end
+
+
+
 --Functions
 
 local global_func = {}
@@ -1559,6 +1617,17 @@ global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggl
                                              end)
 global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
 
+local cross_hair = menu.add_feature("Show Weapon Recticle", "toggle", globalFeatures.self_options, function(feat)
+                                    if feat.on then
+
+                                    	ui.show_hud_component_this_frame(14)
+                                    	return HANDLER_CONTINUE
+                                    end
+                                    return HANDLER_POP
+                                end)
+cross_hair.on = false
+
+
 
 --Better Randomisation for Math functions
 math.randomseed(utils.time_ms())
@@ -1576,7 +1645,7 @@ end
 
 
 
---offset to player calculation
+--TODO: offset to player calculation
 local Self_offsetPos = v3()
 function OffsetCoords(pos, heading, distance)
 	heading = math.rad((heading - 180) * -1)
@@ -1592,8 +1661,210 @@ function get_offset(pid, dist)
 	return Self_offsetPos	
 end
 
+--TODO: local session functions
 
---World Cleanup stuff
+blockpassiveall = function()
+
+local me
+
+me	= player.player_id()
+
+for i=0,32 do
+	if i ~= me
+		then
+			script.trigger_script_event(0x54BAD868, i, {1, 1})
+		end
+	end
+end
+
+markall = function()
+local me
+
+me = player.player_id()
+
+for i = 0, 32 do
+	if i ~= me then
+
+	end
+	player.set_player_as_modder(i, 1)
+
+	player.set_player_as_modder(i, mod_flag_1)
+
+	player.set_player_as_modder(i, mod_flag_2)
+
+end
+end
+
+
+notmarkall = function()
+local me
+
+me = player.player_id()
+
+for i = 0, 32 do
+	if i ~= me then
+
+	end
+	player.unset_player_as_modder(i, -1)
+end
+end
+
+
+local allmod = menu.add_feature("Mark all Players as Modder", "action", globalFeatures.protex, function(feat)
+                                markall()
+                            end)
+allmod.threaded = false
+
+local allmodt = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
+                                 if feat.on then
+
+                                 	local me
+
+                                 	me = player.player_id()
+
+                                 	for i = 0, 32 do
+                                 		if i ~= me then
+
+                                 		end
+
+                                 		player.set_player_as_modder(i, 1)
+
+                                 		player.set_player_as_modder(i, mod_flag_1)
+
+                                 		player.set_player_as_modder(i, mod_flag_2)
+                                 	end
+                                 	return HANDLER_CONTINUE
+                                 end
+
+                             end)
+
+local notallmod = menu.add_feature("UnMark all Players as Modder", "action", globalFeatures.protex, function(feat)
+                                   notmarkall()
+                               end)
+notallmod.threaded = false
+
+
+local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.lobby, function(feat)
+
+                                            for playid = 0, 31 do
+
+                                            	if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
+
+                                            		for j = 0, 31 do
+
+                                            			script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+                                            		end
+                                            	end
+
+                                            end
+                                        end)
+bountyallplayerses.threaded = false
+
+local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.lobbyglobalFeatures.lobby, function(feat)
+                                  blockpassiveall()
+                              end)
+pasivall.threaded = false
+
+
+local bounty_all = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.lobbyglobalFeatures.lobbyglobalFeatures.lobby, function(feat)
+                                    for playid = 0, 31 do
+                                    	if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
+                                    		for j = 0, 31 do
+                                    			script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+                                    		end
+                                    	end
+                                    end
+                                end)
+bounty_all.threaded = false
+
+--TODO: Remove from Public
+local NetBail_SHF_Kick = menu.add_feature("NetBail ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
+                                          if feat.on then
+
+                                          	local me = player.player_id()
+                                          	for i = 0, 32 do
+                                          		local fnd = player.is_player_friend(i)
+                                          		if i ~= me or fnd then
+                                          			script.trigger_script_event(-1153500935, i, {91645, -99683, 1788, 60877, 55085, 72028})
+                                          			script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+                                          		end
+                                          	end
+                                          	return HANDLER_CONTINUE
+                                          end
+                                          return HANDLER_POP
+                                      end)
+
+local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
+                                     if feat.on then
+
+                                     	local me = player.player_id()		
+                                     	for i = 0, 32 do
+                                     		local fnd = player.is_player_friend(i)
+                                     		if i ~= me or fnd then
+                                     			script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+                                     		end
+                                     	end
+                                     	return HANDLER_CONTINUE
+                                     end
+                                     return HANDLER_POP		
+                                 end)
+
+local function hostkickall()
+
+	local me = player.player_id()
+	if network.network_is_host() then
+		for i = 0, 32 do
+			local fnd = player.is_player_friend(i)
+			if i ~= me or fnd then
+
+				network.network_session_kick_player(i)
+			end
+		end
+	else            
+		notify_above_map("You are not Session-Host!")
+	end
+end
+
+local hostkick = menu.add_feature("Host Kick All", "toggle", globalFeatures.kick, function(feat)
+                                  if feat.on then
+                                  	hostkickall()
+                                  	return HANDLER_CONTINUE
+                                  end
+                                  return HANDLER_POP	
+                              end)
+
+
+local all_ply_mod = menu.add_feature("Mark all Players as Modder", "action", globalFeatures.protex, function(feat)
+                                     markall()
+                                 end)
+all_ply_mod.threaded = false
+
+local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
+                                 if feat.on then
+
+                                 	local me
+                                 	me = player.player_id()
+                                 	for i = 0, 32 do
+                                 		local fnd = player.is_player_friend(i)
+                                 		if i ~= me or fnd then
+                                 			player.set_player_as_modder(i, 1)
+                                 			player.set_player_as_modder(i, mod_flag_1)
+                                 			player.set_player_as_modder(i, mod_flag_2)
+                                 		end
+                                 	end
+                                 	return HANDLER_CONTINUE
+                                 end
+                                 return HANDLER_POP	
+
+                             end)
+all_mod.threaded = false
+all_mod.on = false
+
+
+
+
+
+--TODO: World Cleanup stuff
 local cleanup_done = true
 
 clear_World_ent = menu.add_feature("Fetched World Entities Move & Delete", "action", globalFeatures.entity_removal, function(feat)
@@ -2154,21 +2425,21 @@ Freeze_obj = menu.add_feature("Freeze World Objects in place", "action", globalF
                               for i = 1, #allobj do
                               	entity.freeze_entity(allobj[i], false)
                               	network.request_control_of_entity(allobj[i])
-                             -- 	entity.set_entity_coords_no_offset(allobj[i], pos)
+                              	-- 	entity.set_entity_coords_no_offset(allobj[i], pos)
                               	entity.freeze_entity(allobj[i], true)
                               	--entity.set_entity_as_no_longer_needed(allobj[i])
                               	-- entity.delete_entity(allobj[i])
                               end
                               system.wait(400)
-                          --    for i = 1, #allveh do
-                          --    	network.request_control_of_entity(allveh[i])
-									--entity.freeze_entity(allveh[i], false)
-                              --	entity.set_entity_coords_no_offset(allveh[i], pos)
-                         --     	entity.freeze_entity(allveh[i], true)
+                              --    for i = 1, #allveh do
+                              	--    	network.request_control_of_entity(allveh[i])
+                              	--entity.freeze_entity(allveh[i], false)
+                              	--	entity.set_entity_coords_no_offset(allveh[i], pos)
+                              	--     	entity.freeze_entity(allveh[i], true)
                               	--entity.set_entity_as_no_longer_needed(allveh[i])
                               	-- entity.delete_entity(allveh[i])
-                           --   end
-                          end)
+                              	--   end
+                              end)
 
 
 pedveh_cleanup = menu.add_feature("Delete Ped Spawns + Vehicles", "action", globalFeatures.cleanup, function(feat)
@@ -2280,7 +2551,7 @@ local entity_control
 
 OptionsVar.aim_control = menu.add_feature("DetonateVehicle Aiming@(LShift or PS:X XBC:A)", "toggle", globalFeatures.moistopt, function(feat)
                                           setting["aimDetonate_control"] = true
-  if feat.on then
+                                          if feat.on then
 
 
                                           	if player.is_player_free_aiming(player.player_id()) and controls.is_control_pressed(1,21) then
@@ -2304,43 +2575,43 @@ OptionsVar.aim_control = menu.add_feature("DetonateVehicle Aiming@(LShift or PS:
 
 
                                           			end
-                                          				--ped.clear_ped_tasks_immediately(entity_control)
-                                          				if entity.get_entity_god_mode(entity_control) then
-                                          					moist_notify("Entity God Mode!!", "\nDisabling God Mode")
-                                          					network.request_control_of_entity(entity_control)
-                                          					entity.set_entity_god_mode(entity_control, false)
-                                          				end
-                                          				if entity.is_entity_attached(entity_control) then
-                                          					entity_control = entity.get_entity_attached_to(entity_control)
-                                          				end
-                                          				network.request_control_of_entity(entity_control)
-                                          			end
+                                          			--ped.clear_ped_tasks_immediately(entity_control)
                                           			if entity.get_entity_god_mode(entity_control) then
-                                          				moist_notify("Attached Entity is God Mode!!", "\nDisabling God Mode")
+                                          				moist_notify("Entity God Mode!!", "\nDisabling God Mode")
                                           				network.request_control_of_entity(entity_control)
                                           				entity.set_entity_god_mode(entity_control, false)
                                           			end
-                                          			if entity.is_entity_a_vehicle(entity_control) then
-                                          				network.request_control_of_entity(entity_control)
-                                          				moist_notify("Vehicle God Mode!! Removing it from this CUNT!", "\nNow Giving it a Remote Bomb!!")
-                                          				vehicle.add_vehicle_phone_explosive_device(entity_control)
-                                          				system.wait(25)
+                                          			if entity.is_entity_attached(entity_control) then
+                                          				entity_control = entity.get_entity_attached_to(entity_control)
                                           			end
-
                                           			network.request_control_of_entity(entity_control)
-                                          			if vehicle.has_vehicle_phone_explosive_device() then
-                                          				moist_notify("RIP CUNT DETONATING REMOTE BOMB!!", "\nFUCK YOU & GG ~ex_r*~")
-                                          				vehicle.detonate_vehicle_phone_explosive_device()
-                                          			end
-                                          			return HANDLER_CONTINUE
+                                          		end
+                                          		if entity.get_entity_god_mode(entity_control) then
+                                          			moist_notify("Attached Entity is God Mode!!", "\nDisabling God Mode")
+                                          			network.request_control_of_entity(entity_control)
+                                          			entity.set_entity_god_mode(entity_control, false)
+                                          		end
+                                          		if entity.is_entity_a_vehicle(entity_control) then
+                                          			network.request_control_of_entity(entity_control)
+                                          			moist_notify("Vehicle God Mode!! Removing it from this CUNT!", "\nNow Giving it a Remote Bomb!!")
+                                          			vehicle.add_vehicle_phone_explosive_device(entity_control)
+                                          			system.wait(25)
+                                          		end
+
+                                          		network.request_control_of_entity(entity_control)
+                                          		if vehicle.has_vehicle_phone_explosive_device() then
+                                          			moist_notify("RIP CUNT DETONATING REMOTE BOMB!!", "\nFUCK YOU & GG ~ex_r*~")
+                                          			vehicle.detonate_vehicle_phone_explosive_device()
                                           		end
                                           		return HANDLER_CONTINUE
                                           	end
+                                          	return HANDLER_CONTINUE
+                                          end
 
-                                          	setting["aimDetonate_control"] = false
-                                          	return HANDLER_POP
+                                          setting["aimDetonate_control"] = false
+                                          return HANDLER_POP
 
-                                          end)
+                                      end)
 OptionsVar.aim_control.on = setting["aimDetonate_control"]
 
 
@@ -3663,7 +3934,11 @@ menu.add_feature("Any Friends Online?", "action", globalFeatures.parent, functio
 				local featureVars = {}
 				local features = {}
 
-				featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id)	
+				featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, function()
+				                                 moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
+				                                 local heldwep = ped.get_current_ped_weapon(player.get_player_ped(pid))
+				                                 moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep)
+				                             end)	
 				featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id, function()
 				                                 if #data == 0 or nil then
 				                                 	dataload()
@@ -4365,7 +4640,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   				if  not player.is_player_modder(pid, -1) then
                                   					if player.is_player_spectating(pid) and player.is_player_playing(pid) and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
                                   						tags[#tags + 1] = ".SPEC."
-                                  						notify_above_map("Modded Specate Detected from " .. (isYou and "you " or name) .. " ")
+                                  						moist_notify("Modded Specate Detected from " .. (isYou and "you " or name) .. " ")
                                   						player.set_player_as_modder(pid, mod_flag_3)
                                   					end
                                   				end
@@ -4388,6 +4663,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   						debug_out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
                                   					end
                                   				end
+
 
                                   				if tbl.scid ~= scid then
                                   					for cf_name,cf in pairs(tbl.features) do
