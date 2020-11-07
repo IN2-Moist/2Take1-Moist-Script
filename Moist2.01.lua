@@ -428,7 +428,7 @@ playerFeat4 = {}
 --local Menu Functions
 if  Moist == nil then
 	globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent",0).id
-end
+	end
 if not  Moist == nil then	
 	globalFeatures.parent = Moist
 end
@@ -1360,48 +1360,48 @@ local function AddBounty(pid, value, anonymous)
 	for i = 0, 31 do
 		if player.get_player_scid(i) ~= 4294967295 then
 
-			script.trigger_script_event(544453591 , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
-
+					script.trigger_script_event(544453591 , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+			
 		end
 	end
 end
 
 
 menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, pid)
-                        if feat.on ~= AnonymousBounty then
-                        	AnonymousBounty = feat.on
-                        	local pf = menu.get_player_feature(feat.id)
-                        	for i=1,#pf.feats do
-                        		if pf.feats[i].on ~= AnonymousBounty then
-                        			pf.feats[i].on = AnonymousBounty
-                        		end
-                        	end
-                        end
-                        return HANDLER_POP
-                    end).threaded = false
+	if feat.on ~= AnonymousBounty then
+		AnonymousBounty = feat.on
+		local pf = menu.get_player_feature(feat.id)
+		for i=1,#pf.feats do
+			if pf.feats[i].on ~= AnonymousBounty then
+				pf.feats[i].on = AnonymousBounty
+			end
+		end
+	end
+	return HANDLER_POP
+end).threaded = false
 
 menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
-                        local r,s = input.get("Custom Bounty Value", "", 64, 3)
-                        if r == 1 then
-                        	return HANDLER_CONTINUE
-                        end
-
-                        if r == 2 then
-                        	return HANDLER_POP
-                        end
-
-                        local value = tonumber(s)
-                        value = math.max(0, value)
-                        value = math.min(10000, value)
-                        AddBounty(pid, value, AnonymousBounty)
-                        notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
-                    end).threaded = false
+	local r,s = input.get("Custom Bounty Value", "", 64, 3)
+	if r == 1 then
+		return HANDLER_CONTINUE
+	end
+	
+	if r == 2 then
+		return HANDLER_POP
+	end
+	
+	local value = tonumber(s)
+	value = math.max(0, value)
+	value = math.min(10000, value)
+	AddBounty(pid, value, AnonymousBounty)
+	notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+end).threaded = false
 
 for i = 1, #BountyPresets do
 	menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId, function(feat, pid)
-	                        AddBounty(pid, BountyPresets[i], AnonymousBounty)
-	                        --notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
-	                    end).threaded = false
+		AddBounty(pid, BountyPresets[i], AnonymousBounty)
+		--notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+	end).threaded = false
 end
 
 
@@ -1618,13 +1618,13 @@ global_func.rapidfire_hotkey1 = menu.add_feature("mk2 rapid fire hotkey", "toggl
 global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
 
 local cross_hair = menu.add_feature("Show Weapon Recticle", "toggle", globalFeatures.self_options, function(feat)
-                                    if feat.on then
+if feat.on then
 
-                                    	ui.show_hud_component_this_frame(14)
-                                    	return HANDLER_CONTINUE
-                                    end
-                                    return HANDLER_POP
-                                end)
+ui.show_hud_component_this_frame(14)
+return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
 cross_hair.on = false
 
 
@@ -1665,147 +1665,147 @@ end
 
 blockpassiveall = function()
 
-local me
+	local me
+	
+	me	= player.player_id()
 
-me	= player.player_id()
-
-for i=0,32 do
-	if i ~= me
+	for i=0,32 do
+		if i ~= me
 		then
-			script.trigger_script_event(0x54BAD868, i, {1, 1})
-		end
-	end
+            script.trigger_script_event(0x54BAD868, i, {1, 1})
+end
+end
 end
 
 notmarkall = function()
-local me
+    local me
 
-me = player.player_id()
+    me = player.player_id()
 
-for i = 0, 32 do
-	if i ~= me then
+    for i = 0, 32 do
+        if i ~= me then
 
-	end
-	player.unset_player_as_modder(i, -1)
-end
+        end
+player.unset_player_as_modder(i, -1)
+   end
 end
 
 
 
 local notallmod = menu.add_feature("UnMark all Players as Modder", "action", globalFeatures.protex, function(feat)
-                                   notmarkall()
-                               end)
+notmarkall()
+end)
 notallmod.threaded = false
 
 
 local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.lobby, function(feat)
 
-                                            for playid = 0, 31 do
+	for playid = 0, 31 do
 
-                                            	if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
+if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
 
-                                            		for j = 0, 31 do
+ for j = 0, 31 do
 
-                                            			script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
-                                            		end
-                                            	end
+		script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+end
+end
 
-                                            end
-                                        end)
+end
+end)
 bountyallplayerses.threaded = false
 
 local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.lobby, function(feat)
-                                  blockpassiveall()
-                              end)
+blockpassiveall()
+end)
 pasivall.threaded = false
 
 
 local bounty_all = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.lobby, function(feat)
-                                    for playid = 0, 31 do
-                                    	if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
-                                    		for j = 0, 31 do
-                                    			script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
-                                    		end
-                                    	end
-                                    end
-                                end)
+	for playid = 0, 31 do
+		if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
+			for j = 0, 31 do
+				script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+			end
+		end
+	end
+end)
 bounty_all.threaded = false
 
 --TODO: Remove from Public
 local NetBail_SHF_Kick = menu.add_feature("NetBail ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
-                                          if feat.on then
-
-                                          	local me = player.player_id()
-                                          	for i = 0, 32 do
-                                          		local fnd = player.is_player_friend(i)
-                                          		if i ~= me or fnd then
-                                          			script.trigger_script_event(-1153500935, i, {91645, -99683, 1788, 60877, 55085, 72028})
-                                          			script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
-                                          		end
-                                          	end
-                                          	return HANDLER_CONTINUE
-                                          end
-                                          return HANDLER_POP
-                                      end)
+	if feat.on then
+		
+		local me = player.player_id()
+		for i = 0, 32 do
+		local fnd = player.is_player_friend(i)
+			if i ~= me or fnd then
+				script.trigger_script_event(-1153500935, i, {91645, -99683, 1788, 60877, 55085, 72028})
+				script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+			end
+		end
+	return HANDLER_CONTINUE
+	end
+		return HANDLER_POP
+end)
 
 local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
-                                     if feat.on then
-
-                                     	local me = player.player_id()		
-                                     	for i = 0, 32 do
-                                     		local fnd = player.is_player_friend(i)
-                                     		if i ~= me or fnd then
-                                     			script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
-                                     		end
-                                     	end
-                                     	return HANDLER_CONTINUE
-                                     end
-                                     return HANDLER_POP		
-                                 end)
+	if feat.on then
+		
+		local me = player.player_id()		
+		for i = 0, 32 do
+		local fnd = player.is_player_friend(i)
+			if i ~= me or fnd then
+				script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+			end
+		end
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP		
+end)
 
 local function hostkickall()
-
+	
 	local me = player.player_id()
 	if network.network_is_host() then
 		for i = 0, 32 do
-			local fnd = player.is_player_friend(i)
+		local fnd = player.is_player_friend(i)
 			if i ~= me or fnd then
 
 				network.network_session_kick_player(i)
 			end
 		end
-	else            
+		else            
 		notify_above_map("You are not Session-Host!")
-	end
+end
 end
 
 local hostkick = menu.add_feature("Host Kick All", "toggle", globalFeatures.kick, function(feat)
-                                  if feat.on then
-                                  	hostkickall()
-                                  	return HANDLER_CONTINUE
-                                  end
-                                  return HANDLER_POP	
-                              end)
+	if feat.on then
+		hostkickall()
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP	
+end)
 
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
-                                 if feat.on then
+	if feat.on then
+		
+		local me
+		me = player.player_id()
+		for i = 0, 32 do
+			local fnd = player.is_player_friend(i)
+			if i ~= me or fnd then
+			player.set_player_as_modder(i, 1)
+			player.set_player_as_modder(i, mod_flag_1)
+			player.set_player_as_modder(i, mod_flag_2)
+		end
+		end
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP	
 
-                                 	local me
-                                 	me = player.player_id()
-                                 	for i = 0, 32 do
-                                 		local fnd = player.is_player_friend(i)
-                                 		if i ~= me or fnd then
-                                 			player.set_player_as_modder(i, 1)
-                                 			player.set_player_as_modder(i, mod_flag_1)
-                                 			player.set_player_as_modder(i, mod_flag_2)
-                                 		end
-                                 	end
-                                 	return HANDLER_CONTINUE
-                                 end
-                                 return HANDLER_POP	
-
-                             end)
+end)
 all_mod.threaded = false
 all_mod.on = false
 
@@ -2374,21 +2374,21 @@ Freeze_obj = menu.add_feature("Freeze World Objects in place", "action", globalF
                               for i = 1, #allobj do
                               	entity.freeze_entity(allobj[i], false)
                               	network.request_control_of_entity(allobj[i])
-                              	-- 	entity.set_entity_coords_no_offset(allobj[i], pos)
+                             -- 	entity.set_entity_coords_no_offset(allobj[i], pos)
                               	entity.freeze_entity(allobj[i], true)
                               	--entity.set_entity_as_no_longer_needed(allobj[i])
                               	-- entity.delete_entity(allobj[i])
                               end
                               system.wait(400)
-                              --    for i = 1, #allveh do
-                              	--    	network.request_control_of_entity(allveh[i])
-                              	--entity.freeze_entity(allveh[i], false)
-                              	--	entity.set_entity_coords_no_offset(allveh[i], pos)
-                              	--     	entity.freeze_entity(allveh[i], true)
+                          --    for i = 1, #allveh do
+                          --    	network.request_control_of_entity(allveh[i])
+									--entity.freeze_entity(allveh[i], false)
+                              --	entity.set_entity_coords_no_offset(allveh[i], pos)
+                         --     	entity.freeze_entity(allveh[i], true)
                               	--entity.set_entity_as_no_longer_needed(allveh[i])
                               	-- entity.delete_entity(allveh[i])
-                              	--   end
-                              end)
+                           --   end
+                          end)
 
 
 pedveh_cleanup = menu.add_feature("Delete Ped Spawns + Vehicles", "action", globalFeatures.cleanup, function(feat)
@@ -2500,7 +2500,7 @@ local entity_control
 
 OptionsVar.aim_control = menu.add_feature("DetonateVehicle Aiming@(LShift or PS:X XBC:A)", "toggle", globalFeatures.moistopt, function(feat)
                                           setting["aimDetonate_control"] = true
-                                          if feat.on then
+  if feat.on then
 
 
                                           	if player.is_player_free_aiming(player.player_id()) and controls.is_control_pressed(1,21) then
@@ -2521,46 +2521,46 @@ OptionsVar.aim_control = menu.add_feature("DetonateVehicle Aiming@(LShift or PS:
                                           				local pedhp2 = ped.get_ped_max_health(entity_control) 
 
                                           				moist_notify("Current Health: "..pedhp1, "\nMax Health: " ..pedhp2)
+                                          				ped.clear_ped_tasks_immediately(entity_control)
 
 
                                           			end
-                                          			--ped.clear_ped_tasks_immediately(entity_control)
+                                          				if entity.get_entity_god_mode(entity_control) then
+                                          					moist_notify("Entity God Mode!!", "\nDisabling God Mode")
+                                          					network.request_control_of_entity(entity_control)
+                                          					entity.set_entity_god_mode(entity_control, false)
+                                          				end
+                                          				if entity.is_entity_attached(entity_control) then
+                                          					entity_control = entity.get_entity_attached_to(entity_control)
+                                          				end
+                                          				network.request_control_of_entity(entity_control)
+                                          			end
                                           			if entity.get_entity_god_mode(entity_control) then
-                                          				moist_notify("Entity God Mode!!", "\nDisabling God Mode")
+                                          				moist_notify("Attached Entity is God Mode!!", "\nDisabling God Mode")
                                           				network.request_control_of_entity(entity_control)
                                           				entity.set_entity_god_mode(entity_control, false)
                                           			end
-                                          			if entity.is_entity_attached(entity_control) then
-                                          				entity_control = entity.get_entity_attached_to(entity_control)
+                                          			if entity.is_entity_a_vehicle(entity_control) then
+                                          				network.request_control_of_entity(entity_control)
+                                          				moist_notify("Vehicle God Mode!! Removing it from this CUNT!", "\nNow Giving it a Remote Bomb!!")
+                                          				vehicle.add_vehicle_phone_explosive_device(entity_control)
+                                          				system.wait(25)
                                           			end
-                                          			network.request_control_of_entity(entity_control)
-                                          		end
-                                          		if entity.get_entity_god_mode(entity_control) then
-                                          			moist_notify("Attached Entity is God Mode!!", "\nDisabling God Mode")
-                                          			network.request_control_of_entity(entity_control)
-                                          			entity.set_entity_god_mode(entity_control, false)
-                                          		end
-                                          		if entity.is_entity_a_vehicle(entity_control) then
-                                          			network.request_control_of_entity(entity_control)
-                                          			moist_notify("Vehicle God Mode!! Removing it from this CUNT!", "\nNow Giving it a Remote Bomb!!")
-                                          			vehicle.add_vehicle_phone_explosive_device(entity_control)
-                                          			system.wait(25)
-                                          		end
 
-                                          		network.request_control_of_entity(entity_control)
-                                          		if vehicle.has_vehicle_phone_explosive_device() then
-                                          			moist_notify("RIP CUNT DETONATING REMOTE BOMB!!", "\nFUCK YOU & GG ~ex_r*~")
-                                          			vehicle.detonate_vehicle_phone_explosive_device()
+                                          			network.request_control_of_entity(entity_control)
+                                          			if vehicle.has_vehicle_phone_explosive_device() then
+                                          				moist_notify("RIP CUNT DETONATING REMOTE BOMB!!", "\nFUCK YOU & GG ~ex_r*~")
+                                          				vehicle.detonate_vehicle_phone_explosive_device()
+                                          			end
+                                          			return HANDLER_CONTINUE
                                           		end
                                           		return HANDLER_CONTINUE
                                           	end
-                                          	return HANDLER_CONTINUE
-                                          end
 
-                                          setting["aimDetonate_control"] = false
-                                          return HANDLER_POP
+                                          	setting["aimDetonate_control"] = false
+                                          	return HANDLER_POP
 
-                                      end)
+                                          end)
 OptionsVar.aim_control.on = setting["aimDetonate_control"]
 
 
@@ -3877,18 +3877,18 @@ menu.add_feature("Any Friends Online?", "action", globalFeatures.parent, functio
 			--Player list
 
 
-			for pid=0,31 do
+for pid=0,31 do
 
 
 				local featureVars = {}
 				local features = {}
 
-				featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, function()
-				                                 moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
-				                                 local heldwep = ped.get_current_ped_weapon(player.get_player_ped(pid))
-				                                 moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep)
-				                             end)	
-				featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id, function()
+		featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, function()
+					moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
+					local heldwep = ped.get_current_ped_weapon(player.get_player_ped(pid))
+					moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep)
+						end)	
+		featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id, function()
 				                                 if #data == 0 or nil then
 				                                 	dataload()
 				                                 end
