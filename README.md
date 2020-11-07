@@ -71,7 +71,7 @@ to kill the player with selected weapon`
 
 - Spawn Attacker & Task
 
-`Spawns nearby onfoot with Weapon & Attacks Player`
+`Spawns nearby on foot with Weapon & Attacks Player`
 
 - Spawn Support Ped
 
@@ -101,7 +101,8 @@ are spawned and they shoot in each others direction`
 ##### Orbital Room Block
 
 - Teleport to block location?
-`Teleports you directly in front of the orbital entrance you need to be inside your facility
+
+`Teleport's you directly in front of the orbital entrance you need to be inside your facility
 otherwise game kicks you out of the interior`
 
 - Block Orbital Entrance with Wall
@@ -112,6 +113,52 @@ otherwise game kicks you out of the interior`
 
 `Places the TV Screens you see inside the orbital showing you the Orbital cannons state or activity these show by default Orbital Inactive
 RIP ORBITAL WARRIORS!!`
+
+**Online Protection**
+				
+- Mark all Players as Modder
+
+'Turns on Protections to block everything from all Players`
+
+- Mark all Players as Modder (toggle)
+
+'Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
+
+- UnMark all Players as Modder
+
+'Turns off all protections that are being blocked from all Players if they are marked as a Modder
+(includes any other detection not set by this script)
+
+- My Friends DO NOT MOD! MarkOFF
+
+'For those that find it a issue playing with friends or your friends being able to join and do stuff in your session 
+with out getting stuck on long loading screens due to a RAC Detection or something false only effects people in session
+currently on your friends list`
+
+
+**Online Session:**
+
+- set Bounty on Lobby
+
+10 k Bounty for all including yourself!
+
+- NetBail ScriptHost Fuckarino
+
+`Network bail Kick, with a Script host targeted kick which will kick all in session and will force the script host to send kicks
+this has a really bad effect on yourself game ui goes flickery due to you being a script host and you getting spammed with those
+kicks although 2take1 protects you from being kicked it makes the game harder to play with the ui going crazy so last resort kick!`
+
+- Network Bail Kick
+
+`Network kick using globals to force the player to bail from the session very effective against most Modder's but most good menus 
+would be protected against this! if it is going to work and kick them it would instantly remove them with no delay`
+
+- Host Kick All
+
+`Only works while you are the current session host, but will kick all players with a Players have voted you out of session message
+preventing them joining again. Does not effect you or friends just all others`
+
+
 
 ## Player Functions:
 
@@ -134,7 +181,7 @@ RIP ORBITAL WARRIORS!!`
 - Set Health Ballistic Armour 2600
 - Set Health to 10000
 - Set Health to 90000
-- Set Health to 328 (lvl 120)
+- Set Health to 328 (level 120)
 
 
 
@@ -156,7 +203,7 @@ RIP ORBITAL WARRIORS!!`
 
 ### Clean Shit Up!
 
-#### - World Cleanup
+#### - World Clean up
 
 - Fetched World Entities Move & Delete
 
@@ -246,29 +293,29 @@ So unless you want your name over their Death when you detonate it probably not 
 **Teleport Instructions**
 
 `For all Teleport Functions to work Player must be in a vehicle!
-Requires you to be in range of their vehicle if the online player
+Requires you to be in range of their vehicle if the Online player
 info window shows them as in a vehicle then they are in range.
 When not in Range you can try to force it by turning on a
-Teleport toggle then go to online player and Spectate them until
-you see them next to you then toggle off spectate. T
+Teleport toggle then go to Online player and Spectate them until
+you see them next to you then toggle off Spectate. T
 hey should then be next to you.`
 
 
 - Teleport Next2me (old Version)
 
-`Teleports the player next to you.`
+`Teleport's the player next to you.`
 
 - Teleport in front of Me
 
-`Teleports them directly in front of you`
+`Teleport's them directly in front of you`
 
 
 - Teleport Beyond World Limits
 
-`Teleports them outside the world boundary limits of the GTA Map`
+`Teleport's them outside the world boundary limits of the GTA Map`
 
 
-`CEO 10k money loop`
+`CEO 10 k money loop`
 
 `Block Passive Mode
 `Unblock Passive Mode
@@ -283,63 +330,6 @@ hey should then be next to you.`
 - Kick Data 2 Type 2
 - Network Bail Kick
 
-
-
-
-`Online Session
-			`Online Protection
-							`Orbital Room Block
-									`Block Orbital Entrance with Wall
-									`Orbital Inactive Screens over Block
-				
-					`Mark all Players as Modder
-					`Mark all Players as Modder
-					`UnMark all Players as Modder
-					`My Friends DO NOT MOD! MarkOFF
-
-				
-	`set Bounty on Lobby
-	`NetBail ScriptHost Fuckarino
-	`Network Bail Kick
-	`Host Kick All
-
-`Player Functions
-		`Player Ped Functions
-				`Put Handcuffs on Self
-				`White Team parachute Pack
-				
-						`Ped Combat Options
-									`unfair aim Damage
-									`shoot Offset Distance
-									`shoot Z_Offset modifier
-									`unfair aim Speed
-									`Shoot offset ahead of self
-									`Shoot offset ahead of self v2
-									`unfair aim Entity
-									`unfair aim/Ped Headshot fire
-									`Get last Weapon impact Pos
-									`Strike last Weapon impact Area
-
-		
-`
-		`Markers (list of markers to delete made to highlight players)
-		
-		`World Cleanup
-				`Fetch all World Entities
-				`Fetched World Entities Move & Delete
-Force Removal (Missed Anything?)",				
-Fetch all Peds Move & Delete
-Fetch all objects Move & Delete
-Fetch all Vehicles Move & Delete
-
-				`Force Removal
-				`Fetch all Peds into Table
-				`Move & Delete Peds
-				`Fetch all objects into Table
-				`Move & Delete Objects
-				`Move & Delete Pickups
-				`Fetch all Vehicles into Table
-				`Move & Delete Vehicles
 
 
 `Options
