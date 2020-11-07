@@ -1,5 +1,5 @@
 # 2Take1-Moist-Script
-### GTAV Script for 2Take1's lua Engine by -IN2-Moist-
+### GTAV Script for 2Take1`s lua Engine by -IN2-Moist-
 
 ## Installation
 
@@ -89,7 +89,7 @@ will attack player sometimes if they fire weapons.
 
 `Spawns Ped in Selected Vehicle Behind Player & Attacks,
 will follow player until they are dead.
-Ped's may attack each other if too many
+Ped`s may attack each other if too many
 are spawned and they shoot in each others direction`
 
 
@@ -102,7 +102,7 @@ are spawned and they shoot in each others direction`
 
 - Teleport to block location?
 
-`Teleport's you directly in front of the orbital entrance you need to be inside your facility
+`Teleport`s you directly in front of the orbital entrance you need to be inside your facility
 otherwise game kicks you out of the interior`
 
 - Block Orbital Entrance with Wall
@@ -118,20 +118,20 @@ RIP ORBITAL WARRIORS!!`
 				
 - Mark all Players as Modder
 
-'Turns on Protections to block everything from all Players`
+`Turns on Protections to block everything from all Players`
 
 - Mark all Players as Modder (toggle)
 
-'Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
+`Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
 
 - UnMark all Players as Modder
 
-'Turns off all protections that are being blocked from all Players if they are marked as a Modder
-(includes any other detection not set by this script)
+`Turns off all protections that are being blocked from all Players if they are marked as a Modder
+(includes any other detection not set by this script)`
 
 - My Friends DO NOT MOD! MarkOFF
 
-'For those that find it a issue playing with friends or your friends being able to join and do stuff in your session 
+`For those that find it a issue playing with friends or your friends being able to join and do stuff in your session 
 with out getting stuck on long loading screens due to a RAC Detection or something false only effects people in session
 currently on your friends list`
 
@@ -150,7 +150,7 @@ kicks although 2take1 protects you from being kicked it makes the game harder to
 
 - Network Bail Kick
 
-`Network kick using globals to force the player to bail from the session very effective against most Modder's but most good menus 
+`Network kick using globals to force the player to bail from the session very effective against most Modder`s but most good menus 
 would be protected against this! if it is going to work and kick them it would instantly remove them with no delay`
 
 - Host Kick All
@@ -258,7 +258,7 @@ Range and Ability to gain control determines success or not`
 
 - Input Custom Max Speed
 
-`Set their Vehicle's Max Possible Speed to a Value you can input`
+`Set their Vehicle`s Max Possible Speed to a Value you can input`
 
 - Set Max Speed 5
 
@@ -303,16 +303,16 @@ hey should then be next to you.`
 
 - Teleport Next2me (old Version)
 
-`Teleport's the player next to you.`
+`Teleport`s the player next to you.`
 
 - Teleport in front of Me
 
-`Teleport's them directly in front of you`
+`Teleport`s them directly in front of you`
 
 
 - Teleport Beyond World Limits
 
-`Teleport's them outside the world boundary limits of the GTA Map`
+`Teleport`s them outside the world boundary limits of the GTA Map`
 
 
 `CEO 10 k money loop`
