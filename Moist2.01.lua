@@ -1677,25 +1677,6 @@ for i=0,32 do
 	end
 end
 
-markall = function()
-local me
-
-me = player.player_id()
-
-for i = 0, 32 do
-	if i ~= me then
-
-	end
-	player.set_player_as_modder(i, 1)
-
-	player.set_player_as_modder(i, mod_flag_1)
-
-	player.set_player_as_modder(i, mod_flag_2)
-
-end
-end
-
-
 notmarkall = function()
 local me
 
@@ -1710,33 +1691,6 @@ end
 end
 
 
-local allmod = menu.add_feature("Mark all Players as Modder", "action", globalFeatures.protex, function(feat)
-                                markall()
-                            end)
-allmod.threaded = false
-
-local allmodt = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
-                                 if feat.on then
-
-                                 	local me
-
-                                 	me = player.player_id()
-
-                                 	for i = 0, 32 do
-                                 		if i ~= me then
-
-                                 		end
-
-                                 		player.set_player_as_modder(i, 1)
-
-                                 		player.set_player_as_modder(i, mod_flag_1)
-
-                                 		player.set_player_as_modder(i, mod_flag_2)
-                                 	end
-                                 	return HANDLER_CONTINUE
-                                 end
-
-                             end)
 
 local notallmod = menu.add_feature("UnMark all Players as Modder", "action", globalFeatures.protex, function(feat)
                                    notmarkall()
@@ -1760,13 +1714,13 @@ local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", glo
                                         end)
 bountyallplayerses.threaded = false
 
-local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.lobbyglobalFeatures.lobby, function(feat)
+local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.lobby, function(feat)
                                   blockpassiveall()
                               end)
 pasivall.threaded = false
 
 
-local bounty_all = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.lobbyglobalFeatures.lobbyglobalFeatures.lobby, function(feat)
+local bounty_all = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.lobby, function(feat)
                                     for playid = 0, 31 do
                                     	if player.get_player_scid(playid) ~= -1 or playid ~= player.player_id() then
                                     		for j = 0, 31 do
@@ -1833,11 +1787,6 @@ local hostkick = menu.add_feature("Host Kick All", "toggle", globalFeatures.kick
                                   return HANDLER_POP	
                               end)
 
-
-local all_ply_mod = menu.add_feature("Mark all Players as Modder", "action", globalFeatures.protex, function(feat)
-                                     markall()
-                                 end)
-all_ply_mod.threaded = false
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
                                  if feat.on then
