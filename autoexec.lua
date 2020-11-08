@@ -3,7 +3,7 @@
 --Moists Script Loader
 function startup()
 
-ui.notify_above_map("Big Thanks to Sai\nThis Code is based on his\nScript Supervisor", "Thanks to Dev:", 213)
+ui.notify_above_map("~l~~h~Big Thanks to Sai\nThis Code is based on his\nScript Supervisor", "~w~Special Thanks:", 213)
 end
 startup()
 
@@ -27,20 +27,20 @@ local scriptName = debug.getinfo(1, "S").source:sub(lua_dir:len() + 2)
 local debug_lua_trace = debug.traceback
 
 
-loader_hokey = menu.add_feature("OSD Hotkey", "toggle", lua_feat.id, function(feat)
-	if feat.on then
-		
-		local key = MenuKey()
-		key:push_str("LCONTROL")
-		key:push_str("LSHIFT")
-		key:push_str("h")
-		if key:is_down() then
-			lua_feat.hidden = not lua_feat.hidden
-			ui.notify_above_map(string.format("unhiding/hiding loader menu"), "OSD Options", 215)
-			system.wait(1200)
-		end
-	end
-	return HANDLER_CONTINUE
+loader_hokey = menu.add_feature("Script Loader Hotkey", "toggle", lua_feat.id, function(feat)
+    if feat.on then
+        
+        local key = MenuKey()
+        key:push_str("LCONTROL")
+        key:push_str("LSHIFT")
+        key:push_str("h")
+        if key:is_down() then
+            lua_feat.hidden = not lua_feat.hidden
+            ui.notify_above_map(string.format("~h~~l~Switching Script Loaders Visibility"), "~b~Moists Script Loader", 215)
+            system.wait(1200)
+        end
+    end
+    return HANDLER_CONTINUE
 end)
 loader_hokey.on = true 
 
@@ -74,7 +74,7 @@ local function unload_luas(filename)
             end
             luas[filename].feats[i].feat.hidden = true
         end
-        ui.notify_above_map("Successfully unloaded " .. filename, "Moists Script Loader", 184)
+        ui.notify_above_map("~h~~l~Successfully unloaded " .. filename, "~r~Moists Lua Script Loader", 184)
     end
     local n = #lua_names
     for i = 1, n do
@@ -119,27 +119,16 @@ local function load_luas()
                         if chunk then
                             status, err = xpcall(chunk, debug_lua_trace)
                             if status then
-                                ui.notify_above_map("Success LUA Loaded " .. files[i], "Moists Lua Loader", 210)
+                                ui.notify_above_map("~h~~l~Success LUA Loaded " .. files[i], "~r~Moists Lua Script Loader", 210)
                                 -- chunk()
                                 table.insert(lua_names, files[i])
                                 return HANDLER_POP
                             end
                         end
-                        ui.notify_above_map(err, "Moists Lua Loader", 215)
+                        ui.notify_above_map(err, "Moists Lua Script Loader", 215)
                         local t = os.date("*t")
                         io.output(io.open(debugfile, "a"))
-                        io.write(
-                            string.format(
-                                "[%02d-%02d-%02d %02d:%02d:%02d] ",
-                                t.year,
-                                t.month,
-                                t.day,
-                                t.hour,
-                                t.min,
-                                t.sec
-                            ) ..
-                                err .. "\n"
-                        )
+                        io.write(string.format("[%02d-%02d-%02d %02d:%02d:%02d] ", t.year, t.month, t.day, t.hour, t.min, t.sec) ..err .. "\n")
                         io.close()
                     else
                         unload_luas(files[i])
