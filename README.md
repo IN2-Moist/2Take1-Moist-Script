@@ -1,5 +1,6 @@
-# 2Take1-Moist-Script
-### GTAV Script for 2Take1`s lua Engine by -IN2-Moist-
+# 2Take1-Moist-Script (Build 2.0.0.1)
+
+### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
 ## Installation
 
@@ -11,18 +12,36 @@ These must be inside the Folder :
 
 - `MoistScript2.01.lua` (Main Script)
 
-Optionally Include :
-
-- `autoexec.lua` (Script loader Autoload with this if you like)
-- `settings.lua` (**This is a Dependent file for Script loader to function)
-
-
 Inside the Scripts Folder you need another Folder called : 
 
 **-** MoistsLUA_cfg
 
-- `Moist_Kicks.data`
-- `Moist_Kicks2.data`
+`
+- Moist_Kicks.data
+- Moist_Kicks2.data
+`
+
+
+
+
+Optional Extras :
+`
+- autoexec.lua
+
+ (Script loader this will  Auto load multiple LUA files on start)
+
+- settings.lua
+
+ (**This is a Dependent file for Script loader to function)
+
+`
+also in Folder: ** MoistsLUA_cfg**
+`
+- MoistsScript_settings.ini
+
+(This is Default LUA Save to include Main Script when starting)
+`
+
 
 The files and folders required are as they should be and should be extracted from the archive as above.
 TODO -
@@ -75,22 +94,24 @@ to kill the player with selected weapon`
 
 - Spawn Support Ped
 
-`Can sometimes attack player, but should attack enemy players/peds`
+Can sometimes attack player, but should attack enemy players/peds
 
 #### Ped + Selected Vehicle Options
 
 - Spawn as Escort & Task
 
-`Spawns Ped in Selected Vehicle Behind Player & follows,
+Spawns Ped in Selected Vehicle Behind Player & follows,
 will attack player sometimes if they fire weapons.
- Certain Vehicles have Multiple Peds`
+Certain Vehicles have Multiple Peds
 
 - Spawn as Attacker & Task
 
-`Spawns Ped in Selected Vehicle Behind Player & Attacks,
+
+Spawns Ped in Selected Vehicle Behind Player & Attacks,
 will follow player until they are dead.
 Ped`s may attack each other if too many
-are spawned and they shoot in each others direction`
+are spawned and they shoot in each others direction
+
 
 
 
@@ -98,12 +119,35 @@ are spawned and they shoot in each others direction`
 
 #### Online Protection
 
-##### Orbital Room Block
+#### Black list
+	`Reload blacklist
+	`Enable blacklist
+	`Mark As Modder
+	`Kick
+	`Manually add scid
+	`Remove blacklist (list of players on the list)`
+
+##### Modder Protex Detect
+`Custom SEP
+`Netevent Hook
+`Weather Timer
+`Logging Shit
+`Log in Game Chat
+`Log Netevents to File
+`Block Logged Script Events
+`Hook Script Events & Log to File
+								
+
+#### Orbital Room Block
 
 - Teleport to block location?
 
-`Teleport`s you directly in front of the orbital entrance you need to be inside your facility
-otherwise game kicks you out of the interior`
+(Teleport's you directly in front of the orbital entrance you need to be inside your facility
+otherwise game kicks you out of the interior)
+
+- New Orbital Block
+
+(Puts a New Moving Wall Across the Wall the Orbital Door is located in)
 
 - Block Orbital Entrance with Wall
 
@@ -320,9 +364,9 @@ hey should then be next to you.`
 `Block Passive Mode
 `Unblock Passive Mode
 
-##### Remove Player Options
+##### Remove Player Options ####
 
-`Various ways to try and force remove the player from your session`
+**Various ways to try and force remove the player from your session**
 
 - Kick Data 1 Type 1
 - Kick Data 1 Type 2
@@ -332,15 +376,35 @@ hey should then be next to you.`
 
 
 
-`Options
-`Hide or Show Script loader`
+### Options 
+**- Marker Options**
+**- Notify Customisation**
+ 
+- Save Settings
 
-`Lag Self out of session
+- Show & Load Spawn Options
 
-`Track all Players POS
-`Vehicle God OSD
-`Spectate OSD
+- Show HUD Component (Experimental)
 
+- MultiAim Tool (LShift or PS:X / XBC:A)
+
+- Lag Self out of session
+
+- Track all Players POS
+
+- Track all Players HP
+
+- Vehicle God OSD
+
+- Modded Vehicle Speed OSD
+
+- Spectate OSD
+
+- Player Bar OSD
+
+- Date & Time OSD
+
+**Marker Options
 `fading red white Marker RGBA Changer
 `flash red white Marker RGBA Changer
 `multi fading colors Marker RGB Changer
@@ -348,27 +412,8 @@ hey should then be next to you.`
 `Marker RGB Changer
 `Ground Marker RGBA Changer
 
-`Date & Time OSD
 
 
-`Blacklist
-	`Reload blacklist
-	`Enable blacklist
-	`Mark As Modder
-	`Kick
-	`Manually add scid
-	`Remove blacklist (list of players on the list)
-
-`Modder Protex Detect
-			`Custom SEP
-			`Netevent Hook
-			`Weather Timer
-					`Logging Shit
-						`Log in Game Chat
-						`Log Netevents to File
-						`Block Logged Script Events
-						`Hook Script Events & Log to File
-						
 
 
 
