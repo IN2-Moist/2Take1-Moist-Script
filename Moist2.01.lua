@@ -748,10 +748,10 @@ local blockplaces03 = menu.add_feature("Block Orbital Entrance with Wall", "acti
                                        rot1.x = 0.0
                                        rot1.y = -0.0
                                        rot1.z = 125.0
-                                       orb2block = object.create_object(561365155, pos1, true, false)
-                                       entity.set_entity_as_mission_entity(orb2block, true, false)
-                                       entity.set_entity_rotation(orb2block, rot1)
-                                       ui.add_blip_for_entity(orb2block)
+                                       spawned_cunts[#spawned_cunts + 1] = object.create_object(561365155, pos1, true, false)
+                                       entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+                                       entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot1)
+                                       ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
                                        return HANDLER_POP
                                    end)
 --Inactive Orbital Screens over blocked doorway
@@ -807,51 +807,49 @@ local blockplaces03 = menu.add_feature("Block Orbital Entrance with Wall", "acti
 	                                    rot5.x = 25.0
 	                                    rot5.y = 5.0000004768372
 	                                    rot5.z = -94.999992370605
-	                                    damagedsub = object.create_object(3544215092, pos5, true, false)
-	                                    entity.set_entity_as_mission_entity(damagedsub, true, false)
+	                                    spawned_cunts[#spawned_cunts + 1] = object.create_object(3544215092, pos5, true, false)
+	                                    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
 
 
-	                                    entity.set_entity_rotation(damagedsub, rot5)
-	                                    ui.add_blip_for_entity(damagedsub)
-	                                    screen1 = object.create_object(2895140982, pos1, true, false)
-	                                    entity.set_entity_as_mission_entity(screen1, true, false)
+	                                    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot5)
+	                                    ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+	                                    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos1, true, false)
+	                                    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
 
 
-	                                    entity.set_entity_rotation(screen1, rot1)
-	                                    ui.add_blip_for_entity(screen1)
-	                                    screen2 = object.create_object(2895140982, pos2, true, false)
-	                                    entity.set_entity_as_mission_entity(screen2, true, false)
-	                                    entity.set_entity_rotation(screen2, rot2)
+	                                    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot1)
+	                                    ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+	                                    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos2, true, false)
+	                                    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+	                                    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot2)
 
 
-	                                    ui.add_blip_for_entity(screen2)
-	                                    screen3 = object.create_object(-1399826314, pos3, true, true)
-	                                    entity.set_entity_as_mission_entity(screen3, true, false)
-	                                    entity.set_entity_rotation(screen3, rot3)
+	                                    ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+	                                    spawned_cunts[#spawned_cunts + 1] = object.create_object(-1399826314, pos3, true, true)
+	                                    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+	                                    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot3)
 
-	                                    ui.add_blip_for_entity(screen3)
-	                                    screen4 = object.create_object(2895140982, pos4, true, false)
-	                                    entity.set_entity_as_mission_entity(screen4, true, false)
+	                                    ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+	                                    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos4, true, false)
+	                                    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
 
 
-	                                    entity.set_entity_rotation(screen4, rot4)
-	                                    ui.add_blip_for_entity(screen4)
+	                                    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot4)
+	                                    ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	                                    return HANDLER_POP
 	                                end)
 
-delete_cunt = menu.add_feature("Delete Orbital Block part", "action_value_i", globalFeatures.orbital, function(feat)
+delete_cunt = menu.add_feature("Delete Orbital Block", "action", globalFeatures.orbital, function(feat)
 
-                               local i = feat.value_i
-                               --spawned_cunts[i]
-
+         for i = 1, #spawned_cunts do
+						network.request_control_of_entity(i)
                                entity.delete_entity(spawned_cunts[i])
-                           end)
-delete_cunt.max_i = #spawned_cunts
-delete_cunt.min_i = 1
-delete_cunt.value_i = 1
+		 end
+end)
+
 
 
 --TODO: Modder Detection Protection shit
