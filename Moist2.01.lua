@@ -1965,28 +1965,24 @@ local NetBail_SHF_Kick = menu.add_feature("NetBail ScriptHost Fuckarino", "toggl
                                       end)
 
 
-
+local hostnow
 
 --TODO: Force host
 HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFeatures.kick,	function(feat)
-                             local hostnow
+                         
                              if feat.on then
-
+						  hostnow = player.get_host()
                              	if not network.network_is_host() then
-                             		hostnow = player.get_host()
+                         
 
                              		script.trigger_script_event(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
-                             		playerFeatures[hostnow].features["Kick1_Type1"].feat.on = true
-                             		playerFeatures[hostnow].features["Kick1_Type2"].feat.on = true
-                             		playerFeatures[hostnow].features["Kick2_Type1"].feat.on = true
-                             		playerFeatures[hostnow].features["Kick2_Type2"].feat.on = true
-
+                                    toggle_kicks(hostnow)
                              		script.trigger_script_event(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
 
 
-
+								  toggle_kicks(hostnow)
                              	end
-
+								 
                              	if network.network_is_host() then
 
                              		moist_notify("Stolen Host by Force!", "\nSuccess")
@@ -1997,15 +1993,9 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
 
                              	return HANDLER_CONTINUE
 
-                             end	
-                             if not network.network_is_host() then
-                             	for i = 0, 32 do
-                             		playerFeatures[i].features["Kick1_Type1"].feat.on = false
-                             		playerFeatures[i].features["Kick1_Type2"].feat.on = false
-                             		playerFeatures[i].features["Kick2_Type1"].feat.on = false
-                             		playerFeatures[i].features["Kick2_Type2"].feat.on = false
-                             	end
                              end
+
+
                              return HANDLER_POP
                          end)
 HostForce.on = false
