@@ -185,111 +185,109 @@
 
 
 
-	--Arrays of function variables
+--TODO: Arrays for function variables
 
-	local OSD = {}
-	local PlyTracker = {}
-	local OptionsVar = {}
-	local tracking = {}
-	tracking.playerped_posi = {}
-	tracking.playerped_speed1 = {}
-	tracking.playerped_speed2 = {}
-	tracking.playerped_speed3 = {}
-	tracking.HP_tracker1 = {}
-	tracking.HP_tracker2 = {}
-	tracking.HP_tracker3 = {}
-	tracking.playercurweapon = {}
+local OSD = {}
+local OptionsVar = {}
+local PlyTracker = {}
+local tracking = {}
+tracking.playerped_posi = {}
+tracking.playerped_speed1 = {}
+tracking.playerped_speed2 = {}
+tracking.playerped_speed3 = {}
 
-	--Data & Entity Arrays
-	local escort = {}
-	local escortveh = {}
-	local spawned_cunts = {}
-	local groupIDs = {}
-	local allpeds = {}
-	local allveh = {}
-	local allobj = {}
-	local allpickups = {}
 
-	local scids = {}
-	local scidN = 0
-	local RemoveBlacklistFeature
-	--Function Variables
+--TODO: Data & Entity Arrays
+local escort = {}
+local escortveh = {}
+local spawned_cunts = {}
+local groupIDs = {}
+local allpeds = {}
+local allveh = {}
+local allobj = {}
+local allpickups = {}
 
-	local pos_bool
-	local myplygrp
-	local plygrp
-	local Cur_Date_Time
-	local preset_color = setting["NotifyColorDefault"]
-	local notifytype = setting["NotifyVarDefault"]
-	local AnonymousBounty = true
-	local trigger_time = nil
-	local cleanup_done = true
-	local kicklogsent = false
-	local logsent = false
-	local spawnoptions_loaded = false
+local scids = {}
+local scidN = 0
+local RemoveBlacklistFeature
+
+--TODO: Function Variables
+
+local pos_bool
+local myplygrp
+local plygrp
+local Cur_Date_Time
+local preset_color = setting["NotifyColorDefault"]
+local notifytype = setting["NotifyVarDefault"]
+local AnonymousBounty = true
+local trigger_time = nil
+local cleanup_done = true
+local kicklogsent = false
+local logsent = false
+local spawnoptions_loaded = false
 
 
 
-	--Modder Flag Variables
-	local mod_flag_1
-	local mod_flag_2
-	local mod_flag_3
-	local mod_flag_4
-	local mod_flag_5
+--Modder Flag Variables
+local mod_flag_1
+local mod_flag_2
+local mod_flag_3
+local mod_flag_4
+local mod_flag_5
 
-	--Modder Detection Hooks
-	local hook_id = 0
-	local hookID = 01
-	local hookID1 = 02
-	local hookID2 = 03
-	local hookID3 = 04
-	local hookID4 = 05
-	local hookID5 = 06
-	local hookID6 = 07
+--Modder Detection Hooks
+local hook_id = 0
+local hookID = 01
+local hookID1 = 02
+local hookID2 = 03
+local hookID3 = 04
+local hookID4 = 05
+local hookID5 = 06
+local hookID6 = 07
 
 
-	-- local NoWaypoint = v2()
-	-- NoWaypoint.x = 16000
-	-- NoWaypoint.y = 16000
+-- local NoWaypoint = v2()
+-- NoWaypoint.x = 16000
+-- NoWaypoint.y = 16000
 
 
 
 
-	--Util functions
-	local notif = ui.notify_above_map
+--Util functions
+local notif = ui.notify_above_map
 
-	local function notify_above_map(msg)
-		ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 175)
+local function notify_above_map(msg)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Private Edition", 175)
+end
+
+function moist_notify(msg1, msg2)
+
+	local color = preset_color
+	msg1 = msg1 or " ~h~~o~~ex_r*~"
+	msg2 = msg2 or " ~h~~w~~ex_r*~"
+
+	if notifytype == 1 then
+		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~w~~h~Private Edition", color)
+	end
+	if notifytype == 2 then
+		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~y~~h~Private Edition", color)
 	end
 
-	function moist_notify(msg1, msg2)
+	if notifytype == 3 then
+		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~w~~h~Private Edition", color)
+	end
+	if notifytype == 4 then
+	ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~y~~h~Private Edition", color)
+	end
 
-		local color = preset_color
-		msg1 = msg1 or " ~h~~o~~ex_r*~"
-		msg2 = msg2 or " ~h~~w~~ex_r*~"
-
-		if notifytype == 1 then
-			ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~w~~h~Private Edition", color)
-		end
-		if notifytype == 2 then
-			ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~y~~h~Private Edition", color)
-		end
-
-		if notifytype == 3 then
-			ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~w~~h~Private Edition", color)
-		end
-		if notifytype == 4 then
-			ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~y~~h~Private Edition", color)
-		end
-
-		if notifytype == 5 then
-			ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~b~~h~Private Edition", color)
-		end
+	if notifytype == 5 then
+	ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~b~~h~Private Edition", color)
+	end
 		if notifytype == 6 then
 			ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~g~~h~Private Edition", color)
 		end
-
-	end
+	
+		end
 
 
 	--Modder Flagging
@@ -1625,7 +1623,7 @@ global_func.lag_out = menu.add_feature("Lag Self out of session", "toggle", glob
 global_func.lag_out.on = setting["lag_out"]
 
 
--- **WORLD SHIT**
+--TODO: World Functions
 global_func.no_traffic = menu.add_feature("No World Traffic", "toggle", globalFeatures.moistopt, function(feat)
 
                                           setting["no_traffic"] = true
@@ -1704,7 +1702,7 @@ for i = 1, #HP_modifiers do
 end
 
 
-
+-- TODO: player ped options
 
 global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
                                     local pped = player.get_player_ped(player.player_id())
@@ -2931,10 +2929,10 @@ PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globa
                                         		if ped.is_ped_in_any_vehicle(ent1) then ent = ent2 else ent = ent1 end
                                         		local speed = entity.get_entity_speed(ent)
                                         		local speedcalc = speed * 3.6 --kmph
-                                        		local speedcalc2 =  speed * 2.236936 --mph
+                                        		-- local speedcalc2 =  speed * 2.236936 --mph
                                         		tracking.playerped_speed1[y] = math.ceil(speedcalc)
-                                        		tracking.playerped_speed2[y] = math.ceil(speedcalc2)
-                                        		tracking.playerped_speed3[y] = speed
+                                        		-- tracking.playerped_speed2[y] = math.ceil(speedcalc2)
+                                        		-- tracking.playerped_speed3[y] = speed
                                         	end
                                         	return HANDLER_CONTINUE
                                         end
@@ -2943,24 +2941,6 @@ PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globa
                                     end)
 PlyTracker.track_all.on = setting["PlyTracker.track_all"]
 
-PlyTracker.track_all_HP = menu.add_feature("Track all Players HP", "toggle", globalFeatures.moistopt, function(feat)
-                                           setting["PlyTracker.track_all_HP"] = true
-                                           if feat.on then
-                                           	for i = 0, 32 do
-                                           		local y = i + 1
-
-                                           		tracking.HP_tracker1[y] = player.get_player_health(i)
-                                           		tracking.HP_tracker2[y] = player.get_player_max_health(i)
-                                           		tracking.HP_tracker3[y] = player.get_player_armour(i)
-                                           		tracking.playercurweapon[y] = ped.get_current_ped_weapon(player.get_player_ped(i))
-                                           	end
-                                           	return HANDLER_CONTINUE
-                                           end
-                                           setting["PlyTracker.track_all_HP"] = false
-                                           return HANDLER_POP
-
-                                       end)
-PlyTracker.track_all_HP.on = setting["PlyTracker.track_all_HP"]
 
 OSD.modvehgod_osd = menu.add_feature("Vehicle God OSD", "toggle", globalFeatures.moistopt, function(feat)
                                      setting["OSD.modvehgod_osd"] = true
@@ -3000,7 +2980,7 @@ OSD.modvehgod_osd = menu.add_feature("Vehicle God OSD", "toggle", globalFeatures
                                  end)
 OSD.modvehgod_osd.on = setting["OSD.modvehgod_osd"]
 
-OSD.modvehspeed_osd = menu.add_feature("Modded Vehicle Speed OSD", "toggle", globalFeatures.moistopt, function(feat)
+OSD.modvehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globalFeatures.moistopt, function(feat)
                                        setting["OSD.modvehspeed_osd"] = true
                                        if feat.on then
                                        	local pos = v2()
@@ -3012,7 +2992,7 @@ OSD.modvehspeed_osd = menu.add_feature("Modded Vehicle Speed OSD", "toggle", glo
                                        		if player.get_player_ped(i) ~= 0 then
                                        			pos.x = 0.001
 
-                                       			if tracking.playerped_speed1[i + 1] > 275 then
+                                       			if tracking.playerped_speed1[i + 1] > 350 then
                                        				name = player.get_player_name(i)
                                        				ui.set_text_scale(0.235)
                                        				ui.set_text_font(0)
@@ -3096,14 +3076,15 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                                   			local playercolor = {{255, 255, 255}, {255, 0, 0}, {255, 0, 255}, {0, 255, 255}}
                                   			ui.set_text_color(playercolor[1][1], playercolor[1][2], playercolor[1][3], 255)
 
-                                  			if player.is_player_god(i) then
+                                  			if player.is_player_god(i) and not player.is_player_vehicle_god(i) then
                                   				ui.set_text_color(playercolor[2][1], playercolor[2][2], playercolor[2][3], 255)
                                   			end
                                   			if player.is_player_god(i) and player.is_player_vehicle_god(i) then
-                                  				ui.set_text_color(playercolor[4][1], playercolor[4][2], playercolor[4][3], 255)
+												ui.set_text_color(playercolor[3][1], playercolor[3][2], playercolor[3][3], 255)
+                                  				
                                   			end
-                                  			if player.is_player_vehicle_god(i) then
-                                  				ui.set_text_color(playercolor[3][1], playercolor[3][2], playercolor[3][3], 255)
+                                  			if player.is_player_vehicle_god(i) and not player.is_player_god(i) then
+                                  				ui.set_text_color(255, 170, 0, 255)
                                   			end
 
                                   			if pos.x > 0.90 then
