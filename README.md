@@ -42,6 +42,13 @@ also in Folder: ** MoistsLUA_cfg**
 (This is Default LUA Save to include Main Script when starting)
 `
 
+For Better Compatibility with **2take1script**:
+
+```- 1. Remove autoexec.lua & settings.lua
+- 2. execute Moist2.10.lua first then 2take1script```
+
+Seems to work so far without errors
+
 
 The files and folders required are as they should be and should be extracted from the archive as above.
 TODO -
@@ -155,8 +162,8 @@ otherwise game kicks you out of the interior)
 
 - Orbital Inactive Screens over Block
 
-`Places the TV Screens you see inside the orbital showing you the Orbital cannons state or activity these show by default Orbital Inactive
-RIP ORBITAL WARRIORS!!`
+'Places the TV Screens you see inside the orbital showing you the Orbital cannons state or activity these show by default Orbital Inactive
+RIP ORBITAL WARRIORS!!''
 
 **Online Protection**
 				
@@ -186,11 +193,18 @@ currently on your friends list`
 
 10 k Bounty for all including yourself!
 
+
+## Session Kicks
+
 - NetBail ScriptHost Fuckarino
 
 `Network bail Kick, with a Script host targeted kick which will kick all in session and will force the script host to send kicks
 this has a really bad effect on yourself game ui goes flickery due to you being a script host and you getting spammed with those
 kicks although 2take1 protects you from being kicked it makes the game harder to play with the ui going crazy so last resort kick!`
+
+- Kick Host until Session host
+
+`Fast kick all hosts until you are host`
 
 - Network Bail Kick
 
