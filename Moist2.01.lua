@@ -2973,7 +2973,7 @@ OSD.modvehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", global
                                        if feat.on then
                                        	local pos = v2()
                                        	pos.x = 0.001
-                                       	pos.y = .003
+                                       	pos.y = .0300
 
                                        	local name
                                        	for i = 0, 32 do
@@ -3051,11 +3051,11 @@ OSD.modspec_osd.on = setting["OSD.modspec_osd"]
 OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moistopt, function(feat)
                                   setting["OSD.Player_bar"] = true
                                   if feat.on then
-                                  	ui.draw_rect(0.001, 0.990, 2.5, 0.065, 0, 0, 0, 180)
+                                  	ui.draw_rect(0.001, 0.001, 2.5, 0.065, 0, 0, 0, 180)
                                   	local pos = v2()
 
                                   	pos.x = 0.001
-                                  	pos.y = .960
+                                  	pos.y = .0002
 
                                   	for i = 0, 32 do
                                   		if player.get_player_ped(i) ~= 0 then
@@ -3076,7 +3076,7 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                                   			end
 
                                   			if pos.x > 0.90 then
-                                  				pos.y = .970
+                                  				pos.y = .015
                                   				pos.x = 0.001
                                   			else
                                   			end
@@ -3086,9 +3086,9 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                                   			ui.set_text_centre(false)
                                   			ui.set_text_outline(true)
 
-                                  			ui.draw_text("< " .. name .. " >", pos)
+                                  			ui.draw_text(" " .. name .. " ", pos)
 
-                                  			pos.x = pos.x + 0.055
+                                  			pos.x = pos.x + 0.060
                                   		end
                                   	end
 
@@ -3111,25 +3111,25 @@ OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures
 
                                      	local dt = os.date("%d/%m/%y%y")
 
-                                     	local osd_Cur_Date = (string.format(dt))
-                                     	pos.x = .50082
-                                     	pos.y = .00000025
-                                     	ui.set_text_scale(0.4009)
-                                     	ui.set_text_font(5)
-                                     	ui.set_text_color(0, 0, 0, 255)
-                                     	ui.set_text_centre(1)
-                                     	ui.set_text_outline(1)
-                                     	ui.draw_text(osd_Cur_Date, pos)
-                                     	pos.x = .5
-                                     	pos.y = .00000025
-                                     	ui.set_text_scale(0.4002)
-                                     	ui.set_text_font(5)
-                                     	ui.set_text_color(255, 255, 255, 255)
-                                     	ui.set_text_centre(1)
-                                     	ui.set_text_outline(1)
-                                     	ui.draw_text(osd_Cur_Date, pos)
-                                     	pos.x = .50085
-                                     	pos.y = .02
+                                     	-- local osd_Cur_Date = (string.format(dt))
+                                     	-- pos.x = .950
+                                     	-- pos.y = .0001
+                                     	-- ui.set_text_scale(0.4009)
+                                     	-- ui.set_text_font(5)
+                                     	-- ui.set_text_color(0, 0, 0, 255)
+                                     	-- ui.set_text_centre(1)
+                                     	-- ui.set_text_outline(1)
+                                     	-- ui.draw_text(osd_Cur_Date, pos)
+                                     	-- pos.x = .955
+                                     	-- pos.y = .0002
+                                     	-- ui.set_text_scale(0.4002)
+                                     	-- ui.set_text_font(5)
+                                     	-- ui.set_text_color(255, 255, 255, 255)
+                                     	-- ui.set_text_centre(1)
+                                     	-- ui.set_text_outline(1)
+                                     	-- ui.draw_text(osd_Cur_Date, pos)
+                                     	pos.x = .975
+                                     	pos.y = .0001
 
                                      	local d = os.date()
 
@@ -3138,14 +3138,14 @@ OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures
                                      	local dt = os.date("%d/%m/%y%y")
 
                                      	local osd_Cur_Time = (string.format(dtime))
-                                     	ui.set_text_scale(0.45)
+                                     	ui.set_text_scale(0.42)
                                      	ui.set_text_font(0)
                                      	ui.set_text_color(0, 0, 0, 255)
                                      	ui.set_text_centre(1)
                                      	ui.set_text_outline(1)
                                      	ui.draw_text(osd_Cur_Time, pos)
-                                     	pos.x = .5
-                                     	pos.y = .02
+                                     	pos.x = .977
+                                     	pos.y = .0002
 
                                      	local d = os.date()
 
@@ -3154,7 +3154,7 @@ OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures
                                      	local dt = os.date("%d/%m/%y%y")
 
                                      	local osd_Cur_Time = (string.format(dtime))
-                                     	ui.set_text_scale(0.45)
+                                     	ui.set_text_scale(0.42)
                                      	ui.set_text_font(0)
                                      	ui.set_text_color(255, 255, 255, 255)
                                      	ui.set_text_centre(1)
@@ -4559,8 +4559,8 @@ features["TeleportPlayerinfront"] = {feat = menu.add_feature("Teleport in front 
 		local plyveh
 
 		local pedd = player.get_player_ped(pid)
-		get_offset(player.player_id(), 5)
-		local pos = offsetPos
+		get_offset2me(player.player_id(), 5)
+		local pos = SelfoffsetPos
 
 		if ped.is_ped_in_any_vehicle(pedd) then
 			plyveh = ped.get_vehicle_ped_is_using(pedd)
