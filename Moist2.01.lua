@@ -2290,7 +2290,7 @@ function force_delete2()
 
 	end
 
-menu.add_feature("Illuminate Everyone", "action", globalFeatures.lobby, function(feat)
+menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function(feat)
 
                  for i = 0, 32 do
 
