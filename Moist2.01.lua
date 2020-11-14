@@ -221,6 +221,7 @@ tracking.playerped_speed3 = {}
 local escort = {}
 local escortveh = {}
 local spawned_cunts = {}
+local dildos = {}
 local groupIDs = {}
 local allpeds = {}
 local allveh = {}
@@ -366,7 +367,7 @@ local ped_wep = {{"unarmed", 0xA2719263},{"weapon_handcuffs", 0xD04C944D},{"ston
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Half Track","Force to Night Shark AAT","Force to Night Shark AAT","Force to APC Mission","Force to APC Mission","Force to MOC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission1","Force to Opressor Mission2","Force to Opressor Mission2"}
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
-local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
+local ssb_wep = {"vehicle_weapon_player_bullet","weapon_sniperrifle","weapon_heavysniper","weapon_remotesniper","weapon_grenadelauncher","vehicle_weapon_player_lazer","weapon_airstrike_rocket","vehicle_weapon_space_rocket","vehicle_weapon_plane_rocket","vehicle_weapon_trailer_missile","vehicle_weapon_tampa_mortar","vehicle_weapon_akula_missile","vehicle_weapon_akula_barrage","vehicle_weapon_player_bullet","vehicle_weapon_avenger_cannon"}
 
 
 --Event Data Arrays
@@ -1675,6 +1676,181 @@ for i = 1, #HP_modifiers do
 	             end)
 end
 
+globalFeatures.self_ped_combat = menu.add_feature("Combat Functions", "parent", globalFeatures.self_ped).id
+
+
+
+local a, ImpactPos = ped.get_ped_last_weapon_impact(player.get_player_ped(player.player_id()),v3())if a then print(ImpactPos) return ImpactPos else print("No found")end
+
+local notify_sent = false
+local aimhash
+unfair_aimbot = menu.add_feature("unfair aim/Ped Head shot", "value_i", globalFeatures.self_ped_combat, function(feat)
+                                 if not feat.on then
+									 notify_sent = false
+									 return HANDLER_POP
+								 end
+							 
+                                 	local pped = player.get_player_ped(player.player_id())
+                                 
+									if not notify_sent then
+									moist_notify("Weapon Projectile Selected:\n", ssb_wep[feat.value_i])
+									notify_sent = true
+									end
+
+                                 	if ped.is_ped_shooting(pped) then
+									local offset = v3()
+										aimhash = gameplay.get_hash_key(ssb_wep[feat.value_i])
+                                 		local aimd = player.get_entity_player_is_aiming_at(player.player_id())
+                                 		if entity.is_entity_a_ped(aimd) then
+                                 			-- ped.get_ped_bone_index(aimd, 31086)
+                                 			local bonebool
+                                 			local pos = v3()
+                                 			local bonebool2
+                                 			local pos2 = v3()
+                                 			bonebool, pos = ped.get_ped_bone_coords(pped, 57005, offset)
+                                 			bonebool2, pos2 = ped.get_ped_bone_coords(aimd, 12844, offset)
+                                 			-- print(pos)
+                                 			-- print(pos2)
+
+                                 			gameplay.shoot_single_bullet_between_coords(pos, pos2, 10000.00, aimhash, pped, true, false, 10000.00)
+
+
+										end
+
+                                 	end
+                                 	return HANDLER_CONTINUE
+
+				
+                             end)
+unfair_aimbot.max_i = #ssb_wep
+unfair_aimbot.min_i = 1
+unfair_aimbot.value_i = 1
+
+local pos = v3()
+local ImpactPos = v3()
+
+weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
+                                     if feat.on then
+                                     	local success, pos = ped.get_ped_last_weapon_impact(player.get_player_ped(player.player_id()), v3())
+                                     	if success then
+                                     		ImpactPos = pos
+                                     	else
+
+                                     	end
+                                     	return HANDLER_CONTINUE
+                                     end
+                                 end)
+weapon_impact_pos.on = false
+
+impact_strike = menu.add_feature("Air strike last Weapon impact POS", "value_i", globalFeatures.self_ped_combat, function(feat)
+
+                                 if feat.on then
+                                 	weapon_impact_pos.on = true
+                                 	local pedd = player.get_player_ped(player.player_id()) 		
+                                 	if not ped.is_ped_shooting(pedd) then
+                                 		return HANDLER_CONTINUE end
+                                 		-- system.wait(10)
+
+                                 		local posm = v3()
+                                 		posm = entity.get_entity_coords(pedd)
+                                 		posm.z = posm.z + 100
+
+                                 		local hash = gameplay.get_hash_key(ssb_wep[feat.value_i])
+                                 		pos_off = v3()
+                                 		pos_off.x = pos.x + math.random(1, 5)
+                                 		pos_off.y = pos.y + math.random(1, 8)
+
+                                 		local playerz, zPos = gameplay.get_ground_z(pos)
+                                 		pos_off.z = zPos
+                                 		gameplay.shoot_single_bullet_between_coords(posm, ImpactPos, 1000.00, hash, pedd, true, false, 10000.0)
+                                 		system.wait(100)
+                                 		ImpactPos.x = ImpactPos.x + 5
+                                 		gameplay.shoot_single_bullet_between_coords(posm, ImpactPos, 10000.00, hash, pedd, true, false, 10000.0)
+                                 		system.wait(100)
+                                 		ImpactPos.y = ImpactPos.y - 5
+                                 		gameplay.shoot_single_bullet_between_coords(posm, ImpactPos, 10000.00, hash, pedd, true, false, 10000.0)
+                                 		system.wait(100)
+                                 		ImpactPos.x = ImpactPos.x - 10
+                                 		gameplay.shoot_single_bullet_between_coords(posm, ImpactPos, 10000.00, hash, pedd, true, false, 10000.0)
+                                 		system.wait(100)
+                                 		ImpactPos.y = ImpactPos.y + 10
+                                 		gameplay.shoot_single_bullet_between_coords(posm, ImpactPos, 10000.00, hash, pedd, true, false, 10000.0)
+                                 		system.wait(100)
+                                 		return HANDLER_CONTINUE
+
+                                 	end
+                                 	weapon_impact_pos.on = false
+                                 	return HANDLER_POP
+                                 end) 
+impact_strike.max_i = #ssb_wep
+impact_strike.min_i = 1
+impact_strike.on = false
+
+impact_strike2 = menu.add_feature("2nd wep last Weapon impact Pos", "value_i", globalFeatures.self_ped_combat, function(feat)
+                                  if feat.on then
+                                  	weapon_impact_pos.on = true
+                                  	local hash = gameplay.get_hash_key(ssb_wep[feat.value_i])
+                                  	local pedd = player.get_player_ped(player.player_id()) 		
+                                  	if not ped.is_ped_shooting(pedd) then return HANDLER_CONTINUE end
+                                  	local bonebool
+                                  	local pos = v3()
+                                  	bonebool, pos = ped.get_ped_bone_coords(pedd, 57005, offset)
+
+                                  	gameplay.shoot_single_bullet_between_coords(pos, ImpactPos, 10000.00, hash, pedd, true, false, 10000.0)
+                                  	system.wait(100)
+                                  	return HANDLER_CONTINUE
+
+                                  end
+                                  weapon_impact_pos.on = false
+                                  return HANDLER_POP
+                              end) 
+impact_strike2.max_i = #ssb_wep
+impact_strike2.min_i = 1
+impact_strike2.on = false
+
+aim_strike = menu.add_feature("Air strike aim entity (D pad R)", "toggle", globalFeatures.self_ped_combat, function(feat)
+                              if feat.on then
+                              	if controls.is_control_pressed(6,54) then
+
+                              		local pedd = player.get_player_ped(player.player_id()) 
+
+                              		local target = player.get_entity_player_is_aiming_at(player.player_id())
+
+                              		local pos = v3()
+                              		pos = entity.get_entity_coords(target)
+
+                              		local posz
+                              		posz, pos.z = gameplay.get_ground_z(pos)
+
+                              		local posm = v3()
+                              		posm = entity.get_entity_coords(pedd)
+                              		posm.z = posm.z + 100
+
+                              		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+                              		pos_off = v3()
+                              		pos_off.x = pos.x + math.random(1, 5)
+                              		pos_off.y = pos.y + math.random(1, 8)
+
+                              		local playerz, zPos = gameplay.get_ground_z(pos)
+                              		pos_off.z = zPos
+                              		gameplay.shoot_single_bullet_between_coords(posm, pos, 1000.00, hash, pedd, true, false, 10000.0)
+                              		system.wait(100)
+                              		pos.x = pos.x + 5
+                              		gameplay.shoot_single_bullet_between_coords(posm, pos, 1000.00, hash, pedd, true, false, 10000.0)
+                              		system.wait(100)
+                              		pos.y = pos.y - 5
+                              		gameplay.shoot_single_bullet_between_coords(posm, pos, 1000.00, hash, pedd, true, false, 10000.0)
+                              		system.wait(100)
+                              		return HANDLER_CONTINUE
+                              	end
+                              	return HANDLER_CONTINUE
+                              end
+                              return HANDLER_POP
+                          end) 
+
+aim_strike.on = false 
+
+
 -- TODO: player ped options
 
 global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
@@ -2290,7 +2466,7 @@ function force_delete2()
 
 	end
 
-menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function(feat)
+menu.add_feature("Illuminate Everyone", "action", globalFeatures.lobby, function(feat)
 
                  for i = 0, 32 do
 
@@ -3153,7 +3329,7 @@ local function give_weapon()
 end
 give_weapon()
 local wephash
-menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self, function(feat)
+menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, function(feat)
                  if feat.on then
                  	wep_hash = {1752584910,2982836145}
                  	pped = player.get_player_ped(player.player_id())
@@ -4667,6 +4843,66 @@ features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "acti
 
 	return HANDLER_POP
 end), type = "action"}
+
+features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.f.id, function(feat)
+		
+            local pedd = player.get_player_ped(pid)
+			ped.get_ped_bone_coords(pedd, 0, offset)
+			local pedbool
+            local pos = v3()
+
+			local i = #dildos + 1
+               pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+                dildos[i] = object.create_object(-422877666, pos, true, true)
+				
+                entity.apply_force_to_entity(dildos[i], 5, 0, 0, 100, 0, 0, 0, true, true)
+			pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+			
+				system.wait(10)
+			local i = #dildos + 1
+                dildos[i] = object.create_object(-422877666, pos, true, true)
+
+                entity.apply_force_to_entity(dildos[i], 5, 0, 0, -100, -2, 0, 0, true, true)
+				pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+				system.wait(10)
+			local i = #dildos + 1
+                dildos[i] = object.create_object(-422877666, pos, true, true)
+				
+                entity.apply_force_to_entity(dildos[i], 3, 0, 0, 100, 1, 0, 0, true, true)
+				system.wait(10)
+				pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+			local i = #dildos + 1
+                dildos[i] = object.create_object(-422877666, pos, true, true)
+				system.wait(10)
+                entity.apply_force_to_entity(dildos[i], 5, 0, 0, -100, 0, 0, 0, true, true)
+				
+				system.wait(100)
+				for i = 1, #dildos do
+                   pos = entity.get_entity_coords(dildos[i])
+                    fire.add_explosion(pos, 60, true, false, 5, 1)
+                    fire.add_explosion(pos, 60, true, false, 1, 0)
+                    pos = entity.get_entity_coords(dildos[i])
+                    fire.add_explosion(pos, 59, true, false, 1, 1)
+                    fire.add_explosion(pos, 59, false, true, 1, 0)
+                    fire.add_explosion(pos, 59, true, false, 5, 1)
+                    fire.add_explosion(pos, 59, true, false, 5, 0)
+
+                    fire.add_explosion(pos, 60, true, false, 5, 1)
+                    fire.add_explosion(pos, 60, true, false, 1, 0)
+
+                    fire.add_explosion(pos, 59, true, false, 1, 1)
+                    fire.add_explosion(pos, 59, false, true, 1, 0)
+                    fire.add_explosion(pos, 59, true, false, 5, 1)
+                    fire.add_explosion(pos, 59, true, false, 5, 0)
+
+					system.wait(100)
+                    entity.set_entity_as_no_longer_needed(dildos[i])
+					entity.delete_entity(dildos[i])
+       
+    end
+
+end), type = "action"}
+
 
 features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.f.id, function(feat)
 	local pos = v3()
