@@ -1676,9 +1676,18 @@ for i = 1, #HP_modifiers do
 	             end)
 end
 
+--TODO: Combat Functions
 globalFeatures.self_ped_combat = menu.add_feature("Combat Functions", "parent", globalFeatures.self_ped).id
 
-
+local damage = 2000
+dam_multi = menu.add_feature("unfair aim Damage", "autoaction_value_i", globalFeatures.self_ped_combat, function(feat)
+	damage = tonumber(feat.value_i)
+	print(damage)
+end)
+dam_multi.max_i = 100000
+dam_multi.min_i = 100
+dam_multi.value_i = 2000
+dam_multi.mod_i = 10
 
 local a, ImpactPos = ped.get_ped_last_weapon_impact(player.get_player_ped(player.player_id()),v3())if a then print(ImpactPos) return ImpactPos else print("No found")end
 
@@ -1712,7 +1721,7 @@ unfair_aimbot = menu.add_feature("unfair aim/Ped Head shot", "value_i", globalFe
                                  			-- print(pos)
                                  			-- print(pos2)
 
-                                 			gameplay.shoot_single_bullet_between_coords(pos, pos2, 10000.00, aimhash, pped, true, false, 10000.00)
+                                 			gameplay.shoot_single_bullet_between_coords(pos, pos2, damage, aimhash, pped, true, false, 10000.00)
 
 
 										end
@@ -2976,7 +2985,7 @@ end
 
 
 
---Option Functions
+--TODO:Option Functions
 local entity_control
 
 --[[
@@ -3051,7 +3060,7 @@ OptionsVar.aim_control = menu.add_feature("DetonateVehicle Aiming@(LShift or PS:
                                       end)
 OptionsVar.aim_control.on = setting["aimDetonate_control"]
 
-
+--TODO: Player Tracking
 PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globalFeatures.moistopt, function(feat)
                                         setting["PlyTracker.track_all"] = true
                                         if feat.on then
