@@ -231,6 +231,10 @@ local scids = {}
 local scidN = 0
 local RemoveBlacklistFeature
 
+--TODO: Function Arrays
+
+local ScriptTR = script.trigger_script_event
+
 --TODO: Function Variables
 
 local pos_bool
@@ -1316,13 +1320,13 @@ local function KickPid(pid)
 	else
 		for i = 1, #scriptEvents do
 			player.set_player_as_modder(pid, mod_flag_2)
-			script.trigger_script_event(scriptEvents[i], pid, {0, -1, 0})
-			script.trigger_script_event(scriptEvents[i], pid, {-1, 0, -1, -1, 0, -1, 0, -1, -10000, 0})
-			script.trigger_script_event(scriptEvents[i], pid, {0, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1})
+			ScriptTR(scriptEvents[i], pid, {0, -1, 0})
+			ScriptTR(scriptEvents[i], pid, {-1, 0, -1, -1, 0, -1, 0, -1, -10000, 0})
+			ScriptTR(scriptEvents[i], pid, {0, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1})
 
 		end
 		player.set_player_as_modder(pid, mod_flag_2)
-		script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+		ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 
 		debug_out(string.format("Non-Host kicked " .. pid .. " (" .. name .. ")"))
 		print("Non-Host kicked " .. pid .. " (" .. name .. ").")
@@ -1501,23 +1505,23 @@ main()
 
 menu.add_player_feature("CEO BAN", "action", 0, function(feat, pid)
 
-                        script.trigger_script_event(0xC2AD5FCE, pid, {0, 1, 5, 0})
+                        ScriptTR(0xC2AD5FCE, pid, {0, 1, 5, 0})
                     end)
 
 menu.add_player_feature("CEO DISMISS", "action", 0, function(feat, pid)
-                        script.trigger_script_event(0x96308401, pid, {0, 1, 5})
+                        ScriptTR(0x96308401, pid, {0, 1, 5})
                     end)
 
 menu.add_player_feature("CEO TERMINATE", "action", 0, function(feat, pid)
-                        script.trigger_script_event(0x96308401, pid, {1, 1, 6})
-                        script.trigger_script_event(0x96308401, pid, {0, 1, 6, 0})
+                        ScriptTR(0x96308401, pid, {1, 1, 6})
+                        ScriptTR(0x96308401, pid, {0, 1, 6, 0})
                     end)
 
 for i = 1, #missions do
 	local y = #missions - 1
 	menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
 
-	                        script.trigger_script_event(0x692CC4BB, pid,{y})
+	                        ScriptTR(0x692CC4BB, pid,{y})
 	                    end)
 end
 
@@ -1528,7 +1532,7 @@ local function AddBounty(pid, value, anonymous)
 	for i = 0, 31 do
 		if player.get_player_scid(i) ~= 4294967295 then
 
-			script.trigger_script_event(544453591 , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+			ScriptTR(544453591 , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
 
 		end
 	end
@@ -1678,6 +1682,25 @@ end
 
 --TODO: Combat Functions
 globalFeatures.self_ped_combat = menu.add_feature("Combat Functions", "parent", globalFeatures.self_ped).id
+
+ menu.add_feature("give self glowstick", "action", globalFeatures.self_ped, function(feat)
+local pos = v3()
+local offset = v3()
+local rot = v3()
+offset.x = 0.12
+offset.y = 0.0
+offset.z = -0.26
+rot.x = -181.0
+rot.y = 0.0
+rot.z = 0.0
+
+local pped = player.get_player_ped(player.player_id())
+local bone = ped.get_ped_bone_index(pped, 18905)
+spawned_cunts[#spawned_cunts+1] = object.create_object(3324004640, pos, true, false)
+
+entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
+
+ end)
 
 local damage = 2000
 dam_multi = menu.add_feature("unfair aim Damage", "autoaction_value_i", globalFeatures.self_ped_combat, function(feat)
@@ -2024,7 +2047,7 @@ me	= player.player_id()
 for i=0,32 do
 	if i ~= me
 		then
-			script.trigger_script_event(0x54BAD868, i, {1, 1})
+			ScriptTR(0x54BAD868, i, {1, 1})
 		end
 	end
 end
@@ -2057,7 +2080,7 @@ local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", glo
 
                                             		for j = 0, 31 do
 
-                                            			script.trigger_script_event(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+                                            			ScriptTR(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
                                             		end
                                             	end
 
@@ -2078,8 +2101,8 @@ local NetBail_SHF_Kick = menu.add_feature("NetBail ScriptHost Fuckarino", "toggl
                                           	for i = 0, 32 do
                                           		local fnd = player.is_player_friend(i)
                                           		if i ~= me or fnd then
-                                          			script.trigger_script_event(-1153500935, i, {91645, -99683, 1788, 60877, 55085, 72028})
-                                          			script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+                                          			ScriptTR(-1153500935, i, {91645, -99683, 1788, 60877, 55085, 72028})
+                                          			ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
                                           		end
                                           	end
                                           	return HANDLER_CONTINUE
@@ -2097,9 +2120,9 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
                              	if not network.network_is_host() then
 
 
-                             		script.trigger_script_event(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+                             		ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
                              		toggle_kicks(hostnow)
-                             		script.trigger_script_event(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
+                             		ScriptTR(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
 
 
                              		toggle_kicks(hostnow)
@@ -2129,7 +2152,7 @@ local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatur
                                      	for i = 0, 32 do
                                      		local fnd = player.is_player_friend(i)
                                      		if i ~= me or fnd then
-                                     			script.trigger_script_event(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+                                     			ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
                                      		end
                                      	end
                                      	return HANDLER_CONTINUE
@@ -3067,9 +3090,7 @@ PlyTracker.track_all = menu.add_feature("Track all Players POS", "toggle", globa
 
                                         	for i = 0, 32 do
                                         		local y = i + 1
-                                        		local offset = v3()
 
-                                        		pos_bool, tracking.playerped_posi[y] = ped.get_ped_bone_coords(player.get_player_ped(i), 31086, offset)
                                         		local ent
                                         		local ent1 = player.get_player_ped(i)	
                                         		local ent2 = ped.get_vehicle_ped_is_using(player.get_player_ped(i))
@@ -3361,23 +3382,20 @@ menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, func
 
 --TODO: Markers	
 -- **MARKERS**
-pid_pos = {}
-thread = {}
-feat = {}
-del_mk = {}
-del_mk_done = false
+local markID = {}
+markID.z = {}
+markID.s = {}
+markID.BOB = {}
+markID.ROT = {}
+highlight_set = {}
 BobUPnDown = true
 ROTMRK = true
-mkidbool = {}
+
 local size_marker = 1.0
 local marker_type = 0
 local mk_id
 local offsetz_marker = 1.5
-local m_id	
-m_id = 0
-size_marker = 1.0
-marker_type = 0
-offsetz_marker = 1.5
+
 RGB_A_A = 255
 RGB_A_R = 255
 RGB_A_G = 255
@@ -3392,24 +3410,9 @@ RGBA_G = 255
 RGBA_B = 255
 RGBA_A = 255
 
-function pos_pid(pid)
-
-pid_pos[pid+1] = player.get_player_coords(pid)
-end
-
-marker_thread = function(context)
-while true do
-local pos = v2()
-local size = v2()
-local playerID = pid
-
-graphics.draw_marker(0, context.coord, v3(), v3(), v3(1.5), 255, 0, 0, 255, BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-system.wait(0)
-end
-end
 
 
-changRGB = menu.add_feature("fading red white Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+changRGB = menu.add_feature("fading red white Marker3 RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
 
                             if feat.on then
                             	RGBA_G = RGB[1]
@@ -3439,7 +3442,7 @@ changRGB = menu.add_feature("fading red white Marker RGBA Changer", "toggle", gl
                         end)
 changRGB.on = false
 
-chang_RGBA = menu.add_feature("flash red white Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+chang_RGBA = menu.add_feature("flash red white Marker3 RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
 
                               if feat.on then
                               	RGBA_G = RGB[1]
@@ -3454,7 +3457,7 @@ chang_RGBA = menu.add_feature("flash red white Marker RGBA Changer", "toggle", g
                           end)
 chang_RGBA.on = false
 
-changRGBA = menu.add_feature("multi fading colors Marker RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+changRGBA = menu.add_feature("multi fading colors Marker 1 2 5 RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
                              if feat.on then
                              	changeR = RGB[1]
                              	changeG = RGB[2]
@@ -3544,7 +3547,7 @@ changRGBA = menu.add_feature("multi fading colors Marker RGB Changer", "toggle",
                          end)
 changRGBA.on = false
 
-changeRGB = menu.add_feature("Above Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+changeRGB = menu.add_feature("Marker 1 2 5 RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
 
                              if feat.on then
                              	changeG = RGB[1]
@@ -3574,7 +3577,7 @@ changeRGB = menu.add_feature("Above Marker RGBA Changer", "toggle", globalFeatur
                          end)
 changeRGB.on = false
 
-change_RGBA = menu.add_feature("Marker RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+change_RGBA = menu.add_feature("Marker 1 2 5 RGB Changer", "toggle", globalFeatures.moistMkropt, function(feat)
 
                                if feat.on then
                                	changeG = RGB[1]
@@ -3589,7 +3592,7 @@ change_RGBA = menu.add_feature("Marker RGB Changer", "toggle", globalFeatures.mo
                            end)
 change_RGBA.on = false
 
-changeRGBA = menu.add_feature("Ground Marker RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
+changeRGBA = menu.add_feature("Marker3 RGBA Changer", "toggle", globalFeatures.moistMkropt, function(feat)
                               if feat.on then
                               	RGBA_R = RGB[1]
                               	RGBA_G = RGB[2]
@@ -3677,107 +3680,20 @@ changeRGBA = menu.add_feature("Ground Marker RGBA Changer", "toggle", globalFeat
                           end)
 changeRGBA.on = false
 
-marker_pos_thread = function(context)
-while true do
-	local pos = v2()
-	local size = v2()
-	local offset = v3()
-	local pid = context.pid
-	local coord = tracking.playerped_posi[pid+1]
-	local update = context.CTRL_ID
 
-	if mkidbool[update] == true then
-		x = marker_type
-		size = size_marker
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = offsetz_marker
-	else
-		size = context.size
-		x = context.x
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = context.z
-	end
-	graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-
-	system.wait(0)
-
-end	
-end
-
-marker_pos1_thread = function(context)
-while true do
-	local pos = v2()
-	local size = v2()
-	local offset = v3()
-	local pid = context.pid
-	local coord = tracking.playerped_posi[pid+1]		
-	local update = context.CTRL_ID
-
-	if mkidbool[update] == true then
-		x = marker_type
-		size = size_marker
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = offsetz_marker
-	else
-		size = context.size
-		x = context.x
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = context.z
-	end
-
-	graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-
-	system.wait(0)
-
-end
-end
-
-marker1_pos_thread = function(context)
-while true do
-	pos = v2()
-	size = v2()
-	offset = v3()
-	pid = context.pid
-	coord = tracking.playerped_posi[pid+1]		
-	update = context.CTRL_ID
-
-	if mkidbool[update] == true then
-		x = marker_type
-		size = size_marker
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = offsetz_marker
-	else
-		size = context.size
-		x = context.x
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = context.z
-	end
-	graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), RGB_A_R, RGB_A_G, RGB_A_B, RGB_A_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-
-	system.wait(0)
-end
-end
-runs = 0
-
-local rgb_rand = menu.add_feature("rand rgb on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
+rgb_rand = menu.add_feature("rand rgb 3 on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
                                   if feat.on then		
 
-                                  	RGB_A_G = math.random(0, 255)
+                                  	RGBA_G = math.random(0, 255)
 
                                   	system.wait(feat.value_i)
 
-                                  	RGB_A_R = math.random(0, 255)
+                                  	RGBA_R = math.random(0, 255)
 
                                   	system.wait(feat.value_i)
 
 
-                                  	RGB_A_B = math.random(0, 255)
+                                  	RGBA_B = math.random(0, 255)
 
                                   	system.wait(feat.value_i)
 
@@ -3789,7 +3705,7 @@ rgb_rand.max_i = 500
 rgb_rand.min_i = 1
 rgb_rand.value_i = 5
 
-local rgb_rand1 = menu.add_feature("rand rgb on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
+rgb_rand1 = menu.add_feature("rand rgb 4 on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
                                    if feat.on then		
 
                                    	RGB_A_A = math.random(0, 255)
@@ -3818,8 +3734,8 @@ rgb_rand1.min_i = 1
 rgb_rand1.value_i = 15
 
 
-marker1_rgb_thread = function(context)
-while true do
+marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt, function(feat)
+if feat.on then
 	local RGB_A = {255,0}
 
 	RGB_A_R = RGB_A[1]
@@ -3904,149 +3820,11 @@ while true do
 
 	return HANDLER_CONTINUE
 end
-end
-
-local marker1_pos1_thread = function(context)
-
-	local pos = v2()
-	local size = v2()
-	local offset = v3()
-	local pid = context.pid
-	local coord = tracking.playerped_posi[pid+1]		
-	local update = context.CTRL_ID
-	local size = context.size
-	local x = context.x
-	offset.x = 0.0
-	offset.y = 0.0
-	offset.z = context.z
-
-	while true do
-
-		if mkidbool[update] == true then
-			x = marker_type
-			size = size_marker
-			offset.x = 0.0
-			offset.y = 0.0
-			offset.z = offsetz_marker
-		else
-			size = context.size
-			x = context.x
-			offset.x = 0.0
-			offset.y = 0.0
-			offset.z = context.z
-
-			graphics.draw_marker(x, coord + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-
-			system.wait(0)
-
-		end
-		return
-	end
-end
-
-local delete_marker = function(feat, data)
-	menu.delete_thread(feat.data.thread)
-	menu.create_thread(function(id) menu.delete_feature(id) end, feat.id)
-end
-
-local function marker1(pid, controlID)
-	if del_mk[pid+1] == nil then
-		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
-	end
-	local player_id = pid
-	local ctrlID = controlID
-	size = size_marker
-	offset = offsetz_marker
-	mk_id = marker_type
-	local name =  player.get_player_name(pid)
-	local coord = tracking.playerped_posi[pid+1]
-	local y = #thread + 1
-	thread[y] = menu.create_thread(marker1_pos1_thread, { pid = player_id, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
-
-	local i = #feat + 1
-	feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action",  del_mk[pid+1].id, delete_marker)
-	feat[i].data = {thread = thread[y]}
-end
-
-local function marker_pos1(pid, controlID)
-	if del_mk[pid+1] == nil then
-		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
-	end
-	local player_id = pid
-	local ctrlID = controlID
-	size = size_marker
-	offset = offsetz_marker 
-	mk_id = marker_type
-	rgb_rand.on = true
-	local name =  player.get_player_name(pid)
-	local coord = tracking.playerped_posi[pid+1]
-	local y = #thread + 1
-	thread[y] = menu.create_thread(marker1_pos_thread, { pid = player_id, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
-	local i = #feat + 1
-	feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action",  del_mk[pid+1].id, delete_marker)
-	feat[i].data = {thread = thread[y]}
-
-end
-
-local function marker(pid, controlID)
-	local pid1 = pid + 1
-	if del_mk[pid+1] == nil then
-		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
-	end
-	local player_id = pid
-	local ctrlID = controlID
-	size = size_marker
-	offset = offsetz_marker
-	mk_id = marker_type
-	local name =  player.get_player_name(pid)
-	local coord = tracking.playerped_posi[pid+1]
-	local y = #thread + 1
-	thread[y] = menu.create_thread(marker_pos1_thread, { pid = player_id, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
-
-	local i = #feat + 1
-	feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action", del_mk[pid+1].id, delete_marker)
-	feat[i].data = {thread = thread[y]}
-
-end
-
-local function marker_pos(pid, controlID)
-	if del_mk[pid+1] == nil then
-		del_mk[pid+1] = menu.add_feature("Markers to Delete", "parent", playerFeatures[pid].feat.id, cb)
-	end
-	local player_id = pid
-	local ctrlID = controlID
-	size = size_marker
-	offset = offsetz_marker
-	mk_id = marker_type
-	local name =  player.get_player_name(pid)
-	local coord = tracking.playerped_posi[pid+1]
-	local y = #thread + 1
-	thread[y] = menu.create_thread(marker_pos_thread, { pid = player_id, CTRL_ID = ctrlID, CTRL_ID = ctrlID, size = size, z = offset, x = marker_type } )
-	local i = #feat + 1
-	feat[i] = menu.add_feature("Delete:".. i .." " ..name, "action", del_mk[pid+1].id, delete_marker)
-	feat[i].data = {thread = thread[y]}
-end
+return HANDLER_POP
+end)
+marker1_rgbd.on = false
 
 --TODO: Marks on all
-
-Markers_forall = menu.add_feature("Add Markers On All Players", "action", globalFeatures.lobby, function(feat)
-
-                                  for i = 0, 32 do
-                                  	if player.get_player_ped(i) ~= 0 then
-                                  		if i ~= player.player_id() then
-                                  			mk_id = 0
-                                  			offsetz_marker = 1.5
-                                  			size_marker = 1.0
-                                  			local y = #mkidbool + 1
-
-                                  			marker_pos(i, y)
-                                  			-- marker(pid)
-                                  			change_RGBA.on = true
-                                  			changRGB.on = true
-                                  		end
-                                  	end
-                                  end
-                              end)
 
 
 
@@ -4392,7 +4170,44 @@ for pid=0,31 do
 	featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id)
 	featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
 	featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id)
+	featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)
+	
+	featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function(feat)
+		if not highlight_set[pid+1] then
+			markID.z[pid+5] = 1.0
+			markID.s[pid+5] = 1.0
+			markID.z[pid+4] = 1.0
+			markID.s[pid+4] = 1.0
+			markID.z[pid+2] = 1.0
+			markID.s[pid+2] = 1.0
+			markID.BOB[pid+3] = true
+			markID.z[pid+3] = 1.0
+			markID.s[pid+3] = 1.0
+			markID.ROT[pid+2] = true
+			markID.BOB[pid+2] = true
 
+			markID.ROT[pid+3] = true
+
+			markID.ROT[pid+4] = true
+			markID.BOB[pid+4] = true
+
+			markID.ROT[pid+5] = true
+			markID.BOB[pid+5] = true
+
+			markID.ROT[pid+6] = true
+			markID.BOB[pid+6] = true
+			markID.z[pid+6] = 1.0
+			markID.s[pid+6] = 1.0
+		highlight_set[pid+1] = true
+	end
+
+end)
+
+	featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
+	featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
+	featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id)
+
+	
 features["godvehoff"] = {feat = menu.add_feature("ToggleOFF Player Vehicle God Mode", "toggle", featureVars.v.id, function(feat)
 	if feat.on then	
 
@@ -4482,34 +4297,80 @@ features["vehdetonate"] = {feat = menu.add_feature("Detonate Explosive Device (n
 	end
 end), type = "action"}
 
-featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)	
+	
 
 --TODO: Highight Controls
-featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function()
-                                 marker_type = 0
-                                 PlyTracker.track_all.on = true
-                                 features["Mark_Control"].feat.max_i = #mkidbool
-                             end)
 
-featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
+features["RGB1"] = {feat = menu.add_feature("fading red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
 
-features["Mark_Control"] = {feat = menu.add_feature("Created Marker ID  to Control", "value_i", featureVars.ch.id, function(feat)
-	features["Mark_Control"].feat.max_i = #mkidbool
-	for i = 1, #mkidbool do
-		mkidbool[i] = false
-	end
-	if feat.on then
-		local i = feat.value_i
-		mkidbool[i] = true
-		return HANDLER_CONTINUE
-	end
-	for i = 1, #mkidbool do
-		mkidbool[i] = false
-	end
-	return HANDLER_POP
+	changRGB.on = not changRGB.on
+
+end), type = "action"}
+features["RGB1"].feat.on = false
+
+features["RGB2"] = {feat = menu.add_feature("flash red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
+
+	chang_RGBA.on = not chang_RGBA.on
+
+end), type = "action"}
+features["RGB2"].feat.on = false
+
+
+features["RGB3"] = {feat = menu.add_feature("multi fading colors Marker 1 2 5 on/off", "action", featureVars.chc.id, function(feat)
+
+	changRGBA.on = not changRGBA.on
+
+end), type = "action"}
+features["RGB3"].feat.on = false
+
+features["RGB4"] = {feat = menu.add_feature("Marker 1 2 5 RGB on/off", "action", featureVars.chc.id, function(feat)
+
+	changeRGB.on = not changeRGB.on
+
+end), type = "action"}
+features["RGB4"].feat.on = false
+
+features["RGB5"] = {feat = menu.add_feature("Marker 1 2 5 RGB2 on/off", "action", featureVars.chc.id, function(feat)
+
+	change_RGBA.on = not change_RGBA.on
+
+end), type = "action"}
+features["RGB5"].feat.on = false
+
+features["RGB6"] = {feat = menu.add_feature("Marker3 RGBA on/off", "action", featureVars.chc.id, function(feat)
+
+	changeRGBA.on = not changeRGBA.on
+end), type = "action"}
+features["RGB6"].feat.on = false
+
+features["RGB7"] = {feat = menu.add_feature("rand rgb Marker3 on/off", "action", featureVars.chc.id, function(feat)
+
+	rgb_rand.on = not rgb_rand.on
+
+end), type = "action"}
+features["RGB7"].feat.on = false
+
+features["RGB8"] = {feat = menu.add_feature("rand rgb Marker4 on/off", "action", featureVars.chc.id, function(feat)
+
+	rgb_rand1.on = not rgb_rand1.on
+
+end), type = "action"}
+features["RGB8"].feat.on = false
+
+features["RGB9"] = {feat = menu.add_feature("RGB Marker4 on/off", "action", featureVars.chc.id, function(feat)
+
+	marker1_rgbd.on = not marker1_rgbd.on
+end), type = "action"}
+features["RGB9"].feat.on = false
+--TODO: active marker
+features["Mark_Control"] = {feat = menu.add_feature("Marker ID  to Control", "value_i", featureVars.ch.id, function(feat)
+	
+
+
+actM = feat.value_i + 1
 
 end), type = "value_i"}
-features["Mark_Control"].feat.max_i = #mkidbool
+features["Mark_Control"].feat.max_i = 5
 features["Mark_Control"].feat.min_i = 1
 
 features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "action", featureVars.h.id, function(feat)
@@ -4522,46 +4383,17 @@ features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "act
 
 end), type = "action"}
 
-features["cprecision"] = {feat = menu.add_feature("Precision Multipliers", "toggle", featureVars.ch.id, function(feat)
-	if feat.on then
-		features["MarkSize"].feat.value_i = 120
-		size_marker = tonumber(120 / 100)
-		features["MarkZoff"].feat.value_i = 150
-		offsetz_marker = tonumber(150 / 100)
-		return HANDLER_POP
-	end
-	if feat.on then
-		return HANDLER_CONTINUE
-	end
-	features["MarkSize"].feat.value_i = 2
-	size_marker = tonumber(3 / 2)
-	features["MarkZoff"].feat.value_i = 1
-	offsetz_marker = 1.5
-	return HANDLER_POP
-end), type = "toggle"}
+features["cprecision"] = {feat = menu.add_feature("Precision Multipliers", "toggle", featureVars.ch.id, function(feat) end), type = "toggle"}
 
-features["MarkerID"] = {feat = menu.add_feature("Change Type of Marker", "action_value_i", featureVars.ch.id, function(feat)
-	marker_type = tonumber(feat.value_i)
-	mk_id = tonumber(feat.value_i)
-	if feat.value_i == 1 then
-		features["MarkZoff"].feat.value_i = -4
-		offsetz_marker = tonumber(-4 / 2)
-		if features["cprecision"].feat.on then
-			features["MarkZoff"].feat.value_i = -400
-			offsetz_marker = tonumber(-400 / 100)
-		end
-	end
-end), type = "action_value_i"}
-features["MarkerID"].feat.max_i = 44
-features["MarkerID"].feat.min_i = 0
-features["MarkerID"].feat.value_i = 0
 
 features["MarkSize"] = {feat = menu.add_feature("Marker Size Muliplier", "action_value_i", featureVars.ch.id, function(feat)
 	if features["cprecision"].feat.on then
-		features["MarkSize"].feat.value_i = 150
+	
 		size_marker = tonumber(feat.value_i / 100)
+		markID.s[actM] = size_marker
 	else
 		size_marker = tonumber(feat.value_i / 2)
+		markID.s[actM] = size_marker
 	end
 end), type = "action_value_i"}
 features["MarkSize"].feat.max_i = 30000
@@ -4571,8 +4403,10 @@ features["MarkSize"].feat.value_i = 2
 features["MarkZoff"] = {feat = menu.add_feature("Marker Z Offset Multiplier", "action_value_i", featureVars.ch.id, function(feat)
 	if features["cprecision"].feat.on then
 		offsetz_marker = tonumber(feat.value_i / 100)
+		markID.z[actM] = offsetz_marker
 	else
 		offsetz_marker = tonumber(feat.value_i / 2)
+		markID.z[actM] = offsetz_marker
 	end	
 end), type = "action_value_i"}
 features["MarkZoff"].feat.max_i = 30000
@@ -4581,86 +4415,140 @@ features["MarkZoff"].feat.value_i = 1
 
 features["BOB_Marker"] = {feat = menu.add_feature("Bob Marker Up & Down", "toggle", featureVars.ch.id, function(feat)
 	BobUPnDown = true
+	local i = actM
+	markID.BOB[i]  = BobUPnDown
 	if feat.on then
 		return HANDLER_CONTINUE
 	end BobUPnDown = false
+	markID.BOB[i] = BobUPnDown
 	return HANDLER_POP
 end)}
 
 features["ROT_Marker"] = {feat = menu.add_feature("Rotate Marker", "toggle", featureVars.ch.id, function(feat) 
+	
 	ROTMRK = true
+	local i = actM
+	markID.ROT[i] = ROTMRK
 	if feat.on then
 		return HANDLER_CONTINUE
 	end ROTMRK = false
+	markID.ROT[i] = ROTMRK
 	return HANDLER_POP
 end)}
 
-features["Add_Mark1"] = {feat = menu.add_feature("WhiteMarker Around Player", "action", featureVars.h.id, function(feat)
-	local pped = player.get_player_ped(pid)
-	ui.add_blip_for_entity(pped)
-	mk_id = 1
-	offsetz_marker = -2.0
-	size_marker = 1.5
-	local i = #mkidbool + 1
-	mkidbool[i] = false
-	marker(pid, i)
-	features["Mark_Control"].feat.max_i = #mkidbool
+features["marker_active1"] = {feat =  menu.add_feature("Marker 1 Type:", "value_i", featureVars.h.id, function(feat)
 
-end), type = "action"}
+    if feat.on then
 
-features["Add_Mark2"] = {feat = menu.add_feature("Red Marker Above Player POS", "action", featureVars.h.id, function(feat)
-	local pped = player.get_player_ped(pid)
-	ui.add_blip_for_entity(pped)
-	mk_id = 0
-	offsetz_marker = 1.5
-	size_marker = 1.0
-	local i = #mkidbool + 1
-	mkidbool[i] = false
-	marker_pos(pid, i)
-	features["Mark_Control"].feat.max_i = #mkidbool
+	local offset = v3()
+    offset.z = markID.z[pid+2]
+	local size = markID.s[pid+2]
+	local pos = v3()
+	local posbool
+	posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 31086, offset)
 
-end), type = "action"}
 
-features["Add_Mark3"] = {feat = menu.add_feature("Highlight Player RGB Markers v1", "action", featureVars.ch.id, function(feat)
-	local pped = player.get_player_ped(pid)
-	ui.add_blip_for_entity(pped)
-	local i = #mkidbool + 1
-	marker_pos(pid, i)
-	mkidbool[i] = false
-	change_RGBA.on = true
+graphics.draw_marker(feat.value_i, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
 
-	features["Mark_Control"].feat.max_i = #mkidbool
-end), type = "action"}
+        return HANDLER_CONTINUE
+    end
+end), type = "value_i"}
+features["marker_active1"].feat.max_i = 44
+features["marker_active1"].feat.min_i = 0
+features["marker_active1"].feat.value_i = 27
+features["marker_active1"].feat.on = false
 
-features["Add_Mark4"] = {feat = menu.add_feature("RGB Random Color Markers", "action", featureVars.ch.id, function(feat)
-	local pped = player.get_player_ped(pid)
-	ui.add_blip_for_entity(pped)
-	local i = #mkidbool + 1
-	marker_pos1(pid, i)
-	mkidbool[i] = false
-	changRGB.on = true
-	features["Mark_Control"].feat.max_i = #mkidbool
-end), type = "action"}
 
-features["Add_Mark5"] = {feat = menu.add_feature("(Multicolor) Markers v3", "action", featureVars.ch.id, function(feat)
-	local pped = player.get_player_ped(pid)
-	ui.add_blip_for_entity(pped)
-	local i = #mkidbool + 1
-	marker_pos(pid, i)
-	mkidbool[i] = false
-	changRGBA.on = true
-	features["Mark_Control"].feat.max_i = #mkidbool
-end), type = "action"}
+features["marker_active2"] = {feat =  menu.add_feature("Marker 2 Type:", "value_i", featureVars.h.id, function(feat)
 
-features["Add_Mark6"] = {feat = menu.add_feature("Above:FlashRedWhiteGround:Fading", "action", featureVars.ch.id, function(feat)
-	local pped = player.get_player_ped(pid)
-	ui.add_blip_for_entity(pped)
-	local i = #mkidbool + 1
-	marker_pos(pid, i)
-	mkidbool[i] = false
-	changRGB.on = true
-	features["Mark_Control"].feat.max_i = #mkidbool
-end), type = "action"}
+    if feat.on then
+
+	local offset = v3()
+    offset.z = markID.z[pid+3]
+	local size = markID.s[pid+3]
+	local pos = v3()
+	local posbool
+	posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 31086, offset)
+
+graphics.draw_marker(feat.value_i, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+
+        return HANDLER_CONTINUE
+    end
+end), type = "value_i"}
+features["marker_active2"].feat.max_i = 44
+features["marker_active2"].feat.min_i = 0
+features["marker_active2"].feat.value_i = 27
+features["marker_active2"].feat.on = false
+
+
+features["marker_active3"] = {feat =  menu.add_feature("Marker 3 Type:", "value_i", featureVars.h.id, function(feat)
+
+    if feat.on then
+
+	local offset = v3()
+    offset.z = markID.z[pid+4]
+	local size = markID.s[pid+4]
+	local pos = v3()
+	local posbool
+	posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 31086, offset)
+
+
+graphics.draw_marker(feat.value_i, pos + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+
+        return HANDLER_CONTINUE
+    end
+end), type = "value_i"}
+features["marker_active3"].feat.max_i = 44
+features["marker_active3"].feat.min_i = 0
+features["marker_active3"].feat.value_i = 27
+features["marker_active3"].feat.on = false
+
+
+features["marker_active4"] = {feat =  menu.add_feature("Marker 4 Type:", "value_i", featureVars.h.id, function(feat)
+
+    if feat.on then
+
+	local offset = v3()
+    offset.z = markID.z[pid+5]
+	local size = markID.s[pid+5]
+	local pos = v3()
+	local posbool
+	posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 31086, offset)
+
+graphics.draw_marker(feat.value_i, pos + offset, v3(), v3(), v3(size), RGB_A_R, RGB_A_G, RGB_A_B, RGB_A_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+
+        return HANDLER_CONTINUE
+    end
+end), type = "value_i"}
+features["marker_active4"].feat.max_i = 44
+features["marker_active4"].feat.min_i = 0
+features["marker_active4"].feat.value_i = 27
+features["marker_active4"].feat.on = false
+
+
+features["marker_active5"] = {feat =  menu.add_feature("Marker 5 (Drawn on Entity) Type:", "value_i", featureVars.h.id, function(feat)
+
+    if feat.on then
+
+	local offset = v3()
+    offset.z = markID.z[pid+6]
+	local size = markID.s[pid+6]
+	local pos = v3()
+	local posbool
+	posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 31086, offset)
+
+
+-- graphics.draw_marker(feat.value_i, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+
+graphics.draw_marker(feat.value_i, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, true)
+
+        return HANDLER_CONTINUE
+    end
+end), type = "value_i"}
+features["marker_active5"].feat.max_i = 44
+features["marker_active5"].feat.min_i = 0
+features["marker_active5"].feat.value_i = 27
+features["marker_active5"].feat.on = false
 
 
 features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.f.id, function(feat)
@@ -4668,7 +4556,7 @@ features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle"
 		print("Money Trigger loop")
 		print(os.date())
 
-		script.trigger_script_event(-601653676, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1628237 + (1 + (pid * 615)) + 533), script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+		ScriptTR(-601653676, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1628237 + (1 + (pid * 615)) + 533), script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
 		system.wait(31000)
 		print(os.date())
 		return HANDLER_CONTINUE
@@ -4790,17 +4678,63 @@ features["Teleport_God-mode_Death_2"] = {feat = menu.add_feature("Teleport to De
 end),  type = "toggle", callback = function()
 end}
 features["Teleport_God-mode_Death_2"].feat.on = false
+--TODO:Grief
+features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", featureVars.g.id, function(feat)
+	
+		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 10.0
+		local offset = v3()
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = -1.0
+		gameplay.shoot_single_bullet_between_coords(pos, player.get_player_coords(pid) + offset, 10000.00, hash, 0, true, false, 10000.0)
+			
+			
+end), type = "action"}
 
-features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
-	script.trigger_script_event(1421531240, pid, {1, 1})
+
+features["multishoot"] = {feat = menu.add_feature("Shoot player from all directions", "action", featureVars.g.id, function(feat)
+	
+		local hash = gameplay.get_hash_key("weapon_heavysniper")
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 50.0
+		offset = v3()
+		offset.x = 100.0
+		offset.y = 0.0
+		offset.z = 0.0
+		local boolpos, bonepos = ped.get_ped_bone_coords(player.get_player_ped(pid), 12844, offset)
+		
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 1000.00, hash, 0, true, false, 10000.0)
+		offset.x = -100.0
+		offset.y = 0.0
+		offset.z = 0.0
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 1000.00, hash, 0, true, false, 10000.0)
+		offset.x = 0.0
+		offset.y = 100.0
+		offset.z = 0.0
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 1000.00, hash, 0, true, false, 10000.0)
+		offset.x = 0.0
+		offset.y = -100.0
+		offset.z = 0.0
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 1000.00, hash, 0, true, false, 10000.0)
+		
+end), type = "action"}
+
+
+
+features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.g.id, function(feat)
+	ScriptTR(1421531240, pid, {1, 1})
 	local scid = player.get_player_scid(pid)
 	local name = tostring(player.get_player_name(pid))
 	debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
 end), type = "action"}
 
-features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
+features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.g.id, function(feat)
 
-	script.trigger_script_event(1421531240, pid, {2, 0})
+	ScriptTR(1421531240, pid, {2, 0})
 
 	scid = player.get_player_scid(pid)
 	name = tostring(player.get_player_name(pid))
@@ -4808,7 +4742,7 @@ features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "
 
 end), type = "action"}
 
-features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.f.id, function(feat)
+features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.g.id, function(feat)
 
 
 	local pedd = player.get_player_ped(pid)
@@ -4853,7 +4787,7 @@ features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "acti
 	return HANDLER_POP
 end), type = "action"}
 
-features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.f.id, function(feat)
+features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
 		
             local pedd = player.get_player_ped(pid)
 			ped.get_ped_bone_coords(pedd, 0, offset)
@@ -4913,13 +4847,13 @@ features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "actio
 end), type = "action"}
 
 
-features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.f.id, function(feat)
+features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
 	local pos = v3()
 	pos = player.get_player_coords(pid)
 	dump_onplayer(pid, pos)
 end), type = "action"}
 
-features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.f.id, function(feat)
+features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
 	local pos = v3()
 	pos = player.get_player_coords(pid)
 	dumpfreeze_onplayer(pid, pos)
@@ -4961,12 +4895,12 @@ features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "value_
 			par4 = math.random(-1, 9)
 			par5 = math.random(-1, 1)
 
-			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2})
-			print("[" ..i .."] " .. "script.trigger_script_event(" ..data[i] .."," .."[pid:]" .. pid .."," .. "{ ".. par3 ..", " .. par5 ..", " .. par2 ..", " .. par3 ..", " .. par2 .."})")
+			ScriptTR(data[i], pid, {par3, par5, par2, par3, par2})
+			print("[" ..i .."] " .. "ScriptTR(" ..data[i] .."," .."[pid:]" .. pid .."," .. "{ ".. par3 ..", " .. par5 ..", " .. par2 ..", " .. par3 ..", " .. par2 .."})")
 			-- system.wait(500)
-			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+			ScriptTR(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
 
-			print("[" ..i .."] " .. "script.trigger_script_event(" ..data[i] .."," .."[pid:]" .. pid .."," .. "{" .. par3 ..", " .. par5 ..", " .. par2 ..", " .. par3 ..", " .. par2 ..", " .. par1 ..", " .. par3 ..", " .. par1 .."})" )
+			print("[" ..i .."] " .. "ScriptTR(" ..data[i] .."," .."[pid:]" .. pid .."," .. "{" .. par3 ..", " .. par5 ..", " .. par2 ..", " .. par3 ..", " .. par2 ..", " .. par1 ..", " .. par3 ..", " .. par1 .."})" )
 			-- system.wait(500)
 
 		end
@@ -4998,11 +4932,11 @@ features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_
 			par4 = math.random(-1, 9)
 			par5 = math.random(-1, 1)
 			par6 = math.random(-1000, 99999999)
-			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+			ScriptTR(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
 
 			print(data[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
 
-			script.trigger_script_event(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
+			ScriptTR(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
 
 			print(data[i] .."," .. pid .."," .. par1 ..","  .. par4 .."," .. par3 .."," .. par5 .."," .. par6 ..","  .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
 
@@ -5035,7 +4969,7 @@ features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_
 			par4 = math.random(-1, 9)
 			par5 = math.random(-1, 1)
 
-			script.trigger_script_event(data2[i], pid, {par3, par5, par2, par3, par2})
+			ScriptTR(data2[i], pid, {par3, par5, par2, par3, par2})
 			print(data2[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2)
 		end
 		return HANDLER_CONTINUE
@@ -5067,7 +5001,7 @@ features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "value_
 			par4 = math.random(-1, 9)
 			par5 = math.random(-1, 1)
 
-			script.trigger_script_event(data2[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+			ScriptTR(data2[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
 
 			print(data2[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
 
@@ -5092,7 +5026,7 @@ features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", f
 		local scid = player.get_player_scid(pid)			
 		local name = tostring(player.get_player_name(pid))
 
-		script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+		ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 		kicklogsent = true
 	end
@@ -5110,8 +5044,8 @@ features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck",
 		local scid = player.get_player_scid(pid)			
 		local name = tostring(player.get_player_name(pid))
 		player.set_player_as_modder(pid, mod_flag_2)
-		script.trigger_script_event(-1153500935, pid, {91645, -99683, 1788, 60877, 55085, 72028})
-		script.trigger_script_event(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+		ScriptTR(-1153500935, pid, {91645, -99683, 1788, 60877, 55085, 72028})
+		ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 		kicklogsent = true
 	end
@@ -5126,12 +5060,12 @@ features["SE-kick"] = {feat = menu.add_feature("SE Kick", "action", featureVars.
 	if not kicklogsent then
 		player.set_player_as_modder(pid, mod_flag_2)
 		local scid = player.get_player_scid(pid)
-		script.trigger_script_event(0xbb3ef8f9, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
-		script.trigger_script_event(0x1f63a94e, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
+		ScriptTR(0xbb3ef8f9, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
+		ScriptTR(0x1f63a94e, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
 		local name = tostring(player.get_player_name(pid))
-		script.trigger_script_event(0xf83b520c, pid, {-1, 0, 0, 0})
-		script.trigger_script_event(0xf83b520c, pid, {0, -1, -1, 0})
-		script.trigger_script_event(0xf83b520c, pid, {-1, 0, -1, 0})
+		ScriptTR(0xf83b520c, pid, {-1, 0, 0, 0})
+		ScriptTR(0xf83b520c, pid, {0, -1, -1, 0})
+		ScriptTR(0xf83b520c, pid, {-1, 0, -1, 0})
 		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 		kicklogsent = true
 	end
