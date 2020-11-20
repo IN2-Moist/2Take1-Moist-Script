@@ -32,22 +32,25 @@ Optional Extras :
 
 - settings.lua
 
- (**This is a Dependent file for Script loader to function)
+ **This is a Dependent file for Script loader (autoexec.lua) to function** 
 
 `
-also in Folder: ** MoistsLUA_cfg**
+also in Folder: **MoistsLUA_cfg**
 `
 - MoistsScript_settings.ini
 
 (This is Default LUA Save to include Main Script when starting)
 `
-
+> 
 For Better Compatibility with **2take1script**:
 
-```- 1. Remove autoexec.lua & settings.lua
-- 2. execute Moist2.10.lua first then 2take1script```
+```
+1. Remove autoexec.lua & settings.lua
+2. execute Moist2.10.lua first then 2take1script
+```
 
 Seems to work so far without errors
+
 
 
 The files and folders required are as they should be and should be extracted from the archive as above.
@@ -72,8 +75,8 @@ TODO -
 
 #### Spawn Options 
 
-`*** This Section is empty until you turn on the Show & Load SpawnOptions
-in the Main Options Section under Local Script Features! ***`
+**`This Section is empty until you turn on the Show & Load SpawnOptions
+in the Main Options Section under Local Script Features!`**
 
 
 ##### Ped Spawns
@@ -122,27 +125,27 @@ are spawned and they shoot in each others direction
 
 
 
-### Online Session:
+## Online Session:
 
-#### Online Protection
+### Online Protection
 
 #### Black list
-	`Reload blacklist
-	`Enable blacklist
-	`Mark As Modder
-	`Kick
-	`Manually add scid
-	`Remove blacklist (list of players on the list)`
+- Reload blacklist
+- Enable blacklist
+- Mark As Modder
+- Kick
+- Manually add scid
+- Remove blacklist (list of players on the list)
 
-##### Modder Protex Detect
-`Custom SEP
-`Netevent Hook
-`Weather Timer
-`Logging Shit
-`Log in Game Chat
-`Log Netevents to File
-`Block Logged Script Events
-`Hook Script Events & Log to File
+#### Modder Protex Detect
+- Custom SEP
+- Netevent Hook
+- Weather Timer
+- Logging Shit
+- Log in Game Chat
+- Log Netevents to File
+- Block Logged Script Events
+- Hook Script Events & Log to File
 								
 
 #### Orbital Room Block
@@ -191,7 +194,7 @@ currently on your friends list`
 
 - set Bounty on Lobby
 
-10 k Bounty for all including yourself!
+`10 k Bounty for all including yourself!`
 
 
 ## Session Kicks
@@ -220,17 +223,17 @@ preventing them joining again. Does not effect you or friends just all others`
 
 ## Player Functions:
 
-#### - Ped Functions
-#### - Vehicle Functions
-#### - Player Options
+#### Ped Functions
+#### Vehicle Functions
+#### Player Options
 
 ##### Ped Functions 
 
-###### - Player Weapons
+##### Player Weapons
 
 - Small list of weapons
 
-##### - Health Modifiers
+##### Health Modifiers
 
 - Set Max Health 0 (UnDead OTR)
 - Set Health to 500
@@ -339,13 +342,14 @@ So unless you want your name over their Death when you detonate it probably not 
 --TODO: update for new Highlight controls
 
 ##### Highlight Options
-		`Turn off all RGB Changers
-		`White Marker Around Player POS
-		`Red Marker Above Player POS
-		`Highlight Player RGB Markers v1
-		`Highlight Player RGB Markers v2
-		`Red & White Above: Flash Ground: Fading
-
+```
+Turn off all RGB Changers
+White Marker Around Player POS
+Red Marker Above Player POS
+Highlight Player RGB Markers v1
+Highlight Player RGB Markers v2
+Red & White Above: Flash Ground: Fading
+```
 ##### Teleport Options
 
 **Teleport Instructions**
