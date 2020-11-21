@@ -10,7 +10,7 @@ These must be inside the Folder :
 
 **-** scripts
 
-- `MoistScript2.01.lua` (Main Script)
+- `MoistScript.lua` (Main Script)
 
 Inside the Scripts Folder you need another Folder called : 
 
@@ -46,7 +46,7 @@ For Better Compatibility with **2take1script**:
 
 ```
 1. Remove autoexec.lua & settings.lua
-2. execute Moist2.10.lua first then 2take1script
+2. execute MoistScript.lua first then 2take1script
 ```
 
 Seems to work so far without errors
@@ -144,7 +144,6 @@ are spawned and they shoot in each others direction
 - Logging Shit
 - Log in Game Chat
 - Log Netevents to File
-- Block Logged Script Events
 - Hook Script Events & Log to File
 								
 
@@ -258,7 +257,8 @@ preventing them joining again. Does not effect you or friends just all others`
 
 - Force White parachute On
 - Force White BPH On
-- Mk2 Rapid Fire Hot key
+- RapidFire RepairLoop Hotkey
+- Show Weapon Recticle
 
 
 
@@ -286,6 +286,10 @@ preventing them joining again. Does not effect you or friends just all others`
 
 `Slowly Removes all Vehicles in Controllable distance Also you if your inside one!`
 
+**Clean Shit Up!**
+
+- Delete Spawned Cunts
+`Removes Orbital Block, Attaches Spawned on players, and any future or current general spawns`
 
 - Delete Ped Spawns
 
@@ -402,19 +406,15 @@ hey should then be next to you.`
 
 - Show & Load Spawn Options
 
-- Show HUD Component (Experimental)
-
 - MultiAim Tool (LShift or PS:X / XBC:A)
 
 - Lag Self out of session
 
 - Track all Players POS
 
-- Track all Players HP
-
 - Vehicle God OSD
 
-- Modded Vehicle Speed OSD
+- High Player Speed OSD
 
 - Spectate OSD
 
@@ -422,10 +422,11 @@ hey should then be next to you.`
 
 - Date & Time OSD
 
-**Marker Options
+**Marker Options**
+
 `fading red white Marker RGBA Changer
 `flash red white Marker RGBA Changer
-`multi fading colors Marker RGB Changer
+`multi fading colours Marker RGB Changer
 `Above Marker RGBA Changer
 `Marker RGB Changer
 `Ground Marker RGBA Changer
