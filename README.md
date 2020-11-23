@@ -400,9 +400,9 @@ hey should then be next to you.`
 
 ### Options 
 
-- **Marker Options**
+#### Marker Options
 
-- **Notify Customisation**
+#### Notify Customisation
  
 - Save Settings
 
@@ -423,6 +423,8 @@ hey should then be next to you.`
 - Player Bar OSD
 
 - Date & Time OSD
+
+
 
 **Marker Options**
 
