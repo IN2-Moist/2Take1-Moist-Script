@@ -16,16 +16,16 @@ Inside the Scripts Folder you need another Folder called :
 
 **-** MoistsLUA_cfg
 
-`
+```
 - Moist_Kicks.data
 - Moist_Kicks2.data
-`
+```
 
 
 
 
 Optional Extras :
-`
+
 - autoexec.lua
 
  (Script loader this will  Auto load multiple LUA files on start)
@@ -424,12 +424,12 @@ hey should then be next to you.`
 
 **Marker Options**
 
-`fading red white Marker RGBA Changer
-`flash red white Marker RGBA Changer
-`multi fading colours Marker RGB Changer
-`Above Marker RGBA Changer
-`Marker RGB Changer
-`Ground Marker RGBA Changer
+- fading red white Marker RGBA Changer
+- flash red white Marker RGBA Changer
+- multi fading colours Marker RGB Changer
+- Above Marker RGBA Changer
+- Marker RGB Changer
+- Ground Marker RGBA Changer
 
 
 
