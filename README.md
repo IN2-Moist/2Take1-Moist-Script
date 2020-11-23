@@ -399,8 +399,11 @@ hey should then be next to you.`
 
 
 ### Options 
-**- Marker Options**
-**- Notify Customisation**
+**
+-  Marker Options
+
+-  Notify Customisation
+**
  
 - Save Settings
 
