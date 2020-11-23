@@ -6,25 +6,18 @@
 
 **Required Files & Folders**:
 
-These must be inside the Folder :
+These must be inside the Folder : **scripts**
 
-**-** scripts
+- MoistScript.lua (Main Script)
 
-- `MoistScript.lua` (Main Script)
-
-Inside the Scripts Folder you need another Folder called : 
-
-**-** MoistsLUA_cfg
+Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 
 ```
 - Moist_Kicks.data
 - Moist_Kicks2.data
 ```
 
-
-
-
-Optional Extras :
+**Extras :**
 
 - autoexec.lua
 
@@ -41,7 +34,7 @@ also in Folder: **MoistsLUA_cfg**
 
 (This is Default LUA Save to include Main Script when starting)
 `
-> 
+
 For Better Compatibility with **2take1script**:
 
 ```
