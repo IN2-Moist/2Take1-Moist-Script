@@ -900,8 +900,8 @@ joining_players_logger = event.add_event_listener("player_join", function(e)
 	
 	local ip = player.get_player_ip(pid)
 	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
-	local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
-	joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n"..res)
+	-- local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
+	-- joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n"..res)
 	return
 end)
 
@@ -1856,7 +1856,7 @@ impact_strike = menu.add_feature("Air strike last Weapon impact POS", "value_i",
 	end
 	weapon_impact_pos.on = false
 	return HANDLER_POP
-end) 
+end)
 impact_strike.max_i = #ssb_wep
 impact_strike.min_i = 1
 impact_strike.on = false
@@ -3434,9 +3434,9 @@ menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, func
 		if ped.is_ped_shooting(pped) then
 			wephash = wep_hash[2]
 			weapon.give_delayed_weapon_to_ped(pped, wephash, 0, 1)	
-			system.wait(2)
+			system.wait(0)
 			weapon.give_delayed_weapon_to_ped(pped, 0xA2719263, 0, 1)	
-			system.wait(2)
+			system.wait(0)
 			
 			wephash = wep_hash[1]
 			weapon.give_delayed_weapon_to_ped(pped, wephash, 0, 1)
@@ -4231,8 +4231,7 @@ end)
 
 for pid=0,31 do
 	
-	featureVars = {}
-	features = {}
+	local featureVars = {}
 	
 	featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id)
 	featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
@@ -4273,9 +4272,11 @@ for pid=0,31 do
 	featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
 	featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
 	featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id)
+	featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
 	
-	
-	features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mode", "toggle", featureVars.v.id, function(feat)
+	local features = {}
+
+features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mode", "toggle", featureVars.v.id, function(feat)
 		if feat.on then	
 			
 			local plyped = player.get_player_ped(pid)	
@@ -4449,11 +4450,12 @@ for pid=0,31 do
 	
 	--TODO: active marker
 	features["Mark_Control"] = {feat = menu.add_feature("Marker ID  to Control", "value_i", featureVars.ch.id, function(feat)
-		
+		if feat.on then
 		
 		
 		actM = feat.value_i + 1
-		
+		return HANDLER_CONTINUE
+		end
 	end), type = "value_i"}
 	features["Mark_Control"].feat.max_i = 5
 	features["Mark_Control"].feat.min_i = 1
@@ -4771,19 +4773,57 @@ for pid=0,31 do
 	end}
 	features["Teleport_God-mode_Death_2"].feat.on = false
 	
-	--TODO:Grief
-	local blame = 0
-	menu.add_feature("---------------------------------------", "action", featureVars.g.id, nil)
+	local spawned_cunt = {}
+	features["LightPOSway"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.g.id, function(feat)
+		if feat.on then
+			local pos = v3()
+			pos = player.get_player_coords(pid)
+			local offset = v3()
+			local offset2 = v3()
+			offset.x = 0.0
+			offset.y = 0.0
+			offset.z = 1.0
+			local i = #spawned_cunt
+		entity.set_entity_coords_no_offset(spawned_cunt[i], pos + offset)
+			offset2.x = 3.0
+			offset2.y = -2.0
+			offset2.z = 1.8
+			local y = (#spawned_cunt - 1)
+		entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
+		
+		return HANDLER_CONTINUE
+			end
+		end),  type = "toggle", callback = function()
+	end}
+
+		features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "action", featureVars.g.id, function(feat)
+			
+			local offset = v3()
+			local pos = v3()
+			local posbool
+			posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 65068, offset)
+
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
+
+		
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
+
+		
+		end),  type = "action"}
 	
+
+	--TODO:Grief
+	menu.add_feature("---------------------------------------", "action", featureVars.g.id, nil)
+	local blame = 0	
+
 	features["blamer"] = {feat = menu.add_feature("Blame Another Player: ID", "action_value_i", featureVars.g.id, function(feat)
 		blame = player.get_player_ped(feat.value_i)
 	end), type = "action_value_i"}
 	features["blamer"].feat.max_i = 32
 	features["blamer"].feat.min_i = 0
 	
-	
-	
 	menu.add_feature("---------------------------------------", "action", featureVars.g.id, nil)
+	
 	features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", featureVars.g.id, function(feat)
 		
 		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
@@ -4827,24 +4867,135 @@ for pid=0,31 do
 		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 1000.00, hash, blame, true, false, 10000.0)
 		
 	end), type = "action"}
+
+
+	features["check_HPWP"] = {feat = menu.add_feature("Check Players HP Stats & Weapon", "action", featureVars.n.id, function(feat)
+		moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
+		debug_out(string.format("\nCurrent HP info: " ..  player.get_player_name(pid) ..": ||" .. player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||"))
+		local heldwep = ped.get_current_ped_weapon(player.get_player_ped(pid))
+		moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep)
+		debug_out(string.format("Current Held Weapon: " ..weapon.get_weapon_name(heldwep).. ' ('.. heldwep ..')'))
+	end), type = "action"  }
+
 	
-	features["ip_check"] = {feat = menu.add_feature("Check ip", "action", featureVars.f.id, function(feat)
+	features["ip_check"] = {feat = menu.add_feature("Check ip", "action", featureVars.n.id, function(feat)
 		
 
 		local ip = player.get_player_ip(pid)
 		local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
-		local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
+		local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org")
 				if success then
 		  
-			  ui.notify_above_map(string.format(res), "Moists Debug Tools\nIP Information", 140)
+			  moist_notify(string.format(res))
 
 			  
 			else
-			 ui.notify_above_map(string.format("ERROR"), "Moists Debug Tools\nIP Information", 140)
+				moist_notify(string.format("ERROR"))
 			  print("error ")
 		end
 	end), type = "action"}
+
+	features["Way-point"] = {feat = menu.add_feature("Set Way point On Player", "toggle", featureVars.n.id, function(feat)
+		if feat.on then
+			for i=0,31 do
+				if i ~= pid and playerFeatures[i].features["Way-point"].feat then
+					playerFeatures[i].features["Way-point"].feat.on = false
+				end
+			end
+			else
+			set_waypoint(nil)
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	set_waypoint(player.get_player_coords(pid))
+	end}
+	features["Way-point"].feat.threaded = false
 	
+
+	local pos = v3()
+	local PlyImpactPos = v3()
+features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
+	if feat.on then
+		pedd = player.get_player_ped(pid)
+		local success, pos = ped.get_ped_last_weapon_impact(pedd, v3())
+		if success then
+			PlyImpactPos = pos
+			else
+			
+		end
+		return HANDLER_CONTINUE
+	end
+end),  type = "toggle", callback = function()
+	end}
+features["weapon_impact"].feat.on = false
+features["weapon_impact"].feat.hidden = false
+
+	features["Give_Airstrike"] = {feat = menu.add_feature("Give Airstrike @last Weapon Impact", "toggle", featureVars.f.id, function(feat)
+
+	
+	if feat.on then
+
+		pedd = player.get_player_ped(pid)
+		if not ped.is_ped_shooting(pedd) then
+		return HANDLER_CONTINUE end
+		print("ped Shooting")
+		--system.wait(10)
+		
+		local posm = v3()
+		posm = player.get_player_coords(pid)
+	
+		
+		posm.z = posm.z + 100
+		
+		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+		pos_off = v3()
+		pos_off.x = pos.x + math.random(1, 5)
+		pos_off.y = pos.y + math.random(1, 8)
+		
+		local playerz, zPos = gameplay.get_ground_z(pos)
+		pos_off.z = zPos
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x + 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y - 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x - 6
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y + 6
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x + 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y - 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x - 4
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y + 4
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		
+		print(PlyImpactPos)
+		return HANDLER_CONTINUE
+	end
+
+		features["weapon_impact"].feat.on = false		
+	    			return HANDLER_POP
+
+
+	end),  type = "toggle", callback = function()
+	end}
+	features["Give_Airstrike"].feat.on = false
+
+
 	
 	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.g.id, function(feat)
 		ScriptTR(1421531240, pid, {1, 1})
@@ -4904,6 +5055,21 @@ for pid=0,31 do
 		local hasha = gameplay.get_hash_key("prop_air_lights_02a")
 		spawned_cunts[#spawned_cunts + 1]  = object.create_object(hasha, pos, true, true)
 		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, false)
+			local pos = v3()
+	local offset = v3()
+	local rot = v3()
+	offset.x = 0.12
+	offset.y = 0.0
+	offset.z = -0.26
+	rot.x = -181.0
+	rot.y = 0.0
+	rot.z = 0.0
+	
+	local pped = player.get_player_ped(player.player_id())
+	local bone = ped.get_ped_bone_index(pped, 18905)
+	spawned_cunts[#spawned_cunts+1] = object.create_object(3324004640, pos, true, false)
+	
+	entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
 		
 		return HANDLER_POP
 	end), type = "action"}
@@ -5021,7 +5187,8 @@ for pid=0,31 do
 		return HANDLER_CONTINUE
 		
 		
-	end), type = "toggle"}
+	end),  type = "toggle", callback = function()
+	end}
 	features["EventSpam_toggle"].feat.on = false
 	
 	features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "value_i", featureVars.k.id, function(feat)
@@ -5053,7 +5220,8 @@ for pid=0,31 do
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
-	end), type = "value_i"}
+	end),  type = "toggle", callback = function()
+	end}
 	features["Kick1_Type1"].feat.max_i = #data
 	features["Kick1_Type1"].feat.min_i = 1
 	features["Kick1_Type1"].feat.value_i = 1
@@ -5091,7 +5259,8 @@ for pid=0,31 do
 		end
 		return HANDLER_POP
 		
-	end), type = "value_i"}
+	end),  type = "toggle", callback = function()
+	end}
 	features["Kick1_Type2"].feat.max_i = #data
 	features["Kick1_Type2"].feat.min_i = 1
 	features["Kick1_Type2"].feat.value_i = 1
@@ -5122,7 +5291,8 @@ for pid=0,31 do
 		end
 		return HANDLER_POP
 		
-	end), type = "value_i"}
+	end),  type = "toggle", callback = function()
+	end}
 	features["Kick2_Type1"].feat.max_i = #data2
 	features["Kick2_Type1"].feat.min_i = 1
 	features["Kick2_Type1"].feat.value_i = 1
@@ -5155,7 +5325,8 @@ for pid=0,31 do
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
-	end), type = "value_i"}
+	end),  type = "toggle", callback = function()
+	end}
 	features["Kick2_Type2"].feat.max_i = #data2
 	features["Kick2_Type2"].feat.min_i = 1
 	features["Kick2_Type2"].feat.value_i = 1
@@ -5163,47 +5334,29 @@ for pid=0,31 do
 	features["Kick2_Type2"].feat.on = false
 	
 	features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
-		if not feat.on then
-			kicklogsent = false
-			return HANDLER_POP
-		end
-		if not kicklogsent then
-			
+
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
 			
 			ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
-			kicklogsent = true
-		end
-		return HANDLER_CONTINUE
+
 	end), type = "action"}
 	
 	
 	features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck", "action", featureVars.k.id, function(feat)
-		if not feat.on then
-			kicklogsent = false
-			return HANDLER_POP
-		end
-		if not kicklogsent then
-			
+
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
 			player.set_player_as_modder(pid, mod_flag_2)
 			ScriptTR(-1153500935, pid, {91645, -99683, 1788, 60877, 55085, 72028})
 			ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
-			kicklogsent = true
-		end
-		return HANDLER_CONTINUE
+
 	end), type = "action"}
 	
 	features["SE-kick"] = {feat = menu.add_feature("SE Kick", "action", featureVars.k.id, function(feat)
-		if not feat.on then
-			kicklogsent = false
-			return HANDLER_POP
-		end
-		if not kicklogsent then
+
 			player.set_player_as_modder(pid, mod_flag_2)
 			local scid = player.get_player_scid(pid)
 			ScriptTR(0xbb3ef8f9, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
@@ -5215,27 +5368,10 @@ for pid=0,31 do
 			ScriptTR(0xf83b520c, pid, {0, -1, -1, 0})
 			ScriptTR(0xf83b520c, pid, {-1, 0, -1, 0})
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
-			kicklogsent = true
-		end
-		return HANDLER_CONTINUE
+
 	end), type = "action"}
-	
-	
-	features["Way-point"] = {feat = menu.add_feature("Set Way point On Player", "toggle", featureVars.f.id, function(feat)
-		if feat.on then
-			for i=0,31 do
-				if i ~= pid and playerFeatures[i].features["Way-point"].feat then
-					playerFeatures[i].features["Way-point"].feat.on = false
-				end
-			end
-			else
-			set_waypoint(nil)
-		end
-		return HANDLER_POP
-	end), type = "toggle", callback = function()
-	set_waypoint(player.get_player_coords(pid))
-	end}
-	features["Way-point"].feat.threaded = false
+		
+
 	
 	playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
 	featureVars.f.hidden = true
@@ -5314,9 +5450,6 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 							if cf.type == "toggle" and cf.feat.on then
 								cf.feat.on = false
 							end
-							if cf.type == "value_i" and cf.feat.on then
-								cf.feat.on = false
-							end
 						end
 						tbl.scid = scid
 						if not isYou then
@@ -5347,9 +5480,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						if cf.type == "toggle" and cf.feat.on then
 							cf.feat.on = false
 						end
-							if cf.type == "value_i" and cf.feat.on then
-							cf.feat.on = false
-							end
+
 					end
 				end
 			end
