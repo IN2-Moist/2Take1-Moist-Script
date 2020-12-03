@@ -959,8 +959,7 @@ joining_players_logger = event.add_event_listener("player_join", function(e)
 	
 	local ip = player.get_player_ip(pid)
 	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
-	local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
-	joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n"..res)
+	joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n")
 	return
 end)
 
