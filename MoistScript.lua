@@ -15,10 +15,12 @@ end
 --DATA FILES
 local data = {}
 local data2 = {}
+local data3 = {}
 local configfile = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini"
 local scidFile = rootPath .. "\\Blacklist\\scid.list"
 local kickdata = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.data"
 local kickdata2 = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.data"
+local kickdata3 = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks3.data"
 local debugfile = rootPath.."\\lualogs\\Moists_debug.log"
 
 --output functions
@@ -66,6 +68,13 @@ function dataload2()
 	--moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
 end
 dataload2()
+
+function dataload3()
+	if not utils.file_exists(kickdata3) then	return end
+	for line in io.lines(kickdata3) do data3[#data3 + 1] = line end
+	--moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
+end
+dataload3()
 
 --Get Offset to self POS
 local SelfoffsetPos = v3()
@@ -239,6 +248,7 @@ local notifytype = setting["NotifyVarDefault"]
 local AnonymousBounty = true
 local trigger_time = nil
 local cleanup_done = true
+local world_dumped = true
 local kicklogsent = false
 local logsent = false
 local spawnoptions_loaded = false
@@ -502,6 +512,55 @@ globalFeatures.self_options = menu.add_feature("Player Options", "parent", globa
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
+
+
+local state = 0
+local lastRun = nil
+
+menu.add_feature(" ", "action", globalFeatures.self, nil)
+menu.add_feature(" ", "action", globalFeatures.self, nil)
+menu.add_feature("InGame Chat Spam Assistance\n..........", "action", globalFeatures.self, nil)
+local spamChatCtrlFeat = menu.add_feature("toggle on Hold Space", "value_i", globalFeatures.self, function(feat)
+	if not feat.on then
+		ProddyUtils.Keyboard.KeyUp(ProddyUtils.Keyboard.DXKeys.T)
+		ProddyUtils.Keyboard.KeyUp(ProddyUtils.Keyboard.DXKeys.Spacebar)
+		state = 0
+		return HANDLER_POP
+	end
+	if feat.value_i > 0 and lastRun ~= nil then
+		local diff = ProddyUtils.OS.GetTimeMillis() - lastRun
+		if diff < feat.value_i then
+			return HANDLER_CONTINUE
+		end
+	end
+	if state == 0 then
+		ProddyUtils.Keyboard.KeyDown(ProddyUtils.Keyboard.DXKeys.T)
+		state = 1
+	elseif state == 1 then
+		ProddyUtils.Keyboard.KeyUp(ProddyUtils.Keyboard.DXKeys.T)
+		state = 2
+	elseif state == 2 then
+		ProddyUtils.Keyboard.KeyDown(ProddyUtils.Keyboard.DXKeys.Spacebar)
+		state = 3
+	elseif state == 3 then
+		ProddyUtils.Keyboard.KeyUp(ProddyUtils.Keyboard.DXKeys.Spacebar)
+		state = 4
+		elseif state == 4 then
+	ProddyUtils.Keyboard.KeyDown(ProddyUtils.Keyboard.DXKeys.Enter)
+		state = 5                                                
+	elseif state == 5 then
+	ProddyUtils.Keyboard.KeyUp(ProddyUtils.Keyboard.DXKeys.Enter)
+		state = 0
+	end
+	lastRun = ProddyUtils.OS.GetTimeMillis()
+	return HANDLER_CONTINUE
+end)
+spamChatCtrlFeat.threaded = false
+spamChatCtrlFeat.min_i = 0
+spamChatCtrlFeat.max_i = 5000
+spamChatCtrlFeat.mod_i = 1
+spamChatCtrlFeat.value_i = 0
+
 
 --TODO:online Player Feature Parents
 local Player_Tools = menu.add_player_feature("Tools", "parent", 0).id
@@ -900,8 +959,8 @@ joining_players_logger = event.add_event_listener("player_join", function(e)
 	
 	local ip = player.get_player_ip(pid)
 	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
-	-- local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
-	-- joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n"..res)
+	local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
+	joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n"..res)
 	return
 end)
 
@@ -2754,7 +2813,8 @@ dump_onplayer = function(pid, pos)
 		end
 		system.wait(200)
 	end
-	moist_notify("World Dumped On That Cunt!\n GG <font size='18'>~ex_r*~ ", "\nCarefull Spectating")
+	moist_notify("World Dumped On That Cunt!\n GG <font size='12'>~ex_r*~ ", "\nCarefull Spectating")
+	world_dumped = true
 end
 
 --TODO: Spawn Functions
@@ -3064,7 +3124,8 @@ dumpfreeze_onplayer = function(pid, pos)
 		end
 		system.wait(400)
 	end
-	moist_notify("WorldDumped On That Cunt!\n GG <font size='18'> ~ex_r*~ ", "\nCarefull Spectating")
+	moist_notify("WorldDumped On That Cunt!\n GG <font size='12'> ~ex_r*~ ", "\nCarefull Spectating")
+	world_dumped = true
 end
 
 
@@ -4227,7 +4288,7 @@ end)
 
 --TODO:Player list
 
-
+local PlayerPed
 
 for pid=0,31 do
 	
@@ -4240,30 +4301,40 @@ for pid=0,31 do
 	
 	featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function(feat)
 		if not highlight_set[pid+1] then
+			
 			markID.z[pid+5] = 1.0
 			markID.s[pid+5] = 1.0
-			markID.z[pid+4] = 1.0
-			markID.s[pid+4] = 1.0
-			markID.z[pid+2] = 1.0
-			markID.s[pid+2] = 1.0
-			markID.BOB[pid+3] = true
-			markID.z[pid+3] = 1.0
-			markID.s[pid+3] = 1.0
-			markID.ROT[pid+2] = true
-			markID.BOB[pid+2] = true
-			
-			markID.ROT[pid+3] = true
-			
-			markID.ROT[pid+4] = true
-			markID.BOB[pid+4] = true
-			
 			markID.ROT[pid+5] = true
 			markID.BOB[pid+5] = true
 			
-			markID.ROT[pid+6] = true
-			markID.BOB[pid+6] = true
+			markID.z[pid+4] = 1.0
+			markID.s[pid+4] = 1.0
+			markID.BOB[pid+4] = true
+			markID.ROT[pid+4] = true
+			
+			
+			
+			markID.z[pid+2] = -2.0
+			markID.s[pid+2] = 2.5
+			markID.BOB[pid+2] = true
+			markID.ROT[pid+2] = true
+			
+			markID.z[pid+3] = 1.0
+			markID.s[pid+3] = 1.0	
+			markID.BOB[pid+3] = true
+			markID.ROT[pid+3] = true
+			
+
+			
+			
+			
+
+			
 			markID.z[pid+6] = 1.0
 			markID.s[pid+6] = 1.0
+			markID.BOB[pid+6] = true
+			markID.ROT[pid+6] = true
+			
 			highlight_set[pid+1] = true
 		end
 		
@@ -4271,6 +4342,7 @@ for pid=0,31 do
 	
 	featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
 	featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
+	featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
 	featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id)
 	featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
 	
@@ -4382,8 +4454,6 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		end
 	end), type = "action"}
 	
-	
-	
 	--TODO: Highight Controls
 	
 	features["RGB1"] = {feat = menu.add_feature("fading red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
@@ -4453,12 +4523,13 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		if feat.on then
 		
 		
-		actM = feat.value_i + 1
+		actM = feat.value_i + pid + 2
 		return HANDLER_CONTINUE
 		end
-	end), type = "value_i"}
-	features["Mark_Control"].feat.max_i = 5
-	features["Mark_Control"].feat.min_i = 1
+	end), type = "toggle"}
+	features["Mark_Control"].feat.on = false
+	features["Mark_Control"].feat.max_i = 6
+	features["Mark_Control"].feat.min_i = 0
 	
 	features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "action", featureVars.h.id, function(feat)
 		changeRGBA.on = false
@@ -4549,7 +4620,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end), type = "value_i"}
 	features["marker_active1"].feat.max_i = 44
 	features["marker_active1"].feat.min_i = 0
-	features["marker_active1"].feat.value_i = 27
+	features["marker_active1"].feat.value_i = 1
 	features["marker_active1"].feat.on = false
 	
 	
@@ -4571,7 +4642,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end), type = "value_i"}
 	features["marker_active2"].feat.max_i = 44
 	features["marker_active2"].feat.min_i = 0
-	features["marker_active2"].feat.value_i = 27
+	features["marker_active2"].feat.value_i = 43
 	features["marker_active2"].feat.on = false
 	
 	
@@ -4594,7 +4665,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end), type = "value_i"}
 	features["marker_active3"].feat.max_i = 44
 	features["marker_active3"].feat.min_i = 0
-	features["marker_active3"].feat.value_i = 27
+	features["marker_active3"].feat.value_i = 0
 	features["marker_active3"].feat.on = false
 	
 	
@@ -4616,7 +4687,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end), type = "value_i"}
 	features["marker_active4"].feat.max_i = 44
 	features["marker_active4"].feat.min_i = 0
-	features["marker_active4"].feat.value_i = 27
+	features["marker_active4"].feat.value_i = 29
 	features["marker_active4"].feat.on = false
 	
 	
@@ -4641,7 +4712,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end), type = "value_i"}
 	features["marker_active5"].feat.max_i = 44
 	features["marker_active5"].feat.min_i = 0
-	features["marker_active5"].feat.value_i = 27
+	features["marker_active5"].feat.value_i = 28
 	features["marker_active5"].feat.on = false
 	
 	
@@ -4773,56 +4844,376 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end}
 	features["Teleport_God-mode_Death_2"].feat.on = false
 	
+	
+	local spawned_cunt1 = {}
+	local spawned_cunt2 = {}
 	local spawned_cunt = {}
-	features["LightPOSway"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.g.id, function(feat)
+		
+	features["LightPOS1way"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.tr.id, function(feat)
 		if feat.on then
+			local i = #spawned_cunt
+			local y = (#spawned_cunt - 1)
+			if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
+			features["LightPOSway"].feat.on = false
+			return end
 			local pos = v3()
 			pos = player.get_player_coords(pid)
 			local offset = v3()
 			local offset2 = v3()
-			offset.x = 0.0
-			offset.y = 0.0
-			offset.z = 1.0
-			local i = #spawned_cunt
+			offset.x = 0.2
+			offset.y = 0.5
+			offset.z = 0.0
+			
 		entity.set_entity_coords_no_offset(spawned_cunt[i], pos + offset)
-			offset2.x = 3.0
-			offset2.y = -2.0
-			offset2.z = 1.8
-			local y = (#spawned_cunt - 1)
+			offset2.x = 1.0
+			offset2.y = 0.3
+			offset2.z = 0.0
+			
 		entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
 		
 		return HANDLER_CONTINUE
 			end
 		end),  type = "toggle", callback = function()
 	end}
+	features["LightPOS1way"].feat.on = false
+	features["LightPOS1way"].feat.hidden = true
 
-		features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "action", featureVars.g.id, function(feat)
+	
+	features["LightPOSway"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.tr.id, function(feat)
+		if feat.on then
+			local pos = v3()
+			pos = player.get_player_coords(pid)
+			local heading
+			local heading2
+			
+			local offset = v3()
+			local offset2 = v3()	
+			heading = player.get_player_heading(pid)
+			heading = math.rad((heading - 180) * -1)			
+			offset = v3(pos.x + (math.sin(heading) * -0.8), pos.y + (math.cos(heading) * -0.8), pos.z)
+			offset.z = offset.z + 1.0
+			for i = 1, #spawned_cunt1 do
+			
+				entity.set_entity_coords_no_offset(spawned_cunt1[i], offset)
+				
+				end
+			heading2 = player.get_player_heading(pid)
+			heading2 = math.rad((heading2 - 180) * -1)
+			offset2 = v3(pos.x + (math.sin(heading2) * -(-1.8)), pos.y + (math.cos(heading2) * -(-1.8)), pos.z)
+			offset2.z = offset2.z + 1.2
+			for y = 1, #spawned_cunt2 do
+			
+					entity.set_entity_coords_no_offset(spawned_cunt2[y], offset2)
+					end
+					return HANDLER_CONTINUE
+		end
+		end),  type = "toggle", callback = function()
+		end}
+		
+	features["LightPOSway"].feat.on = false
+	features["LightPOSway"].feat.hidden = true
+
+		features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "action", featureVars.tr.id, function(feat)
 			
 			local offset = v3()
 			local pos = v3()
-			local posbool
-			posbool, pos = ped.get_ped_bone_coords(player.get_player_ped(pid), 65068, offset)
+			pos = player.get_player_coords(pid)
+
+		spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(2906806882, pos, true, false)
+
+		
+		spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(2906806882, pos, true, false)
+
 
 		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
 
 		
 		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
 
-		
+		features["LightPOS1way"].feat.on = true
+
+		features["LightPOSway"].feat.on = true
 		end),  type = "action"}
 	
 
+	local pos = v3()
+	local PlyImpactPos = v3()
+	local offset = v3()
+	
+	features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
+		if feat.on then
+		pedd = player.get_player_ped(pid)
+		local success, pos = ped.get_ped_last_weapon_impact(pedd, v3())
+		if success then
+			PlyImpactPos = pos
+			else
+			
+		end
+		return HANDLER_CONTINUE
+	end
+	end),  type = "toggle", callback = function()
+	end}
+	features["weapon_impact"].feat.on = false
+	features["weapon_impact"].feat.hidden = true
+
+	features["Give_Airstrike"] = {feat = menu.add_feature("Give Airstrike @last Weapon Impact", "toggle", featureVars.f.id, function(feat)
+
+	features["weapon_impact"].feat.on = true
+		if feat.on then
+
+		pedd = player.get_player_ped(pid)
+		if not ped.is_ped_shooting(pedd) then
+		return HANDLER_CONTINUE end
+		print("ped Shooting")
+		--system.wait(10)
+		
+		local posm = v3()
+		posm = player.get_player_coords(pid)
+	
+		
+		posm.z = posm.z + 100
+		
+		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+		pos_off = v3()
+		pos_off.x = pos.x + math.random(1, 5)
+		pos_off.y = pos.y + math.random(1, 8)
+		
+		local playerz, zPos = gameplay.get_ground_z(pos)
+		pos_off.z = zPos
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x + 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y - 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x - 6
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y + 6
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x + 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y - 5
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.x = PlyImpactPos.x - 4
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		PlyImpactPos.y = PlyImpactPos.y + 4
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		system.wait(50)
+		
+		print(PlyImpactPos)
+		return HANDLER_CONTINUE
+	end
+
+		features["weapon_impact"].feat.on = false		
+	    			return HANDLER_POP
+
+
+	end),  type = "toggle", callback = function()
+	end}
+	features["Give_Airstrike"].feat.on = false
+
+	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
+		ScriptTR(1421531240, pid, {1, 1})
+		local scid = player.get_player_scid(pid)
+		local name = tostring(player.get_player_name(pid))
+		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
+	end), type = "action"}
+	
+	features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
+		
+		ScriptTR(1421531240, pid, {2, 0})
+		
+		scid = player.get_player_scid(pid)
+		name = tostring(player.get_player_name(pid))
+		debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
+		
+	end), type = "action"}
 	--TODO:Grief
-	menu.add_feature("---------------------------------------", "action", featureVars.g.id, nil)
+
 	local blame = 0	
 
-	features["blamer"] = {feat = menu.add_feature("Blame Another Player: ID", "action_value_i", featureVars.g.id, function(feat)
-		blame = player.get_player_ped(feat.value_i)
-	end), type = "action_value_i"}
-	features["blamer"].feat.max_i = 32
-	features["blamer"].feat.min_i = 0
+	features["blamer"] = {feat = menu.add_feature("Own The Blame For this shit?", "toggle", featureVars.g.id, function(feat)
+	if not feat.on then
+		blame = 0
+		return HANDLER_POP
+	end
+	if not blame == o or nil then
+		blame = PlayerPed
+
+		end
+		return HANDLER_CONTINUE
+	end), type = "toggle"}
 	
-	menu.add_feature("---------------------------------------", "action", featureVars.g.id, nil)
+	features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.g.id, function(feat)
+
+    local pedd = player.get_player_ped(pid)
+    local pos = v3()
+    local offset = v3()
+    offset.x = 0.08
+    offset.y = 0.0
+    offset.z = 0.0
+    local rot = v3()
+    rot.x = 40
+    rot.y = -83
+    rot.z = -134
+    local bid = ped.get_ped_bone_index(pedd, 65068)
+    local hashb = gameplay.get_hash_key("v_res_d_dildo_f")
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(hashb, pos, true, false)
+    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, true)
+    local offset = v3()
+    offset.x = 0.0
+    offset.y = 0.0
+    offset.z = 0.0
+    local rot = v3()
+    rot.x = 293.0
+    rot.y = 28.0
+    rot.z = 24.0
+    local bid = ped.get_ped_bone_index(pedd, 23553)
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(hashb, pos, true, true)
+    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, true)
+    local bid = ped.get_ped_bone_index(pedd, 65068)
+    local offset = v3()
+    offset.x = 0.010
+    offset.y = 0.01
+    offset.z = 0.001
+    local rot = v3()
+    rot.x = 1.0
+    rot.y = 1.0
+    rot.z = 1.0
+    local hasha = gameplay.get_hash_key("prop_air_lights_02a")
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(hasha, pos, true, true)
+    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, false)
+    local pos = v3()
+    local offset = v3()
+    local rot = v3()
+    offset.x = 0.12
+    offset.y = 0.0
+    offset.z = -0.26
+    rot.x = -181.0
+    rot.y = 0.0
+    rot.z = 0.0
+
+    local pped = player.get_player_ped(pid)
+    local bone = ped.get_ped_bone_index(pped, 18905)
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(3324004640, pos, true, false)
+
+    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
+
+    return HANDLER_POP
+	end), type = "action"}
+	
+	features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
+		
+		local pedd = player.get_player_ped(pid)
+		ped.get_ped_bone_coords(pedd, 0, offset)
+		local pedbool
+		local pos = v3()
+		local offset = v3()
+		offset.x = 0.0
+		offset.y = -0.001
+		offset.z = 0.0
+		
+		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, 100, 0, 0, 0, true, true)
+		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+		offset.y = offset.y + -0.001
+		system.wait(10)
+		
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, -2, 0, 0, true, true)
+		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+		system.wait(10)
+		offset.y = offset.y + -0.001
+		
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 3, 0, 0, 100, 1, 0, 0, true, true)
+		system.wait(10)
+		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
+		offset.y = offset.y + -0.001
+		
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		system.wait(10)
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, 0, 0, 0, true, true)
+		
+		system.wait(100)
+		for i = 1, #spawned_cunts do
+			pos = entity.get_entity_coords(spawned_cunts[i])
+			offset.x = -0.5
+			offset.y = 0.5
+			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
+			
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			offset.x = 0.5
+			offset.y = -0.5
+			pos = entity.get_entity_coords(spawned_cunts[i])
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			
+			fire.add_explosion(pos + offset, 60, true, false, 1, blame)
+			offset.x = -0.5
+			offset.y = -0.5
+			fire.add_explosion(pos + offset, 59, true, false, 5, blame)
+			system.wait(10)
+			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
+			offset.x = 0.5
+			offset.y = 0.5
+			fire.add_explosion(pos + offset, 58, true, false, 5, blame)
+			
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			offset.x = -1.0
+			offset.y = 1.0
+			
+			fire.add_explosion(pos + offset, 60, true, false, 1, blame)
+			
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			offset.x = 0.0
+			offset.y = 0.0
+			system.wait(10)
+			fire.add_explosion(pos + offset, 59, true, false, 5, blame)
+			
+			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
+			
+			
+			system.wait(100)
+			entity.set_entity_as_no_longer_needed(spawned_cunts[i])
+			entity.delete_entity(spawned_cunts[i])
+			
+		end
+		
+	end), type = "action"}
+	
+--TODO: World Dump Run Check
+	features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
+	if not world_dumped then
+	world_dumped = false
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		dump_onplayer(pid, pos)
+		end
+	end), type = "action"}
+	
+	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
+	if not world_dumped then
+	world_dumped = false
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		dumpfreeze_onplayer(pid, pos)
+		end
+	end), type = "action"}
+	
+	
 	
 	features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", featureVars.g.id, function(feat)
 		
@@ -4912,271 +5303,14 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	features["Way-point"].feat.threaded = false
 	
 
-	local pos = v3()
-	local PlyImpactPos = v3()
-features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
-	if feat.on then
-		pedd = player.get_player_ped(pid)
-		local success, pos = ped.get_ped_last_weapon_impact(pedd, v3())
-		if success then
-			PlyImpactPos = pos
-			else
-			
-		end
-		return HANDLER_CONTINUE
-	end
-end),  type = "toggle", callback = function()
-	end}
-features["weapon_impact"].feat.on = false
-features["weapon_impact"].feat.hidden = false
-
-	features["Give_Airstrike"] = {feat = menu.add_feature("Give Airstrike @last Weapon Impact", "toggle", featureVars.f.id, function(feat)
-
-	
-	if feat.on then
-
-		pedd = player.get_player_ped(pid)
-		if not ped.is_ped_shooting(pedd) then
-		return HANDLER_CONTINUE end
-		print("ped Shooting")
-		--system.wait(10)
-		
-		local posm = v3()
-		posm = player.get_player_coords(pid)
-	
-		
-		posm.z = posm.z + 100
-		
-		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
-		pos_off = v3()
-		pos_off.x = pos.x + math.random(1, 5)
-		pos_off.y = pos.y + math.random(1, 8)
-		
-		local playerz, zPos = gameplay.get_ground_z(pos)
-		pos_off.z = zPos
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.x = PlyImpactPos.x + 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.y = PlyImpactPos.y - 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.x = PlyImpactPos.x - 6
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.y = PlyImpactPos.y + 6
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.x = PlyImpactPos.x + 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.y = PlyImpactPos.y - 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.x = PlyImpactPos.x - 4
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		PlyImpactPos.y = PlyImpactPos.y + 4
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
-		system.wait(50)
-		
-		print(PlyImpactPos)
-		return HANDLER_CONTINUE
-	end
-
-		features["weapon_impact"].feat.on = false		
-	    			return HANDLER_POP
-
-
-	end),  type = "toggle", callback = function()
-	end}
-	features["Give_Airstrike"].feat.on = false
-
-
-	
-	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.g.id, function(feat)
-		ScriptTR(1421531240, pid, {1, 1})
-		local scid = player.get_player_scid(pid)
-		local name = tostring(player.get_player_name(pid))
-		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
-	end), type = "action"}
-	
-	features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.g.id, function(feat)
-		
-		ScriptTR(1421531240, pid, {2, 0})
-		
-		scid = player.get_player_scid(pid)
-		name = tostring(player.get_player_name(pid))
-		debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
-		
-	end), type = "action"}
-	
-	features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.g.id, function(feat)
-		
-		
-		local pedd = player.get_player_ped(pid)
-		local pos = v3()
-		local offset = v3()
-		offset.x = 0.08
-		offset.y = 0.0
-		offset.z = 0.0
-		local rot = v3()
-		rot.x = 40
-		rot.y = -83
-		rot.z = -134
-		local bid = ped.get_ped_bone_index(pedd, 65068)
-		local hashb = gameplay.get_hash_key("v_res_d_dildo_f")
-		spawned_cunts[#spawned_cunts + 1]  = object.create_object(hashb, pos, true, false)
-		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, true)
-		local offset = v3()
-		offset.x = 0.0
-		offset.y = 0.0
-		offset.z = 0.0
-		local rot = v3()
-		rot.x = 293.0
-		rot.y = 28.0
-		rot.z = 24.0
-		local bid = ped.get_ped_bone_index(pedd, 23553)
-		spawned_cunts[#spawned_cunts + 1] = object.create_object(hashb, pos, true, true)
-		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, true)
-		
-		local bid = ped.get_ped_bone_index(pedd, 65068)
-		local offset = v3()
-		offset.x = 0.010
-		offset.y = 0.01
-		offset.z = 0.001
-		local rot = v3()
-		rot.x = 1.0
-		rot.y = 1.0
-		rot.z = 1.0
-		local hasha = gameplay.get_hash_key("prop_air_lights_02a")
-		spawned_cunts[#spawned_cunts + 1]  = object.create_object(hasha, pos, true, true)
-		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, bid, offset, rot, true, false, false, 0, false)
-			local pos = v3()
-	local offset = v3()
-	local rot = v3()
-	offset.x = 0.12
-	offset.y = 0.0
-	offset.z = -0.26
-	rot.x = -181.0
-	rot.y = 0.0
-	rot.z = 0.0
-	
-	local pped = player.get_player_ped(player.player_id())
-	local bone = ped.get_ped_bone_index(pped, 18905)
-	spawned_cunts[#spawned_cunts+1] = object.create_object(3324004640, pos, true, false)
-	
-	entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
-		
-		return HANDLER_POP
-	end), type = "action"}
-	
-	features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
-		
-		local pedd = player.get_player_ped(pid)
-		ped.get_ped_bone_coords(pedd, 0, offset)
-		local pedbool
-		local pos = v3()
-		local offset = v3()
-		offset.x = 0.0
-		offset.y = -0.001
-		offset.z = 0.0
-		
-		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
-		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-		
-		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, 100, 0, 0, 0, true, true)
-		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
-		offset.y = offset.y + -0.001
-		system.wait(10)
-		
-		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-		
-		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, -2, 0, 0, true, true)
-		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
-		system.wait(10)
-		offset.y = offset.y + -0.001
-		
-		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-		
-		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 3, 0, 0, 100, 1, 0, 0, true, true)
-		system.wait(10)
-		pedbool, pos = ped.get_ped_bone_coords(pedd, 0, offset)
-		offset.y = offset.y + -0.001
-		
-		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-		system.wait(10)
-		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, 0, 0, 0, true, true)
-		
-		system.wait(100)
-		for i = 1, #spawned_cunts do
-			pos = entity.get_entity_coords(spawned_cunts[i])
-			offset.x = -0.5
-			offset.y = 0.5
-			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
-			
-			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-			offset.x = 0.5
-			offset.y = -0.5
-			pos = entity.get_entity_coords(spawned_cunts[i])
-			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-			
-			fire.add_explosion(pos + offset, 60, true, false, 1, blame)
-			offset.x = -0.5
-			offset.y = -0.5
-			fire.add_explosion(pos + offset, 59, true, false, 5, blame)
-			system.wait(10)
-			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
-			offset.x = 0.5
-			offset.y = 0.5
-			fire.add_explosion(pos + offset, 58, true, false, 5, blame)
-			
-			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-			offset.x = -1.0
-			offset.y = 1.0
-			
-			fire.add_explosion(pos + offset, 60, true, false, 1, blame)
-			
-			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-			offset.x = 0.0
-			offset.y = 0.0
-			system.wait(10)
-			fire.add_explosion(pos + offset, 59, true, false, 5, blame)
-			
-			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
-			
-			
-			system.wait(100)
-			entity.set_entity_as_no_longer_needed(spawned_cunts[i])
-			entity.delete_entity(spawned_cunts[i])
-			
-		end
-		
-	end), type = "action"}
-	
-	
-	features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
-		local pos = v3()
-		pos = player.get_player_coords(pid)
-		dump_onplayer(pid, pos)
-	end), type = "action"}
-	
-	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
-		local pos = v3()
-		pos = player.get_player_coords(pid)
-		dumpfreeze_onplayer(pid, pos)
-	end), type = "action"}
-	
-	
 	features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggle", featureVars.k.id, function(feat)
 		if not feat.on then
 			playerFeatures[pid].features["Kick1_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick1_Type2"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type2"].feat.on = false
+			playerFeatures[pid].features["Kick3_Type1"].feat.on = false
+			playerFeatures[pid].features["Kick3_Type2"].feat.on = false
 			
 			return HANDLER_POP
 		end
@@ -5184,6 +5318,8 @@ features["weapon_impact"].feat.hidden = false
 		playerFeatures[pid].features["Kick1_Type2"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type2"].feat.on = true
+		playerFeatures[pid].features["Kick3_Type1"].feat.on = true
+		playerFeatures[pid].features["Kick3_Type2"].feat.on = true
 		return HANDLER_CONTINUE
 		
 		
@@ -5193,7 +5329,7 @@ features["weapon_impact"].feat.hidden = false
 	
 	features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			
+			player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -5230,7 +5366,7 @@ features["weapon_impact"].feat.hidden = false
 	
 	features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			
+			player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -5268,7 +5404,8 @@ features["weapon_impact"].feat.hidden = false
 	features["Kick1_Type2"].feat.on = false
 	
 	features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_i", featureVars.k.id, function(feat)
-		if feat.on then	
+		if feat.on then
+			player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -5301,7 +5438,7 @@ features["weapon_impact"].feat.hidden = false
 	
 	features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			
+			player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -5333,11 +5470,77 @@ features["weapon_impact"].feat.hidden = false
 	features["Kick2_Type2"].feat.mod_i = 99
 	features["Kick2_Type2"].feat.on = false
 	
+	features["Kick3_Type1"] = {feat = menu.add_feature("Kick Data 3 Type 1", "value_i", featureVars.k.id, function(feat)
+		if feat.on then
+			player.unset_player_as_modder(pid, -1)
+			local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data3 then b = #data3 end
+			print(b .. ", "..a)
+			
+			for i = a, b do
+				
+				par1 = math.random(-1000, 99999999)
+				par2 = math.random(-1, 9)
+				par3 = math.random(-1, 1)
+				par4 = math.random(-1, 9)
+				par5 = math.random(-1, 1)
+				
+				ScriptTR(data3[i], pid, {par3, par5, par2, par3, par2})
+				print(data3[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2)
+			end
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["Kick3_Type1"].feat.max_i = #data3
+	features["Kick3_Type1"].feat.min_i = 1
+	features["Kick3_Type1"].feat.value_i = 1
+	features["Kick3_Type1"].feat.mod_i = 99	
+	features["Kick3_Type1"].feat.on = false
+	
+	features["Kick3_Type2"] = {feat = menu.add_feature("Kick Data 3 Type 2", "value_i", featureVars.k.id, function(feat)
+		if feat.on then
+			player.unset_player_as_modder(pid, -1)
+			local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data3 then b = #data3 end
+			print(b .. ", "..a)
+			
+			for i = a, b do
+				
+				par1 = math.random(-1000, 99999999)
+				par2 = math.random(-1, 9)
+				par3 = math.random(-1, 1)
+				par4 = math.random(-1, 9)
+				par5 = math.random(-1, 1)
+				
+				ScriptTR(data3[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+				
+				print(data3[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
+				
+			end
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["Kick3_Type2"].feat.max_i = #data3
+	features["Kick3_Type2"].feat.min_i = 1
+	features["Kick3_Type2"].feat.value_i = 1
+	features["Kick3_Type2"].feat.mod_i = 99
+	features["Kick3_Type2"].feat.on = false
+	
 	features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
-
+			player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
-			
 			ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 
@@ -5345,10 +5548,9 @@ features["weapon_impact"].feat.hidden = false
 	
 	
 	features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck", "action", featureVars.k.id, function(feat)
-
+			player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
-			player.set_player_as_modder(pid, mod_flag_2)
 			ScriptTR(-1153500935, pid, {91645, -99683, 1788, 60877, 55085, 72028})
 			ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
@@ -5357,7 +5559,7 @@ features["weapon_impact"].feat.hidden = false
 	
 	features["SE-kick"] = {feat = menu.add_feature("SE Kick", "action", featureVars.k.id, function(feat)
 
-			player.set_player_as_modder(pid, mod_flag_2)
+			player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)
 			ScriptTR(0xbb3ef8f9, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
 			ScriptTR(0x1f63a94e, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
@@ -5371,7 +5573,18 @@ features["weapon_impact"].feat.hidden = false
 
 	end), type = "action"}
 		
+	features["SPE-kick"] = {feat = menu.add_feature("SPECIAL KICK", "action", featureVars.k.id, function(feat)
 
+			player.unset_player_as_modder(pid, -1)
+			local scid = player.get_player_scid(pid)
+			ScriptTR(-1253256204, pid, {1337, -1, 1, 1, 0, 0, 0})
+			ScriptTR(-1253256204, pid, {pid, 1337, -1, 1, 1, 0, 0, 0})
+			local name = tostring(player.get_player_name(pid))
+			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Special SE Kicked"))
+
+	end), type = "action"}
+	
+	
 	
 	playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
 	featureVars.f.hidden = true
@@ -5389,6 +5602,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 			
 			SessionHost = nil
 			ScriptHost = nil
+			PlayerPed = 0
 			loop_logsent = false
 		end
 		local lpid = player.player_id()
@@ -5402,6 +5616,9 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 				local isYou = lpid == pid
 				local tags = {}
 				if Online then
+					if not PlayerPed == 0 or nil then
+					PlayerPed =	player.get_player_ped(player.player_id())
+					end
 					if isYou then
 						tags[#tags + 1] = "Y"
 					end
