@@ -114,7 +114,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 local toggle_setting = {}
 local setting = {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.1"
+setting[toggle_setting[#toggle_setting]] = "2.0.1.2"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modvehgod_osd"
@@ -287,7 +287,7 @@ math.randomseed(utils.time_ms())
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1\n~l~~h~Public Edition", 175)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -297,24 +297,24 @@ function moist_notify(msg1, msg2)
 	msg2 = msg2 or " ~h~~w~~ex_r*~"
 	
 	if notifytype == 1 then
-		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~w~~h~Public Edition", color)
+		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 2 then
-		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~y~~h~Public Edition", color)
+		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 3 then
-		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~w~~h~Public Edition", color)
+		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 4 then
-		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~y~~h~Public Edition", color)
+		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~b~~h~Public Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~g~~h~Public Edition", color)
 	end
 	
 end
@@ -364,7 +364,7 @@ end
 modflag_set()
 
 
---Preset Data Arrays
+--TODO: Preset Data Arrays
 
 local presets = {{"beyond_limits", -173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)", -1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",  -5784.258301,-8289.385742,-136.411270},{"Chiliad", 491.176,5529.808,777.503},{"Lesters House", 1275.544,-1721.774,53.967},{"arena", -264.297,-1877.562,27.756},{"ElysianIslandBridge", -260.923,-2414.139,124.008},{"LSIAFlightTower", -983.292,-2636.995,89.524},{"TerminalCargoShip", 983.303,-2881.645,21.619},{"ElBurroHeights", 1583.022,-2243.034,93.265},{"CypressFlats", 552.672,-2218.876,68.981},{"LaMesa", 1116.815,-1539.787,52.146},{"SupplyStreet", 777.631,-695.813,28.763},{"Noose", 2438.874,-384.409,92.993},{"TatavianMountains", 2576.999,445.654,108.456},{"PowerStation", 2737.046,1526.873,57.494},{"WindFarm", 2099.765,1766.219,102.698},{"Prison", 1693.473,2652.971,61.335},{"SandyShoresRadioTower", 1847.034,3772.019,33.151},{"AlamoSea", 719.878,4100.993,39.154},{"RebelRadioTower", 744.500,2644.334,44.400},{"GreatChaparral", -291.035,2835.124,55.530},{"ZancudoControlTower", -2361.625,3244.962,97.876},{"NorthChumash(Hookies)", -2205.838,4298.805,48.270},{"AltruistCampRadioTower", -1036.141,4832.858,251.595},{"CassidyCreek", -509.942,4425.454,89.828},{"MountChiliad", 462.795,5602.036,781.400},{"PaletoBayFactory", -125.284,6204.561,40.164},{"GreatOceanHwyCafe", 1576.385,6440.662,24.654},{"MountGordoRadioTower", 2784.536,5994.213,354.275},{"MountGordoLighthouse", 3285.519,5153.820,18.527},{"GrapeSeedWaterTower", 1747.518,4814.711,41.666},{"TatavianMountainsDam", 1625.209,-76.936,166.651},{"VinewoodHillsTheater", 671.748,512.226,133.446},{"VinewoodSignRadioTowerTop", 751.179,1245.13,353.832},{"Hawik", 472.588,-96.376,123.705},{"PacificSrandardBank", 195.464,224.341,143.946},{"WestVinewoodCrane", -690.273,219.728,137.518},{"ArcadiasRadioTower", -170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010, -1419.530,5.001},{"DelperoFerrisWheel", -1644.193,-1114.271,13.029},{"VespucciCanalsClockTower", -1238.729,-853.861,77.758},{"DelPeroNrMazebankwest", -1310.777,-428.985,103.465},{"pacifficBluffs", -2254.199,326.088,192.606},{"GWC&GolfingSociety", -1292.052,286.209,69.407},{"Burton", -545.979,-196.251,84.733},{"LosSantosMedicalCenter", 431.907,-1348.709,44.673},{"BanhamCanyon", -3085.451,774.426,20.237},{"TongvaHills", -1874.280,2064.565,150.852},{"SanChianskiMountainRange", 2900.166,4325.987,102.101},{"HumaineLabs", 3537.104,3689.238,45.228},{"YouToolStoreSanChianski", 2761.944,3466.951,55.679},{"GalileoObservatory", -422.917,1133.272,325.855},{"GrndSeroraDesertCementwks", 1236.649,1869.214,84.824}}
 local scriptEvents = {0x0fb7b2c5,0x1C2C3329,0x1f63a94e,0x4fbc297f,0x5f21fcaa,0x7b505065,0x7d556776,0x8b37581a,0x11fa24fa,0x073c8336,0x75bf07bc,0x75fc2a5e,0x96b17776,0x110b571b,0x222d2dab,0x231d58ee,0x692CC4BB,0x2073b3d7,0x2429d2da,0x8180e34a,0x13216f21,0x55274b5d,0x134771B8,0x6984116e,0x96308401,0xB54CD3F4,0xC2AD5FCE,0xCB79323D,0xF83B520C,0xaec17e3a,0xb513d7bd,0xba4adc62,0xcb14b6c0,0xe5010210,0xebee9424,0xfdb1f516,}
@@ -375,7 +375,7 @@ local missions = {"Force to Severe Weather","Force to Half Track","Force to Half
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
 local ssb_wep = {"weapon_sniperrifle","weapon_heavysniper","weapon_remotesniper","weapon_grenadelauncher","vehicle_weapon_player_bullet","vehicle_weapon_player_lazer","weapon_airstrike_rocket","vehicle_weapon_space_rocket","vehicle_weapon_plane_rocket","vehicle_weapon_trailer_missile","vehicle_weapon_akula_missile","vehicle_weapon_akula_barrage","vehicle_weapon_avenger_cannon","weapon_arena_homing_missile"}
-
+local strikegive = {"weapon_airstrike_rocket","vehicle_weapon_trailer_dualaa","vehicle_weapon_avenger_cannon","vehicle_weapon_khanjali_cannon_heavy","weapon_grenadelauncher"}
 
 --Event Data Arrays
 
@@ -486,12 +486,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-if  Moist == nil then
-	globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent",0).id
-end
-if not  Moist == nil then	
-	globalFeatures.parent = Moist
-end
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.2", "parent", 0).id
 
 --TODO: local Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
@@ -517,7 +512,6 @@ globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent",
 local state = 0
 local lastRun = nil
 
-menu.add_feature(" ", "action", globalFeatures.self, nil)
 menu.add_feature(" ", "action", globalFeatures.self, nil)
 menu.add_feature("InGame Chat Spam Assistance\n..........", "action", globalFeatures.self, nil)
 local spamChatCtrlFeat = menu.add_feature("toggle on Hold Space", "value_i", globalFeatures.self, function(feat)
@@ -562,7 +556,7 @@ spamChatCtrlFeat.mod_i = 1
 spamChatCtrlFeat.value_i = 0
 
 
---TODO:online Player Feature Parents
+--TODO: Online Player Feature Parents
 local Player_Tools = menu.add_player_feature("Tools", "parent", 0).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", 0).id
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
@@ -605,7 +599,7 @@ end)
 
 
 
---TODO:Notify settings
+--TODO: Notify settings
 globalFeatures.nottyp = menu.add_feature("Set Notify Variant", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
 	
 	notifytype = feat.value_i
@@ -666,7 +660,7 @@ local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, fun
 end)
 ip_clip.threaded = false
 
-local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", Player_Tools, function(feat, pid)
+local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", 0, function(feat, pid)
 	while feat.on do
 		if player.is_player_modder(pid, -1) == true
 			then
@@ -676,9 +670,11 @@ local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", Play
 		return HANDLER_CONTINUE
 	end
 	return HANDLER_POP
-end) 
+end)
 
-local friends_donotmod = menu.add_feature("My Friends DO NOT MOD! MarkOFF", "toggle", globalFeatures.protex, function(feat)
+
+
+local friends_donotmod = menu.add_feature("My Friends DO NOT MOD!", "toggle", globalFeatures.protex, function(feat)
 	if feat.on then
 		-- 
 		for i = 0, 32 do
@@ -695,8 +691,7 @@ friends_donotmod.threaded = false
 friends_donotmod.on = false
 
 
-
---TODO:Orbital Room Protection
+--TODO: Orbital Room Protection
 menu.add_feature("Teleport to block location?", "action", globalFeatures.orbital, function(feat)
 	
 	local pos = v3()
@@ -726,72 +721,52 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-	local wall = spawned_cunts[#spawned_cunts]
+
 	
 	local pos = v3()
 	
 	pos.x = 343.01234960938 
 	pos.y = 4833.3774414062
 	pos.z = -58.619457244873
-	
-	-- pos.x = 344.49584960938
-	-- pos.y = 4832.3774414062
-	-- pos.z = -57.619457244873
 	local rot = v3()
 	pos.x = 350.26750854492
 	pos.y = 4828.8745117188
 	pos.z = -58.487403869629
-	-- rot.x = -25.000
-	-- rot.y = -0.0
-	-- rot.z = -148.273
 	rot.x = -25.000011444092
 	rot.y = -0.0
 	rot.z = 150.0
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	--	entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], wall, 0, offset, rot, true, false, false, 2
-	
+	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 347.04141235352
 	pos.y = 4830.7163085938
 	pos.z = -58.487403869629
-	-- rot.x = -25.0000
-	-- rot.y = -0.0
-	-- rot.z = -147.0
 	rot.x = -25.000011444092
 	rot.y = -0.0
 	rot.z = 150.0
 	
-	
-	
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 343.0749206543
 	pos.y = 4832.9965820312
 	pos.z = -58.487403869629
-	-- rot.x = -25.0000
-	-- rot.y = -0.0 
-	-- rot.z = 146.0
-	
-	
 	rot.x = -25.000011444092
 	rot.y = -0.0
 	rot.z = 150.0
 	
-	
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 339.48446655273
 	pos.y = 4835.1568554686
 	pos.z = -58.487403869629
-	-- rot.x = -25.0000
-	-- rot.y = -0.0
-	-- rot.z = -150.0
 	rot.x = -25.000011444092
 	rot.y = -0.0
 	rot.z = 150.0
@@ -800,15 +775,11 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	
-	
+	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 335.99624633789
 	pos.y = 4837.0795898438
 	pos.z = -58.487403869629
-	-- rot.x = -25.0000
-	-- rot.y = -0.0
-	-- rot.z = -150.0
 	rot.x = -25.000011444092
 	rot.y =-0.0
 	rot.z = 150.000
@@ -816,14 +787,9 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	delete_cunt.max_i = #spawned_cunts
-	
+	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+
 	return HANDLER_POP
-	
-	
-	
-	
-	
 end)
 
 local blockplaces03 = menu.add_feature("Block Orbital Entrance with Wall", "action", globalFeatures.orbital, function(feat)
@@ -854,6 +820,7 @@ local blockplaces03 = menu.add_feature("Block Orbital Entrance with Wall", "acti
 	return HANDLER_POP
 end)
 --Inactive Orbital Screens over blocked doorway
+
 --dmaged sub 3544215092
 local orbscreens = menu.add_feature("Orbital Inactive Screens over Block", "action", globalFeatures.orbital, function(feat)
 	
@@ -947,6 +914,7 @@ delete_cunt = menu.add_feature("Delete Spawned Cunts", "action", globalFeatures.
 		network.request_control_of_entity(i)
 		entity.delete_entity(spawned_cunts[i])
 	end
+
 end)
 
 --TODO: Modder Detection Protection shit
@@ -1276,7 +1244,7 @@ function modder_detected(pid, net_id)
 	
 	ui.notify_above_map(string.format("NetEvent: " ..NetEvents[net_id] .. "\nFrom : " ..player_source), "Moists Modder Detection", 024)
 end
---TODO:Chat Logger
+--TODO: Chat Logger
 function chat(name, text)
 	local d = os.date()
 	local t = string.match(d, "%d%d:%d%d:%d%d")
@@ -1302,7 +1270,7 @@ event.add_event_listener("exit", function()
 	event.remove_event_listener("chat", ChatEventID)
 end)
 
---TODO:Blacklist
+--TODO: Blacklist
 function ValidScid(scid)
 	return scid ~= -1 and scid ~= 4294967295
 end
@@ -1535,7 +1503,7 @@ script_event_hook = function(source, target, params, count)
 	return false
 end
 
---TODO:Blacklist Main function
+--TODO: Blacklist Main function
 function main()
 	
 	--	Moists_Modder_Alert = menu.add_feature("Custom SEP", "toggle", test.id, sep)
@@ -2213,30 +2181,48 @@ end)
 
 --TODO: Force host
 local hostnow
-
+		
 HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFeatures.kick,	function(feat)
 	
 	if feat.on then
+	-- HostForce_togglecheck.on = true
 		hostnow = player.get_host()
 		if not network.network_is_host() then
 			
-			
+			player.unset_player_as_modder(hostnow, -1)
 			ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
-			toggle_kicks(hostnow)
+			ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+			ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+			
+			system.wait(200)
+			
+			ScriptTR(-1253256204, hostnow, {1337, -1, 1, 1, 0, 0, 0})
+			ScriptTR(-1253256204, hostnow, {hostnow, 1337, -1, 1, 1, 0, 0, 0})
+			
 			ScriptTR(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
 			ScriptTR(0xc82139cf, hostnow, {50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 			ScriptTR(0xc82139cf, hostnow, {50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-
+			system.wait(200)
 			toggle_kicks(hostnow)
+			local curhost = player.get_host()
+			if not hostnow == curhost then
+			playerFeatures[pid].features["Kick1_Type1"].feat.on = false
+			playerFeatures[pid].features["Kick1_Type2"].feat.on = false
+			playerFeatures[pid].features["Kick2_Type1"].feat.on = false
+			playerFeatures[pid].features["Kick2_Type2"].feat.on = false
+			playerFeatures[pid].features["Kick3_Type1"].feat.on = false
+			playerFeatures[pid].features["Kick3_Type2"].feat.on = false
+			end
+
 		end
 		
 		if network.network_is_host() then
-			
+			-- HostForce_togglecheck.on = false
 			moist_notify("Stolen Host by Force!", "\nSuccess")
 			HostForce.on = false
 			
 		end
-		
+
 		
 		return HANDLER_CONTINUE
 		
@@ -2294,24 +2280,8 @@ local hostkick = menu.add_feature("Host Kick All", "toggle", globalFeatures.kick
 	
 end)
 
--- function toggle_kicks(pid)
-	
-	-- playerFeatures[pid].features["Kick1_Type1"].feat.on = not playerFeatures[pid].features["Kick1_Type1"].feat.on
-	-- playerFeatures[pid].features["Kick1_Type2"].feat.on = not playerFeatures[pid].features["Kick1_Type2"].feat.on
-	-- playerFeatures[pid].features["Kick2_Type1"].feat.on = not playerFeatures[pid].features["Kick2_Type1"].feat.on
-	-- playerFeatures[pid].features["Kick2_Type2"].feat.on = not playerFeatures[pid].features["Kick2_Type2"].feat.on
-	
-	
--- end
-
 function toggle_kicks(pid)
-	
-	playerFeatures[pid].features["Kick1_Type1"].feat.on = true
-	playerFeatures[pid].features["Kick1_Type2"].feat.on = true
-	playerFeatures[pid].features["Kick2_Type1"].feat.on = true
-	playerFeatures[pid].features["Kick2_Type2"].feat.on = true
-	
-	
+	playerFeatures[pid].features["EventSpam_toggle"].feat.on = true
 end
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
@@ -2761,6 +2731,7 @@ end)
 
 
 dump_onplayer = function(pid, pos)
+	world_dumped = false
 	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ \nSpectating Player", "!")
 	moist_notify("~h~~w~ 3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
 	
@@ -3063,7 +3034,9 @@ pedveh_cleanup = menu.add_feature("Delete Ped Spawns + Vehicles", "action", glob
 	
 end)
 
+--TODO: CUNT DUMP
 dumpfreeze_onplayer = function(pid, pos)
+	world_dumped = false
 	moist_notify("Ensure you are ~h~ ~r~ NOT!~o~ \nSpectating Player", "!")
 	moist_notify("~h~~w~ 3 Seconds\n", "Until ~r~~h~Cunt Dump ~g~~h~Starts")
 	
@@ -3130,7 +3103,7 @@ end
 
 
 
---TODO:Option Functions
+--TODO: Option Functions
 local entity_control
 
 --[[
@@ -3351,7 +3324,7 @@ OSD.modspec_osd = menu.add_feature("Spectate OSD", "toggle", globalFeatures.mois
 	
 end)
 OSD.modspec_osd.on = setting["OSD.modspec_osd"]
---TODO:PlayerBar
+--TODO: PlayerBar
 OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moistopt, function(feat)
 	setting["OSD.Player_bar"] = true
 	if feat.on then
@@ -3485,6 +3458,7 @@ local function give_weapon()
 	end
 end
 give_weapon()
+
 local wephash
 menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, function(feat)
 	if feat.on then
@@ -3508,7 +3482,6 @@ menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, func
 end)
 
 --TODO: Markers	
--- **MARKERS**
 local markID = {}
 markID.z = {}
 markID.s = {}
@@ -4237,55 +4210,7 @@ menu.add_feature("Any Friends Online?", "action", globalFeatures.lobby, function
 	end
 end)
 
--- menu.add_feature("Friends Output to File", "action", globalFeatures.parent, function(feat)
--- for i=0,network.get_friend_count()-1 do
-
--- local friendName = network.get_friend_index_name(i)
-
--- local friendScid = network.get_friend_scid(friendName)
-
--- local friendOnline = network.is_friend_index_online(i)
-
--- local friendMplay = network.is_friend_in_multiplayer(friendName)
--- debug_out_Nodate(string.format("Friend index %s %s (%s) is %s", i, friendName, friendScid, friendOnline and "online" or "offline"))
--- moist_notify("Friends List Output to File", "Done")
--- end
--- end)
-
-
--- function friendscheck()
--- for i=0,network.get_friend_count()-1 do
-
--- local friendName = network.get_friend_index_name(i)
-
--- local friendScid = network.get_friend_scid(friendName)
-
--- local friendOnline = network.is_friend_index_online(i)
-
--- local friendMplay = network.is_friend_in_multiplayer(friendName)
--- print(string.format("Friend index %s %s (%s) is %s", i, friendName, friendScid, friendOnline and "online" or "offline"))
--- if friendOnline then
--- if friendMplay then
--- ui.notify_above_map("~h~~u~ Online ~u~Friend : " .. friendName .. "~h~~u~\nis Playing Online", "~u~Network ~u~Presence", 172)
--- else
--- ui.notify_above_map("~h~~u~ Online ~u~Friend : " .. friendName , "~u~Network Presence", 47)
--- end
--- system.wait(100)
--- end
--- end
--- end
---Player Current info
-
--- moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
-
--- debug_out(string.format("\nCurrent HP info: " ..  player.get_player_name(pid) ..": ||" .. player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||"))
-
--- local heldwep = ped.get_current_ped_weapon(player.get_player_ped(pid))
--- moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep)
--- debug_out(string.format("Current Held Weapon: " ..weapon.get_weapon_name(heldwep).. ' ('.. heldwep ..')'))
--- end
-
---TODO:Player list
+--TODO: Player list
 
 local PlayerPed
 
@@ -4955,10 +4880,16 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	features["weapon_impact"].feat.on = false
 	features["weapon_impact"].feat.hidden = true
 
-	features["Give_Airstrike"] = {feat = menu.add_feature("Give Airstrike @last Weapon Impact", "toggle", featureVars.f.id, function(feat)
+	features["Give_Airstrike"] = {feat = menu.add_feature("Give last Weapon Impact Strike", "value_i", featureVars.f.id, function(feat)
 
 	features["weapon_impact"].feat.on = true
 		if feat.on then
+		
+			if not notify_sent then
+		moist_notify("Weapon Projectile Selected:\n", StrikeGive[feat.value_i])
+		notify_sent = true
+	end
+	
 
 		pedd = player.get_player_ped(pid)
 		if not ped.is_ped_shooting(pedd) then
@@ -4969,56 +4900,63 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		local posm = v3()
 		posm = player.get_player_coords(pid)
 	
-		
+		if feat.value_i == 5 then
+		posm.z = posm.z + 10
+		else
 		posm.z = posm.z + 100
+		end
 		
-		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+		local hash = gameplay.get_hash_key(StrikeGive[feat.value_i])
 		pos_off = v3()
 		pos_off.x = pos.x + math.random(1, 5)
 		pos_off.y = pos.y + math.random(1, 8)
 		
 		local playerz, zPos = gameplay.get_ground_z(pos)
 		pos_off.z = zPos
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.x = PlyImpactPos.x + 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.y = PlyImpactPos.y - 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.x = PlyImpactPos.x - 6
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.y = PlyImpactPos.y + 6
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 1000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.x = PlyImpactPos.x + 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.y = PlyImpactPos.y - 5
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.x = PlyImpactPos.x - 4
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		PlyImpactPos.y = PlyImpactPos.y + 4
-		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, 324506233, 0, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos, 10000.00, hash, 0, true, false, 100000.0)
 		system.wait(50)
 		
 		print(PlyImpactPos)
 		return HANDLER_CONTINUE
 	end
 
-		features["weapon_impact"].feat.on = false		
+		features["weapon_impact"].feat.on = false
+			notify_sent = false
 	    			return HANDLER_POP
 
 
 	end),  type = "toggle", callback = function()
 	end}
-	features["Give_Airstrike"].feat.on = false
+	
+	features["Give_Airstrike"].feat.on = false	
+	features["Give_Airstrike"].feat.max_i = #StrikeGive
+	features["Give_Airstrike"].feat.min_i = 1
 
 	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
 		ScriptTR(1421531240, pid, {1, 1})
@@ -5036,7 +4974,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
 		
 	end), type = "action"}
-	--TODO:Grief
+	--TODO: Grief
 
 	local blame = 0	
 
@@ -5052,7 +4990,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		return HANDLER_CONTINUE
 	end), type = "toggle"}
 	
-	features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.g.id, function(feat)
+	features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.tr.id, function(feat)
 
     local pedd = player.get_player_ped(pid)
     local pos = v3()
@@ -5193,26 +5131,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		
 	end), type = "action"}
 	
---TODO: World Dump Run Check
-	features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
-	if not world_dumped then
-	world_dumped = false
-		local pos = v3()
-		pos = player.get_player_coords(pid)
-		dump_onplayer(pid, pos)
-		end
-	end), type = "action"}
-	
-	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
-	if not world_dumped then
-	world_dumped = false
-		local pos = v3()
-		pos = player.get_player_coords(pid)
-		dumpfreeze_onplayer(pid, pos)
-		end
-	end), type = "action"}
-	
-	
+
 	
 	features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", featureVars.g.id, function(feat)
 		
@@ -5258,14 +5177,39 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		
 	end), type = "action"}
 
+--TODO: World Dump Run Check
+	features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
+	if not world_dumped then
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		dump_onplayer(pid, pos)
+		end
+		return HANDLER_POP
+	end), type = "action"}
+	
+	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
+	if not world_dumped then
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		dumpfreeze_onplayer(pid, pos)
+		end
+		return HANDLER_POP
+	end), type = "action"}
+	
+
 
 	features["check_HPWP"] = {feat = menu.add_feature("Check Players HP Stats & Weapon", "action", featureVars.n.id, function(feat)
+		local pped = player.get_player_ped(pid)
 		moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
 		debug_out(string.format("\nCurrent HP info: " ..  player.get_player_name(pid) ..": ||" .. player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||"))
-		local heldwep = ped.get_current_ped_weapon(player.get_player_ped(pid))
+		if not ped.is_ped_in_any_vehicle(pped) then
+		local heldwep = ped.get_current_ped_weapon(pped)
 		moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep)
 		debug_out(string.format("Current Held Weapon: " ..weapon.get_weapon_name(heldwep).. ' ('.. heldwep ..')'))
+		end
+		return HANDLER_POP
 	end), type = "action"  }
+
 
 	
 	features["ip_check"] = {feat = menu.add_feature("Check ip", "action", featureVars.n.id, function(feat)
@@ -5301,28 +5245,28 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end}
 	features["Way-point"].feat.threaded = false
 	
-
+--TODO: Kick System
 	features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggle", featureVars.k.id, function(feat)
 		if not feat.on then
+
 			playerFeatures[pid].features["Kick1_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick1_Type2"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type2"].feat.on = false
 			playerFeatures[pid].features["Kick3_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick3_Type2"].feat.on = false
-			
-			return HANDLER_POP
+		return HANDLER_CONTINUE
 		end
+		
+	end),  type = "toggle", callback = function()
 		playerFeatures[pid].features["Kick1_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick1_Type2"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type2"].feat.on = true
 		playerFeatures[pid].features["Kick3_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick3_Type2"].feat.on = true
-		return HANDLER_CONTINUE
 		
-		
-	end),  type = "toggle", callback = function()
+			
 	end}
 	features["EventSpam_toggle"].feat.on = false
 	
@@ -5609,6 +5553,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 			local tbl = playerFeatures[pid]
 			local f = tbl.feat
 			local scid = player.get_player_scid(pid)
+
 			if scid ~= 4294967295 then
 				if f.hidden then f.hidden = false end
 				local name = player.get_player_name(pid)
