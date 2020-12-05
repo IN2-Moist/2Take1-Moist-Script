@@ -310,10 +310,10 @@ function moist_notify(msg1, msg2)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~b~~h~Public Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~g~~h~Public Edition", color)
 	end
 	
 end
@@ -485,7 +485,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.2", "parent", 0).id
 
 --TODO: local Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
