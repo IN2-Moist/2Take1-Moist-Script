@@ -53,7 +53,7 @@ function debug_out_Nodate(text)
 	io.write("\n")
 	io.write(text)
 	io.close()
-end
+	end
 
 function dataload()
 	if not utils.file_exists(kickdata) then	return end
@@ -242,7 +242,6 @@ local ScriptTR = script.trigger_script_event
 local pos_bool
 local myplygrp
 local plygrp
-local Cur_Date_Time
 local preset_color = setting["NotifyColorDefault"]
 local notifytype = setting["NotifyVarDefault"]
 local AnonymousBounty = true
@@ -311,10 +310,10 @@ function moist_notify(msg1, msg2)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~b~~h~Public Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1\n~g~~h~Public Edition", color)
 	end
 	
 end
@@ -375,7 +374,7 @@ local missions = {"Force to Severe Weather","Force to Half Track","Force to Half
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
 local ssb_wep = {"weapon_sniperrifle","weapon_heavysniper","weapon_remotesniper","weapon_grenadelauncher","vehicle_weapon_player_bullet","vehicle_weapon_player_lazer","weapon_airstrike_rocket","vehicle_weapon_space_rocket","vehicle_weapon_plane_rocket","vehicle_weapon_trailer_missile","vehicle_weapon_akula_missile","vehicle_weapon_akula_barrage","vehicle_weapon_avenger_cannon","weapon_arena_homing_missile"}
-local strikegive = {"weapon_airstrike_rocket","vehicle_weapon_trailer_dualaa","vehicle_weapon_avenger_cannon","vehicle_weapon_khanjali_cannon_heavy","weapon_grenadelauncher"}
+local StrikeGive = {"weapon_airstrike_rocket","vehicle_weapon_trailer_dualaa","vehicle_weapon_avenger_cannon","vehicle_weapon_khanjali_cannon_heavy","weapon_grenadelauncher"}
 
 --Event Data Arrays
 
@@ -486,7 +485,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.2", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0", "parent", 0).id
 
 --TODO: local Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
@@ -512,6 +511,7 @@ globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent",
 local state = 0
 local lastRun = nil
 
+menu.add_feature(" ", "action", globalFeatures.self, nil)
 menu.add_feature(" ", "action", globalFeatures.self, nil)
 menu.add_feature("InGame Chat Spam Assistance\n..........", "action", globalFeatures.self, nil)
 local spamChatCtrlFeat = menu.add_feature("toggle on Hold Space", "value_i", globalFeatures.self, function(feat)
@@ -674,7 +674,7 @@ end)
 
 
 
-local friends_donotmod = menu.add_feature("My Friends DO NOT MOD!", "toggle", globalFeatures.protex, function(feat)
+local friends_donotmod = menu.add_feature("My Friends DO NOT MOD! MarkOFF", "toggle", globalFeatures.protex, function(feat)
 	if feat.on then
 		-- 
 		for i = 0, 32 do
@@ -738,7 +738,6 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 347.04141235352
 	pos.y = 4830.7163085938
@@ -750,7 +749,6 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 343.0749206543
 	pos.y = 4832.9965820312
@@ -762,7 +760,6 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 339.48446655273
 	pos.y = 4835.1568554686
@@ -775,7 +772,6 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 	
 	pos.x = 335.99624633789
 	pos.y = 4837.0795898438
@@ -787,7 +783,6 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
 	ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 	entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-	entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
 	return HANDLER_POP
 end)
@@ -927,7 +922,9 @@ joining_players_logger = event.add_event_listener("player_join", function(e)
 	
 	local ip = player.get_player_ip(pid)
 	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
+	-- local success, res = ProddyUtils.Net.DownloadString("ipwhois.app", "/json/" .. sip .. "?objects=country,city,region,org,isp")
 	joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n")
+	-- joined_data(name..":"..schx.."\n[PID: "..pid .."]: ".."\n[" ..name..":" .."["..scid.."]]" .."\n[IP: "..ip.."]" .."\n[IPv4: "..sip.. "]\n"..res)
 	return
 end)
 
@@ -1036,8 +1033,19 @@ function netcheck5()
 	return HANDLER_POP
 end
 
+local Cur_Date_Time
+function get_datetime()
+	
+	local d = os.date()
+	
+	local dtime = string.match(d, "%d%d:%d%d:%d%d")
+	
+	local dt = os.date("%d/%m/%y%y")
+	Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
+end
 
-local scriptlog_pid = menu.add_feature("Log player script events", "value_i", globalFeatures.protex, function(feat)
+--TODO: ScriptHook Check Player
+scriptlog_pid = menu.add_feature("Log player script events", "value_i", globalFeatures.protex, function(feat)
 	
 	script_check_pid(feat.value_i)
 	system.wait(100)
@@ -1048,29 +1056,6 @@ scriptlog_pid.on = false
 scriptlog_pid.max_i = 32
 scriptlog_pid.min_i = 0
 scriptlog_pid.value_i = 0
-
-
-local params = {}
-script_event_hook = function(source, target, params, count)
-	
-	
-	local player_source = player.get_player_name(source)
-	local scid = player.get_player_scid(source)
-	local player_target = player.get_player_name(target)
-	get_date_time()
-	scriptlog_out(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
-	
-	local cnt = 0
-	for k, v in pairs(params) do 
-		scriptlog_out("[P: " .. cnt .. "] = " .."[".. k .."] " ..v)
-		cnt = cnt + 1
-	end
-	
-	-- system.wait(3000)
-	return false
-	
-	
-end
 
 
 local hook_pid = 0
@@ -1089,20 +1074,29 @@ script_check_pid  = function(pid)
 end
 
 
-local params = {}
-script_event_hook_pid = function(source, target, params, count)
+
+local paramspid = {}
+script_event_hook_pid = function(source, target, paramspid, count)
 	
 	
 	local player_source = player.get_player_name(source)
 	local scid = player.get_player_scid(source)
 	local player_target = player.get_player_name(target)
-	get_date_time()
+	get_datetime()
 	if source == lastpid_hooked then
 		scriptlog_out_pid(Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]", player_source)
 		
 		local cnt = 0
-		for k, v in pairs(params) do 
-			scriptlog_out_pid("[P: " .. cnt .. "] = " .."[".. k .."] " ..v, player_source)
+		for k, v in pairs(paramspid) do
+		if k == 1 then
+		t = string.format("%x", v)
+		c = tostring("  0x"..t)
+		p = string.format(v .."	" .. c)
+		else
+		p = v
+		end
+	
+		scriptlog_out_pid("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p, player_source)
 			cnt = cnt + 1
 		end
 		return false
@@ -1112,10 +1106,10 @@ script_event_hook_pid = function(source, target, params, count)
 	
 end
 
-
+--TODO: ScriptHook Check
 local hook_id = 0
-script_check  = function()
-	if script_check_logger.on == true then
+script_check  = function(feat)
+	if feat.on then
 		hook_id	= hook.register_script_event_hook(script_event_hook)
 		return HANDLER_POP
 	end
@@ -1127,20 +1121,55 @@ script_check  = function()
 end
 
 
-function log_neteventHook(source, target, id)
+local params = {}
+script_event_hook = function(source, target, params, count)
+
+	
+	local player_source = player.get_player_name(source)
+	local scid = player.get_player_scid(source)
+	local player_target = player.get_player_name(target)
+	get_datetime()
+	scriptlog_out("\n\n[" ..Cur_Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
+	local t
+	local c
+	local p
+	
+	local cnt = 0
+	for k, v in pairs(params) do
+	if k == 1 then
+
+	t = string.format("%x", v)
+	c = tostring("  0x"..t)
+	p = string.format(v .."	" .. c)
+	else
+	 p = v
+	end
+	
+		scriptlog_out("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p )
+		cnt = cnt + 1
+	end
+	
+	-- system.wait(3000)
+	return false
+	
+	
+end
+
+--TODO: Logging output
+log_neteventHook = function(source, target, id)
 	local player_source = player.get_player_name(source)
 	local player_target = player.get_player_name(target)
-	get_date_time()
+	get_datetime()
 	netlog_out("\n" .. Cur_Date_Time)
 	netlog_out(NetEvents[id])
 	netlog_out("from: [" .. source .. "] " .. player_source.. "to: [" .. target .. "] " .. player_target)
 	
-	return true
+	return false
 end
 
 function scriptlog_out_pid(text, name)
-	if not script_check_logger.on then return end
-	get_date_time()
+	if not checkscript.on then return end
+	get_datetime()
 	local playerfile = tostring(name..".log")
 	local file = io.open(rootPath .."\\lualogs\\" .. playerfile, "a")
 	io.output(file)
@@ -1149,15 +1178,17 @@ function scriptlog_out_pid(text, name)
 end
 
 function scriptlog_out(text)
-	if not script_check_logger.on then return end
-	get_date_time()
-	local file = io.open(rootPath .. "\\lualogs\\scriptevent_logger.log", "a")
+	local RootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
+	if not checkscript.on then return end
+	get_datetime()
+	local file = io.open(RootPath .. "\\lualogs\\scriptevent_logger.log", "a")
 	io.output(file)
-	io.write("\n" .. text)
+	io.write(text)
 	io.close()
 end
 
 function netlog_out(text)
+	if not net_log.on then return end
 	get_date_time()
 	local file = io.open(rootPath .. "\\lualogs\\netevent_logger.log", "a")
 	io.output(file)
@@ -1488,29 +1519,11 @@ event.add_event_listener("player_join", function(e)
 end)
 LoadBlacklist()
 
-script_event_hook = function(source, target, params, count)
-	
-	local player_source = player.get_player_name(source)
-	-- local player_target = player.get_player_name(target)
-	
-	if params[1] == 0xF83B520C then
-		ui.notify_above_map("Fucked off vehicle kick From:\n" ..player_source, "Lua SEP", 6)
-		
-		--	debug_out("\n[".. source .."]"..": " ..player_source .. player_target .."\n".." <"..params[1]..">: (Vehicle Kick) ".."\n["..Params.."]: "..count)
-		return true
-	end
-	
-	return false
-end
+
 
 --TODO: Blacklist Main function
-function main()
-	
-	--	Moists_Modder_Alert = menu.add_feature("Custom SEP", "toggle", test.id, sep)
-	--	Moists_Modder_Alert.on =  setting["Moists_Modder_Alert"]
-	--	infoip = menu.add_feature("Log IP INFO", "toggle", test.id)
-	--	infoip.on = false
-	
+
+
 	neteventlogger = menu.add_feature("Netevent Hook", "toggle", test.id, function(feat)
 		netcheck()
 		netcheck1()
@@ -1553,10 +1566,8 @@ function main()
 	scripteventblocker.on = false
 	scripteventblocker.hidden = true
 	
-	script_check_logger = menu.add_feature("Hook Script Events & Log to File", "toggle", logging.id, script_check)
-	script_check_logger.on = setting["script_check_logger"]
-end
-main()
+	checkscript = menu.add_feature("Hook Script Events & Log to File", "toggle", logging.id, script_check)
+	checkscript.on = setting["script_check_logger"]
 
 --TODO: player Features --Griefing
 
@@ -4211,7 +4222,8 @@ menu.add_feature("Any Friends Online?", "action", globalFeatures.lobby, function
 end)
 
 --TODO: Player list
-
+function localplayerlist()
+	
 local PlayerPed
 
 for pid=0,31 do
@@ -4771,12 +4783,14 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	
 	local spawned_cunt1 = {}
 	local spawned_cunt2 = {}
+	local spawned_cunt3 = {}
 	local spawned_cunt = {}
 		
 	features["LightPOS1way"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.tr.id, function(feat)
 		if feat.on then
 			local i = #spawned_cunt
 			local y = (#spawned_cunt - 1)
+			local t = #spawned_cunt3
 			if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
 			features["LightPOSway"].feat.on = false
 			return end
@@ -4784,6 +4798,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 			pos = player.get_player_coords(pid)
 			local offset = v3()
 			local offset2 = v3()
+			local offset3 = v3()
 			offset.x = 0.2
 			offset.y = 0.5
 			offset.z = 0.0
@@ -4794,6 +4809,11 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 			offset2.z = 0.0
 			
 		entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
+			offset3.x = -1.0
+			offset3.y = -0.3
+			offset3.z = -0.0
+			
+		entity.set_entity_coords_no_offset(spawned_cunt3[t], pos + offset3)
 		
 		return HANDLER_CONTINUE
 			end
@@ -4836,7 +4856,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		
 	features["LightPOSway"].feat.on = false
 	features["LightPOSway"].feat.hidden = true
-
+--TODO: Lights
 		features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "action", featureVars.tr.id, function(feat)
 			
 			local offset = v3()
@@ -4844,16 +4864,19 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 			pos = player.get_player_coords(pid)
 
 		spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(2906806882, pos, true, false)
-
+		entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, false)
 		
 		spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(2906806882, pos, true, false)
+		entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, false)
 
-
-		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
-
+		spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(2906806882, pos, true, false)
+		entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, false)
 		
 		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
-
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
 		features["LightPOS1way"].feat.on = true
 
 		features["LightPOSway"].feat.on = true
@@ -5179,7 +5202,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 
 --TODO: World Dump Run Check
 	features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
-	if not world_dumped then
+	if world_dumped then
 		local pos = v3()
 		pos = player.get_player_coords(pid)
 		dump_onplayer(pid, pos)
@@ -5188,7 +5211,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	end), type = "action"}
 	
 	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
-	if not world_dumped then
+	if world_dumped then
 		local pos = v3()
 		pos = player.get_player_coords(pid)
 		dumpfreeze_onplayer(pid, pos)
@@ -5265,7 +5288,7 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 		playerFeatures[pid].features["Kick2_Type2"].feat.on = true
 		playerFeatures[pid].features["Kick3_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick3_Type2"].feat.on = true
-		
+		return HANDLER_POP
 			
 	end}
 	features["EventSpam_toggle"].feat.on = false
@@ -5533,6 +5556,8 @@ features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mod
 	featureVars.f.hidden = true
 	
 end
+end
+localplayerlist()
 
 --Main loop
 local SessionHost = nil
