@@ -5069,87 +5069,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	end), type = "action"}
 	features["scramdeer"].feat.threaded = false
 	
-	features["RamJet"] = {feat = menu.add_feature("Ram Player With Scramjet", "action", featureVars.g.id, function(feat)
-
-		local pedp = player.get_player_ped(pid)
-		local pos = v3()
-		pos = entity.get_entity_coords(pedp)
-		local heading = player.get_player_heading(pid)
-			entity.get_entity_heading(pedp)
-		
-		local distance = -20.00
-		heading = math.rad((heading - 180) * -1)
-		local pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
-		local model = 0x6E42FD26
-		streaming.request_model(model)
-		while (not streaming.has_model_loaded(model)) do
-			system.wait(10)
-		end
-
-		local i = #escort + 1
-		escort[i] = ped.create_ped(6, model, pos, heading, true, false)
-	
-		entity.set_entity_god_mode(escort[i], true)
-		ped.set_ped_can_switch_weapons(escort[i], true)
-			ped.set_ped_combat_attributes(escort[i], 46, true)
-			ped.set_ped_combat_attributes(escort[i], 52, true)
-			ped.set_ped_combat_attributes(escort[i], 1, true)
-			ped.set_ped_combat_attributes(escort[i], 2, true)
-			ped.set_ped_combat_range(escort[i], 2)
-			ped.set_ped_combat_ability(escort[i], 2)
-			ped.set_ped_combat_movement(escort[i], 2)
-			ai.task_combat_ped(escort[i], pedp, 0, 16)
-		streaming.set_model_as_no_longer_needed(model)
-
-		local vehhash = gameplay.get_hash_key("scramjet")
-		streaming.request_model(vehhash)
-		while (not streaming.has_model_loaded(vehhash)) do
-			system.wait(10)
-		end
-
-
-		escortveh[#escortveh + 1] = vehicle.create_vehicle(vehhash, pose, pos.z, true, false)
-		network.request_control_of_entity(escortveh[#escortveh])
-		entity.set_entity_god_mode(escortveh[#escortveh], true)
-		vehicle.set_vehicle_mod_kit_type(escortveh[#escortveh], 0)
-		vehicle.get_vehicle_mod(escortveh[#escortveh], 10)
-		vehicle.set_vehicle_mod(escortveh[#escortveh], 10, 0, false)
-		ui.add_blip_for_entity(escortveh[#escortveh])
-
-		local blipid = ui.get_blip_from_entity(escortveh[#escortveh])
-		ui.set_blip_sprite(blipid, 634)
-		
-		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 5)
-		network.request_control_of_entity(escortveh[#escortveh])
-
-		ped.set_ped_into_vehicle(escort[i], escortveh[#escortveh], -1)
-		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 6)
-		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 2)	
-		ai.task_combat_ped(escort[i], pedp, 0, 16)
-
-		vehicle.set_vehicle_rocket_boost_active(escortveh[#escortveh], true)
-
-	-- local rot = entity.get_entity_rotation(pedp)
-	-- local dir = rot * 4
-	-- dir:transformRotToDir()
-	-- dir = dir * 4
-	-- posd = pos + dir
-	-- heading = entity.get_entity_heading(pedp)
-	-- local pos = player.get_player_coords(pid)
-
-		-- entity.set_entity_coords_no_offset(escortveh[#escortveh], pose)
-		-- entity.set_entity_heading(escort[i], heading)
-		-- entity.set_entity_rotation(escortveh[#escortveh], rot)
-		-- vehicle.set_vehicle_on_ground_properly(escortveh[#escortveh])
-
-
-		streaming.set_model_as_no_longer_needed(vehhash)
-		delayed_spawn_cleanup()
-		
-	end), type = "action"}
-	features["RamJet"].feat.threaded = false
-	
-	features["RamJet2"] = {feat = menu.add_feature("Lester RamJet Player", "action_value_i", featureVars.g.id, function(feat)
+	features["RamJet2"] = {feat = menu.add_feature("Lester RamJet Attack Player", "action_value_i", featureVars.g.id, function(feat)
 
 		local pedp = player.get_player_ped(pid)
 		local pos = v3()
@@ -5213,7 +5133,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["RamJet2"].feat.min_i = -200
 	features["RamJet2"].feat.value_i = -20
 	
-	features["RamJet3"] = {feat = menu.add_feature("Lester RamJet Player v2", "action_value_i", featureVars.g.id, function(feat)
+	features["RamJet3"] = {feat = menu.add_feature("Lester RamJet Impact Player", "action_value_i", featureVars.g.id, function(feat)
 
 		local pedp = player.get_player_ped(pid)
 		local pos = v3()
@@ -5278,7 +5198,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["RamJet3"].feat.min_i = -200
 	features["RamJet3"].feat.value_i = -20
 	
-	features["RamJet_cleanup"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.g.id, function(feat)
+	features["RamJet_cleanup"] = {feat = menu.add_feature("Run Delayed Ramjet Cleanup", "toggle", featureVars.g.id, function(feat)
 		if feat.on then
 		system.wait(10000)
 		delayed_spawn_cleanup()
