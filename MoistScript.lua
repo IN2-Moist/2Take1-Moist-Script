@@ -107,7 +107,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 local toggle_setting = {}
 local setting = {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.2"
+setting[toggle_setting[#toggle_setting]] = "2.0.1.3"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modvehgod_osd"
@@ -283,7 +283,7 @@ math.randomseed(utils.time_ms())
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", 175)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.3\n~l~~h~Public Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -293,24 +293,24 @@ function moist_notify(msg1, msg2)
 	msg2 = msg2 or " ~h~~w~~ex_r*~"
 	
 	if notifytype == 1 then
-		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.3\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 2 then
-		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.3\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 3 then
-		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.3\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 4 then
-		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.3\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.3\n~b~~h~Public Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.2\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.3\n~g~~h~Public Edition", color)
 	end
 	
 end
@@ -486,7 +486,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.2", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.3", "parent", 0).id
 
 --TODO: Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
