@@ -156,8 +156,12 @@ toggle_setting[#toggle_setting+1] = "script_check_logger"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "NetEventHook"
 setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "lagHost_out"
+toggle_setting[#toggle_setting+1] = "Blacklist_ON"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "Blacklist_Mark"
 setting[toggle_setting[#toggle_setting]] = false
+toggle_setting[#toggle_setting+1] = "Blacklist_kick"
+setting[toggle_setting[#toggle_setting]] = true
 
 function saveSettings()
 	
@@ -359,7 +363,7 @@ modflag_set()
 --TODO: Preset Data Arrays
 
 local presets = {{"beyond_limits", -173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)", -1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",  -5784.258301,-8289.385742,-136.411270},{"Chiliad", 491.176,5529.808,777.503},{"Lesters House", 1275.544,-1721.774,53.967},{"arena", -264.297,-1877.562,27.756},{"ElysianIslandBridge", -260.923,-2414.139,124.008},{"LSIAFlightTower", -983.292,-2636.995,89.524},{"TerminalCargoShip", 983.303,-2881.645,21.619},{"ElBurroHeights", 1583.022,-2243.034,93.265},{"CypressFlats", 552.672,-2218.876,68.981},{"LaMesa", 1116.815,-1539.787,52.146},{"SupplyStreet", 777.631,-695.813,28.763},{"Noose", 2438.874,-384.409,92.993},{"TatavianMountains", 2576.999,445.654,108.456},{"PowerStation", 2737.046,1526.873,57.494},{"WindFarm", 2099.765,1766.219,102.698},{"Prison", 1693.473,2652.971,61.335},{"SandyShoresRadioTower", 1847.034,3772.019,33.151},{"AlamoSea", 719.878,4100.993,39.154},{"RebelRadioTower", 744.500,2644.334,44.400},{"GreatChaparral", -291.035,2835.124,55.530},{"ZancudoControlTower", -2361.625,3244.962,97.876},{"NorthChumash(Hookies)", -2205.838,4298.805,48.270},{"AltruistCampRadioTower", -1036.141,4832.858,251.595},{"CassidyCreek", -509.942,4425.454,89.828},{"MountChiliad", 462.795,5602.036,781.400},{"PaletoBayFactory", -125.284,6204.561,40.164},{"GreatOceanHwyCafe", 1576.385,6440.662,24.654},{"MountGordoRadioTower", 2784.536,5994.213,354.275},{"MountGordoLighthouse", 3285.519,5153.820,18.527},{"GrapeSeedWaterTower", 1747.518,4814.711,41.666},{"TatavianMountainsDam", 1625.209,-76.936,166.651},{"VinewoodHillsTheater", 671.748,512.226,133.446},{"VinewoodSignRadioTowerTop", 751.179,1245.13,353.832},{"Hawik", 472.588,-96.376,123.705},{"PacificSrandardBank", 195.464,224.341,143.946},{"WestVinewoodCrane", -690.273,219.728,137.518},{"ArcadiasRadioTower", -170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010, -1419.530,5.001},{"DelperoFerrisWheel", -1644.193,-1114.271,13.029},{"VespucciCanalsClockTower", -1238.729,-853.861,77.758},{"DelPeroNrMazebankwest", -1310.777,-428.985,103.465},{"pacifficBluffs", -2254.199,326.088,192.606},{"GWC&GolfingSociety", -1292.052,286.209,69.407},{"Burton", -545.979,-196.251,84.733},{"LosSantosMedicalCenter", 431.907,-1348.709,44.673},{"BanhamCanyon", -3085.451,774.426,20.237},{"TongvaHills", -1874.280,2064.565,150.852},{"SanChianskiMountainRange", 2900.166,4325.987,102.101},{"HumaineLabs", 3537.104,3689.238,45.228},{"YouToolStoreSanChianski", 2761.944,3466.951,55.679},{"GalileoObservatory", -422.917,1133.272,325.855},{"GrndSeroraDesertCementwks", 1236.649,1869.214,84.824}}
-local scriptEvents = {0x0fb7b2c5,0x1C2C3329,0x1f63a94e,0x4fbc297f,0x5f21fcaa,0x7b505065,0x7d556776,0x8b37581a,0x11fa24fa,0x073c8336,0x75bf07bc,0x75fc2a5e,0x96b17776,0x110b571b,0x222d2dab,0x231d58ee,0x692CC4BB,0x2073b3d7,0x2429d2da,0x8180e34a,0x13216f21,0x55274b5d,0x134771B8,0x6984116e,0x96308401,0xB54CD3F4,0xC2AD5FCE,0xCB79323D,0xF83B520C,0xaec17e3a,0xb513d7bd,0xba4adc62,0xcb14b6c0,0xe5010210,0xebee9424,0xfdb1f516,}
+-- local scriptEvents = {0x0fb7b2c5,0x1C2C3329,0x1f63a94e,0x4fbc297f,0x5f21fcaa,0x7b505065,0x7d556776,0x8b37581a,0x11fa24fa,0x073c8336,0x75bf07bc,0x75fc2a5e,0x96b17776,0x110b571b,0x222d2dab,0x231d58ee,0x692CC4BB,0x2073b3d7,0x2429d2da,0x8180e34a,0x13216f21,0x55274b5d,0x134771B8,0x6984116e,0x96308401,0xB54CD3F4,0xC2AD5FCE,0xCB79323D,0xF83B520C,0xaec17e3a,0xb513d7bd,0xba4adc62,0xcb14b6c0,0xe5010210,0xebee9424,0xfdb1f516,}
 
 local escort_ped = {{"juggalo_01", 0xDB134533},{"topless_01", 0x9CF26183},{"juggalo_02", 0x91CA3E2C},{"lester crest", 0xB594F5C3},{"cop", 0x9AB35F63},{"mp_agent14", 0x6DBBFC8B},{"ramp_marine", 0x616C97B9},{"trafficwarden", 0xDE2937F3},{"lestercrest_2", 0x6E42FD26},{"lestercrest", 0x4DA6E849},{"agent14", 0xFBF98469},{"m_pros_01", 0x6C9DD7C9},{"waremech_01", 0xF7A74139},{"weapexp_01", 0x36EA5B09},{"weapwork_01", 0x4186506E},{"securoguard_01", 0xDA2C984E},{"armoured_01", 0xCDEF5408},{"armoured_01", 0x95C76ECD},{"armoured_02", 0x63858A4A},{"marine_01", 0xF2DAA2ED},{"marine_02", 0xF0259D83},{"security_01", 0xD768B228},{"snowcop_01", 0x1AE8BB58},{"prisguard_01", 0x56C96FC6},{"pilot_01", 0xE75B4B1C},{"pilot_02", 0xF63DE8E1},{"blackops_01", 0xB3F3EE34},{"blackops_02", 0x7A05FA59},{"blackops_03", 0x5076A73B},{"hwaycop_01", 0x739B1EF5},{"marine_01", 0x65793043},{"marine_02", 0x58D696FE},{"marine_03", 0x72C0CAD2},{"ranger_01", 0xEF7135AE},{"robber_01", 0xC05E1399},{"sheriff_01", 0xB144F9B9},{"pilot_01", 0xAB300C07},{"swat_01", 0x8D8F1B10},{"fibmugger_01", 0x85B9C668},{"juggernaut_01", 0x90EF5134},{"rsranger_01", 0x3C438CD2},}
 
@@ -1391,6 +1395,12 @@ local KickFeature
 
 
 local EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", globalFeatures.parentID, function(feat)
+		if not feat.on then
+setting["Blacklist_ON"] = false
+		return HANDLER_POP
+	end	
+
+	setting["Blacklist_ON"] = true
 	if feat.on then
 		local lp = player.player_id()
 		for pid = 0, 31 do
@@ -1407,15 +1417,33 @@ local EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", g
 			end
 		end
 	end
-end
-)
-EnabledBlacklistFeature.on = true
---TODO: Blacklist Feature Toggle Saves
-local MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID)
-MarkAsModderFeature.on = true
 
-local KickFeature = menu.add_feature("Kick", "toggle", globalFeatures.parentID)
-KickFeature.on = true
+	
+end)
+EnabledBlacklistFeature.on = setting["Blacklist_ON"]
+--TODO: Blacklist Feature Toggle Saves
+
+
+
+local MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID, function(feat)
+		if not feat.on then
+	setting["Blacklist_Mark"] = false
+	return HANDLER_POP
+		end
+	setting["Blacklist_Mark"] = true
+return HANDLER_POP
+end)
+MarkAsModderFeature.on = setting["Blacklist_Mark"]
+
+local KickFeature = menu.add_feature("Kick", "toggle", globalFeatures.parentID, function(feat)
+		if not feat.on then
+	setting["Blacklist_kick"] = false
+	return HANDLER_POP
+		end
+	setting["Blacklist_kick"] = true
+return HANDLER_POP
+end)
+KickFeature.on = setting["Blacklist_kick"]
 
 menu.add_feature("Manually add scid", "action", globalFeatures.parentID, function(feat)
 	local r, s = input.get("Enter SCID to add", "", 64, 3)
@@ -1547,13 +1575,13 @@ menu.add_player_feature("CEO TERMINATE", "action", 0, function(feat, pid)
 	ScriptTR(0x9DB77399, pid, {0, 1, 6, 0})
 end)
 
-for i = 1, #missions do
-	local y = #missions - 1
-	menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
+-- for i = 1, #missions do
+	-- local y = #missions - 1
+	-- menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
 		
-		ScriptTR(0x692CC4BB, pid,{y})
-	end)
-end
+		-- ScriptTR(0x692CC4BB, pid,{y})
+	-- end)
+-- end
 
 
 -- local function AddBounty(pid, value, anonymous)
@@ -2100,21 +2128,21 @@ local notallmod = menu.add_feature("UnMark all Players as Modder", "action", glo
 end)
 notallmod.threaded = false
 
-local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
+-- local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
 	
-	for playid = 0, 31 do
+	-- for playid = 0, 31 do
 		
-		if player.get_player_scid(playid) ~= -1 then
+		-- if player.get_player_scid(playid) ~= -1 then
 			
-			for j = 0, 31 do
+			-- for j = 0, 31 do
 				
-				ScriptTR(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
-			end
-		end
+				-- ScriptTR(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+			-- end
+		-- end
 		
-	end
-end)
-bountyallplayerses.threaded = false
+	-- end
+-- end)
+-- bountyallplayerses.threaded = false
 
 local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.troll, function(feat)
 	blockpassiveall()
@@ -2122,15 +2150,15 @@ end)
 pasivall.threaded = false
 
 --TODO: Remove from Public
-local NetBail_SHF_Kick = menu.add_feature("NetBail ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
+local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
 	if feat.on then
 		
 		local me = player.player_id()
 		for i = 0, 32 do
 			local fnd = player.is_player_friend(i)
 			if i ~= me or fnd then
-				ScriptTR(-1153500935, i, {91645, -99683, 1788, 60877, 55085, 72028})
-				ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+				ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+				--ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
 			end
 		end
 		return HANDLER_CONTINUE
@@ -2149,18 +2177,18 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
 		if not network.network_is_host() then
 			
 			player.unset_player_as_modder(hostnow, -1)
-			ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
-			ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
-			ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+			-- ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+			-- ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+			-- ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
 			
-			system.wait(200)
+			-- system.wait(200)
 			
-			ScriptTR(-1253256204, hostnow, {1337, -1, 1, 1, 0, 0, 0})
-			ScriptTR(-1253256204, hostnow, {hostnow, 1337, -1, 1, 1, 0, 0, 0})
+			-- ScriptTR(-1253256204, hostnow, {1337, -1, 1, 1, 0, 0, 0})
+			-- ScriptTR(-1253256204, hostnow, {hostnow, 1337, -1, 1, 1, 0, 0, 0})
 			
-			ScriptTR(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
-			ScriptTR(0xc82139cf, hostnow, {50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-			ScriptTR(0xc82139cf, hostnow, {50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+			-- ScriptTR(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
+			-- ScriptTR(0xc82139cf, hostnow, {50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+			-- ScriptTR(0xc82139cf, hostnow, {50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 			system.wait(200)
 			toggle_kicks(hostnow)
 		end
@@ -2182,20 +2210,21 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
 end)
 HostForce.on = false
 
-local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
-	if feat.on then
+-- local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
+	-- if feat.on then
 		
-		local me = player.player_id()		
-		for i = 0, 32 do
-			local fnd = player.is_player_friend(i)
-			if i ~= me or fnd then
-				ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP		
-end)
+		-- local me = player.player_id()		
+		-- for i = 0, 32 do
+			-- local fnd = player.is_player_friend(i)
+			-- if i ~= me or fnd then
+				-- ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+			-- end
+		-- end
+		-- return HANDLER_CONTINUE
+	-- end
+	-- return HANDLER_POP		
+-- end)
+
 local hostnotify = false
 function hostkickall(pid)
 	
