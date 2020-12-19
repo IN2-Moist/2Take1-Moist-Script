@@ -523,7 +523,7 @@ menu.add_player_feature("Save Players Current POS to file", "action", Player_Too
 
                         local ped
 
-                        local posfile = io.open(appdata.."\\PopstarDevs\\2Take1Menu\\lualogs\\saveposoutput.md", "a")
+                        local posfile = io.open(rootPath.."\\lualogs\\saveposoutput.md", "a")
 
                         local size = posfile:seek("end")
                         print(string.format(size))
@@ -1575,63 +1575,66 @@ menu.add_player_feature("CEO TERMINATE", "action", 0, function(feat, pid)
 	ScriptTR(0x9DB77399, pid, {0, 1, 6, 0})
 end)
 
--- for i = 1, #missions do
-	-- local y = #missions - 1
-	-- menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
+for i = 1, #missions do
+	local y = #missions - 1
+	menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
 		
-		-- ScriptTR(0x692CC4BB, pid,{y})
-	-- end)
--- end
+		ScriptTR(0xdf7de926, pid,{y})
+		ScriptTR(1115000764, pid,{y})
+		ScriptTR(-545396442, pid,{y})
 
-
--- local function AddBounty(pid, value, anonymous)
-	-- if not network.is_session_started() then return end
-	-- local npc_bit = anonymous and 1 or 0
-	-- for i = 0, 31 do
-		-- if player.get_player_scid(i) ~= 4294967295 then
-			
-			-- ScriptTR(544453591 , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
-			
-		-- end
-	-- end
--- end
-
--- menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, pid)
-	-- if feat.on ~= AnonymousBounty then
-		-- AnonymousBounty = feat.on
-		-- local pf = menu.get_player_feature(feat.id)
-		-- for i=1,#pf.feats do
-			-- if pf.feats[i].on ~= AnonymousBounty then
-				-- pf.feats[i].on = AnonymousBounty
-			-- end
-		-- end
-	-- end
-	-- return HANDLER_POP
--- end).threaded = false
-
--- menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
-	-- local r,s = input.get("Custom Bounty Value", "", 64, 3)
-	-- if r == 1 then
-		-- return HANDLER_CONTINUE
-	-- end
+	end)
 	
-	-- if r == 2 then
-		-- return HANDLER_POP
-	-- end
-	
-	-- local value = tonumber(s)
-	-- value = math.max(0, value)
-	-- value = math.min(10000, value)
-	-- AddBounty(pid, value, AnonymousBounty)
-	-- notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
--- end).threaded = false
+end
 
--- for i = 1, #BountyPresets do
-	-- menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId, function(feat, pid)
-		-- AddBounty(pid, BountyPresets[i], AnonymousBounty)
-		-- --notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
-	-- end).threaded = false
--- end
+local function AddBounty(pid, value, anonymous)
+	if not network.is_session_started() then return end
+	local npc_bit = anonymous and 1 or 0
+	for i = 0, 31 do
+		if player.get_player_scid(i) ~= 4294967295 then
+			
+			ScriptTR(0xf90cc891  , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(190676614 + 9), script.get_global_i(190676614 + 10)})
+			
+		end
+	end
+end
+
+menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, pid)
+	if feat.on ~= AnonymousBounty then
+		AnonymousBounty = feat.on
+		local pf = menu.get_player_feature(feat.id)
+		for i=1,#pf.feats do
+			if pf.feats[i].on ~= AnonymousBounty then
+				pf.feats[i].on = AnonymousBounty
+			end
+		end
+	end
+	return HANDLER_POP
+end).threaded = false
+
+menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
+	local r,s = input.get("Custom Bounty Value", "", 64, 3)
+	if r == 1 then
+		return HANDLER_CONTINUE
+	end
+	
+	if r == 2 then
+		return HANDLER_POP
+	end
+	
+	local value = tonumber(s)
+	value = math.max(0, value)
+	value = math.min(10000, value)
+	AddBounty(pid, value, AnonymousBounty)
+	notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+end).threaded = false
+
+for i = 1, #BountyPresets do
+	menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId, function(feat, pid)
+		AddBounty(pid, BountyPresets[i], AnonymousBounty)
+		--notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+	end).threaded = false
+end
 
 --TODO: Functions
 function playervehspd(pid, speed)
@@ -2094,19 +2097,19 @@ end
 
 --TODO: local session functions
 
-local blockpassiveall = function()
+-- local blockpassiveall = function()
 	
-	local me
+	-- local me
 	
-	me	= player.player_id()
+	-- me	= player.player_id()
 	
-	for i=0,32 do
-		if i ~= me
-			then
-			ScriptTR(0x54BAD868, i, {1, 1})
-		end
-	end
-end
+	-- for i=0,32 do
+		-- if i ~= me
+			-- then
+			-- ScriptTR(0x54BAD868, i, {1, 1})
+		-- end
+	-- end
+-- end
 
 local notmarkall = function()
 	local me
@@ -2144,10 +2147,10 @@ notallmod.threaded = false
 -- end)
 -- bountyallplayerses.threaded = false
 
-local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.troll, function(feat)
-	blockpassiveall()
-end)
-pasivall.threaded = false
+-- local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.troll, function(feat)
+	-- blockpassiveall()
+-- end)
+-- pasivall.threaded = false
 
 --TODO: Remove from Public
 local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
@@ -2210,20 +2213,49 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
 end)
 HostForce.on = false
 
--- local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
-	-- if feat.on then
+local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
+	if feat.on then
 		
-		-- local me = player.player_id()		
-		-- for i = 0, 32 do
-			-- local fnd = player.is_player_friend(i)
-			-- if i ~= me or fnd then
-				-- ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
-			-- end
-		-- end
-		-- return HANDLER_CONTINUE
-	-- end
-	-- return HANDLER_POP		
--- end)
+		local me = player.player_id()		
+		for i = 0, 32 do
+			local fnd = player.is_player_friend(i)
+			if i ~= me or fnd then
+			
+				ScriptTR(-81613951, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(-1292453789, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(1623637790, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(-1905128202, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(1160415507, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+			--	ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+
+			end
+		end
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP		
+end)
+
+local testkick = menu.add_feature("Test Kick", "toggle", globalFeatures.kick, function(feat)
+	if feat.on then
+		
+		local me = player.player_id()		
+		for i = 0, 32 do
+			local fnd = player.is_player_friend(i)
+			if i ~= me or fnd then
+			
+				ScriptTR(-81613951, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(-1292453789, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(1623637790, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(-1905128202, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(1160415507, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+			--	ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+
+			end
+		end
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP		
+end)
 
 local hostnotify = false
 function hostkickall(pid)
@@ -2342,6 +2374,47 @@ local fetch_obj = menu.add_feature("Fetch all objects Move & Delete", "action", 
 	system.wait(250)
 	move_delete_obj()
 	moist_notify("Cuntish Objects Removed\n",  " Cleanups Enabled")
+end)
+
+local fetch_obj = menu.add_feature("Fetch all Heist Cameras Move & Delete", "action", globalFeatures.entity_removal, function(feat)
+	if not cleanup_done == true then return end
+	cleanup_done = false
+	local Hashes = {2151061176,3234250744,548760764}
+
+	
+	moist_notify("Cunt Cleaning Started: \n", " Cleanups Disabled until Done!")
+	get_allobj()
+	system.wait(250)
+	
+	local cams = {}
+	
+	for i = 1, #allobj do
+	if entity.get_entity_model_hash(allobj[i]) == 2151061176 or 3234250744 or 548760764 then
+	
+	local pos = v3()
+	pos.x = -5784.258301
+	pos.y = -8289.385742
+	pos.z = -136.411270
+			network.request_control_of_entity(allobj[i])
+			entity.set_entity_coords_no_offset(allobj[i], pos)
+			entity.set_entity_as_no_longer_needed(allobj[i])
+			entity.delete_entity(allobj[i])
+			system.wait(25)
+	end
+		end
+
+			system.wait(25)
+			cleanup_done = true
+
+	moist_notify("Cuntish Objects Removed\n",  " Cleanups Enabled")	
+	
+	return HANDLER_POP
+
+
+
+
+
+
 end)
 
 local fetch_veh = menu.add_feature("Fetch all Vehicles Move & Delete", "action", globalFeatures.entity_removal, function(feat)
@@ -2566,7 +2639,118 @@ function force_delete2()
 	
 end
 
-menu.add_feature("Illuminate Everyone", "action", globalFeatures.lobby, function(feat)
+
+local sndrape_01 = menu.add_feature("all Horn", "action", globalFeatures.troll, function(feat)
+	
+	local pos = v3()
+	for i = 0, 31 do
+	plyped = player.get_player_ped(i)
+		if (player.get_player_scid(i) ~= -1 and i ~= player.player_id()) then
+			pos = entity.get_entity_coords(player.get_player_ped(i))
+			
+
+	audio.play_sound_from_entity(-1,  "HORN", plyped, "DLC_Apt_Yacht_Ambient_Soundset", true)
+	audio.play_sound_from_coord(-1, "HORN", pos, "DLC_Apt_Yacht_Ambient_Soundset", true, 1000000, false)
+
+		end
+	end
+end)
+
+local sndrape_02 = menu.add_feature("all Air Drop", "action", globalFeatures.troll, function(feat)
+	
+	local pos = v3()
+	for i = 0, 31 do
+		if (player.get_player_scid(i) ~= -1 and i ~= player.player_id()) then
+			pos = entity.get_entity_coords(player.get_player_ped(i))
+		plyped = player.get_player_ped(i)	
+			
+			audio.play_sound_from_entity(-1, "Air_Drop_Package", plyped, "DLC_SM_Generic_Mission_Sounds", true)
+
+
+		end
+	end
+end)
+
+local sndrape_3 = menu.add_feature("all Explosion Countdown", "action", globalFeatures.troll, function(feat)
+	
+	local pos = v3()
+	for i = 0, 31 do
+		if (player.get_player_scid(i) ~= -1 and i ~= player.player_id()) then
+			pos = entity.get_entity_coords(player.get_player_ped(i))
+			plyped = player.get_player_ped(i)
+			audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 1000, false)
+			audio.play_sound_from_entity(-1, "Explosion_Countdown", plyped, "GTAO_FM_Events_Soundset", true)
+
+
+		end
+	end
+end)
+
+local sndrape_4 = menu.add_feature("Annoying Unstoppable sound", "action", globalFeatures.troll, function(feat)
+	
+	local pos = v3()
+	for i = 0, 31 do
+		if (player.get_player_scid(i) ~= -1 and i ~= player.player_id()) then
+			pos = entity.get_entity_coords(player.get_player_ped(i))
+			
+			local plyped = player.get_player_ped(i)
+			audio.play_sound_from_coord(-1, "Frontend_Beast_Frozen_Screen_Loop", pos, "FM_Events_Sasquatch_Sounds", true, 1000, false)
+		end
+	end
+end)
+
+
+local sndrape_1 = menu.add_feature("allBomb Armed", "value_i", globalFeatures.troll, function(feat)
+	if feat.on then
+		
+		local delaytime = feat.value_i
+		
+		local pos = v3()
+		for i = 0, 31 do
+			if (player.get_player_scid(i) ~= -1 and i ~= player.player_id()) then
+				pos = entity.get_entity_coords(player.get_player_ped(i))
+				
+				local plyped = player.get_player_ped(i)
+
+				audio.play_sound_from_entity(-1, "Bomb_Armed", plyped, "GTAO_Speed_Convoy_Soundset", true)
+				system.wait(delaytime)
+			end
+		end
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+sndrape_1.max_i = 1000
+sndrape_1.min_i = 0
+sndrape_1.mod_i = 5
+
+local sndrape_2 = menu.add_feature("all Bomb Disarmed", "value_i", globalFeatures.troll, function(feat)
+	if feat.on then
+		
+		local delaytime = feat.value_i
+		
+		local pos = v3()
+		for i = 0, 31 do
+			if (player.get_player_scid(i) ~= -1 and i ~= player.player_id()) then
+				pos = entity.get_entity_coords(player.get_player_ped(i))
+				
+				local plyped = player.get_player_ped(i)
+
+
+				audio.play_sound_from_entity(-1, "Bomb_Disarmed", plyped, "GTAO_Speed_Convoy_Soundset", true)
+				system.wait(delaytime)
+			end
+		end
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+sndrape_2.max_i = 1000
+sndrape_2.min_i = 0
+sndrape_2.mod_i = 5
+
+
+menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function(feat)
 	
 	for i = 0, 32 do
 		
@@ -3048,6 +3232,37 @@ local dump_onplayer = function(pid, pos)
 		system.wait(200)
 	end
 	moist_notify("World Dumped On That Cunt!\n GG <font size='12'>~ex_r*~ ", "\nCarefull Spectating")
+	world_dumped = true
+end
+
+
+
+local dump_pickups_onplayer = function(pid, pos)
+	world_dumped = false
+	moist_notify("Going to Fetch all~h~ ~r~ Pickups!~o~ \nWill dump on target", "!")
+	moist_notify("~h~~w~ 3 Seconds\n", "Until ~r~~h~Pickup Cunt Dump ~g~~h~Starts")
+	
+	system.wait(1000)
+	moist_notify("Pickup Cunt Dump Starts in: ", "~y~~h~2 ~r~Seconds")
+	system.wait(1000)
+	
+	moist_notify("Pickup Cunt Dump Starts in: ", "~y~~h~1 ~r~Second")
+	system.wait(1000)
+	moist_notify("Pickup Cunt Dump Initiated", "\nFeel the Cunt & Pick it up Enjoy")
+
+	allpickups = object.get_all_pickups()
+	system.wait(400)
+	
+	for i = 1, #allpickups do
+	if entity.is_an_entity(allpickups[i]) then
+		network.request_control_of_entity(allpickups[i])
+		entity.set_entity_coords_no_offset(allpickups[i], pos)
+		entity.set_entity_as_no_longer_needed(allpickups[i])
+	end
+
+		system.wait(200)
+	end
+	moist_notify("World Pickups have been Cunt Dumped!\n GG <font size='12'>~ex_r*~ ", "\nEnjoy The Moisture inside")
 	world_dumped = true
 end
 
@@ -4736,7 +4951,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			print("Money Trigger loop")
 			print(os.date())
 			
-			ScriptTR(-601653676, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1628237 + (1 + (pid * 615)) + 533), script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
+			ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1628237 + (1 + (pid * 595)) + 533), script.get_global_i(1630317 + 9), script.get_global_i(1630317 + 10)})
 			system.wait(31000)
 			print(os.date())
 			return HANDLER_CONTINUE
@@ -4997,20 +5212,20 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			local pos = v3()
 			pos = player.get_player_coords(pid)
 
-		spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(2906806882, pos, true, false)
-		entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, false)
+		spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, true)
 		
-		spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(2906806882, pos, true, false)
-		entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, false)
+		spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, true)
 
-		spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(2906806882, pos, true, false)
-		entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, false)
+		spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, true)
 		
-		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
-		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, true)
 		
-		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
-		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, true)
 		features["LightPOS1way"].feat.on = true
 
 		features["LightPOSway"].feat.on = true
@@ -5310,24 +5525,32 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["Give_Airstrike"].feat.max_i = #StrikeGive
 	features["Give_Airstrike"].feat.min_i = 1
 
-	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
-		ScriptTR(1421531240, pid, {1, 1})
-		local scid = player.get_player_scid(pid)
-		local name = tostring(player.get_player_name(pid))
-		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
+	-- features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
+		-- ScriptTR(1421531240, pid, {1, 1})
+		-- local scid = player.get_player_scid(pid)
+		-- local name = tostring(player.get_player_name(pid))
+		-- debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
+	-- end), type = "action"}
+	
+	-- features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
+		
+		-- ScriptTR(1421531240, pid, {2, 0})
+		
+		-- scid = player.get_player_scid(pid)
+		-- name = tostring(player.get_player_name(pid))
+		-- debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
+		
+	-- end), type = "action"}
+	--TODO: Grief
+	features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.f.id, function(feat)
+	if world_dumped then
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		dump_pickups_onplayer(pid, pos)
+		end
+		return HANDLER_POP
 	end), type = "action"}
 	
-	features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
-		
-		ScriptTR(1421531240, pid, {2, 0})
-		
-		scid = player.get_player_scid(pid)
-		name = tostring(player.get_player_name(pid))
-		debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
-		
-	end), type = "action"}
-	--TODO: Grief
-
 	local blame = 0	
 
 	features["blamer"] = {feat = menu.add_feature("Own The Blame For this shit?", "toggle", featureVars.g.id, function(feat)
@@ -5530,15 +5753,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	end), type = "action"}
 
 --TODO: World Dump Run Check
-	features["World_Dump"] = {feat = menu.add_feature("Dump World onto this Cunt!", "action", featureVars.g.id, function(feat)
-	if world_dumped then
-		local pos = v3()
-		pos = player.get_player_coords(pid)
-		dump_onplayer(pid, pos)
-		end
-		return HANDLER_POP
-	end), type = "action"}
-	
+
 	features["World_Dump1"] = {feat = menu.add_feature("Dump World onto this Cunt! & Freeze it", "action", featureVars.g.id, function(feat)
 	if world_dumped then
 		local pos = v3()
@@ -5815,6 +6030,34 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["Kick3_Type2"].feat.mod_i = 99
 	features["Kick3_Type2"].feat.on = false
 	
+	features["Kick3_Type3"] = {feat = menu.add_feature("Kick Data 3 Type 3", "value_i", featureVars.k.id, function(feat)
+		if feat.on then
+			player.unset_player_as_modder(pid, -1)
+
+			local i = feat.value_i
+			
+				par1 = math.random(-1000, 99999999)
+				par2 = math.random(-99999999999999, -9)
+				par3 = math.random(46190868, 999999999)
+				par4 = math.random(-1, 9)
+				par5 = math.random(-99999999999999, -46190868)
+				
+				ScriptTR(data3[i], pid, {-1, par3, par5, par2, par3, -1, par2, par1, par3, par1})
+				
+				print(data3[i] .."," .. pid .."," .. par3 .."," .. par5 .."," .. par2 .."," .. par3 .."," .. par2 .."," .. par1 .."," .. par3 .."," .. par1 )
+				
+			
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["Kick3_Type3"].feat.max_i = #data3
+	features["Kick3_Type3"].feat.min_i = 1
+	features["Kick3_Type3"].feat.value_i = 1
+	features["Kick3_Type3"].feat.mod_i = 1
+	features["Kick3_Type3"].feat.on = false
+	
 	-- features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
 			-- player.unset_player_as_modder(pid, -1)
 			-- local scid = player.get_player_scid(pid)			
@@ -5861,6 +6104,17 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			ScriptTR(0xF5CB92DB, pid, {pid, 1337, -1, 1, 1, 0, 0, 0})
 			local name = tostring(player.get_player_name(pid))
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Special SE Kicked"))
+
+	end), type = "action"}
+			
+	features["SPE-kick"] = {feat = menu.add_feature("Crash SE?", "action", featureVars.k.id, function(feat)
+
+			player.unset_player_as_modder(pid, -1)
+			local scid = player.get_player_scid(pid)
+			ScriptTR(0xc5bc4c4b, pid, {-72614, 63007, 59027, -12012, -26996, 33399})
+
+			local name = tostring(player.get_player_name(pid))
+			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Crash SE"))
 
 	end), type = "action"}
 	
