@@ -550,6 +550,13 @@ menu.add_player_feature("Save Players Current POS to file", "action", Player_Too
 end) 
 
 
+savepos = function(text)
+	
+	local file = io.open(arootPath.."\\lualogs\\saveposoutput.md", "a")
+	io.output(file)
+	io.write(text)
+	io.close()
+end
 
 --TODO: Notify settings
 globalFeatures.nottyp = menu.add_feature("Set Notify Variant", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
