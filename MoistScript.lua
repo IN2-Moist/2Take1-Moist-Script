@@ -552,7 +552,7 @@ end)
 
 savepos = function(text)
 	
-	local file = io.open(arootPath.."\\lualogs\\saveposoutput.md", "a")
+	local file = io.open(rootPath.."\\lualogs\\saveposoutput.md", "a")
 	io.output(file)
 	io.write(text)
 	io.close()
@@ -589,6 +589,13 @@ menu.add_feature("Save settings", "action", globalFeatures.moistopt, function(fe
 end) 
 
 --TODO: Online Functions
+
+menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
+
+		ScriptTR(0x4d8b1e65, pid, {1300962917})
+
+		return HANDLER_POP
+end)
 
 --TODO: Show Spawn option
 
@@ -1368,14 +1375,14 @@ function KickPid(pid)
 		else
 		for i = 1, #scriptEvents do
 			--player.set_player_as_modder(pid, mod_flag_2)
-			toggle_kicks(pid)
-			-- ScriptTR(scriptEvents[i], pid, {0, -1, 0})
-			-- ScriptTR(scriptEvents[i], pid, {-1, 0, -1, -1, 0, -1, 0, -1, -10000, 0})
-			-- ScriptTR(scriptEvents[i], pid, {0, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1})
+			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
 			
+			toggle_kicks(pid)
 		end
-		--player.set_player_as_modder(pid, mod_flag_2)
-		-- ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
+			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			
 		toggle_kicks(pid)
 		debug_out(string.format("Non-Host kicked " .. pid .. " (" .. name .. ")"))
 		print("Non-Host kicked " .. pid .. " (" .. name .. ").")
@@ -1428,8 +1435,6 @@ setting["Blacklist_ON"] = false
 	
 end)
 EnabledBlacklistFeature.on = setting["Blacklist_ON"]
---TODO: Blacklist Feature Toggle Saves
-
 
 
 local MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID, function(feat)
@@ -1600,7 +1605,8 @@ local function AddBounty(pid, value, anonymous)
 	for i = 0, 31 do
 		if player.get_player_scid(i) ~= 4294967295 then
 			
-			ScriptTR(0xf90cc891  , i, {69, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(190676614 + 9), script.get_global_i(190676614 + 10)})
+			ScriptTR(0xF90CC891, i, {-1, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+			ScriptTR(4178364561, i, {-1, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
 			
 		end
 	end
@@ -2104,19 +2110,21 @@ end
 
 --TODO: local session functions
 
--- local blockpassiveall = function()
+local blockpassiveall = function()
 	
-	-- local me
+	local me
 	
-	-- me	= player.player_id()
+	me	= player.player_id()
 	
-	-- for i=0,32 do
-		-- if i ~= me
-			-- then
-			-- ScriptTR(0x54BAD868, i, {1, 1})
-		-- end
-	-- end
--- end
+	for i=0,32 do
+		if i ~= me
+			then
+			ScriptTR(0xC9CC4F80, i, {1, 1})
+			ScriptTR(3385610112, i, {1, 1})
+			
+		end
+	end
+end
 
 local notmarkall = function()
 	local me
@@ -2138,27 +2146,28 @@ local notallmod = menu.add_feature("UnMark all Players as Modder", "action", glo
 end)
 notallmod.threaded = false
 
--- local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
+local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
 	
-	-- for playid = 0, 31 do
+	for playid = 0, 31 do
 		
-		-- if player.get_player_scid(playid) ~= -1 then
+		if player.get_player_scid(playid) ~= -1 then
 			
-			-- for j = 0, 31 do
-				
-				-- ScriptTR(544453591 , j, {69, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1650640 + 9), script.get_global_i(1650640 + 10)})
-			-- end
-		-- end
+			for j = 0, 31 do
+				ScriptTR(0xF90CC891, j, {-1, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+				ScriptTR(4178364561, j, {-1, playid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+			end
+		end
 		
-	-- end
--- end)
--- bountyallplayerses.threaded = false
+	end
+end)
+bountyallplayerses.threaded = false
 
--- local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.troll, function(feat)
-	-- blockpassiveall()
--- end)
--- pasivall.threaded = false
+local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.troll, function(feat)
+	blockpassiveall()
+end)
+pasivall.threaded = false
 
+--TODO: Session Kicks
 --TODO: Remove from Public
 local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
 	if feat.on then
@@ -2167,8 +2176,10 @@ local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino", "toggle", glob
 		for i = 0, 32 do
 			local fnd = player.is_player_friend(i)
 			if i ~= me or fnd then
-				ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
-				--ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+			ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			
 			end
 		end
 		return HANDLER_CONTINUE
@@ -2187,18 +2198,9 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
 		if not network.network_is_host() then
 			
 			player.unset_player_as_modder(hostnow, -1)
-			-- ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
-			-- ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
-			-- ScriptTR(150902083, hostnow, {hostnow, script.get_global_i(1628237 + (1 + (hostnow * 615)) + 533)})
+			ScriptTR(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+			ScriptTR(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
 			
-			-- system.wait(200)
-			
-			-- ScriptTR(-1253256204, hostnow, {1337, -1, 1, 1, 0, 0, 0})
-			-- ScriptTR(-1253256204, hostnow, {hostnow, 1337, -1, 1, 1, 0, 0, 0})
-			
-			-- ScriptTR(526625102, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
-			-- ScriptTR(0xc82139cf, hostnow, {50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-			-- ScriptTR(0xc82139cf, hostnow, {50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 			system.wait(200)
 			toggle_kicks(hostnow)
 		end
@@ -2233,7 +2235,9 @@ local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatur
 				ScriptTR(1623637790, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
 				ScriptTR(-1905128202, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
 				ScriptTR(1160415507, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-			--	ScriptTR(150902083, i, {i, script.get_global_i(1628237 + (1 + (i * 615)) + 533)})
+				ScriptTR(-2120750352, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+				ScriptTR(0xE6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+			
 
 			end
 		end
@@ -2389,7 +2393,7 @@ local fetch_obj = menu.add_feature("Fetch all Heist Cameras Move & Delete", "act
 	local Hashes = {2151061176,3234250744,548760764}
 
 	
-	moist_notify("Cunt Cleaning Started: \n", " Cleanups Disabled until Done!")
+	moist_notify("Removing Cunts Ability to Spy on us: \n", " Cleanups Disabled until Done!")
 	get_allobj()
 	system.wait(250)
 	
@@ -2413,14 +2417,9 @@ local fetch_obj = menu.add_feature("Fetch all Heist Cameras Move & Delete", "act
 			system.wait(25)
 			cleanup_done = true
 
-	moist_notify("Cuntish Objects Removed\n",  " Cleanups Enabled")	
+	moist_notify("Cunts Hunt us Now Cam's Removed\n",  " Cleanups Enabled")	
 	
 	return HANDLER_POP
-
-
-
-
-
 
 end)
 
@@ -2693,7 +2692,7 @@ local sndrape_3 = menu.add_feature("all Explosion Countdown", "action", globalFe
 	end
 end)
 
-local sndrape_4 = menu.add_feature("Annoying Unstoppable sound", "action", globalFeatures.troll, function(feat)
+local sndrape_4 = menu.add_feature("Annoying sound! CANT BE UNDONE!", "action", globalFeatures.troll, function(feat)
 	
 	local pos = v3()
 	for i = 0, 31 do
@@ -4951,14 +4950,15 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["marker_active5"].feat.min_i = 0
 	features["marker_active5"].feat.value_i = 28
 	features["marker_active5"].feat.on = false
-	
+
+--TODO: CEO Money
 	
 	features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.f.id, function(feat)
 		while feat.on do
 			print("Money Trigger loop")
 			print(os.date())
 			
-			ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1628237 + (1 + (pid * 595)) + 533), script.get_global_i(1630317 + 9), script.get_global_i(1630317 + 10)})
+			ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
 			system.wait(31000)
 			print(os.date())
 			return HANDLER_CONTINUE
@@ -5532,23 +5532,6 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["Give_Airstrike"].feat.max_i = #StrikeGive
 	features["Give_Airstrike"].feat.min_i = 1
 
-	-- features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
-		-- ScriptTR(1421531240, pid, {1, 1})
-		-- local scid = player.get_player_scid(pid)
-		-- local name = tostring(player.get_player_name(pid))
-		-- debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
-	-- end), type = "action"}
-	
-	-- features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
-		
-		-- ScriptTR(1421531240, pid, {2, 0})
-		
-		-- scid = player.get_player_scid(pid)
-		-- name = tostring(player.get_player_name(pid))
-		-- debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
-		
-	-- end), type = "action"}
-	--TODO: Grief
 	features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.f.id, function(feat)
 	if world_dumped then
 		local pos = v3()
@@ -5558,6 +5541,26 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		return HANDLER_POP
 	end), type = "action"}
 	
+	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
+
+			ScriptTR(0xC9CC4F80, pid, {1, 1})
+			ScriptTR(3385610112, pid, {1, 1})
+		local scid = player.get_player_scid(pid)
+		local name = tostring(player.get_player_name(pid))
+		debug_out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
+	end), type = "action"}
+	
+	features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
+		
+		ScriptTR(0xC9CC4F80, pid, {2, 0})
+		ScriptTR(3385610112, pid, {2, 0})
+		scid = player.get_player_scid(pid)
+		name = tostring(player.get_player_name(pid))
+		debug_out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
+		
+	end), type = "action"}
+	--TODO: Grief
+
 	local blame = 0	
 
 	features["blamer"] = {feat = menu.add_feature("Own The Blame For this shit?", "toggle", featureVars.g.id, function(feat)
@@ -6065,25 +6068,31 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["Kick3_Type3"].feat.mod_i = 1
 	features["Kick3_Type3"].feat.on = false
 	
-	-- features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
-			-- player.unset_player_as_modder(pid, -1)
-			-- local scid = player.get_player_scid(pid)			
-			-- local name = tostring(player.get_player_name(pid))
-			-- ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
-			-- debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
+	features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
+			player.unset_player_as_modder(pid, -1)
+			local scid = player.get_player_scid(pid)			
+			local name = tostring(player.get_player_name(pid))
 
-	-- end), type = "action"}
+			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			
+			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
+
+	end), type = "action"}
 	
 	
-	-- features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck", "action", featureVars.k.id, function(feat)
-			-- player.unset_player_as_modder(pid, -1)
-			-- local scid = player.get_player_scid(pid)			
-			-- local name = tostring(player.get_player_name(pid))
-			-- ScriptTR(-1153500935, pid, {91645, -99683, 1788, 60877, 55085, 72028})
-			-- ScriptTR(150902083, pid, {pid, script.get_global_i(1628237 + (1 + (pid * 615)) + 533)})
-			-- debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
+	features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck", "action", featureVars.k.id, function(feat)
+			player.unset_player_as_modder(pid, -1)
+			local scid = player.get_player_scid(pid)			
+			local name = tostring(player.get_player_name(pid))
+			ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			
+			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 
-	-- end), type = "action"}
+	end), type = "action"}
 	
 	features["SE-kick"] = {feat = menu.add_feature("SE Kick", "action", featureVars.k.id, function(feat)
 
@@ -6114,7 +6123,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 
 	end), type = "action"}
 			
-	features["SPE-kick"] = {feat = menu.add_feature("Crash SE?", "action", featureVars.k.id, function(feat)
+	features["SPE-kick"] = {feat = menu.add_feature("Script Event Crash", "action", featureVars.k.id, function(feat)
 
 			player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)
