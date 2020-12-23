@@ -1026,7 +1026,7 @@ scriptlog_pid.value_i = 0
 
 local hook_pid = 0
 local lastpid_hooked = 0
-local script_check_pid  = function(pid)
+script_check_pid  = function(pid)
 	if scriptlog_pid.on == true then
 		hook_pid = hook.register_script_event_hook(script_event_hook_pid)
 		lastpid_hooked = pid
@@ -1042,7 +1042,7 @@ end
 
 
 local paramspid = {}
-local script_event_hook_pid = function(source, target, paramspid, count)
+script_event_hook_pid = function(source, target, paramspid, count)
 	
 	
 	local player_source = player.get_player_name(source)
@@ -1088,7 +1088,7 @@ end
 
 
 local params = {}
-local script_event_hook = function(source, target, params, count)
+script_event_hook = function(source, target, params, count)
 
 	
 	local player_source = player.get_player_name(source)
@@ -1112,6 +1112,7 @@ local script_event_hook = function(source, target, params, count)
 	end
 	
 		scriptlog_out("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p )
+		print(string.format(("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p )))
 		cnt = cnt + 1
 	end
 	
@@ -1122,7 +1123,7 @@ local script_event_hook = function(source, target, params, count)
 end
 
 --TODO: Logging output
-local log_neteventHook = function(source, target, id)
+log_neteventHook = function(source, target, id)
 	local player_source = player.get_player_name(source)
 	local player_target = player.get_player_name(target)
 	get_datetime()
@@ -1373,7 +1374,7 @@ function KickPid(pid)
 		debug_out(string.format("Host kicked " .. pid .. " (" .. name .. ")"))
 		print("Host kicked " .. pid .. " (" .. name .. ").")
 		else
-		for i = 1, #scriptEvents do
+		-- for i = 1, #scriptEvents do
 			--player.set_player_as_modder(pid, mod_flag_2)
 			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
 			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
@@ -1386,7 +1387,7 @@ function KickPid(pid)
 		toggle_kicks(pid)
 		debug_out(string.format("Non-Host kicked " .. pid .. " (" .. name .. ")"))
 		print("Non-Host kicked " .. pid .. " (" .. name .. ").")
-	end
+
 end
 
 function MarkPidAsModder(pid)
@@ -1530,7 +1531,7 @@ neteventlogger = menu.add_feature("Netevent Hook", "toggle", test.id, function(f
 end)		
 neteventlogger.on = setting["NetEventHook"]
 	
-local netevent_timer = menu.add_feature("Weather Timer", "toggle", test.id, function(feat)
+netevent_timer = menu.add_feature("Weather Timer", "toggle", test.id, function(feat)
 		
 		if feat.on then
 			if count > 0 then
@@ -6085,9 +6086,9 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
-			ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+			ScriptTR(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
 			ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-			ScriptTR(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+			ScriptTR(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
 			ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
 			
 			debug_out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
