@@ -162,6 +162,8 @@ toggle_setting[#toggle_setting+1] = "Blacklist_Mark"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "Blacklist_kick"
 setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "global_func.vehtel_hotkey1"
+setting[toggle_setting[#toggle_setting]] = true
 
 function saveSettings()
 	
@@ -2067,6 +2069,29 @@ global_func.veh_rapid_fire = menu.add_feature("RapidFire RepairLoop Glitch", "to
 	return HANDLER_POP
 end)
 global_func.veh_rapid_fire.on = setting["global_func.veh_rapid_fire"]
+
+global_func.vehtel_hotkey1 = menu.add_feature("Teleport to Vehicle Hotkey", "toggle", globalFeatures.self_options, function(feat)
+	setting["global_func.vehtel_hotkey1"] = true
+	if feat.on then
+		local key = MenuKey()
+		key:push_str("LCONTROL")
+		key:push_str("LSHIFT")
+		key:push_str("0")
+		if key:is_down() then
+		local myveh = player.get_personal_vehicle()
+		local pos = v3()
+		pos = entity.get_entity_coords(myveh)
+		pos.x = pos.x + 2
+		entity.set_entity_coords_no_offset(player.get_player_ped(player.player_id()), pos)
+		system.wait(1200)
+		end
+		
+		return HANDLER_CONTINUE
+	end
+	setting["global_func.vehtel_hotkey1"] = false
+	return HANDLER_POP
+end)
+global_func.vehtel_hotkey1.on = setting["global_func.vehtel_hotkey1"]
 
 global_func.rapidfire_hotkey1 = menu.add_feature("RapidFire RepairLoop Hotkey", "toggle", globalFeatures.self_options, function(feat)
 	setting["global_func.rapidfire_hotkey1"] = true
