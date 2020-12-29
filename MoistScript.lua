@@ -107,7 +107,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 local toggle_setting = {}
 local setting = {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.4"
+setting[toggle_setting[#toggle_setting]] = "2.0.1.5"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modvehgod_osd"
@@ -161,6 +161,12 @@ setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "Blacklist_Mark"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "Blacklist_kick"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "global_func.thermal_stat_switch_hotkey"
+setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "osd_My_speed1"
+setting[toggle_setting[#toggle_setting]] = false
+toggle_setting[#toggle_setting+1] = "osd_My_speed2"
 setting[toggle_setting[#toggle_setting]] = true
 
 function saveSettings()
@@ -515,6 +521,10 @@ globalFeatures.self_ped = menu.add_feature("Ped Functions", "parent", globalFeat
 globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
 globalFeatures.self_veh = menu.add_feature("Vehicle Functions", "parent", globalFeatures.self).id
 globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
+globalFeatures.self_quickstat = menu.add_feature("Player Stats", "parent", globalFeatures.self).id
+globalFeatures.self_statcheck = menu.add_feature("Player Stat Checks", "parent", globalFeatures.self_quickstat).id
+globalFeatures.self_statsetup = menu.add_feature("Player Stat Setups", "parent", globalFeatures.self_quickstat).id
+
 local Moist_Spam = menu.add_feature("Chat Spam", "parent", globalFeatures.parent).id
 local Preset_Chat = menu.add_feature("Chat Spam Presets", "parent", Moist_Spam).id
 local Spam_Options = menu.add_feature("Spam Options", "parent", Moist_Spam).id
@@ -2208,6 +2218,34 @@ global_func.rapidfire_hotkey1 = menu.add_feature("RapidFire RepairLoop Hotkey", 
 end)
 global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
 
+
+global_func.thermal_stat_switch_hotkey = menu.add_feature("Switch Thermal/NV Hotkey", "toggle", globalFeatures.self_options, function(feat)
+	setting["global_func.thermal_stat_switch_hotkey"] = true
+	local thermalstat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
+	
+	if feat.on then
+		local key = MenuKey()
+		key:push_str("LCONTROL")
+		key:push_str("F11")
+		if key:is_down() then
+	
+		local state = stats.stat_get_bool(thermalstat_hash, 0)
+		local setstate = not state
+		stats.stat_set_bool(thermalstat_hash, setstate, true)
+		moist_notify("Thermal/Nightvision State:\n", "Switched")
+	
+			system.wait(1200)
+		end	
+		
+		return HANDLER_CONTINUE
+	end
+	setting["global_func.thermal_stat_switch_hotkey"] = false
+	return HANDLER_POP
+end)
+global_func.thermal_stat_switch_hotkey.on = setting["global_func.thermal_stat_switch_hotkey"]
+
+
+
 local cross_hair = menu.add_feature("Show Weapon Recticle", "toggle", globalFeatures.self_options, function(feat)
 	setting["Weapon_Recticle"] = true
 	if feat.on then 
@@ -2228,6 +2266,56 @@ local function set_waypoint(pos)
 		ui.set_new_waypoint(coord)
 	end
 end
+
+--TODO: Player stats
+
+-- globalFeatures.self_statcheck
+-- globalFeatures.self_statsetup
+
+local mental_stat = menu.add_feature("Get Mental State", "action", globalFeatures.self_statcheck, function(feat)
+	local stat_hash = gameplay.get_hash_key("MP0_PLAYER_MENTAL_STATE")
+
+	local stat_result = stats.stat_get_float(stat_hash, 0)
+	moist_notify("Current Mental State:\n", stat_result)
+end)
+
+
+local thermal = menu.add_feature("Check Thermal/NV State", "action", globalFeatures.self_statcheck, function(feat)
+	local stat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
+
+	local stat_result = stats.stat_get_bool(stat_hash, 0)
+	moist_notify("Thermal / Nightvision State:\n", stat_result)
+end)
+
+-- local thermal = menu.add_feature("Check Thermal/NV State", "action", globalFeatures.self_statcheck, function(feat)
+	-- local stat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
+
+	-- local stat_result = stats.stat_get_bool(stat_hash, 0)
+	-- moist_notify("Thermal / Nightvision State:\n", stat_result)
+-- end)
+
+
+local mental_statset = menu.add_feature("Set Mental State", "action_value_i", globalFeatures.self_statsetup, function(feat)
+	local stat_hash = gameplay.get_hash_key("MP0_PLAYER_MENTAL_STATE")
+	local i = tonumber(feat.value_i)
+	local stat_result1 = stats.stat_get_float(stat_hash, 0)
+	stats.stat_set_float(stat_hash, i, true)
+	local stat_result2 = stats.stat_get_float(stat_hash, 0)
+	moist_notify("Previous Mental State: ".. stat_result1, "\nNow: ".. stat_result2)
+end)
+mental_statset.max_i = 100
+mental_statset.min_i = 0
+
+local thermal_set = menu.add_feature("Set Thermal/NV State", "action", globalFeatures.self_statsetup, function(feat)
+	
+	local stat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
+
+	stats.stat_set_bool(stat_hash, true, true)
+
+	local stat_result2 = stats.stat_get_float(stat_hash, 0)
+	moist_notify("Thermal / Nightvision State:\n", stat_result)
+	
+end)
 
 
 --TODO: local session functions
@@ -3755,23 +3843,6 @@ OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures
 		
 		local dt = os.date("%d/%m/%y%y")
 		
-		-- local osd_Cur_Date = (string.format(dt))
-		-- pos.x = .950
-		-- pos.y = .0001
-		-- ui.set_text_scale(0.4009)
-		-- ui.set_text_font(5)
-		-- ui.set_text_color(0, 0, 0, 255)
-		-- ui.set_text_centre(1)
-		-- ui.set_text_outline(1)
-		-- ui.draw_text(osd_Cur_Date, pos)
-		-- pos.x = .955
-		-- pos.y = .0002
-		-- ui.set_text_scale(0.4002)
-		-- ui.set_text_font(5)
-		-- ui.set_text_color(255, 255, 255, 255)
-		-- ui.set_text_centre(1)
-		-- ui.set_text_outline(1)
-		-- ui.draw_text(osd_Cur_Date, pos)
 		pos.x = .975
 		pos.y =  0.000001
 		
@@ -3812,6 +3883,92 @@ OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures
 	
 end)
 OSD.date_time_OSD.on = setting["osd_date_time"]
+
+OSD.osd_My_speed1 = menu.add_feature("Show My Speed in Kmph", "toggle", globalFeatures.moistopt, function(feat)
+	setting["osd_My_speed1"] = true
+	while feat.on do
+		
+		local pos = v2()
+		pos.x = .975
+		pos.y =  0.0600001
+		
+			local ent
+			local ent1 = player.get_player_ped(player.player_id())	
+			local ent2 = ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id()))
+			
+			if ped.is_ped_in_any_vehicle(ent1) then ent = ent2 else ent = ent1 end
+			local speed = entity.get_entity_speed(ent)
+			local speedcalc = speed * 3.6 --kmph
+			local speedcalcm =  speed * 2.236936 --mph
+			myspeed1 = math.ceil(speedcalc)
+			myspeed2 = math.ceil(speedcalcm)
+
+		ui.set_text_scale(0.20)
+		ui.set_text_font(0)
+		ui.set_text_color(0, 0, 0, 255)
+		ui.set_text_centre(false)
+		ui.set_text_outline(1)
+		ui.draw_text(myspeed1 .."kmph" , pos)
+		pos.x = .977
+		pos.y =  0.060002
+	
+		ui.set_text_scale(0.20)
+		ui.set_text_font(0)
+		ui.set_text_color(255, 255, 255, 255)
+		ui.set_text_centre(false)
+		ui.set_text_outline(1)
+		ui.draw_text(myspeed1 .."kmph", pos)
+		
+		return HANDLER_CONTINUE
+	end
+	setting["osd_My_speed1"] = false
+	return HANDLER_POP
+	
+end)
+OSD.osd_My_speed1.on = setting["osd_My_speed1"]
+
+OSD.osd_My_speed2 = menu.add_feature("Show My Speed in Mph", "toggle", globalFeatures.moistopt, function(feat)
+	setting["osd_My_speed2"] = true
+	while feat.on do
+		
+		local pos = v2()
+		pos.x = .975
+		pos.y =  0.0600001
+		
+			local ent
+			local ent1 = player.get_player_ped(player.player_id())	
+			local ent2 = ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id()))
+			
+			if ped.is_ped_in_any_vehicle(ent1) then ent = ent2 else ent = ent1 end
+			local speed = entity.get_entity_speed(ent)
+			local speedcalc = speed * 3.6 --kmph
+			local speedcalcm =  speed * 2.236936 --mph
+			myspeed1 = math.ceil(speedcalc)
+			myspeed2 = math.ceil(speedcalcm)
+
+		ui.set_text_scale(0.20)
+		ui.set_text_font(0)
+		ui.set_text_color(0, 0, 0, 255)
+		ui.set_text_centre(false)
+		ui.set_text_outline(1)
+		ui.draw_text(myspeed2 .."mph", pos)
+		pos.x = .977
+		pos.y =  0.0600002
+	
+		ui.set_text_scale(0.20)
+		ui.set_text_font(0)
+		ui.set_text_color(255, 255, 255, 255)
+		ui.set_text_centre(false)
+		ui.set_text_outline(1)
+		ui.draw_text(myspeed2 .."mph", pos)
+		
+		return HANDLER_CONTINUE
+	end
+	setting["osd_My_speed2"] = false
+	return HANDLER_POP
+	
+end)
+OSD.osd_My_speed2.on = setting["osd_My_speed2"]
 
 --TODO: Player Ped Weapons
 local function give_weapon()
@@ -5511,7 +5668,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		escort[i] = ped.create_ped(29, model, pos, heading2, true, false)
 	
 		--entity.set_entity_god_mode(escort[i], true)
-		ped.set_ped_can_switch_weapons(escort[i], true)
+			ped.set_ped_can_switch_weapons(escort[i], true)
 			ped.set_ped_combat_attributes(escort[i], 46, true)
 			ped.set_ped_combat_attributes(escort[i], 52, true)
 			ped.set_ped_combat_attributes(escort[i], 1, true)
@@ -5566,8 +5723,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["RamJet_cleanup"].feat.on = false
 	
 	features["RamJet_cleanup"].feat.hidden = false
-
-
+	
 	local pos = v3()
 	local PlyImpactPos = v3()
 	local offset = v3()
@@ -5907,8 +6063,93 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		return HANDLER_POP
 	end), type = "action"}
 	
-
-
+	
+	--TODO: Alkonostlag
+	local alkonost = {}
+	features["alkonost_lag"] = {feat = menu.add_feature("alkonost Dump lag", "action_value_i", featureVars.g.id, function(feat)
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		local hash = 3929093893
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value_i do
+		alkonost[#alkonost + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		entity.set_entity_as_no_longer_needed(alkonost[#alkonost])
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["alkonost_lag"].feat.min_i = 1	
+	features["alkonost_lag"].feat.max_i = 100
+	features["alkonost_lag"].feat.value_i = 15
+	
+		--TODO: Alkonostlag
+	local alkonost1 = {}
+	features["alkonost_lag"] = {feat = menu.add_feature("alkonost Dump lag v2", "action_value_i", featureVars.g.id, function(feat)
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		local hash = 3929093893
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value_i do
+		alkonost1[#alkonost1 + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		for a = 1, #alkonost1 do
+		entity.set_entity_as_no_longer_needed(alkonost1[a])
+		end
+		
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["alkonost_lag"].feat.min_i = 1	
+	features["alkonost_lag"].feat.max_i = 100
+	features["alkonost_lag"].feat.value_i = 15
+	
+		local alkonost2 = {}
+	features["alkonost_lag"] = {feat = menu.add_feature("alkonost Dump lag v3", "action_value_i", featureVars.g.id, function(feat)
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		local hash = 3929093893
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value_i do
+		pos.x = pos.x + 1.0
+		alkonost2[#alkonost2 + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		--entity.attach_entity_to_entity(Entity subject, Entity target, int boneIndex, v3 offset, v3 rot, bool softPinning, bool collision, bool isPed, int vertexIndex, bool fixedRot)
+		-- for a = 1, #alkonost2 do
+		-- entity.set_entity_as_no_longer_needed(alkonost2[a])
+		-- end
+		
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["alkonost_lag"].feat.min_i = 1	
+	features["alkonost_lag"].feat.max_i = 100
+	features["alkonost_lag"].feat.value_i = 15
+	
 	features["check_HPWP"] = {feat = menu.add_feature("Check Players HP Stats & Weapon", "action", featureVars.n.id, function(feat)
 		local pped = player.get_player_ped(pid)
 		moist_notify("Current HP info:\n", player.get_player_health(pid) .. " / " ..player.get_player_max_health(pid) .. " || " .. player.get_player_armour(pid).." ||")
