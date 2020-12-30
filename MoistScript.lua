@@ -896,25 +896,6 @@ local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", 0, f
 	return HANDLER_POP
 end)
 
-
-
-local friends_donotmod = menu.add_feature("My Friends DO NOT MOD! MarkOFF", "toggle", globalFeatures.protex, function(feat)
-	if feat.on then
-		-- 
-		for i = 0, 32 do
-			
-			if player.is_player_friend(i) and player.is_player_modder(i, -1) then	
-				player.unset_player_as_modder(i, -1)
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end)
-friends_donotmod.threaded = false
-friends_donotmod.on = false
-
-
 --TODO: Orbital Room Protection
 menu.add_feature("Teleport to block location?", "action", globalFeatures.orbital, function(feat)
 	
