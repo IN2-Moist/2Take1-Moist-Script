@@ -110,7 +110,7 @@ toggle_setting[#toggle_setting+1] = "MoistsScript"
 setting[toggle_setting[#toggle_setting]] = "2.0.1.5"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
-toggle_setting[#toggle_setting+1] = "OSD.modvehgod_osd"
+toggle_setting[#toggle_setting+1] = "OSD.otr_plyr_osd"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = true
@@ -3915,43 +3915,48 @@ OSD.modvehspeed_osd.on = setting["OSD.modvehspeed_osd"]
 
 --TODO: OSD STUFF
 
-OSD.modvehgod_osd = menu.add_feature("Vehicle God OSD", "toggle", globalFeatures.moistopt, function(feat)
-	setting["OSD.modvehgod_osd"] = true
-	if feat.on then
+otr_plyr_osd = menu.add_feature("OTR Player OSD", "toggle", globalFeatures.moistopt, function(feat)
+	if not feat.on then 
+	setting["OSD.otr_plyr_osd"] = false
+
+	return HANDLER_POP
+	end
+		setting["OSD.otr_plyr_osd"] = true
+	return HANDLER_POP
+end)
+otr_plyr_osd.on = setting["OSD.otr_plyr_osd"]
+
+--TODO: OTR OSD
+
+function otr_player(pid)
+	if not otr_plyr_osd.on then return end
+	while (script.get_global_i(2425869 + (1 + (pid * 443)) + 204) == 1) do
 		local pos = v2()
+		local txtoffset = pid / 100
 		pos.x = 0.001
-		pos.y = .0255
-		
-		for i = 0, 32 do
-			pos.x = 0.001
-			if player.is_player_vehicle_god(i) then
-				ui.set_text_scale(0.235)
-				ui.set_text_font(0)
-				ui.set_text_color(255, 255, 255, 255)
-				ui.set_text_centre(false)
-				ui.set_text_outline(true)
-				ui.draw_text("vehgod: ", pos)
-				
-				pos.x = 0.025
-				
-				name = player.get_player_name(i)
-				ui.set_text_scale(0.235)
-				ui.set_text_font(0)
-				ui.set_text_color(255, 255, 0, 255)
-				ui.set_text_centre(false)
-				ui.set_text_outline(true)
-				local Plyname = tostring(player.get_player_name(i))
-				ui.draw_text(Plyname, pos)
-			end
-			pos.y = pos.y + 0.040
-		end
+		pos.y = tonumber(0.000005 + txtoffset)
+
+		ui.set_text_scale(0.235)
+		ui.set_text_font(0)
+		ui.set_text_color(255, 255, 255, 255)
+		ui.set_text_centre(false)
+		ui.set_text_outline(true)
+		ui.draw_text("OTR: ", pos)
+			
+		pos.x = 0.025
+		ui.set_text_scale(0.235)
+		ui.set_text_font(0)
+		ui.set_text_color(255, 255, 0, 255)
+		ui.set_text_centre(false)
+		ui.set_text_outline(true)
+		local Plyname = tostring(player.get_player_name(pid))
+		ui.draw_text(Plyname, pos)
 		
 		return HANDLER_CONTINUE
 	end
-	setting["OSD.modvehgod_osd"] = false
 	return HANDLER_POP
-end)
-OSD.modvehgod_osd.on = setting["OSD.modvehgod_osd"]
+end
+
 
 
 OSD.modspec_osd = menu.add_feature("Spectate OSD", "toggle", globalFeatures.moistopt, function(feat)
@@ -6848,7 +6853,9 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						tags[#tags + 1] = "M"
 					end
 					if script.get_global_i(2425869 + (1 + (pid * 443)) + 204) == 1 then
+						otr_player(pid)
 						tags[#tags + 1] = "O"
+						
 					end
 					if player.is_player_host(pid) then
 						tags[#tags + 1] = "H"
