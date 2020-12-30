@@ -15,6 +15,7 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 ```
 - Moist_Kicks.data
 - Moist_Kicks2.data
+- Moist_kicks3.data
 ```
 
 **Extras :**
@@ -57,11 +58,12 @@ TODO -
 ##### Online Session
 ##### Player Functions
 ##### Clean Shit Up!
+##### Chat Spam
 ##### Options
 
 ## Local Script Features
 
-### Moists Script
+### Moists Script `version number`
 
 #### Online Player Script Features
 
@@ -109,14 +111,10 @@ Certain Vehicles have Multiple Peds
 
 - Spawn as Attacker & Task
 
-
-Spawns Ped in Selected Vehicle Behind Player & Attacks,
+`Spawns Ped in Selected Vehicle Behind Player & Attacks,
 will follow player until they are dead.
-Ped`s may attack each other if too many
-are spawned and they shoot in each others direction
-
-
-
+Ped's may attack each other if too many
+are spawned and they shoot in each others direction`
 
 ## Online Session:
 
@@ -131,13 +129,13 @@ are spawned and they shoot in each others direction
 - Remove blacklist (list of players on the list)
 
 #### Modder Protex Detect
-- Custom SEP
-- Netevent Hook
-- Weather Timer
-- Logging Shit
+- Netevent Hook (Experimental NetEvent Modder Detection)
+
+##### Logging Shit
 - Log in Game Chat
-- Log Netevents to File
-- Hook Script Events & Log to File
+- Log Netevents to File (Ouput all Received NetEvents to a log file)
+- Hook Script Events & Log to File (Output and Log Script Events to a log file)
+- Log event hash only (Hash logger)
 								
 
 #### Orbital Room Block
@@ -161,33 +159,23 @@ otherwise game kicks you out of the interior)
 RIP ORBITAL WARRIORS!!''
 
 **Online Protection**
-				
-- Mark all Players as Modder
 
-`Turns on Protections to block everything from all Players`
+- Log Player Script Events (Value Toggle)
 
-- Mark all Players as Modder (toggle)
-
-`Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
+`Select a value that matches the player id in the online info window for that player and toggle on
+this will log any script events from that selected player only`
 
 - UnMark all Players as Modder
 
 `Turns off all protections that are being blocked from all Players if they are marked as a Modder
 (includes any other detection not set by this script)`
 
-- My Friends DO NOT MOD! MarkOFF
+- Mark all Players as Modder (toggle)
 
-`For those that find it a issue playing with friends or your friends being able to join and do stuff in your session 
-with out getting stuck on long loading screens due to a RAC Detection or something false only effects people in session
-currently on your friends list`
+`Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
 
 
 **Online Session:**
-
-- set Bounty on Lobby
-
-`10 k Bounty for all including yourself!`
-
 
 ## Session Kicks
 
@@ -203,21 +191,49 @@ kicks although 2take1 protects you from being kicked it makes the game harder to
 
 - Network Bail Kick
 
-`Network kick using globals to force the player to bail from the session very effective against most Modder`s but most good menus 
+`Network kick using globals to force the player to bail from the session very effective against most Modder's but most good menus 
 would be protected against this! if it is going to work and kick them it would instantly remove them with no delay`
+
+- Test Kick
+
+` Experimental Script Event Kick`
 
 - Host Kick All
 
 `Only works while you are the current session host, but will kick all players with a Players have voted you out of session message
 preventing them joining again. Does not effect you or friends just all others`
 
+## Session Troll Functions
 
+- set Bounty on Lobby
 
+`10 k Bounty for all including yourself!`
+
+- Block all Players Passive
+
+`Prevent any player from being able to use passive mode`
+
+**Play Game Sounds from all players ped + Coords**
+- all Horn
+- all Air Drop
+- all Explosion Countdown
+- Annoying sound! CANT BE UNDONE! (YOU NEED TO LEAVE THE SESSION TO STOP IT)
+- allBomb Armed (Value Toggle the value is a delay between each loop)  		**Offset Delays for these and play a kinda tune**
+- all Bomb Disarmed (Value Toggle the value is a delay between each loop)	**These combined Delay's offset from the other to Make Music**
+- Illuminate Everyone (Light Hat + Little Strobe Light Attaches on all) 
+- Everyone is a Dick Head! (Big Ass Black Dildo on everyones Forehead)
+- Give all Dildo Dicks (Big Ass Black Dildo between everyones legs)
+
+**Online Session**
+- Apply force to world entitys
+- Freeze World Vehicles & Objects
+- Any Friends Online (Friend online & in Muliplayer Check & Notify)
 ## Player Functions:
 
 #### Ped Functions
 #### Vehicle Functions
 #### Player Options
+#### Player Stats
 
 ##### Ped Functions 
 
@@ -236,14 +252,26 @@ preventing them joining again. Does not effect you or friends just all others`
 - Set Health to 90000
 - Set Health to 328 (level 120)
 
+##### Combat Functions
 
+- unfair aim damage (multiplier)
+- unfair aim/ped headshot (value select weapon type)
+- get last weapon impact pos (required for some functions and turns on when needed)
+- Air Strike last weapon impact pos (value Selection for Weapon type that Strikes last impact coords)
+- 2nd wep last weapon impact strike (value selection weapon type this shoots second Weaponfire from your hand as if its your gun shooting)
+- Air Srike Aim Entity (aim @ any world entity and hit Dpad Right to send an airstrike down on it)
 
-##### Ped Functions
-
+**Ped Functions**
+- Give Self Glowstick
 - Put Handcuffs on Self
 - Set Handcuffs Locked Position
 - White Team parachute Pack
 
+#####  Vehicle Functions
+
+- Voltic Boost Delayed Refill (Designed for MK1 Opressor Refills instantly after short delay no need to be on ground)
+- Voltic Boost Instant Recharge (Designed for MK2 Opressor release the acceleration for a moment to instant refill boost)
+- RapidFire RepairLoop Glitch (Forces Vehicle Fixed on a fast loop causing the weapons to become Rapidfiring weapons works on missiles & guns)
 
 ##### Player Options
 
@@ -251,9 +279,25 @@ preventing them joining again. Does not effect you or friends just all others`
 - Force White parachute On
 - Force White BPH On
 - RapidFire RepairLoop Hotkey
+- Switch Thermal/NV Hoykey (Switch on or off Thermal or nightvision goggles on any helmet purcased or not)
 - Show Weapon Recticle
+- Rapid RPG Switch (switches RPG to remove reload while shooting)
 
+##### Player Stats 
 
+`Work in progress & experimental`
+
+###### Player Stat Checks
+
+- Get mental State
+- Check Thermal/NV State
+- Helmet Visor State
+
+###### Player Stat Setup
+
+- Set Mental State (Updates the value with current mental state entering this section)
+- Switch Helmet Visor State (Switches current state of Helmet Visor (Up or Down))
+- Switch Thermal/NV State (Switch current state of Thermal or nightvision (ON or OFF))
 
 ### Clean Shit Up!
 
@@ -277,7 +321,7 @@ preventing them joining again. Does not effect you or friends just all others`
 
 - Fetch all Vehicles Move & Delete
 
-`Slowly Removes all Vehicles in Controllable distance Also you if your inside one!`
+`Slowly Removes all Vehicles in Controllable distance Also you if your inside one! Ignores Player Owned Vehicles`
 
 **Clean Shit Up!**
 
@@ -293,8 +337,28 @@ preventing them joining again. Does not effect you or friends just all others`
 `Remove Both Spawned Ped & Vehicles Created via the OnlinePlayer Features`
 
 
+## Online Player functions
 
---TODO: Update and adjust
+
+##### Remove Player Options
+
+**Various ways to try and force remove the player from your session**
+
+- Spam Then All! (toggles on : **)
+- Kick Data 1 Type 1 **
+- Kick Data 1 Type 2 **
+- Kick Data 2 Type 1 **
+- Kick Data 2 Type 2 **
+- Kick Data 3 Type 1 **
+- Kick Data 3 Type 2 **
+- Kick Data 3 Type 3 (individual Kick event via selection not Batch like above)
+
+- Network Bail Kick
+
+- Network Bail Kick ScriptFuck (fucks ScriptHost)
+- SE Kick
+- SPECIAL KICK
+- Script Event Crash
 
 ##### Vehicle Options
 
@@ -316,7 +380,7 @@ Range and Ability to gain control determines success or not`
 
 - Input Custom Max Speed
 
-`Set their Vehicle`s Max Possible Speed to a Value you can input`
+`Set their Vehicle's Max Possible Speed to a Value you can input`
 
 - Set Max Speed 5
 
@@ -330,7 +394,7 @@ Range and Ability to gain control determines success or not`
 
 `Adds an Explosive Device to the players vehicle
 (this is like the LSC Remote Bomb added to their vehicle but its Registered with your name)
-So unless you want your name over their Death when you detonate it probably not an idea to add it XD
+So unless you want your name over their Death when you detonate it probably not an idea to add it XD`
 
 - Detonate Explosive Device
 
@@ -362,33 +426,22 @@ hey should then be next to you.`
 
 - Teleport Next2me (old Version)
 
-`Teleport`s the player next to you.`
+`Teleport's the player next to you.`
 
 - Teleport in front of Me
 
-`Teleport`s them directly in front of you`
+`Teleport's them directly in front of you`
 
 
 - Teleport Beyond World Limits
 
-`Teleport`s them outside the world boundary limits of the GTA Map`
+`Teleport's them outside the world boundary limits of the GTA Map`
 
 
 `CEO 10 k money loop`
 
 `Block Passive Mode
 `Unblock Passive Mode
-
-##### Remove Player Options ####
-
-**Various ways to try and force remove the player from your session**
-
-- Kick Data 1 Type 1
-- Kick Data 1 Type 2
-- Kick Data 2 Type 1
-- Kick Data 2 Type 2
-- Network Bail Kick
-
 
 
 ### Options 
