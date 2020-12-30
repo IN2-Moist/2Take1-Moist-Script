@@ -653,7 +653,7 @@ end
 
 menu.add_feature("no text spam", "toggle", globalFeatures.Moist_Spam, function(feat)
 		if feat.on then
-		network.send_chat_message("                                                                                                                                                                                                ", false)
+		network.send_chat_message("~", false)
 		system.wait(0)
 	return HANDLER_CONTINUE
 		end
