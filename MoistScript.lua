@@ -107,7 +107,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 local toggle_setting = {}
 local setting = {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.5"
+setting[toggle_setting[#toggle_setting]] = "2.0.1.6"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.otr_plyr_osd"
@@ -292,7 +292,7 @@ math.randomseed(utils.time_ms())
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.4\n~l~~h~Public Edition", 175)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -302,24 +302,24 @@ function moist_notify(msg1, msg2)
 	msg2 = msg2 or " ~h~~w~~ex_r*~"
 	
 	if notifytype == 1 then
-		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.4\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 2 then
-		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.4\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 3 then
-		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.4\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 4 then
-		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.4\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.4\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~b~~h~Public Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.4\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~g~~h~Public Edition", color)
 	end
 	
 end
@@ -391,7 +391,27 @@ russian_spam = {
 {"Suck Dick Russia", "СОСАТЬ ДИК РОССИЯ"},
 {"Pussy", "киска"},
 {"Cunt", "пизда"},
- 
+}
+
+
+local heiststat_setup = {
+{"MP0_H3_COMPLETEDPOSIX", -1},
+{"MP0_H3OPT_APPROACH", 1},
+{"MP0_H3_HARD_APPROACH", 3},
+{"MP0_H3OPT_TARGET", 3},
+{"MP0_H3OPT_POI", 1023},
+{"MP0_H3OPT_ACCESSPOINTS", 2047},
+{"MP0_H3OPT_BITSET1", -1},
+{"MP0_H3OPT_CREWWEAP", 1},
+{"MP0_H3OPT_CREWDRIVER", 1},
+{"MP0_H3OPT_CREWHACKER", 5},
+{"MP0_H3OPT_WEAPS", 1},
+{"MP0_H3OPT_VEHS", 3},
+{"MP0_H3OPT_DISRUPTSHIP", 3},
+{"MP0_H3OPT_BODYARMORLVL", 3},
+{"MP0_H3OPT_KEYLEVELS", 2},
+{"MP0_H3OPT_MASKS", math.ceil(math.random(0, 12))},
+{"MP0_H3OPT_BITSET0", -1},
 }
 
 local presets = {{"beyond_limits", -173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)", -1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",  -5784.258301,-8289.385742,-136.411270},{"Chiliad", 491.176,5529.808,777.503},{"Lesters House", 1275.544,-1721.774,53.967},{"arena", -264.297,-1877.562,27.756},{"ElysianIslandBridge", -260.923,-2414.139,124.008},{"LSIAFlightTower", -983.292,-2636.995,89.524},{"TerminalCargoShip", 983.303,-2881.645,21.619},{"ElBurroHeights", 1583.022,-2243.034,93.265},{"CypressFlats", 552.672,-2218.876,68.981},{"LaMesa", 1116.815,-1539.787,52.146},{"SupplyStreet", 777.631,-695.813,28.763},{"Noose", 2438.874,-384.409,92.993},{"TatavianMountains", 2576.999,445.654,108.456},{"PowerStation", 2737.046,1526.873,57.494},{"WindFarm", 2099.765,1766.219,102.698},{"Prison", 1693.473,2652.971,61.335},{"SandyShoresRadioTower", 1847.034,3772.019,33.151},{"AlamoSea", 719.878,4100.993,39.154},{"RebelRadioTower", 744.500,2644.334,44.400},{"GreatChaparral", -291.035,2835.124,55.530},{"ZancudoControlTower", -2361.625,3244.962,97.876},{"NorthChumash(Hookies)", -2205.838,4298.805,48.270},{"AltruistCampRadioTower", -1036.141,4832.858,251.595},{"CassidyCreek", -509.942,4425.454,89.828},{"MountChiliad", 462.795,5602.036,781.400},{"PaletoBayFactory", -125.284,6204.561,40.164},{"GreatOceanHwyCafe", 1576.385,6440.662,24.654},{"MountGordoRadioTower", 2784.536,5994.213,354.275},{"MountGordoLighthouse", 3285.519,5153.820,18.527},{"GrapeSeedWaterTower", 1747.518,4814.711,41.666},{"TatavianMountainsDam", 1625.209,-76.936,166.651},{"VinewoodHillsTheater", 671.748,512.226,133.446},{"VinewoodSignRadioTowerTop", 751.179,1245.13,353.832},{"Hawik", 472.588,-96.376,123.705},{"PacificSrandardBank", 195.464,224.341,143.946},{"WestVinewoodCrane", -690.273,219.728,137.518},{"ArcadiasRadioTower", -170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010, -1419.530,5.001},{"DelperoFerrisWheel", -1644.193,-1114.271,13.029},{"VespucciCanalsClockTower", -1238.729,-853.861,77.758},{"DelPeroNrMazebankwest", -1310.777,-428.985,103.465},{"pacifficBluffs", -2254.199,326.088,192.606},{"GWC&GolfingSociety", -1292.052,286.209,69.407},{"Burton", -545.979,-196.251,84.733},{"LosSantosMedicalCenter", 431.907,-1348.709,44.673},{"BanhamCanyon", -3085.451,774.426,20.237},{"TongvaHills", -1874.280,2064.565,150.852},{"SanChianskiMountainRange", 2900.166,4325.987,102.101},{"HumaineLabs", 3537.104,3689.238,45.228},{"YouToolStoreSanChianski", 2761.944,3466.951,55.679},{"GalileoObservatory", -422.917,1133.272,325.855},{"GrndSeroraDesertCementwks", 1236.649,1869.214,84.824}}
@@ -518,7 +538,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.4", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.6", "parent", 0).id
 
 --TODO: Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
@@ -546,6 +566,12 @@ globalFeatures.self_statsetup = menu.add_feature("Player Stat Setup", "parent", 
 	local value_set = tonumber(valu)
 	
 	mental_statset.value_i = value_set
+end).id
+
+globalFeatures.quick_stats = menu.add_feature("Quick Stat Setups", "parent", globalFeatures.self_quickstat, function(feat)
+	moist_notify("for casino heist quick stat setup\n", "ensure to pay for heist setup first")
+	moist_notify("cooldown can be removed running the setup first\n", "ensure to reapply after paying for it")
+	
 end).id
 
 globalFeatures.Moist_Spam = menu.add_feature("Chat Spam", "parent", globalFeatures.parent).id
@@ -2408,6 +2434,17 @@ local mental_stat = menu.add_feature("Get Mental State", "action", globalFeature
 end)
 
 
+local setup_casinostats = menu.add_feature("Setup Casino Heist Stealth Diamonds", "action", globalFeatures.quick_stats, function(feat)
+	
+	for i = 1, #heiststat_setup do
+	local stat_hash = gameplay.get_hash_key(heiststat_setup[i][1])
+
+	stats.stat_set_int(stat_hash, heiststat_setup[i][2], true)
+	end
+	moist_notify("Stats Setup", "\nFinished")
+end)
+
+
 local thermal = menu.add_feature("Check Thermal/NV State", "action", globalFeatures.self_statcheck, function(feat)
 	local stat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
 
@@ -2433,7 +2470,7 @@ local helmet_visor = menu.add_feature("Helmet Visor State", "action", globalFeat
 	moist_notify("Helmet Visor State:\n", state)
 end)
 
-
+--TODO: Force Mental State
 mental_statset = menu.add_feature("Set Mental State", "action_value_i", globalFeatures.self_statsetup, function(feat)
 	local stat_hash = gameplay.get_hash_key("MP0_PLAYER_MENTAL_STATE")
 	local i = tonumber(feat.value_i)
@@ -2441,6 +2478,34 @@ mental_statset = menu.add_feature("Set Mental State", "action_value_i", globalFe
 	stats.stat_set_float(stat_hash, i, true)
 	local stat_result2 = stats.stat_get_float(stat_hash, 0)
 	moist_notify("Previous Mental State: ".. stat_result1, "\nNow: ".. stat_result2)
+	moist_notify("Will now try to Force Mental State Change: ", "\nBy Creating & Killing a Ped on Chilliad in your name")
+	local pped = player.get_player_ped(player.player_id())
+	local model = 0xDB134533
+	 streaming.request_model(model)
+    while not streaming.has_model_loaded(model) do
+		
+		system.wait(10)
+	end
+	local spawnpos = v3(491.176,5529.808,777.503)
+	local stat_force = ped.create_ped(26, model, spawnpos, 0, true, false)
+	local stat_force = ped.create_ped(26, model, spawnpos, 0, true, false)
+	
+		local bonebool2
+		local pos2 = v3()
+			bonebool2, pos2 = ped.get_ped_bone_coords(stat_force, 12844, offset)
+			local pos = v3()
+			pos = pos2
+			pos.x = pos.x - 30
+			pos.z = pos.z + 100
+
+			gameplay.shoot_single_bullet_between_coords(pos, pos2, 10000, 1752584910, pped, true, false, 10000.00)
+			gameplay.shoot_single_bullet_between_coords(pos, pos2, 10000, 1752584910, pped, true, false, 10000.00)
+		
+		system.wait(100)
+		streaming.set_model_as_no_longer_needed(model)
+		moist_notify("Force Mental State Finished", "\nNow your mental state should be visible in this session")
+	
+	
 end)
 mental_statset.max_i = 100
 mental_statset.min_i = 0
