@@ -3751,19 +3751,19 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue, pos)
 	local hash = vehhash
 	local pid = pid
 	
-	if pos == nil then
-	local pos = player.get_player_coords(pid)
+	if not pos == nil then
+	offset = pos
+	goto nextstep
+	end
+	pos = player.get_player_coords(pid)
 	
-	local headtype = math.random(0, 2)
 	print(string.format("%s, %s, %s", pos.x, pos.y, pos.z))
-	local heading = player.get_player_heading(pid)
+	heading = player.get_player_heading(pid)
 	
 	heading = math.rad((heading - 180) * -1)
 	offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
 	
-	else
-	offset = pos
-	
+	::nextstep::
 	streaming.request_model(hash)
 	while not streaming.has_model_loaded(hash) do
 		
@@ -3786,7 +3786,7 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue, pos)
 	streaming.set_model_as_no_longer_needed(hash)
 	
 end
-end
+
 
 --TODO: Spawn Cleanups
 
