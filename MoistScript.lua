@@ -3624,25 +3624,22 @@ local pedspawns
 
 --TODO: Ped Spawn functions
 
-function spawn_ped(pid, pedhash, offdist, attack, pos)
+function spawn_ped(pid, pedhash, offdist, attack, Posoff)
 	local hash = pedhash
 	plygrp =  player.get_player_group(pid)
 	local pedp = player.get_player_ped(pid)
-	if not pos == nil then
-	offset = pos
-	goto nextstep
-	end
-
-	pos = player.get_player_coords(pid)
+	local offset = v3()
+	local OffSet = offdist
 	
-
-	heading = player.get_player_heading(pid)
-	
+	if not Posoff then
+	local pos = player.get_player_coords(pid)
+	local heading = player.get_player_heading(pid)	
 	heading = math.rad((heading - 180) * -1)
 	offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
-	
-	
-	::nextstep::
+	else
+	offset = offdist
+	end
+
 	local headtype = math.random(0, 2)
 	
 	streaming.request_model(hash)
@@ -3747,23 +3744,22 @@ function spawn_ped_v2(pid, pedhash, attack)
 end
 
 
-function spawn_veh(pid, vehhash, offdist, mod, modvalue, pos)
+function spawn_veh(pid, vehhash, offdist, mod, modvalue, Posoff)
 	local hash = vehhash
 	local pid = pid
+	local offset = v3()
+	local OffSet = offdist
 	
-	if not pos == nil then
-	offset = pos
-	goto nextstep
-	end
-	pos = player.get_player_coords(pid)
-	
-	print(string.format("%s, %s, %s", pos.x, pos.y, pos.z))
-	heading = player.get_player_heading(pid)
-	
+	if not Posoff then
+	local pos = player.get_player_coords(pid)
+	local heading = player.get_player_heading(pid)	
 	heading = math.rad((heading - 180) * -1)
 	offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
+	else
+	offset = offdist
+	end
 	
-	::nextstep::
+
 	streaming.request_model(hash)
 	while not streaming.has_model_loaded(hash) do
 		
@@ -3784,6 +3780,7 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue, pos)
 	
 	network.request_control_of_entity(escortveh[y])
 	streaming.set_model_as_no_longer_needed(hash)
+	
 	
 end
 
@@ -5269,6 +5266,59 @@ menu.add_feature("Any Friends Online?", "action", globalFeatures.lobby, function
 	end
 end)
 
+--TODO: Orbitor Functions
+local EntityHash = {}
+local MainEntityHash
+local Thread2Id = {}
+local Degree = 0
+local orbit_pid
+
+function Orbit2(Distance)
+	local Mainhash = gameplay.get_hash_key("prop_dummy_light")
+	local Hash = 2906806882
+	
+	while not streaming.has_model_loaded(Mainhash) do
+		streaming.request_model(Mainhash)
+		system.wait(1)
+	end
+	while not streaming.has_model_loaded(Hash) do
+		streaming.request_model(Hash)
+		system.wait(1)
+	end
+
+	local RootPos = player.get_player_coords(orbit_pid)
+	RootPos.z = RootPos.z + 2.500
+--	MainEntityHash = object.create_object(Mainhash, RootPos + Distance, true, false)
+	EntityHash[#EntityHash + 1] = object.create_object(Hash, RootPos + Distance, true, false)
+	local i = #EntityHash
+	EntityHash[#EntityHash + 1] = object.create_object(Hash, RootPos + Distance, true, false)
+	local h = #EntityHash
+	
+	entity.set_entity_gravity(EntityHash[#EntityHash], 0)
+	entity.freeze_entity(EntityHash[#EntityHash], false)
+	while true do
+		Degree = Degree + 3.75
+		if Degree > 360 then Degree = 0 end
+		local rad = math.rad(Degree)
+		RootPos = player.get_player_coords(orbit_pid)
+		local x = Distance*math.cos(rad) + RootPos.x
+		local y = Distance*math.sin(rad) + RootPos.y
+		local zz = Distance*math.sin(rad) + RootPos.z
+		
+		entity.set_entity_coords_no_offset(EntityHash[i], v3(x + 1.0, y + 1.0, RootPos.z + 0.5))
+		entity.set_entity_rotation(EntityHash[i], v3(x, y, zz))
+
+		entity.set_entity_coords_no_offset(EntityHash[h], v3(x, y, RootPos.z))
+		entity.set_entity_rotation(EntityHash[h], v3(x, y, zz))
+
+
+		
+		system.wait(1)
+	end
+end
+
+
+
 --TODO: Player list
 function localplayerlist()
 	
@@ -6060,6 +6110,28 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 
 		features["LightPOSway"].feat.on = true
 		end),  type = "action"}
+
+	
+	features["RotatingLights"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
+	
+	if Thread2Id[#Thread2Id] then
+		menu.delete_thread(Thread2Id[#Thread2Id])
+		Thread2Id[#Thread2Id] = nil
+	end
+	if EntityHash[#EntityHash] then
+		entity.delete_entity(EntityHash[#EntityHash])
+		EntityHash[#EntityHash] = nil
+	end
+	if feat.on then
+	orbit_pid = pid
+		Thread2Id[#Thread2Id + 1] = menu.create_thread(Orbit2, feat.value_i)
+	end
+end), type = "toggle", callback = function()
+	end}
+features["RotatingLights"].feat.min_i = 1
+features["RotatingLights"].feat.max_i = 20
+features["RotatingLights"].feat.mod_i = 1
+features["RotatingLights"].feat.value_i = 6
 	
 	features["scramdeer"] = {feat = menu.add_feature("scramjet Deer", "action", featureVars.tr.id, function(feat)
 	
@@ -6644,9 +6716,9 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		mod = 10
 		modvalue = -1
 			local pped = player.get_player_ped(pid)
-			spawn_ped(pid, 0x6E42FD26, nil, true, pos)
+			spawn_ped(pid, 0x6E42FD26, pos, true, true)
 			system.wait(100)
-			spawn_veh(pid, vehhash, nil, mod, modvalue, pos)
+			spawn_veh(pid, vehhash, pos, mod, modvalue, true)
 			local p = #escort
 			local y = #escortveh
 	
@@ -7030,7 +7102,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -7067,7 +7139,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -7106,7 +7178,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -7139,7 +7211,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -7173,7 +7245,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick3_Type1"] = {feat = menu.add_feature("Kick Data 3 Type 1", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -7206,7 +7278,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick3_Type2"] = {feat = menu.add_feature("Kick Data 3 Type 2", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
 			
@@ -7240,7 +7312,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["Kick3_Type3"] = {feat = menu.add_feature("Kick Data 3 Type 3", "value_i", featureVars.k.id, function(feat)
 		if feat.on then
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 
 			local i = feat.value_i
 			
@@ -7267,7 +7339,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	features["Kick3_Type3"].feat.on = false
 	
 	features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
 
@@ -7280,7 +7352,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	
 	features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck", "action", featureVars.k.id, function(feat)
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)			
 			local name = tostring(player.get_player_name(pid))
 			ScriptTR(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
@@ -7294,7 +7366,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["SE-kick"] = {feat = menu.add_feature("SE Kick", "action", featureVars.k.id, function(feat)
 
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)
 			ScriptTR(0xB0886E20, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
 			ScriptTR(0xB0886E20, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
@@ -7310,7 +7382,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		
 	features["SPE-kick"] = {feat = menu.add_feature("SPECIAL KICK", "action", featureVars.k.id, function(feat)
 
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)
 			ScriptTR(0xF5CB92DB, pid, {0, 0, 46190868, 0, 2})
 			ScriptTR(0xF5CB92DB, pid, {46190868, 0, 46190868, 46190868, 2})
@@ -7323,7 +7395,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			
 	features["SPE-kick"] = {feat = menu.add_feature("Script Event Crash", "action", featureVars.k.id, function(feat)
 
-			player.unset_player_as_modder(pid, -1)
+			--player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)
 			ScriptTR(0xc5bc4c4b, pid, {-72614, 63007, 59027, -12012, -26996, 33399})
 
