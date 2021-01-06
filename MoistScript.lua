@@ -3628,18 +3628,22 @@ function spawn_ped(pid, pedhash, offdist, attack, pos)
 	local hash = pedhash
 	plygrp =  player.get_player_group(pid)
 	local pedp = player.get_player_ped(pid)
-	if pos == nil then
-		
-	local pos = player.get_player_coords(pid)
+	if not pos == nil then
+	offset = pos
+	goto nextstep
+	end
+
+	pos = player.get_player_coords(pid)
 	
-	local headtype = math.random(0, 2)
-	print(string.format("%s, %s, %s", pos.x, pos.y, pos.z))
-	local heading = player.get_player_heading(pid)
+
+	heading = player.get_player_heading(pid)
 	
 	heading = math.rad((heading - 180) * -1)
 	offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
-	else
-	offset = pos
+	
+	
+	::nextstep::
+	local headtype = math.random(0, 2)
 	
 	streaming.request_model(hash)
 	while not streaming.has_model_loaded(hash) do
@@ -3678,7 +3682,6 @@ function spawn_ped(pid, pedhash, offdist, attack, pos)
 		else
 	end
 	streaming.set_model_as_no_longer_needed(hash)
-	end
 end
 
 function spawn_ped_v2(pid, pedhash, attack)
@@ -5042,7 +5045,7 @@ function load_spawn_options()
 			
 			local pped = player.get_player_ped(pid)
 			
-			spawn_ped(pid, model, -15, true)
+			spawn_ped(pid, model, -15, true, nil)
 			
 			system.wait(100)
 			local i = #escort
@@ -5067,7 +5070,7 @@ function load_spawn_options()
 			
 			local pped = player.get_player_ped(pid)
 			
-			spawn_ped(pid, model, 5, false)
+			spawn_ped(pid, model, 5, false, nil)
 			
 			system.wait(100)
 			local i = #escort
@@ -5105,7 +5108,7 @@ function load_spawn_options()
 	
 	for i = 1, #playerFeat3 do
 		menu.add_player_feature("Spawn as Escort & Task", "action", playerFeat3[i], function(feat, pid)
-			spawn_ped(pid, model, -10, false)
+			spawn_ped(pid, model, -10, false, nil)
 			local groupIDs = {}
 			local i = #groupIDs + 1
 			groupIDs[i] = ped.create_group()
@@ -5126,53 +5129,53 @@ function load_spawn_options()
 			ai.task_vehicle_follow(escort[p], escortveh[y], pped, 250.00, 262144, 25)
 			
 			if vehhash == 0x2189D250 then
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 0)
 			end
 			if vehhash == 0xF92AEC4D then
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 3)
 			end
 			if vehhash == 0xA09E15FD then
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 1)
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 2)
 			end
 			if vehhash == 0x5BFA5C4B then
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 1)
 				
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 2)
 			end
 			if vehhash == 0x9114EADA then
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 7)
 			end
 			if vehhash == 0x8D4B7A8A then
-				spawn_ped(pid, model, 10, false)
+				spawn_ped(pid, model, 10, false, nil)
 				local x = #escort
 				ped.set_ped_as_group_member(escort[x], groupIDs[i])
 				ped.set_ped_never_leaves_group(escort[x], true)
@@ -5185,7 +5188,7 @@ function load_spawn_options()
 	for i = 1, #playerFeat3 do
 		menu.add_player_feature("Spawn as Attacker & Task", "action", playerFeat3[i], function(feat, pid)
 			local pped = player.get_player_ped(pid)
-			spawn_ped(pid, model, 10, true)
+			spawn_ped(pid, model, 10, true, nil)
 			system.wait(100)
 			spawn_veh(pid, vehhash, -10, mod, modvalue)
 			local p = #escort
@@ -5195,45 +5198,45 @@ function load_spawn_options()
 			ai.task_combat_ped(escort[p], pped, 0, 16)
 			
 			if vehhash == 0x2189D250 then
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 0)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
 			end
 			if vehhash == 0xF92AEC4D then
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 3)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
 			end
 			if vehhash == 0xA09E15FD then
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 1)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 2)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
 			end
 			if vehhash == 0x5BFA5C4B then
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 1)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 2)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
 			end
 			if vehhash == 0x9114EADA then
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 7)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
 			end
 			if vehhash == 0x8D4B7A8A then
-				spawn_ped(pid, model, 10, true)
+				spawn_ped(pid, model, 10, true, nil)
 				local x = #escort
 				ped.set_ped_into_vehicle(escort[x], escortveh[y], 7)
 				ai.task_combat_ped(escort[x], pped, 0, 16)
