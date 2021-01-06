@@ -238,6 +238,8 @@ local RemoveBlacklistFeature
 
 --TODO: Function Arrays
 alkonost = {}
+kosatka = {}
+
 
 --TODO: Function Localisation
 
@@ -6788,6 +6790,179 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		for i = 1, #alkonost do
 		entity.set_entity_as_no_longer_needed(alkonost[i])
 		entity.delete_entity(alkonost[i])
+		end
+		
+	return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+
+		--TODO: kosatkalag
+
+	features["kosatka_lag"] = {feat = menu.add_feature("kosatka AIO Spot Lag", "action_value_i", featureVars.g.id, function(feat)
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		local hash = 1336872304
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value_i do
+		kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
+		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], kosatka[#kosatka], 0, pos, pos, true, true, false, 0, false)
+		--entity.set_entity_as_no_longer_needed(kosatka[#kosatka])
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["kosatka_lag"].feat.min_i = 1	
+	features["kosatka_lag"].feat.max_i = 100
+	features["kosatka_lag"].feat.value_i = 15
+
+	features["kosatka_lag"] = {feat = menu.add_feature("kosatka V1 POS Lag", "action_value_i", featureVars.g.id, function(feat)
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		local hash = 1336872304
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value_i do
+			pos.y = pos.y + 1.0
+			pos.z = pos.z + 0.5
+		kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
+		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], kosatka[#kosatka], 0, pos, pos, true, true, false, 0, false)
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		-- for a = 1, #kosatka do
+		-- entity.set_entity_as_no_longer_needed(kosatka1[a])
+		-- end
+		
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["kosatka_lag"].feat.min_i = 1	
+	features["kosatka_lag"].feat.max_i = 100
+	features["kosatka_lag"].feat.value_i = 15
+	
+	features["kosatka_lag"] = {feat = menu.add_feature("kosatka V2 OFFSET Lag", "action_value_i", featureVars.g.id, function(feat)
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		local offset = v3(0.0,0.0,0.0)
+		local rot = v3(0.0,0.0,0.0)
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		local hash = 1336872304
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value_i do
+		pos.x = pos.x + 1.0
+		kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
+		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], kosatka[#kosatka], 0, pos, pos, true, true, false, 0, false)
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["kosatka_lag"].feat.min_i = 1	
+	features["kosatka_lag"].feat.max_i = 100
+	features["kosatka_lag"].feat.value_i = 15
+		
+	features["kosatka_crash"] = {feat = menu.add_feature("kosatka Crash Test", "action_value_i", featureVars.g.id, function(feat)
+		local kosatka_main = {}
+		local main
+		local kosatka_kids = {}
+		local pedp = player.get_player_ped(pid)
+		local heading = player.get_player_heading(pid)
+		local pos = v3()
+		local offset = v3(0.0,0.0,0.0)
+		local rot = v3(0.0,0.0,0.0)
+		pos = entity.get_entity_coords(pedp)
+		local i = feat.value_i
+		
+		local hash1 = 0x7B54A9D3
+		streaming.request_model(hash1)
+		while (not streaming.has_model_loaded(hash1)) do
+			system.wait(10)
+		end
+
+		main = vehicle.create_vehicle(hash1, pos, heading, true, false)
+		kosatka_main[#kosatka_main + 1] = vehicle.create_vehicle(hash1, pos, heading, true, false)
+		--vehicle.set_vehicle_can_be_visibly_damaged(kosatka_main[#kosatka_main], false)
+		entity.attach_entity_to_entity(kosatka_main[#kosatka_main], main, 0, offset + 2.0, rot, true, true, false, 2, false)
+		
+		local hash = 1336872304
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		pos.x = pos.x + 1.0
+
+		for y = 1, feat.value_i do
+	
+		kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		kosatka_kids[#kosatka_kids + 1] = kosatka[#kosatka]
+		kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		kosatka_kids[#kosatka_kids + 1] = kosatka[#kosatka]
+		for i = 1, #kosatka_kids do
+		offset.x = offset.x + 0.10
+		offset.y = offset.y + 0.05
+		offset.z = 50
+		rot.x = rot.x + 10.0
+		rot.y = rot.y + 20.0
+		rot.z = rot.z + 12.5
+		entity.set_entity_collision(kosatka_main[#kosatka_main], true, true, false)
+		entity.attach_entity_to_entity(kosatka_kids[i], kosatka_main[#kosatka_main], 0, offset, rot, false, true, false, 0, false)
+		vehicle.set_vehicle_can_be_visibly_damaged(kosatka_kids[i], false)
+		entity.set_entity_collision(kosatka_kids[i], true, true, false)
+		end
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+
+		streaming.set_model_as_no_longer_needed(hash1)
+
+		
+	return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["kosatka_crash"].feat.min_i = 1	
+	features["kosatka_crash"].feat.max_i = 100
+	features["kosatka_crash"].feat.value_i = 15
+		
+	features["kosatka_lagattach"] = {feat = menu.add_feature("Attach all kosatka lag", "toggle", featureVars.g.id, function(feat)
+		if feat.on then
+		local pedp = player.get_player_ped(pid)
+
+		local pos = v3()
+		local offset = v3(0.0,0.0,0.0)
+		local rot = v3(0.0,0.0,0.0)
+		pos = entity.get_entity_coords(pedp)
+
+		for i = 1, #kosatka do
+		entity.attach_entity_to_entity(kosatka[i], pedp, 0, offset, rot, true, true, false, 0, true)
+		end
+		return HANDLER_CONTINUE
+		end
+		for i = 1, #kosatka do
+		entity.set_entity_as_no_longer_needed(kosatka[i])
+		entity.delete_entity(kosatka[i])
 		end
 		
 	return HANDLER_POP
