@@ -2040,24 +2040,7 @@ end
 --TODO: Combat Functions
 globalFeatures.self_ped_combat = menu.add_feature("Combat Functions", "parent", globalFeatures.self_ped).id
 
-menu.add_feature("give self glowstick", "action", globalFeatures.self_ped, function(feat)
-	local pos = v3()
-	local offset = v3()
-	local rot = v3()
-	offset.x = 0.12
-	offset.y = 0.0
-	offset.z = -0.26
-	rot.x = -181.0
-	rot.y = 0.0
-	rot.z = 0.0
-	
-	local pped = player.get_player_ped(player.player_id())
-	local bone = ped.get_ped_bone_index(pped, 18905)
-	spawned_cunts[#spawned_cunts+1] = object.create_object(3324004640, pos, true, false)
-	
-	entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
-	
-end)
+
 
 local damage = 2000
 local dam_multi = menu.add_feature("unfair aim Damage", "autoaction_value_i", globalFeatures.self_ped_combat, function(feat)
@@ -2239,8 +2222,263 @@ end)
 
 aim_strike.on = false 
 
+--TODO: Ragdoll Control
+
+
+function MoistsRagdollControl()
+-- bool SET_PED_TO_RAGDOLL(Ped ped, int time1, int time2, int ragdollType, bool p4, bool p5, bool p6) // 0xAE99FB955581844A 0x83CB5052 b323
+
+-- time1- Time Ped is in ragdoll mode(ms)
+
+-- time2- Unknown time, in milliseconds
+
+-- ragdollType-
+-- 0 : Normal ragdoll
+-- 1 : Falls with stiff legs/body
+-- 2 : Narrow leg stumble(may not fall)
+-- 3 : Wide leg stumble(may not fall)
+
+-- p4, p5, p6- No idea. In R*'s scripts they are usually either "true, true, false" or "false, false, false".
+
+local Ragdoll_Sel = 0
+
+local ragdolltyp = {{"Normal ragdoll", 0},{"Falls with stiff legs/body", 1},{"Narrow leg stumble(may not fall)", 2},{"Wide leg stumble(may not fall)", 3}}
+
+local Ragdoll_Control = menu.add_feature("Moists RagDoll Control", "parent", globalFeatures.self_ped)
+
+
+Ragdoll_set = menu.add_feature("Set Ragdoll Type", "action_value_i", Ragdoll_Control.id, function(feat)
+	
+	Ragdoll_Sel = ragdolltyp[feat.value_i][2]
+
+	ui.notify_above_map("Ragdoll Type Set to: " .. ragdolltyp[feat.value_i][2].."\n("..ragdolltyp[feat.value_i][1]..")", "Moists Ragdoll Control", 140)
+end)
+Ragdoll_set.max_i = #ragdolltyp
+Ragdoll_set.min_i = 1
+Ragdoll_set.value_i = 1
+
+
+
+function Ragdoll0_3(feat)
+	
+	local Number1 = 1900
+	
+	local Number2 = 2000
+	
+	local Number3 = 2000
+	
+	local Number4 = 3000
+	
+	local Number5 = 99999
+	
+	local PlayerP = player.player_id()
+	
+	local pedd = player.get_player_ped(PlayerP)
+	ped.set_ped_to_ragdoll(pedd, Number1, Number5, 0)
+	ped.set_ped_to_ragdoll(pedd, Number5, Number5, Ragdoll_Sel)
+	entity.apply_force_to_entity(pedd, 1, 12, 20, 10.5, 31, 12.1, 10.3, true, true)	
+end
+
+function RagdollButton(feat)
+	-- while(feat.on)
+	-- do
+	
+	local Number1 = 1900
+	
+	local Number2 = 2000
+	
+	local Number3 = 2000
+	
+	local Number4 = 3000
+	
+	local PlayerP = player.player_id()
+	
+	local pedd = player.get_player_ped(PlayerP)
+	-- if ped.can_ped_ragdoll(pedd) ==false then
+	-- ped.set_ped_can_ragdoll(pedd, true)
+	-- else
+	entity.apply_force_to_entity(pedd, 4, 10.0, 0.0, 10.0, 3.0, 0.0, 10.3, true, true)		
+	ped.set_ped_to_ragdoll(pedd, Number1, Number2, 0)
+	entity.apply_force_to_entity(pedd, 4, 2,0, 0.8, 3, 2.1, 10.3, false, true)	
+	ped.set_ped_to_ragdoll(pedd, Number3, Number4, Ragdoll_Sel)
+	-- end
+	return HANDLER_POP
+end
+
+function RagdollButtontoggle(feat)
+	while(feat.on)
+	do
+		
+		local Number1 = 1900
+		
+		local Number2 = 2000
+		
+		local Number3 = 2000
+		
+		local Number4 = 3000
+		
+		local PlayerP = player.player_id()
+		
+		local pedd = player.get_player_ped(PlayerP)
+		-- if ped.can_ped_ragdoll(pedd) == false then
+		-- ped.set_ped_can_ragdoll(pedd, true)
+		-- else
+		ped.set_ped_to_ragdoll(pedd, Number1, Number2, 3)
+		entity.apply_force_to_entity(pedd, 5, 2, 2, 5.8, 3, 2.1, 10.3, true, true)	
+		ped.set_ped_to_ragdoll(pedd, Number3, Number4, Ragdoll_Sel)
+		-- end
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end
+
+function Ragdolltoggle(feat)
+	while(feat.on)
+	do
+		
+		local Number1 = 1900
+		
+		local Number2 = 2000
+		
+		local Number3 = 2000
+		
+		local Number4 = 3000
+		
+		local Number5 = 99999
+		
+		local PlayerP = player.player_id()
+		
+		local pedd = player.get_player_ped(PlayerP)
+		-- if ped.can_ped_ragdoll(pedd) == false then
+		-- ped.set_ped_can_ragdoll(pedd, true)
+		-- else
+		ped.set_ped_to_ragdoll(pedd, Number1, Number2, Ragdoll_Sel)
+		system.wait(100)
+		entity.apply_force_to_entity(pedd, 1, 2,0, 0.8, 3, 2.1, 10.3, true, false)
+		system.wait(100)
+		ped.set_ped_to_ragdoll(pedd, Number3, Number4, Ragdoll_Sel)
+		system.wait(100)
+		entity.apply_force_to_entity(pedd, 1, 2,0, 0.8, 3, 2.1, 10.3, true, false)
+		system.wait(100)
+		ped.set_ped_to_ragdoll(pedd, Number4, Number5, Ragdoll_Sel)
+		system.wait(100)
+		-- end
+		return HANDLER_CONTINUE
+	end	
+	return HANDLER_POP
+end
+
+function Ragdolltoggle1(feat)
+	while(feat.on)
+	do
+		
+		local Number1 = 1900
+		
+		local Number2 = 2000
+		
+		local Number3 = 2000
+		
+		local Number4 = 3000
+		
+		local Number5 = 99999
+		
+		local PlayerP = player.player_id()
+		
+		local pedd = player.get_player_ped(PlayerP)
+		-- if ped.can_ped_ragdoll(pedd) == false then
+		-- ped.set_ped_can_ragdoll(pedd, true)
+		-- else
+		ped.set_ped_to_ragdoll(pedd, Number1, Number2, Ragdoll_Sel)
+		--system.wait(100)
+		--entity.apply_force_to_entity(pedd, 4, 2,0, 0.8, 3, 2.1, 10.3, true, false)
+		--system.wait(100)
+		ped.set_ped_to_ragdoll(pedd, Number3, Number4, Ragdoll_Sel)
+		--system.wait(100)
+		--entity.apply_force_to_entity(pedd, 4, 2,0, 0.8, 3, 2.1, 10.3, true, false)
+		--system.wait(100)
+		ped.set_ped_to_ragdoll(pedd, Number4, Number5, Ragdoll_Sel)
+		--system.wait(100)
+		-- end
+		return HANDLER_CONTINUE
+	end	
+	return HANDLER_POP
+end
+
+
+ragdoll_key = menu.add_feature("Ragdoll HotKey", "toggle", Ragdoll_Control.id, function(feat)
+	if feat.on then
+		
+		local key = MenuKey()
+		key:push_str("LCONTROL")
+		key:push_str("x")
+		if key:is_down() then
+			rag_self.on = not rag_self.on
+			ui.notify_above_map(string.format("Switching %s\n%s Ragdoll on your ped", rag_self.on and "ON" or "OFF", rag_self.on and "Setting" or "Ending"), "Moists Ragdoll Control", 140)
+			system.wait(1200)
+		end
+	end
+	return HANDLER_CONTINUE
+end)
+ragdoll_key.on = true 
+
+
+
+local set_rag_self = menu.add_feature("Set Self to Ragdoll", "action", Ragdoll_Control.id, RagdollButton)
+
+local tw2rag_self = menu.add_feature("Set Ragdoll", "toggle", Ragdoll_Control.id, Ragdolltoggle1)
+
+local force_rag_self = menu.add_feature("Set Ragdoll Apply force", "action", Ragdoll_Control.id, Ragdoll0_3)
+
+local twrag_self = menu.add_feature("Twitching Ragdoll", "toggle", Ragdoll_Control.id, RagdollButtontoggle)
+
+local tw1rag_self = menu.add_feature("Twitching Ragdoll v1", "toggle", Ragdoll_Control.id, Ragdolltoggle)
+
+rag_self = menu.add_feature("Lifeless Ragdoll(Hotkey Preset)", "toggle", Ragdoll_Control.id, function(feat)
+	if feat.on then
+		
+		local Number1 = 1900
+		
+		local Number2 = 2000
+		
+		local Number3 = 2000
+		
+		local Number4 = 3000
+		
+		local PlayerP = player.player_id()
+		
+		local pedd = player.get_player_ped(PlayerP)
+		ped.set_ped_to_ragdoll(pedd, Number1, Number2, 0)
+		entity.apply_force_to_entity(pedd, 4, 2,0, 0.8, 3, 2.1, 10.3, false, true)	
+		ped.set_ped_to_ragdoll(pedd, Number3, Number4, 4)
+	end
+	return HANDLER_CONTINUE
+end)
+rag_self.on = false
+
+end
+MoistsRagdollControl()
+
 
 -- TODO: player ped options
+
+menu.add_feature("give self glowstick", "action", globalFeatures.self_ped, function(feat)
+	local pos = v3()
+	local offset = v3()
+	local rot = v3()
+	offset.x = 0.12
+	offset.y = 0.0
+	offset.z = -0.26
+	rot.x = -181.0
+	rot.y = 0.0
+	rot.z = 0.0
+	
+	local pped = player.get_player_ped(player.player_id())
+	local bone = ped.get_ped_bone_index(pped, 18905)
+	spawned_cunts[#spawned_cunts+1] = object.create_object(3324004640, pos, true, false)
+	
+	entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
+	
+end)
 
 global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
 	local pped = player.get_player_ped(player.player_id())
@@ -2434,17 +2672,6 @@ local mental_stat = menu.add_feature("Get Mental State", "action", globalFeature
 end)
 
 
-local setup_casinostats = menu.add_feature("Setup Casino Heist Stealth Diamonds", "action", globalFeatures.quick_stats, function(feat)
-	
-	for i = 1, #heiststat_setup do
-	local stat_hash = gameplay.get_hash_key(heiststat_setup[i][1])
-
-	stats.stat_set_int(stat_hash, heiststat_setup[i][2], true)
-	end
-	moist_notify("Stats Setup", "\nFinished")
-end)
-
-
 local thermal = menu.add_feature("Check Thermal/NV State", "action", globalFeatures.self_statcheck, function(feat)
 	local stat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
 
@@ -2550,6 +2777,48 @@ local helmet_visor_set = menu.add_feature("Switch Thermal/NV State", "action", g
 	
 end)
 
+--TODO: Quick Stat Setups
+
+local em_rec = {}
+
+local setup_casinostats = menu.add_feature("Setup Casino Heist Stealth Diamonds", "action", globalFeatures.quick_stats, function(feat)
+	
+	for i = 1, #heiststat_setup do
+	local stat_hash = gameplay.get_hash_key(heiststat_setup[i][1])
+	em_rec[#em_rec + 1] = stats.stat_get_int(stat_hash, 0)
+
+	stats.stat_set_int(stat_hash, heiststat_setup[i][2], true)
+	end
+	moist_notify("Stats Setup", "\nFinished")
+	moist_notify("Now Creating Stat Recovery Script\n", "Saved in scripts folder")
+	Create_stat_RecoveryScript()
+	moist_notify("Stats Recovery Script", "\ndone")
+	
+end)
+
+function write_recScript(text)
+	local file = io.open(rootPath .. "\\scripts\\Moists_statrecovery.lua", "a")
+	io.output(file)
+	io.write(text)
+	io.close()
+end	
+	
+function Create_stat_RecoveryScript()
+	
+	for i = 1, #heiststat_setup do
+	local stat_hash = gameplay.get_hash_key(heiststat_setup[i][1])
+
+	end
+	write_recScript('menu.add_feature("Stat Recovery", "action", 0, function(feat)\n\n')
+	for i = 1, #em_rec do
+	local stat = heiststat_setup[i][2]
+	local statval = em_rec[i]
+	write_recScript('stats.stat_set_int('..stat..', '..statval..', '..'true)\n')
+	end
+	write_recScript('end)\n\n')
+	em_rec = {}
+	
+end
 
 --TODO: local session functions
 
@@ -3353,10 +3622,12 @@ local pedspawns
 
 --TODO: Ped Spawn functions
 
-function spawn_ped(pid, pedhash, offdist, attack)
+function spawn_ped(pid, pedhash, offdist, attack, pos)
 	local hash = pedhash
 	plygrp =  player.get_player_group(pid)
 	local pedp = player.get_player_ped(pid)
+	if pos == nil then
+		
 	local pos = player.get_player_coords(pid)
 	
 	local headtype = math.random(0, 2)
@@ -3365,6 +3636,8 @@ function spawn_ped(pid, pedhash, offdist, attack)
 	
 	heading = math.rad((heading - 180) * -1)
 	offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
+	else
+	offset = pos
 	
 	streaming.request_model(hash)
 	while not streaming.has_model_loaded(hash) do
@@ -3402,7 +3675,8 @@ function spawn_ped(pid, pedhash, offdist, attack)
 		
 		else
 	end
-	streaming.set_model_as_no_longer_needed(hash)	
+	streaming.set_model_as_no_longer_needed(hash)
+	end
 end
 
 function spawn_ped_v2(pid, pedhash, attack)
@@ -3468,10 +3742,11 @@ function spawn_ped_v2(pid, pedhash, attack)
 end
 
 
-function spawn_veh(pid, vehhash, offdist, mod, modvalue)
+function spawn_veh(pid, vehhash, offdist, mod, modvalue, pos)
 	local hash = vehhash
 	local pid = pid
 	
+	if pos == nil then
 	local pos = player.get_player_coords(pid)
 	
 	local headtype = math.random(0, 2)
@@ -3481,9 +3756,8 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue)
 	heading = math.rad((heading - 180) * -1)
 	offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
 	
-	
-	
-	
+	else
+	offset = pos
 	
 	streaming.request_model(hash)
 	while not streaming.has_model_loaded(hash) do
@@ -3506,6 +3780,7 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue)
 	network.request_control_of_entity(escortveh[y])
 	streaming.set_model_as_no_longer_needed(hash)
 	
+end
 end
 
 --TODO: Spawn Cleanups
@@ -6355,6 +6630,51 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 1000.00, hash, blame, true, false, 10000.0)
 		
 	end), type = "action"}
+	
+	features["Send_HunterLester"] = {feat = menu.add_feature("Send Lester Hunt them in savage", "action", featureVars.g.id, function(feat)
+	
+	local pos = v3(449.84680175781,-981.30395507812,43.691665649414)
+	
+		vehhash = veh_list[2][2]
+		mod = 10
+		modvalue = -1
+			local pped = player.get_player_ped(pid)
+			spawn_ped(pid, 0x6E42FD26, nil, true, pos)
+			system.wait(100)
+			spawn_veh(pid, vehhash, nil, mod, modvalue, pos)
+			local p = #escort
+			local y = #escortveh
+	
+	ped.set_ped_into_vehicle(escort[p], escortveh[y], -1)
+	ai.task_combat_ped(escort[p], pped, 0, 16)
+	features["hunter_taskloop"].feat.on = true
+		
+	end), type = "action"}
+	
+	
+	features["hunter_taskloop"] = {feat = menu.add_feature("retask", "toggle", featureVars.g.id, function(feat)
+		if feat.on then
+			local pped = player.get_player_ped(pid)
+		if not entity.is_entity_dead(pped) then return HANDLER_CONTINUE end
+		system.wait(2000)
+			for i = 1, #escort do
+		
+	if #escortveh == nil then
+	goto next
+	end
+	ped.set_ped_into_vehicle(escort[i], escortveh[i], -1)
+	::next::
+	ai.task_combat_ped(escort[i], pped, 0, 16)
+			end
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["hunter_taskloop"].feat.on = false
+	features["hunter_taskloop"].feat.hidden = true
+	
 
 --TODO: World Dump Run Check
 
