@@ -107,7 +107,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 local toggle_setting = {}
 local setting = {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.6"
+setting[toggle_setting[#toggle_setting]] = "2.0.1.7"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.otr_plyr_osd"
@@ -294,7 +294,7 @@ math.randomseed(utils.time_ms())
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", 175)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -304,24 +304,24 @@ function moist_notify(msg1, msg2)
 	msg2 = msg2 or " ~h~~w~~ex_r*~"
 	
 	if notifytype == 1 then
-		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 2 then
-		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 3 then
-		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
 	end
 	if notifytype == 4 then
-		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~b~~h~Public Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.6\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~g~~h~Public Edition", color)
 	end
 	
 end
@@ -428,8 +428,8 @@ local ped_wep = {{"unarmed", 0xA2719263},{"weapon_handcuffs", 0xD04C944D},{"ston
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Half Track","Force to Night Shark AAT","Force to Night Shark AAT","Force to APC Mission","Force to APC Mission","Force to MOC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission1","Force to Opressor Mission2","Force to Opressor Mission2"}
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
-local ssb_wep = {"weapon_sniperrifle","weapon_heavysniper","weapon_remotesniper","weapon_grenadelauncher","vehicle_weapon_player_bullet","vehicle_weapon_player_lazer","weapon_airstrike_rocket","vehicle_weapon_space_rocket","vehicle_weapon_plane_rocket","vehicle_weapon_trailer_missile","vehicle_weapon_akula_missile","vehicle_weapon_akula_barrage","vehicle_weapon_avenger_cannon","weapon_arena_homing_missile"}
-local StrikeGive = {"weapon_airstrike_rocket","vehicle_weapon_trailer_dualaa","vehicle_weapon_avenger_cannon","vehicle_weapon_khanjali_cannon_heavy","weapon_grenadelauncher"}
+local ssb_wep = {"weapon_sniperrifle","weapon_heavysniper","weapon_remotesniper","weapon_grenadelauncher","vehicle_weapon_player_bullet","vehicle_weapon_player_lazer","weapon_airstrike_rocket","vehicle_weapon_space_rocket","vehicle_weapon_plane_rocket","vehicle_weapon_trailer_missile","vehicle_weapon_akula_missile","vehicle_weapon_akula_barrage","vehicle_weapon_avenger_cannon","weapon_arena_homing_missile","weapon_air_defence_gun",}
+local StrikeGive = {"weapon_airstrike_rocket","vehicle_weapon_trailer_dualaa","vehicle_weapon_avenger_cannon","vehicle_weapon_khanjali_cannon_heavy","weapon_grenadelauncher","weapon_air_defence_gun",}
 
 --Event Data Arrays
 
@@ -540,7 +540,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.6", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.7", "parent", 0).id
 
 --TODO: Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
@@ -5268,48 +5268,77 @@ end)
 
 --TODO: Orbitor Functions
 local EntityHash = {}
+EntityHash.pid = {}
+local EntityHash2 = {}
+EntityHash2.pid = {}
 local MainEntityHash
 local Thread2Id = {}
+local Thread1Id = {}
 local Degree = 0
 local orbit_pid
 
 function Orbit2(Distance)
-	local Mainhash = gameplay.get_hash_key("prop_dummy_light")
 	local Hash = 2906806882
 	
-	while not streaming.has_model_loaded(Mainhash) do
-		streaming.request_model(Mainhash)
-		system.wait(1)
-	end
+
 	while not streaming.has_model_loaded(Hash) do
 		streaming.request_model(Hash)
 		system.wait(1)
 	end
 
 	local RootPos = player.get_player_coords(orbit_pid)
-	RootPos.z = RootPos.z + 2.500
---	MainEntityHash = object.create_object(Mainhash, RootPos + Distance, true, false)
-	EntityHash[#EntityHash + 1] = object.create_object(Hash, RootPos + Distance, true, false)
-	local i = #EntityHash
-	EntityHash[#EntityHash + 1] = object.create_object(Hash, RootPos + Distance, true, false)
-	local h = #EntityHash
-	
-	entity.set_entity_gravity(EntityHash[#EntityHash], 0)
-	entity.freeze_entity(EntityHash[#EntityHash], false)
+	RootPos.z = RootPos.z + 3.500
+	EntityHash.pid[#EntityHash.pid + 1] = object.create_object(Hash, RootPos + Distance, true, false)
+
+	entity.set_entity_gravity(EntityHash.pid[#EntityHash.pid], 0)
+	entity.freeze_entity(EntityHash.pid[#EntityHash.pid], false)
 	while true do
 		Degree = Degree + 3.75
-		if Degree > 360 then Degree = 0 end
+		if Degree > 360 then Degree = -360 end
 		local rad = math.rad(Degree)
 		RootPos = player.get_player_coords(orbit_pid)
 		local x = Distance*math.cos(rad) + RootPos.x
 		local y = Distance*math.sin(rad) + RootPos.y
 		local zz = Distance*math.sin(rad) + RootPos.z
 		
-		entity.set_entity_coords_no_offset(EntityHash[i], v3(x + 1.0, y + 1.0, RootPos.z + 0.5))
-		entity.set_entity_rotation(EntityHash[i], v3(x, y, zz))
+		--entity.set_entity_coords_no_offset(EntityHash.pid[#EntityHash.pid], v3(x + 1.0, y + 1.0, RootPos.z + 0.5))
+		entity.set_entity_coords_no_offset(EntityHash.pid[#EntityHash.pid], v3(x, y, RootPos.z))
+		entity.set_entity_rotation(EntityHash.pid[#EntityHash.pid], v3(x, y, zz))
 
-		entity.set_entity_coords_no_offset(EntityHash[h], v3(x, y, RootPos.z))
-		entity.set_entity_rotation(EntityHash[h], v3(x, y, zz))
+
+		
+		system.wait(1)
+	end
+end
+
+
+function Orbit1(Distance)
+	local Hash = 2906806882
+	
+
+	while not streaming.has_model_loaded(Hash) do
+		streaming.request_model(Hash)
+		system.wait(1)
+	end
+
+	local RootPos = player.get_player_coords(orbit_pid)
+	RootPos.z = RootPos.z + 3.500
+	EntityHash2.pid[#EntityHash2.pid + 1] = object.create_object(Hash, RootPos + Distance, true, false)
+
+	entity.set_entity_gravity(EntityHash2.pid[#EntityHash2.pid], 0)
+	entity.freeze_entity(EntityHash2.pid[#EntityHash2.pid], false)
+	while true do
+		Degree = Degree + 3.75
+		if Degree > 360 then Degree = -360 end
+		local rad = math.rad(Degree)
+		RootPos = player.get_player_coords(orbit_pid)
+		local x = Distance*math.cos(rad) + RootPos.x
+		local y = Distance*math.sin(rad) + RootPos.y
+		local zz = Distance*math.sin(rad) + RootPos.z
+		
+		entity.set_entity_coords_no_offset(EntityHash2.pid[#EntityHash2.pid], v3(x + 1.0, y + 1.0, RootPos.z + 0.5))
+		--entity.set_entity_coords_no_offset(EntityHash.pid[#EntityHash.pid], v3(x, y, RootPos.z))
+		entity.set_entity_rotation(EntityHash2.pid[#EntityHash2.pid], v3(x, y, zz))
 
 
 		
@@ -6114,24 +6143,49 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	
 	features["RotatingLights"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
 	
-	if Thread2Id[#Thread2Id] then
-		menu.delete_thread(Thread2Id[#Thread2Id])
-		Thread2Id[#Thread2Id] = nil
+	if Thread2Id[pid + 1] then
+		menu.delete_thread(Thread2Id[pid + 1])
+		Thread2Id[pid + 1] = nil
 	end
-	if EntityHash[#EntityHash] then
-		entity.delete_entity(EntityHash[#EntityHash])
-		EntityHash[#EntityHash] = nil
+	if EntityHash.pid then
+		for i = 1, #EntityHash.pid do
+		entity.delete_entity(EntityHash.pid[i])
+		EntityHash.pid[i] = nil
+		end
 	end
 	if feat.on then
 	orbit_pid = pid
-		Thread2Id[#Thread2Id + 1] = menu.create_thread(Orbit2, feat.value_i)
+		Thread2Id[pid + 1] = menu.create_thread(Orbit2, feat.value_i)
 	end
 end), type = "toggle", callback = function()
 	end}
 features["RotatingLights"].feat.min_i = 1
-features["RotatingLights"].feat.max_i = 20
+features["RotatingLights"].feat.max_i = 10
 features["RotatingLights"].feat.mod_i = 1
-features["RotatingLights"].feat.value_i = 6
+features["RotatingLights"].feat.value_i = 1
+	
+	features["RotatingLights2"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
+	
+	if Thread1Id[pid + 1] then
+		menu.delete_thread(Thread1Id[pid + 1])
+		Thread1Id[pid + 1] = nil
+	end
+	if EntityHash2.pid then
+		for i = 1, #EntityHash2.pid do
+		entity.delete_entity(EntityHash2.pid[i])
+		EntityHash2.pid[i] = nil
+		end
+	end
+	if feat.on then
+	orbit_pid = pid
+		Thread1Id[pid + 1] = menu.create_thread(Orbit1, feat.value_i)
+	end
+end), type = "toggle", callback = function()
+	end}
+features["RotatingLights2"].feat.min_i = 1
+features["RotatingLights2"].feat.max_i = 20
+features["RotatingLights2"].feat.mod_i = 1
+features["RotatingLights2"].feat.value_i = 6
 	
 	features["scramdeer"] = {feat = menu.add_feature("scramjet Deer", "action", featureVars.tr.id, function(feat)
 	
