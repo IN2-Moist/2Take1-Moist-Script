@@ -3648,11 +3648,13 @@ function spawn_ped(pid, pedhash, offdist, attack, Posoff)
 	end
 	local p = #escort + 1
 	print(hash)
-	
+	local blipid
 	escort[p] = ped.create_ped(26, hash, offset, 0, true, false)
 	print(escort[p])		
 	entity.set_entity_god_mode(escort[p], true)
-	ui.add_blip_for_entity(escort[p])
+	blipid = ui.add_blip_for_entity(escort[p])
+	ui.set_blip_as_mission_creator_blip(blipid, true)
+	
 	ped.set_ped_component_variation(escort[p], 0, 1, 0, 0)
 	ped.set_ped_component_variation(escort[p], 2, 0, 0, 0)
 	ped.set_ped_component_variation(escort[p], 3, 1, 0, 0)
@@ -3707,11 +3709,14 @@ function spawn_ped_v2(pid, pedhash, attack)
 	end
 	local p = #escort + 1
 	print(hash)
+	local blipid
 	
 	escort[p] = ped.create_ped(26, hash, pos + offset, 0, true, false)
-	print(escort[p])		
+	print(escort[p])
+	
 	entity.set_entity_god_mode(escort[p], true)
-	ui.add_blip_for_entity(escort[p])
+	blipid = ui.add_blip_for_entity(escort[p])
+	ui.set_blip_as_mission_creator_blip(blipid, true)
 	ped.set_ped_component_variation(escort[p], 0, 1, 0, 0)
 	ped.set_ped_component_variation(escort[p], 2, 0, 0, 0)
 	ped.set_ped_component_variation(escort[p], 3, 1, 0, 0)
@@ -3773,7 +3778,7 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue, Posoff)
 	vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
 	vehicle.get_vehicle_mod(escortveh[y], mod)
 	vehicle.set_vehicle_mod(escortveh[y], mod, modvalue, false)
-	ui.add_blip_for_entity(escortveh[y])
+	--ui.add_blip_for_entity(escortveh[y])
 	vehicle.set_vehicle_on_ground_properly(escortveh[y])
 	entity.set_entity_god_mode(escortveh[y], true)
 	vehicle.set_vehicle_doors_locked(escortveh[y], 5)
