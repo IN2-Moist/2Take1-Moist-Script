@@ -3,7 +3,12 @@
 --Moists Script Loader
 function startup()
 
-ui.notify_above_map("~l~~h~Big Thanks to Sai\nThis Code is based on his\nScript Supervisor", "~w~Special Thanks:", 213)
+ui.notify_above_map("Want Access to the Script Load/unloader?", "~w~Big Thanks to Sai:", 213)
+system.wait(100)
+ui.notify_above_map("Autoload Scripts you save each launch??", "~w~Big Thanks to Sai:", 213)
+system.wait(100)
+ui.notify_above_map("Hold LCTRL + LSHIFT\nHit H", "Unhide the scriptloader!", 213)
+system.wait(100)
 end
 startup()
 
