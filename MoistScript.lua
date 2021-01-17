@@ -107,7 +107,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 local toggle_setting = {}
 local setting = {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.7"
+setting[toggle_setting[#toggle_setting]] = "2.0.1.8"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.otr_plyr_osd"
@@ -294,7 +294,7 @@ math.randomseed(utils.time_ms())
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", 175)
+	ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.8\n~p~~h~Private Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -304,24 +304,24 @@ function moist_notify(msg1, msg2)
 	msg2 = msg2 or " ~h~~w~~ex_r*~"
 	
 	if notifytype == 1 then
-		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.8\n~p~~h~Private Edition", color)
 	end
 	if notifytype == 2 then
-		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.8\n~p~~h~Private Edition", color)
 	end
 	
 	if notifytype == 3 then
-		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.8\n~p~~h~Private Edition", color)
 	end
 	if notifytype == 4 then
-		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~l~~h~Public Edition", color)
+		ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.8\n~p~~h~Private Edition", color)
 	end
 	
 	if notifytype == 5 then
-		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~b~~h~Public Edition", color)
+		ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.8\n~b~~h~Private Edition", color)
 	end
 	if notifytype == 6 then
-		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.7\n~g~~h~Public Edition", color)
+		ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.8\n~g~~h~Private Edition", color)
 	end
 	
 end
@@ -540,7 +540,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.7", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.8", "parent", 0).id
 
 --TODO: Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
@@ -2221,8 +2221,47 @@ local aim_strike = menu.add_feature("Air strike aim entity (D pad R)", "toggle",
 	end
 	return HANDLER_POP
 end) 
-
 aim_strike.on = false 
+
+--TODO: Countermeasure Hotkey
+
+local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalFeatures.self_veh, function(feat)
+	if feat.on then
+		
+		local key = MenuKey()
+		key:push_str("LCONTROL")
+	--key:push_str("RCONTROL")
+		if key:is_down() then
+
+			
+			local pedd = player.get_player_ped(player.player_id())
+			
+			local pos = v3()
+			pos = entity.get_entity_coords(pedd)
+			
+			local posz
+			posz, pos.z = gameplay.get_ground_z(pos)
+			
+			local offset = v3()
+			offset = pos
+			offset.z = offset.z + 150
+			
+			local speed = feat.value_i
+			
+			local hash = gameplay.get_hash_key("WEAPON_FLAREGUN")
+			gameplay.shoot_single_bullet_between_coords(offset, pos, 10000.00, hash, pedd, false, true, speed)
+			system.wait(10)
+
+		end
+	end
+	return HANDLER_CONTINUE
+end)
+Counter_key.on = true 
+Counter_key.max_i = 10000
+Counter_key.min_i = 20
+Counter_key.value_i = 1550
+Counter_key.mod_i = 75
+
 
 --TODO: Ragdoll Control
 
@@ -5993,7 +6032,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	end}
 	features["Teleport_God-mode_Death_2"].feat.on = false
 	
-	features["sound_troll"] = {feat = menu.add_feature("Annoy With Air Drop Sounds", "action", featureVars.tr.id, function(feat)
+	features["sound_troll1"] = {feat = menu.add_feature("Annoy With Air Drop Sounds", "action", featureVars.tr.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6001,22 +6040,9 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			local plyped = player.get_player_ped(pid)
 			audio.play_sound_from_entity(-1, "Air_Drop_Package", plyped, "DLC_SM_Generic_Mission_Sounds", true)
 		end), type = "action"}
-	features["sound_troll"].feat.threaded = false
-			
-	-- features["sound_troll"] = {feat = menu.add_feature("Annoy With Event MsgPurple Sounds", "action", featureVars.tr.id, function(feat)
-			
-			-- local pos = v3()
-			-- pos = entity.get_entity_coords(player.get_player_ped(pid))
-			
-			-- local plyped = player.get_player_ped(pid)
-		-- --	audio.play_sound_from_entity(-1, "Air_Drop_Package", plyped, "DLC_SM_Generic_Mission_Sounds", true)
+	features["sound_troll1"].feat.threaded = false
 
-				-- audio.play_sound_frontend( -1, "Event_Message_Purple", "GTAO_FM_Events_Soundset", false)
-				
-		-- end), type = "action"}
-	-- features["sound_troll"].feat.threaded = false
-		
-	features["sound_troll"] = {feat = menu.add_feature("Annoy With Countdown sound", "action", featureVars.tr.id, function(feat)
+	features["sound_troll2"] = {feat = menu.add_feature("Annoy With Countdown sound", "action", featureVars.tr.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6026,9 +6052,9 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			audio.play_sound_from_entity(-1, "Explosion_Countdown", plyped, "GTAO_FM_Events_Soundset", true)
 
 		end), type = "action"}
-	features["sound_troll"].feat.threaded = false
+	features["sound_troll2"].feat.threaded = false
 		
-	features["sound_troll"] = {feat = menu.add_feature("Annoy With Yacht Horn Sound", "action", featureVars.tr.id, function(feat)
+	features["sound_troll3"] = {feat = menu.add_feature("Annoy With Yacht Horn Sound", "action", featureVars.tr.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6040,7 +6066,32 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 			audio.play_sound_from_coord(-1, "HORN", pos, "DLC_Apt_Yacht_Ambient_Soundset", true, 1000000, false)
 
 		end), type = "action"}
-	features["sound_troll"].feat.threaded = false
+	features["sound_troll3"].feat.threaded = false
+			
+	features["sound_troll4"] = {feat = menu.add_feature("Annoy With Chaff Sound", "action", featureVars.tr.id, function(feat)
+			
+			local pos = v3()
+			pos = entity.get_entity_coords(player.get_player_ped(pid))
+			
+			local plyped = player.get_player_ped(pid)
+
+			audio.play_sound_from_entity(-1, "chaff_released", plyped, "DLC_SM_Countermeasures_Sounds", true)
+
+		end), type = "action"}
+	features["sound_troll4"].feat.threaded = false
+			
+	features["sound_troll5"] = {feat = menu.add_feature("Annoy With Flare sound", "action", featureVars.tr.id, function(feat)
+			
+			local pos = v3()
+			pos = entity.get_entity_coords(player.get_player_ped(pid))
+			
+			local plyped = player.get_player_ped(pid)
+
+			audio.play_sound_from_entity(-1, "flares_released", plyped, "DLC_SM_Countermeasures_Sounds", true)
+
+
+		end), type = "action"}
+	features["sound_troll5"].feat.threaded = false
 	
 	local spawned_cunt1 = {}
 	local spawned_cunt2 = {}
@@ -7536,7 +7587,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						tags[#tags + 1] = "H"
 						if SessionHost ~= pid then
 							SessionHost = pid
-							notify_above_map("The session host is now " .. (isYou and " you " or name) .. "  ")
+							moist_notify("The session host is now:\n", (isYou and " you " or name) .. "  ")
 							debug_out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
 						end
 					end
@@ -7544,7 +7595,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
 						tags[#tags + 1] = "S"
 						if ScriptHost ~= pid then
 							ScriptHost = pid
-							notify_above_map("The script host is now " .. (isYou and " you " or name) .. "  ")
+							moist_notify("The script host is now:\n", (isYou and " you " or name) .. "  ")
 							debug_out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
 						end
 					end
