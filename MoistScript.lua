@@ -168,6 +168,8 @@ toggle_setting[#toggle_setting+1] = "osd_My_speed1"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "osd_My_speed2"
 setting[toggle_setting[#toggle_setting]] = true
+toggle_setting[#toggle_setting+1] = "NetEvent_Protex"
+setting[toggle_setting[#toggle_setting]] = true
 
 function saveSettings()
 	
@@ -1188,6 +1190,7 @@ local hookID2
 local hookID3
 local hookID4
 local hookID5
+local hookID05
 local hookID6
 local script_hook = 09
 
@@ -1262,6 +1265,16 @@ function netcheck5()
 		hookID5 = hook.register_net_event_hook(neteventHook5)
 		else
 		hook.remove_net_event_hook(hookID5)
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end
+
+function netcheck05()
+	if NetEvent_Protex.on then
+		hookID05 = hook.register_net_event_hook(neteventHook5)
+		else
+		hook.remove_net_event_hook(hookID05)
 		return HANDLER_CONTINUE
 	end
 	return HANDLER_POP
@@ -1373,7 +1386,7 @@ script_event_hook = function(source, target, params, count)
 	if k == 1 then
 
 	t = string.format("%x", v)
-	c = tostring("  0x"..t)
+	c = tostring("0x"..t)
 	p = string.format(v .."	" .. c)
 		if scriptevent_log.on then
 	hashlogger("\n" .. c)
@@ -1478,11 +1491,12 @@ function neteventHook4(source, target, id)
 		return false
 	end
 end
-
+--TODO: netprotex
 function neteventHook5(source, target, id)
 	local player_source = player.get_player_name(source)
 	if id == 43 then
 		modder_detected(source, 43)
+		toggle_kicks(source)
 		else
 		return false
 	end
@@ -1795,6 +1809,7 @@ LoadBlacklist()
 
 
 neteventlogger = menu.add_feature("Netevent Hook", "toggle", test.id, function(feat)
+	setting["NetEventHook"] = true
 		netcheck()
 		netcheck1()
 		netcheck2()
@@ -1805,10 +1820,30 @@ neteventlogger = menu.add_feature("Netevent Hook", "toggle", test.id, function(f
 			netevent_timer.on = true
 			return HANDLER_CONTINUE
 		end
+		setting["NetEventHook"] = false
 		netevent_timer.on = false
+		
 		return HANDLER_POP
 end)		
 neteventlogger.on = setting["NetEventHook"]
+
+--TODO: NetEvent Protex test
+NetEvent_Protex = menu.add_feature("NetEvent_Protex test", "toggle", test.id, function(feat)
+	setting["NetEvent_Protex"] = true
+
+		if feat.on then
+		netcheck05()
+
+			return HANDLER_CONTINUE
+		end
+		setting["NetEvent_Protex"] = false
+
+		
+		return HANDLER_POP
+end)		
+NetEvent_Protex.on = setting["NetEvent_Protex"]
+
+
 	
 netevent_timer = menu.add_feature("Weather Timer", "toggle", test.id, function(feat)
 		
@@ -5450,6 +5485,7 @@ for pid=0,31 do
 	featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
 	featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
 	featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
+	featureVars.str = menu.add_feature("Sound Functions", "parent", featureVars.tr.id)
 	featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id)
 	featureVars.gr = menu.add_feature("Lester Ramjet", "parent", featureVars.g.id)
 	featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
@@ -6032,7 +6068,9 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 	end}
 	features["Teleport_God-mode_Death_2"].feat.on = false
 	
-	features["sound_troll1"] = {feat = menu.add_feature("Annoy With Air Drop Sounds", "action", featureVars.tr.id, function(feat)
+	--TODO: Sound Troll
+	
+	features["sound_troll1"] = {feat = menu.add_feature("Annoy With Air Drop Sounds", "action", featureVars.str.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6042,7 +6080,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		end), type = "action"}
 	features["sound_troll1"].feat.threaded = false
 
-	features["sound_troll2"] = {feat = menu.add_feature("Annoy With Countdown sound", "action", featureVars.tr.id, function(feat)
+	features["sound_troll2"] = {feat = menu.add_feature("Annoy With Countdown sound", "action", featureVars.str.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6054,7 +6092,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		end), type = "action"}
 	features["sound_troll2"].feat.threaded = false
 		
-	features["sound_troll3"] = {feat = menu.add_feature("Annoy With Yacht Horn Sound", "action", featureVars.tr.id, function(feat)
+	features["sound_troll3"] = {feat = menu.add_feature("Annoy With Yacht Horn Sound", "action", featureVars.str.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6068,7 +6106,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		end), type = "action"}
 	features["sound_troll3"].feat.threaded = false
 			
-	features["sound_troll4"] = {feat = menu.add_feature("Annoy With Chaff Sound", "action", featureVars.tr.id, function(feat)
+	features["sound_troll4"] = {feat = menu.add_feature("Annoy With Chaff Sound", "action", featureVars.str.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6080,7 +6118,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 		end), type = "action"}
 	features["sound_troll4"].feat.threaded = false
 			
-	features["sound_troll5"] = {feat = menu.add_feature("Annoy With Flare sound", "action", featureVars.tr.id, function(feat)
+	features["sound_troll5"] = {feat = menu.add_feature("Annoy With Flare sound", "action", featureVars.str.id, function(feat)
 			
 			local pos = v3()
 			pos = entity.get_entity_coords(player.get_player_ped(pid))
@@ -6092,6 +6130,74 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 
 		end), type = "action"}
 	features["sound_troll5"].feat.threaded = false
+	
+	
+	
+	features["sound_troll6"] = {feat = menu.add_feature("Annoy With Remote KeyFob Sound", "action", featureVars.str.id, function(feat)
+	
+	
+	local plyped = player.get_player_ped(pid)
+
+	
+		audio.play_sound_from_entity(-1, "Remote_Control_Fob", plyped, "PI_Menu_Sounds", true)
+	
+	
+	end), type = "action"}
+	features["sound_troll6"].feat.threaded = false		
+
+	
+	features["sound_troll7"] = {feat = menu.add_feature("Annoy With Remote Close Sound", "action", featureVars.str.id, function(feat)
+	
+	
+	local plyped = player.get_player_ped(pid)
+
+
+		audio.play_sound_from_entity(-1, "Remote_Control_Close", plyped, "PI_Menu_Sounds", true)
+	
+	end), type = "action"}
+	features["sound_troll7"].feat.threaded = false		
+
+	
+	features["sound_troll8"] = {feat = menu.add_feature("Annoy With Remote Open Sound", "action", featureVars.str.id, function(feat)
+	
+	
+	local plyped = player.get_player_ped(pid)
+
+
+		audio.play_sound_from_entity(-1, "Remote_Control_Open", plyped, "PI_Menu_Sounds", true)
+	
+	end), type = "action"}
+	features["sound_troll8"].feat.threaded = false		
+
+	features["sound_troll9"] = {feat = menu.add_feature("Annoy With Remote Lights Sound", "action", featureVars.str.id, function(feat)
+	
+	
+	local plyped = player.get_player_ped(pid)
+
+	
+		audio.play_sound_from_entity(-1, "Toggle_Lights", plyped, "PI_Menu_Sounds", true)
+	
+	end), type = "action"}
+	features["sound_troll9"].feat.threaded = false
+	
+
+	features["sound_troll10"] = {feat = menu.add_feature("Annoy With Water Sounds", "action", featureVars.str.id, function(feat)
+	
+	
+	local plyped = player.get_player_ped(pid)
+		
+		audio.play_sound_from_entity(-1, "FallingInWaterSmall", plyped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		audio.play_sound_from_entity(-1, "FallingInWaterMedium", plyped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		audio.play_sound_from_entity(-1, "FallingInWaterHeavy", plyped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		audio.play_sound_from_entity(-1, "DiveInWater", plyped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		
+	
+	end), type = "action"}
+	features["sound_troll10"].feat.threaded = false
 	
 	local spawned_cunt1 = {}
 	local spawned_cunt2 = {}
@@ -7243,7 +7349,7 @@ features["RotatingLights2"].feat.value_i = 6
 	end}
 	features["Kick1_Type1"].feat.max_i = #data
 	features["Kick1_Type1"].feat.min_i = 1
-	features["Kick1_Type1"].feat.value_i = 1
+	features["Kick1_Type1"].feat.value_i = 584
 	features["Kick1_Type1"].feat.mod_i = 100
 	features["Kick1_Type1"].feat.on = false
 	
@@ -7282,7 +7388,7 @@ features["RotatingLights2"].feat.value_i = 6
 	end}
 	features["Kick1_Type2"].feat.max_i = #data
 	features["Kick1_Type2"].feat.min_i = 1
-	features["Kick1_Type2"].feat.value_i = 1
+	features["Kick1_Type2"].feat.value_i = 199
 	features["Kick1_Type2"].feat.mod_i = 99
 	features["Kick1_Type2"].feat.on = false
 	
@@ -7315,7 +7421,7 @@ features["RotatingLights2"].feat.value_i = 6
 	end}
 	features["Kick2_Type1"].feat.max_i = #data2
 	features["Kick2_Type1"].feat.min_i = 1
-	features["Kick2_Type1"].feat.value_i = 1
+	features["Kick2_Type1"].feat.value_i = 397
 	features["Kick2_Type1"].feat.mod_i = 99	
 	features["Kick2_Type1"].feat.on = false
 	
@@ -7349,7 +7455,7 @@ features["RotatingLights2"].feat.value_i = 6
 	end}
 	features["Kick2_Type2"].feat.max_i = #data2
 	features["Kick2_Type2"].feat.min_i = 1
-	features["Kick2_Type2"].feat.value_i = 1
+	features["Kick2_Type2"].feat.value_i = 584
 	features["Kick2_Type2"].feat.mod_i = 99
 	features["Kick2_Type2"].feat.on = false
 	
@@ -7382,7 +7488,7 @@ features["RotatingLights2"].feat.value_i = 6
 	end}
 	features["Kick3_Type1"].feat.max_i = #data3
 	features["Kick3_Type1"].feat.min_i = 1
-	features["Kick3_Type1"].feat.value_i = 1
+	features["Kick3_Type1"].feat.value_i = 485
 	features["Kick3_Type1"].feat.mod_i = 99	
 	features["Kick3_Type1"].feat.on = false
 	
