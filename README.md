@@ -1,4 +1,4 @@
-# 2Take1-Moist-Script (Build 2.0.0.1)
+# 2Take1-Moist-Script (Build 2.0.1.8 : Private Edition)
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
@@ -48,12 +48,12 @@ Seems to work so far without errors
 
 
 The files and folders required are as they should be and should be extracted from the archive as above.
-TODO -
 
-## Script Basic Layout
+# Function Parents Sub Parents & Functions within
 
-### Moists Script
+## Local Script Features
 
+### Moists Script ?.?.?.? (Build Number Version being used)
 ##### Online Players
 ##### Online Session
 ##### Player Functions
@@ -61,60 +61,70 @@ TODO -
 ##### Chat Spam
 ##### Options
 
-## Local Script Features
-
-### Moists Script `version number`
-
-#### Online Player Script Features
-
+### Online Player Script Features
 
 #### Spawn Options 
-
 **`This Section is empty until you turn on the Show & Load SpawnOptions
 in the Main Options Section under Local Script Features!`**
-
-
 ##### Ped Spawns
-
 - Ped List
-
-
 ##### Ped + Weapon / Ped + Vehicle
-
 - Weapon list / Vehicle list
-
-
 ##### Selected Weapon / Vehicle
 
-##### Ped + Weapon Functions
-
+#### Ped + Weapon Functions
 - Send Attacker via Parachute
-
 `Spawns in the air above Player Parachutes down
 to kill the player with selected weapon`
-
 - Spawn Attacker & Task
-
 `Spawns nearby on foot with Weapon & Attacks Player`
-
 - Spawn Support Ped
-
 Can sometimes attack player, but should attack enemy players/peds
 
 #### Ped + Selected Vehicle Options
-
 - Spawn as Escort & Task
-
-Spawns Ped in Selected Vehicle Behind Player & follows,
+`Spawns Ped in Selected Vehicle Behind Player & follows,
 will attack player sometimes if they fire weapons.
-Certain Vehicles have Multiple Peds
+Certain Vehicles have Multiple Peds`
 
 - Spawn as Attacker & Task
-
 `Spawns Ped in Selected Vehicle Behind Player & Attacks,
 will follow player until they are dead.
 Ped's may attack each other if too many
 are spawned and they shoot in each others direction`
+
+#### SMS Spam 
+- SMS Spam Presets (Default Presets & Your Custom Presets)
+ - Russian Spam Presets (Few Default Russian Translated Presets)
+ 
+ #### Tools
+ Save Players Current POS to file (Output is compatible for copy & Paste to your Config for menu use) `C:\Users\IN2Moist\AppData\Roaming\PopstarDevs\2Take1Menu\cfg\tele.cfg`
+  
+#### Bounty Options 
+ Anonymous Bounty (Anonomous (ON) = NPC Bounty (OFF) Bounty = By You)
+ Custom Value `Enter any Value Between 0 & 10,000`
+
+`List Preset Values`
+
+#### Force Player to Mission
+ Force to Severe Weather
+ Force to Half Track
+ Force to Night Shark AAT
+ Force to APC Mission
+ Force to MOC Mission
+ Force to Tampa Mission
+ Force to Opressor Mission1
+ Force to Opressor Mission2
+ 
+ Force Player to Island
+ Copy IP to Clipboard
+ Toggle off Modder Mark
+ Add to blacklist
+ Remove from blacklist
+ Attach dildo in Skeleton root
+ CEO BAN
+ CEO DISMISS
+ CEO TERMINATE
 
 ## Online Session:
 
@@ -129,11 +139,14 @@ are spawned and they shoot in each others direction`
 - Remove blacklist (list of players on the list)
 
 #### Modder Protex Detect
-- Netevent Hook (Experimental NetEvent Modder Detection)
 
-##### Logging Shit
+**Removed** `- Netevent Hook (Experimental NetEvent Modder Detection)`
+
+#### Logging Shit
 - Log in Game Chat
-- Log Netevents to File (Ouput all Received NetEvents to a log file)
+
+**Removed** `- Log Netevents to File (Ouput all Received NetEvents to a log file)`
+
 - Hook Script Events & Log to File (Output and Log Script Events to a log file)
 - Log event hash only (Hash logger)
 								
@@ -205,6 +218,15 @@ preventing them joining again. Does not effect you or friends just all others`
 
 ## Session Troll Functions
 
+ Heart Beat
+ `Timed Explosion like a Beating Heart`
+ 
+ Random Exp
+ `(Explosion Type)`
+ 
+ Exp delay
+ `Delay Between Random Exp`
+
 - set Bounty on Lobby
 
 `10 k Bounty for all including yourself!`
@@ -217,6 +239,7 @@ preventing them joining again. Does not effect you or friends just all others`
 - all Horn
 - all Air Drop
 - all Explosion Countdown
+- all Water Splashes
 - Annoying sound! CANT BE UNDONE! (YOU NEED TO LEAVE THE SESSION TO STOP IT)
 - allBomb Armed (Value Toggle the value is a delay between each loop)  		**Offset Delays for these and play a kinda tune**
 - all Bomb Disarmed (Value Toggle the value is a delay between each loop)	**These combined Delay's offset from the other to Make Music**
@@ -228,6 +251,7 @@ preventing them joining again. Does not effect you or friends just all others`
 - Apply force to world entitys
 - Freeze World Vehicles & Objects
 - Any Friends Online (Friend online & in Muliplayer Check & Notify)
+
 ## Player Functions:
 
 #### Ped Functions
@@ -400,17 +424,7 @@ So unless you want your name over their Death when you detonate it probably not 
 
 `Explodes the Explosive Device you installed in the Previous Function  (Named or Blamed Explosion)`
 
---TODO: update for new Highlight controls
 
-##### Highlight Options
-```
-Turn off all RGB Changers
-White Marker Around Player POS
-Red Marker Above Player POS
-Highlight Player RGB Markers v1
-Highlight Player RGB Markers v2
-Red & White Above: Flash Ground: Fading
-```
 ##### Teleport Options
 
 **Teleport Instructions**
@@ -422,7 +436,6 @@ When not in Range you can try to force it by turning on a
 Teleport toggle then go to Online player and Spectate them until
 you see them next to you then toggle off Spectate. T
 hey should then be next to you.`
-
 
 - Teleport Next2me (old Version)
 
@@ -437,11 +450,117 @@ hey should then be next to you.`
 
 `Teleport's them outside the world boundary limits of the GTA Map`
 
+--TODO: update for new Highlight controls
 
-`CEO 10 k money loop`
+##### Highlight Options
+```
+Turn off all RGB Changers
+White Marker Around Player POS
+Red Marker Above Player POS
+Highlight Player RGB Markers v1
+Highlight Player RGB Markers v2
+Red & White Above: Flash Ground: Fading
+```
+#### Troll Options
+ - Sound Functions
+ `List of Various Sounds`
+ - Update Lights POS(move with Player)
+- Update Lights POS(move with Player)
+- Set Lights around player
+- Rotating Lights
+- Rotating Lights
+- Attach Broken ufo
+`Attaches Broken Smoking UFO on Target`
 
-`Block Passive Mode
-`Unblock Passive Mode
+###### **Experiments**
+- Room Attachment
+**Experimental** `Bullet Proof Glass Attaches around Player (V.1 Object)`
+- Room Attachment v2
+**Experimental** `Bullet Proof Glass Attaches around Player (V.2 Object)`
+``
+
+``
+- Room Attachment v3 `Dark Orb around Player (Cant See in or out)`
+
+- scramjet Deer `Pet Deer Follow Target like a lost puppy (Deer has No Combat ability hates noone) the Deer is esentially Harmless`
+
+#### Griefing Options
+
+#### Lester Ramjet
+- Run Delayed Cleanup?
+`Time Delayed Removal of Scramjets`
+- Lester RamJet Attack Player
+`Value is Spawn Offset From Player: "-" (Negative Values = Behind Player)
+Spawns Lester in a Scramjet Tasks Him to Attack Player: Shoots Missiles @ Target as He Voltic Boosts into them`
+- Lester RamJet Impact Player
+`Value is Spawn Offset From Player: "-" (Negative Values = Behind Player)
+Spawns Lester in a Scramjet Voltic Boosts into Target Scramjet will Explode on any Impact`
+
+- Attach all RamJets offset
+`Value is attach Offset From Attached Bone of Target
+Toggle off Will Delete All` 
+
+- Get last Weapon impact POS
+- Give last Weapon Impact Strike
+- Dump World Pickups on this Cunt!
+ - Dump World onto this Cunt! & Freeze it
+- Block Passive Mode
+- Unblock Passive Mode
+ 
+- Own The Blame For this shit?
+`if the Player gets Killed from these Functions This will Give you the Kill add your name to their death`
+
+- Dildo Illuminate Cunt
+- Dildo Bombs From Ass
+- Airstrike player
+- Snipe for all Directions
+ 
+- Send Lester Hunt them in savage
+`Spawns Lester in a Savage on the Mission Row Police Helipad & Hunts them down & Destroys their ass!`
+
+- Note:
+** Lester Fails to do anything if this is done while target player is in a submarine interior maybe other interiors so ensure player is outside **
+** Spawn one at a time ensure he has left the helipad before doing it again otherwise you will end up with a Heli Cluster Fuck in that area **
+
+**Experimental Note**
+`Lester Might Fuck up and start Falling through the map`
+** **Currently i am testing this out with no collision to prevent lights signs & poles being an issue when Lester is Flying @ Street Level** **
+
+- retask **Hidden Function**
+`Turns on When you Send Lester to hunt Target Player.
+Makes Lester Attack the Player again after Death until Lester is Deleted or Player is No Longer in Session.
+Time Delay set for longest Respawn`
+ 
+
+ 
+- alkonost AIO Spot Lag
+- alkonost V1 POS Lag
+- alkonost V2 OFFSET Lag
+`Value for these are Amount **Be Sure to Keep an eye on your network Entity Pools** Exceeding the max value will Crash your Game`
+
+- Attach all alkonost lag
+`All Spawned Alkonost's Will Be Attached To The Target Player
+Toggle off Will Delete All` 
+
+- kosatka AIO Spot Lag
+- kosatka V1 POS Lag
+- kosatka V2 OFFSET Lag
+`Value for these are Amount **Be Sure to Keep an eye on your network Entity Pools** Exceeding the max value will Crash your Game`
+
+- kosatka Crash Test `Experimenting with this may not crash at all`
+
+- Attach all kosatka lag
+`All Spawned kosatka's Will Be Attached To The Target Player
+Toggle off Will Delete All`   
+  
+#### Info Options
+- Check Players HP Stats & Weapon
+`Notify of Players Health & Armour Values & Currently Held Weapon`
+
+- CEO 10 k money loop
+- Give Long Cop Bribe
+- Block Passive Mode
+- Unblock Passive Mode
 
 
 ### Options 
