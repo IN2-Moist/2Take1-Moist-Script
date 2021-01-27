@@ -4463,6 +4463,7 @@ local RPG_HOTFIRE = menu.add_feature("Rapid RPG Switch", "toggle", globalFeature
     end
     setting["RPG_HOTFIRE"] = false
     return HANDLER_POP
+    end
 end)
 RPG_HOTFIRE.on = setting["RPG_HOTFIRE"]
 
