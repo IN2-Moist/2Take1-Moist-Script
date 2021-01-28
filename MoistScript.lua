@@ -570,7 +570,8 @@ globalFeatures.Spam_Options = menu.add_feature("Spam Options", "parent", globalF
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
-playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.1.8", "parent", 0).id
+playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", playerfeatVars.parent).id
 playerfeatVars.Preset_sms = menu.add_player_feature("SMS Spam Presets", "parent", playerfeatVars.spam_sms).id
 playerfeatVars.Preset_RUS = menu.add_player_feature("Russian Spam Presets", "parent", playerfeatVars.Preset_sms).id
 
@@ -781,9 +782,9 @@ spam_cus_long.min_i = 2
 
 
 --TODO: Online Player Feature Parents
-local Player_Tools = menu.add_player_feature("Tools", "parent", 0).id
-local BountyId = menu.add_player_feature("Bounty Options", "parent", 0).id
-playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", 0).id
+local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
+local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
+playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
 
 menu.add_player_feature("Save Players Current POS to file", "action", Player_Tools, function(feat, pid)
 
@@ -881,7 +882,7 @@ local Show_Spawn_Options = menu.add_feature("Show & Load SpawnOptions", "toggle"
     end
     setting["showSpawns"] = true
     if not spawnoptions_loaded then
-        spawn_parent = menu.add_player_feature("Spawn Options", "parent", 0)
+        spawn_parent = menu.add_player_feature("Spawn Options", "parent", playerfeatVars.parent)
         playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id).id
         load_spawn_options()
         spawnoptions_loaded = true
@@ -898,7 +899,7 @@ local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, fun
 end)
 ip_clip.threaded = false
 
-local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", 0, function(feat, pid)
+local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", playerfeatVars.parent, function(feat, pid)
     while feat.on do
         if player.is_player_modder(pid, -1) == true
         then
@@ -1672,7 +1673,7 @@ blacklist_shit()
 
 --TODO: player Features --Griefing
 
-menu.add_player_feature("Attach dildo in Skeleton root", "action", 0, function(feat, pid)
+menu.add_player_feature("Attach dildo in Skeleton root", "action", playerfeatVars.parent, function(feat, pid)
 
         local pedd = player.get_player_ped(pid)
 
@@ -1682,16 +1683,16 @@ menu.add_player_feature("Attach dildo in Skeleton root", "action", 0, function(f
         entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pedd, 0, pos, pos, true, true, false, 0, false)
 end)
 
-menu.add_player_feature("CEO BAN", "action", 0, function(feat, pid)
+menu.add_player_feature("CEO BAN", "action", playerfeatVars.parent, function(feat, pid)
 
         ScriptTR(0xD3FE818F, pid, {0, 1, 5, 0})
 end)
 
-menu.add_player_feature("CEO DISMISS", "action", 0, function(feat, pid)
+menu.add_player_feature("CEO DISMISS", "action", playerfeatVars.parent, function(feat, pid)
     ScriptTR(0x9DB77399, pid, {0, 1, 5})
 end)
 
-menu.add_player_feature("CEO TERMINATE", "action", 0, function(feat, pid)
+menu.add_player_feature("CEO TERMINATE", "action", playerfeatVars.parent, function(feat, pid)
     ScriptTR(0x9DB77399, pid, {1, 1, 6})
     ScriptTR(0x9DB77399, pid, {0, 1, 6, 0})
 end)
@@ -2086,6 +2087,60 @@ Counter_key.max_i = 10000
 Counter_key.min_i = 20
 Counter_key.value_i = 1550
 Counter_key.mod_i = 75
+
+local plateThreadId = nil
+function ScrollNumberplate(PlateText)
+    local p = player.get_player_ped(player.player_id())
+    local idx = 1
+    while true do
+        local veh = ped.get_vehicle_ped_is_using(p)
+        if entity.is_an_entity(veh) then
+            if not network.has_control_of_entity(veh) then
+                network.request_control_of_entity(veh)
+                system.wait(1000)
+            end
+            if network.has_control_of_entity(veh) then
+                vehicle.set_vehicle_number_plate_text(veh, PlateText:sub(1, idx))
+                idx = idx + 1
+                if idx > #PlateText then idx = 1 end
+            end
+        end
+        system.wait(plateDelay)
+    end
+end
+
+--TODO: Numberplate
+local cus_plate_txt = menu.add_feature("Custom Scrolling plate text", "toggle", globalFeatures.self_veh, function(feat)
+    if feat.off and plateThreadId then
+        menu.delete_thread(plateThreadId)
+        plateThreadId = nil
+        return HANDLER_POP
+    end
+    if feat.on and not plateThreadId then
+        local r, s = input.get("Enter scrolling text", "", 64, 0)
+        if r == 1 then
+            return HANDLER_CONTINUE
+        end
+        if r == 2 then
+            feat.on = false
+            return HANDLER_POP
+        end
+        plateThreadId = menu.create_thread(ScrollNumberPlate, s)
+    end
+end)
+
+local plate_txt = menu.add_feature("SuckMyD plate text", "toggle", globalFeatures.self_veh, function(feat)
+    if feat.off and plateThreadId then
+        menu.delete_thread(plateThreadId)
+        plateThreadId = nil
+        return HANDLER_POP
+    end
+    if feat.on and not plateThreadId then
+    local text = "SUCK MY DICK ! EAT MY CUM ! "
+
+        plateThreadId = menu.create_thread(ScrollNumberPlate, text)
+    end
+end)
 
 
 --TODO: Ragdoll Control
