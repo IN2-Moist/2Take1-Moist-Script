@@ -2088,60 +2088,6 @@ Counter_key.min_i = 20
 Counter_key.value_i = 1550
 Counter_key.mod_i = 75
 
-local plateThreadId = nil
-function ScrollNumberplate(PlateText)
-    local p = player.get_player_ped(player.player_id())
-    local idx = 1
-    while true do
-        local veh = ped.get_vehicle_ped_is_using(p)
-        if entity.is_an_entity(veh) then
-            if not network.has_control_of_entity(veh) then
-                network.request_control_of_entity(veh)
-                system.wait(1000)
-            end
-            if network.has_control_of_entity(veh) then
-                vehicle.set_vehicle_number_plate_text(veh, PlateText:sub(1, idx))
-                idx = idx + 1
-                if idx > #PlateText then idx = 1 end
-            end
-        end
-        system.wait(plateDelay)
-    end
-end
-
---TODO: Numberplate
-local cus_plate_txt = menu.add_feature("Custom Scrolling plate text", "toggle", globalFeatures.self_veh, function(feat)
-    if feat.off and plateThreadId then
-        menu.delete_thread(plateThreadId)
-        plateThreadId = nil
-        return HANDLER_POP
-    end
-    if feat.on and not plateThreadId then
-        local r, s = input.get("Enter scrolling text", "", 64, 0)
-        if r == 1 then
-            return HANDLER_CONTINUE
-        end
-        if r == 2 then
-            feat.on = false
-            return HANDLER_POP
-        end
-        plateThreadId = menu.create_thread(ScrollNumberPlate, s)
-    end
-end)
-
-local plate_txt = menu.add_feature("SuckMyD plate text", "toggle", globalFeatures.self_veh, function(feat)
-    if feat.off and plateThreadId then
-        menu.delete_thread(plateThreadId)
-        plateThreadId = nil
-        return HANDLER_POP
-    end
-    if feat.on and not plateThreadId then
-    local text = "SUCK MY DICK ! EAT MY CUM ! "
-
-        plateThreadId = menu.create_thread(ScrollNumberPlate, text)
-    end
-end)
-
 
 --TODO: Ragdoll Control
 
@@ -5351,7 +5297,7 @@ end
 --TODO: Player list
 
 local PlayerPed
-
+local playerlist = function()
 for pid = 0, 31 do
 local featureVars = {}
 
@@ -7690,6 +7636,8 @@ end), type = "action"}
 playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
 featureVars.f.hidden = true
 end
+end
+playerlist()
 
 function main()
     --Main loop
