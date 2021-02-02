@@ -4585,29 +4585,44 @@ give_weapon()
 --TODO: RPG save-setting
 local wephash
 local RPG_HOTFIRE = menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, function(feat)
-    setting["RPG_HOTFIRE"] = true
-    if feat.on then
-        weapon_hash = {1752584910,2982836145}
-        pped = player.get_player_ped(player.player_id())
 
-        if ped.is_ped_shooting(pped) then
-        if ped.get_current_ped_weapon(pped) == 0xB1CA77B1 or 0xA2719263 then
-            wephash = weapon_hash[2]
-            weapon.give_delayed_weapon_to_ped(pped, wephash, 0, 1)
-         --   system.wait(0)
-            weapon.give_delayed_weapon_to_ped(pped, 0xA2719263, 0, 1)
-          --  system.wait(0)
+        setting["RPG_HOTFIRE"] = true
 
-            wephash = weapon_hash[1]
-            weapon.give_delayed_weapon_to_ped(pped, wephash, 0, 1)
+        if feat.on then
+            
+            ui.show_hud_component_this_frame(14)
+
+            weapon_hash = {1752584910,2982836145}
+            pped = player.get_player_ped(player.player_id())
+
+            if ped.is_ped_shooting(pped) then
+                if ped.get_current_ped_weapon(pped) == 2982836145 then
+
+                    weapon.give_delayed_weapon_to_ped(pped, 1752584910, 0, 1)
+                    -- system.wait(0)
+                    weapon.give_delayed_weapon_to_ped(pped, 2982836145, 0, 1)
+                    -- system.wait(0)
+                    weapon.give_delayed_weapon_to_ped(pped, 1752584910, 0, 1)
+
+
+                elseif ped.get_current_ped_weapon(pped) == 1752584910 then
+
+                    weapon.give_delayed_weapon_to_ped(pped, 2982836145, 0, 1)
+                    --    system.wait(0)
+                    weapon.give_delayed_weapon_to_ped(pped, 1752584910, 0, 1)
+                    -- system.wait(0)
+                    weapon.give_delayed_weapon_to_ped(pped, 2982836145, 0, 1)
+
+
+                end
+            end
+            return HANDLER_CONTINUE
         end
-        return HANDLER_CONTINUE
-    end
-    setting["RPG_HOTFIRE"] = false
-    return HANDLER_POP
-    end
+        setting["RPG_HOTFIRE"] = false
+        return HANDLER_POP
 end)
 RPG_HOTFIRE.on = setting["RPG_HOTFIRE"]
+
 
 --TODO: Markers
 local markID = {}
