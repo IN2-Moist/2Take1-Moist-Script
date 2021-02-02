@@ -1,3 +1,12 @@
+--[[
+ Credits & Thanks to Kektram for help with OTR Code and some code Advice
+ Thanks to haekkzer for his help and advice over time i was a tester for the menu
+ Thanks to Sai for his help and code for the script loader
+ 
+ Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
+ script would  not exist!
+ 
+--]]
 local rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 utils.make_dir(rootPath .. "\\Blacklist")
 utils.make_dir(rootPath .. "\\lualogs")
@@ -5,9 +14,7 @@ utils.make_dir(rootPath .. "\\scripts\\MoistsLUA_cfg")
 
 
 --DATA FILES
-local data = {}
-local data2 = {}
-local data3 = {}
+local data, data2, data3 = {}, {}, {}
 local configfile = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini"
 local scidFile = rootPath .. "\\Blacklist\\scid.list"
 local kickdata = rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.data"
@@ -218,30 +225,19 @@ end
 
 --TODO: Arrays for function variables
 local OSD = {}
-local OptionsVar = {}
-local PlyTracker = {}
+local OptionsVar, PlyTracker = {},{}
 local tracking = {}
-tracking.playerped_posi = {}
-tracking.playerped_speed1 = {}
-tracking.playerped_speed2 = {}
-tracking.playerped_speed3 = {}
+tracking.playerped_posi, tracking.playerped_speed1, tracking.playerped_speed2, tracking.playerped_speed3 = {}, {}, {}, {}
 
 --TODO: Data & Entity Arrays
-escort = {}
-escortveh = {}
-spawned_cunts = {}
-local groupIDs = {}
-local allpeds = {}
-local allveh = {}
-local allobj = {}
-local allpickups = {}
+local escort, escortveh, spawned_cunts = {}, {}, {}
+local groupIDs, allpeds, allveh, allobj, allpickups = {}, {}, {}, {}, {}
 local scids = {}
 local scidN = 0
 local RemoveBlacklistFeature
 
 --TODO: Function Arrays
-alkonost = {}
-kosatka = {}
+local alkonost, kosatka = {}, {}
 
 --TODO: Function Localisation
 local ScriptTR = script.trigger_script_event
@@ -249,8 +245,7 @@ math.randomseed(utils.time_ms())
 
 --TODO: Function Variables
 local pos_bool
-local myplygrp
-local plygrp
+local myplygrp, plygrp
 local spam_wait = setting["spam_wait"]
 local preset_color = setting["NotifyColorDefault"]
 local notifytype = setting["NotifyVarDefault"]
@@ -263,11 +258,7 @@ local logsent = false
 local spawnoptions_loaded = false
 
 --Modder Flag Variables
-local mod_flag_1
-local mod_flag_2
-local mod_flag_3
-local mod_flag_4
-local mod_flag_5
+local mod_flag_1, mod_flag_2, mod_flag_3, mod_flag_4, mod_flag_5
 
 --Modder Detection Hooks
 local hook_id = 0
@@ -283,7 +274,7 @@ local hookID6 = 07
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-    ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Private Edition", 175)
+    ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -293,24 +284,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Private Edition", color)
+        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Private Edition", color)
+        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Private Edition", color)
+        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Private Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~b~~h~Private Edition", color)
+        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~g~~h~Private Edition", color)
+        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~g~~h~Moist Edition", color)
     end
 
 end
@@ -1218,14 +1209,7 @@ function Joined_players(text)
     io.close()
 end
 
-local hookID
-local hookID1
-local hookID2
-local hookID3
-local hookID4
-local hookID5
-local hookID05
-local hookID6
+local hookID, hookID1, hookID2, hookID3, hookID4, hookID5, hookID05, hookID6
 local script_hook = 09
 
 --TODO: Netlog
@@ -1681,7 +1665,7 @@ function blacklist_check(pid)
     local scid = player.get_player_scid(pid)
     if ValidScid(scid) and scids[scid] then
         local name = player.get_player_name(pid)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "Moists Blacklist", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.1.9\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -2580,23 +2564,20 @@ global_func.rapidfire_hotkey1.on = setting["global_func.rapidfire_hotkey1"]
 --TODO: Self Stat Hotkey Switches
 
 global_func.thermal_stat_switch_hotkey = menu.add_feature("Switch Thermal/NV Hotkey", "toggle", globalFeatures.self_options, function(feat)
-    setting["global_func.thermal_stat_switch_hotkey"] = true
-    local thermalstat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
-
-    if feat.on then
-        local key = MenuKey()
-        key:push_str("LCONTROL")
-        key:push_str("F11")
-        if key:is_down() then
+        setting["global_func.thermal_stat_switch_hotkey"] = true
+            local thermalstat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
+        if feat.on then
+            local key = MenuKey()
+            key:push_str("LCONTROL")
+            key:push_str("F11")
+            if key:is_down() then
 
             local state = stats.stat_get_bool(thermalstat_hash, 0)
-            local setstate = not state
-            stats.stat_set_bool(thermalstat_hash, setstate, true)
-            moist_notify("Thermal/Nightvision State:\n", "Switched")
-
+                local setstate = not state
+                stats.stat_set_bool(thermalstat_hash, setstate, true)
+                moist_notify("Thermal/Nightvision State:\n", "Switched")
             system.wait(1200)
         end
-
         return HANDLER_CONTINUE
     end
     setting["global_func.thermal_stat_switch_hotkey"] = false
@@ -4606,18 +4587,18 @@ local wephash
 local RPG_HOTFIRE = menu.add_feature("Rapid RPG Switch", "toggle", globalFeatures.self_options, function(feat)
     setting["RPG_HOTFIRE"] = true
     if feat.on then
-        wep_hash = {1752584910,2982836145}
+        weapon_hash = {1752584910,2982836145}
         pped = player.get_player_ped(player.player_id())
 
         if ped.is_ped_shooting(pped) then
         if ped.get_current_ped_weapon(pped) == 0xB1CA77B1 or 0xA2719263 then
-            wephash = wep_hash[2]
+            wephash = weapon_hash[2]
             weapon.give_delayed_weapon_to_ped(pped, wephash, 0, 1)
-            system.wait(0)
+         --   system.wait(0)
             weapon.give_delayed_weapon_to_ped(pped, 0xA2719263, 0, 1)
-            system.wait(0)
+          --  system.wait(0)
 
-            wephash = wep_hash[1]
+            wephash = weapon_hash[1]
             weapon.give_delayed_weapon_to_ped(pped, wephash, 0, 1)
         end
         return HANDLER_CONTINUE
@@ -6375,8 +6356,6 @@ features["RotatingLights2"].feat.value_i = 6
 
 
 features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo", "action", featureVars.tr.id, function(feat)
-    --{Name="gr_prop_damship_01a", Hash=3974683782},
-    --{Name="gr_prop_gr_para_s_01", Hash=3430676794},
 
     local pos = v3()
     local rot = v3(0.0,0.0,0.0)
@@ -6392,6 +6371,26 @@ features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo", "action",
 
 end),  type = "action"}
 
+features["Attacch_building"] = {feat = menu.add_feature("Attach Building Physics? 0|1", "action_value_i", featureVars.tr.id, function(feat)
+
+    local pos = v3()
+    local rot = v3(0.0,0.0,0.0)
+    local offset = v3(0.0,0.0,0.0)
+    local pped = player.get_player_ped(pid)
+
+    pos = player.get_player_coords(pid)
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] = object.create_object(2047051359, pos, true, false)
+    system.wait(25)
+    if feat.value_i == 1 then
+    phys = true
+    end
+    entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, phys, false, 0, true)
+
+end),  type = "action"}
+features["Attacch_building"].feat.max_i = 1
+features["Attacch_building"].feat.min_i = 0
+features["Attacch_building"].feat.value_i = 0
 
 
 features["attach_room"] = {feat = menu.add_feature("Room Attachment", "action", featureVars.tr.id, function(feat)

@@ -1,4 +1,4 @@
-# 2Take1-Moist-Script (Build 2.0.1.8 : Private Edition)
+# 2Take1-Moist-Script (Build 2.0.1.9 : Moist Edition)
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
@@ -45,8 +45,6 @@ For Better Compatibility with **2take1script**:
 
 Seems to work so far without errors
 
-
-
 The files and folders required are as they should be and should be extracted from the archive as above.
 
 # Function Parents Sub Parents & Functions within
@@ -57,7 +55,7 @@ The files and folders required are as they should be and should be extracted fro
 ##### Online Players
 ##### Online Session
 ##### Player Functions
-##### Clean Shit Up!
+##### World Options
 ##### Chat Spam
 ##### Options
 
@@ -248,7 +246,7 @@ preventing them joining again. Does not effect you or friends just all others`
 - Give all Dildo Dicks (Big Ass Black Dildo between everyones legs)
 
 **Online Session**
-- Apply force to world entitys
+- Apply force to world entitys (First Applies Upward force then after delay Random Force on each direction)
 - Freeze World Vehicles & Objects
 - Any Friends Online (Friend online & in Muliplayer Check & Notify)
 
@@ -293,12 +291,12 @@ preventing them joining again. Does not effect you or friends just all others`
 
 #####  Vehicle Functions
 
+- Flare Countermeasures (Hotkey = "CTRL" Value = Speed of Flare Projectile)
 - Voltic Boost Delayed Refill (Designed for MK1 Opressor Refills instantly after short delay no need to be on ground)
 - Voltic Boost Instant Recharge (Designed for MK2 Opressor release the acceleration for a moment to instant refill boost)
 - RapidFire RepairLoop Glitch (Forces Vehicle Fixed on a fast loop causing the weapons to become Rapidfiring weapons works on missiles & guns)
 
 ##### Player Options
-
 
 - Force White parachute On
 - Force White BPH On
@@ -323,7 +321,25 @@ preventing them joining again. Does not effect you or friends just all others`
 - Switch Helmet Visor State (Switches current state of Helmet Visor (Up or Down))
 - Switch Thermal/NV State (Switch current state of Thermal or nightvision (ON or OFF))
 
-### Clean Shit Up!
+###### Quick Stat Setups
+
+- Setup Casino Heist Stealth Diamonds
+
+`Requires you to first goto the heist board and pay for setup then it is a 1 click setup
+masks are chosen at random, this will also make a stat recovery script which can be loaded
+to reset the changed stats should you need to`
+
+### World Options
+
+#### World Wave Modifiers
+
+- Get Current Wave Intensity (Toggle to show OSD Currrent Intensity)
+- Persistant Wave Intensity (Toggle to keep the Intensity Set)
+- Change Wave Intensity (value Modifier Change Value Click to set)
+- Change step Size (Step size of above options Adjust to value and click to set)
+- Reset Intensity (Click to reset Intensity to game Default)
+
+#### Clean Shit Up!
 
 #### - World Clean up
 
@@ -382,7 +398,7 @@ preventing them joining again. Does not effect you or friends just all others`
 - Network Bail Kick ScriptFuck (fucks ScriptHost)
 - SE Kick
 - SPECIAL KICK
-- Script Event Crash
+- Script Event Crash (Improved with version 2.0.1.9)
 
 ##### Vehicle Options
 
@@ -487,6 +503,7 @@ Red & White Above: Flash Ground: Fading
 #### Griefing Options
 
 #### Lester Ramjet
+
 - Run Delayed Cleanup?
 `Time Delayed Removal of Scramjets`
 - Lester RamJet Attack Player
@@ -503,10 +520,11 @@ Toggle off Will Delete All`
 - Get last Weapon impact POS
 - Give last Weapon Impact Strike
 - Dump World Pickups on this Cunt!
- - Dump World onto this Cunt! & Freeze it
+- Dump World onto this Cunt! & Freeze it
 - Block Passive Mode
 - Unblock Passive Mode
- 
+
+** Griefing Options ** 
 - Own The Blame For this shit?
 `if the Player gets Killed from these Functions This will Give you the Kill add your name to their death`
 
@@ -514,10 +532,8 @@ Toggle off Will Delete All`
 - Dildo Bombs From Ass
 - Airstrike player
 - Snipe for all Directions
- 
 - Send Lester Hunt them in savage
 `Spawns Lester in a Savage on the Mission Row Police Helipad & Hunts them down & Destroys their ass!`
-
 - Note:
 ** Lester Fails to do anything if this is done while target player is in a submarine interior maybe other interiors so ensure player is outside **
 ** Spawn one at a time ensure he has left the helipad before doing it again otherwise you will end up with a Heli Cluster Fuck in that area **
@@ -526,13 +542,12 @@ Toggle off Will Delete All`
 `Lester Might Fuck up and start Falling through the map`
 ** **Currently i am testing this out with no collision to prevent lights signs & poles being an issue when Lester is Flying @ Street Level** **
 
-- retask **Hidden Function**
+- retask **Now a Task and Delete Function**
 `Turns on When you Send Lester to hunt Target Player.
 Makes Lester Attack the Player again after Death until Lester is Deleted or Player is No Longer in Session.
+or should you toggle this off the Spawns should Delete assuming we can get control over them
 Time Delay set for longest Respawn`
- 
 
- 
 - alkonost AIO Spot Lag
 - alkonost V1 POS Lag
 - alkonost V2 OFFSET Lag
@@ -556,12 +571,12 @@ Toggle off Will Delete All`
 #### Info Options
 - Check Players HP Stats & Weapon
 `Notify of Players Health & Armour Values & Currently Held Weapon`
+- Set WayPoint on Player
 
 - CEO 10 k money loop
 - Give Long Cop Bribe
 - Block Passive Mode
 - Unblock Passive Mode
-
 
 ### Options 
 
@@ -569,7 +584,7 @@ Toggle off Will Delete All`
 
 #### Notify Customisation
  
-- Save Settings
+- Save Settings (Saves all Set options Currently Coded for Save including anything outside the options section)
 
 - Show & Load Spawn Options
 
@@ -599,10 +614,3 @@ Toggle off Will Delete All`
 - Above Marker RGBA Changer
 - Marker RGB Changer
 - Ground Marker RGBA Changer
-
-
-
-
-
-
-
