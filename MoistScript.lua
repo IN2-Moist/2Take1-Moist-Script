@@ -352,67 +352,62 @@ modflag_set()
 
 
 --TODO: Preset Data Arrays
-spam_presets = {}
+local spam_presets = {}
 local spamm = {}
 spamm.var = {}
 local spammRU = {}
 spammRU.var = {}
 
 spam_preset = {
-  {"Love Me", "Love Me"},
-  {"Eat Dick", "EAT D I C K  !"},
-  {"Fuck You! MassSpam", "Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!\nFuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!"},
-  {"Suck Cum Drip Cunt MassSpam", "SUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \n"},
-  {"FAGGOT", "F A G G O T"},
-  {"Cry", "CRY"},
-  {"Suck", "SUCK"},
-  {"You Suck MassSpam", "YOU SUCK \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n "},
-  {"Insert Space", " "},
-{"Big ! ScreenSpam", string.format("!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			")}}
+    {"Love Me", "Love Me"},
+    {"Eat Dick", "EAT D I C K  !"},
+    {"Fuck You! MassSpam", "Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!\nFuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!Fuck You!"},
+    {"Suck Cum Drip Cunt MassSpam", "SUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \nSUCK MY CUM DRIPPING C U N T ! YOU F U C K ! \n"},
+    {"FAGGOT", "F A G G O T"},
+    {"Cry", "CRY"},
+    {"Suck", "SUCK"},
+    {"You Suck MassSpam", "YOU SUCK \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n "},
+    {"Insert Space", " "},
+    {"Big ! ScreenSpam", string.format("!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			")}
+}
+
 russian_spam = {
-  {"Russia sucks", "Россия отстой"},
-  {"Death to Russia", "Смерть в Россию"},
-  {"Kill all Russians", "Убить всех русских"},
-  {"Suck My Dick Russia", "Соси мой член, Россия"},
-  {"Suck Dick Russia", "СОСАТЬ ДИК РОССИЯ"},
-  {"Pussy", "киска"},
-  {"Cunt", "пизда"},
-  {"Learn English russian Sucks", "Учите английский! Русский отстой! !"},
-  {"I'm going to kill all russians!", "Я собираюсь убить все русские! Пожалуйста Идентифицировать себя! Готовься к смерти"},
+    {"Russia sucks", "Россия отстой"},
+    {"Death to Russia", "Смерть в Россию"},
+    {"Kill all Russians", "Убить всех русских"},
+    {"Suck My Dick Russia", "Соси мой член, Россия"},
+    {"Suck Dick Russia", "СОСАТЬ ДИК РОССИЯ"},
+    {"Pussy", "киска"},
+    {"Cunt", "пизда"},
+    {"Learn English russian Sucks", "Учите английский! Русский отстой! !"},
+    {"I'm going to kill all russians!", "Я собираюсь убить все русские! Пожалуйста Идентифицировать себя! Готовься к смерти"},
 }
 
 
 local heiststat_setup = {
-  {"MP0_H3_COMPLETEDPOSIX", -1},
-  {"MP0_H3OPT_APPROACH", 1},
-  {"MP0_H3_HARD_APPROACH", 3},
-  {"MP0_H3OPT_TARGET", 3},
-  {"MP0_H3OPT_POI", 1023},
-  {"MP0_H3OPT_ACCESSPOINTS", 2047},
-  {"MP0_H3OPT_BITSET1", -1},
-  {"MP0_H3OPT_CREWWEAP", 1},
-  {"MP0_H3OPT_CREWDRIVER", 1},
-  {"MP0_H3OPT_CREWHACKER", 5},
-  {"MP0_H3OPT_WEAPS", 1},
-  {"MP0_H3OPT_VEHS", 3},
-  {"MP0_H3OPT_DISRUPTSHIP", 3},
-  {"MP0_H3OPT_BODYARMORLVL", 3},
-  {"MP0_H3OPT_KEYLEVELS", 2},
-  {"MP0_H3OPT_MASKS", math.ceil(math.random(0, 12))},
-  {"MP0_H3OPT_BITSET0", -1},
+    {"MP0_H3_COMPLETEDPOSIX", -1},
+    {"MP0_H3OPT_APPROACH", 1},
+    {"MP0_H3_HARD_APPROACH", 3},
+    {"MP0_H3OPT_TARGET", 3},
+    {"MP0_H3OPT_POI", 1023},
+    {"MP0_H3OPT_ACCESSPOINTS", 2047},
+    {"MP0_H3OPT_BITSET1", -1},
+    {"MP0_H3OPT_CREWWEAP", 1},
+    {"MP0_H3OPT_CREWDRIVER", 1},
+    {"MP0_H3OPT_CREWHACKER", 5},
+    {"MP0_H3OPT_WEAPS", 1},
+    {"MP0_H3OPT_VEHS", 3},
+    {"MP0_H3OPT_DISRUPTSHIP", 3},
+    {"MP0_H3OPT_BODYARMORLVL", 3},
+    {"MP0_H3OPT_KEYLEVELS", 2},
+    {"MP0_H3OPT_MASKS", math.ceil(math.random(0, 12))},
+    {"MP0_H3OPT_BITSET0", -1},
 }
 
 local presets = {{"beyond_limits", -173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)", -1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",  -5784.258301,-8289.385742,-136.411270},{"Chiliad", 491.176,5529.808,777.503},{"Lesters House", 1275.544,-1721.774,53.967},{"arena", -264.297,-1877.562,27.756},{"ElysianIslandBridge", -260.923,-2414.139,124.008},{"LSIAFlightTower", -983.292,-2636.995,89.524},{"TerminalCargoShip", 983.303,-2881.645,21.619},{"ElBurroHeights", 1583.022,-2243.034,93.265},{"CypressFlats", 552.672,-2218.876,68.981},{"LaMesa", 1116.815,-1539.787,52.146},{"SupplyStreet", 777.631,-695.813,28.763},{"Noose", 2438.874,-384.409,92.993},{"TatavianMountains", 2576.999,445.654,108.456},{"PowerStation", 2737.046,1526.873,57.494},{"WindFarm", 2099.765,1766.219,102.698},{"Prison", 1693.473,2652.971,61.335},{"SandyShoresRadioTower", 1847.034,3772.019,33.151},{"AlamoSea", 719.878,4100.993,39.154},{"RebelRadioTower", 744.500,2644.334,44.400},{"GreatChaparral", -291.035,2835.124,55.530},{"ZancudoControlTower", -2361.625,3244.962,97.876},{"NorthChumash(Hookies)", -2205.838,4298.805,48.270},{"AltruistCampRadioTower", -1036.141,4832.858,251.595},{"CassidyCreek", -509.942,4425.454,89.828},{"MountChiliad", 462.795,5602.036,781.400},{"PaletoBayFactory", -125.284,6204.561,40.164},{"GreatOceanHwyCafe", 1576.385,6440.662,24.654},{"MountGordoRadioTower", 2784.536,5994.213,354.275},{"MountGordoLighthouse", 3285.519,5153.820,18.527},{"GrapeSeedWaterTower", 1747.518,4814.711,41.666},{"TatavianMountainsDam", 1625.209,-76.936,166.651},{"VinewoodHillsTheater", 671.748,512.226,133.446},{"VinewoodSignRadioTowerTop", 751.179,1245.13,353.832},{"Hawik", 472.588,-96.376,123.705},{"PacificSrandardBank", 195.464,224.341,143.946},{"WestVinewoodCrane", -690.273,219.728,137.518},{"ArcadiasRadioTower", -170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010, -1419.530,5.001},{"DelperoFerrisWheel", -1644.193,-1114.271,13.029},{"VespucciCanalsClockTower", -1238.729,-853.861,77.758},{"DelPeroNrMazebankwest", -1310.777,-428.985,103.465},{"pacifficBluffs", -2254.199,326.088,192.606},{"GWC&GolfingSociety", -1292.052,286.209,69.407},{"Burton", -545.979,-196.251,84.733},{"LosSantosMedicalCenter", 431.907,-1348.709,44.673},{"BanhamCanyon", -3085.451,774.426,20.237},{"TongvaHills", -1874.280,2064.565,150.852},{"SanChianskiMountainRange", 2900.166,4325.987,102.101},{"HumaineLabs", 3537.104,3689.238,45.228},{"YouToolStoreSanChianski", 2761.944,3466.951,55.679},{"GalileoObservatory", -422.917,1133.272,325.855},{"GrndSeroraDesertCementwks", 1236.649,1869.214,84.824}}
--- local scriptEvents = {0x0fb7b2c5,0x1C2C3329,0x1f63a94e,0x4fbc297f,0x5f21fcaa,0x7b505065,0x7d556776,0x8b37581a,0x11fa24fa,0x073c8336,0x75bf07bc,0x75fc2a5e,0x96b17776,0x110b571b,0x222d2dab,0x231d58ee,0x692CC4BB,0x2073b3d7,0x2429d2da,0x8180e34a,0x13216f21,0x55274b5d,0x134771B8,0x6984116e,0x96308401,0xB54CD3F4,0xC2AD5FCE,0xCB79323D,0xF83B520C,0xaec17e3a,0xb513d7bd,0xba4adc62,0xcb14b6c0,0xe5010210,0xebee9424,0xfdb1f516,}
-
 local escort_ped = {{"juggalo_01", 0xDB134533},{"topless_01", 0x9CF26183},{"juggalo_02", 0x91CA3E2C},{"lester crest", 0xB594F5C3},{"cop", 0x9AB35F63},{"mp_agent14", 0x6DBBFC8B},{"ramp_marine", 0x616C97B9},{"trafficwarden", 0xDE2937F3},{"lestercrest_2", 0x6E42FD26},{"lestercrest", 0x4DA6E849},{"agent14", 0xFBF98469},{"m_pros_01", 0x6C9DD7C9},{"waremech_01", 0xF7A74139},{"weapexp_01", 0x36EA5B09},{"weapwork_01", 0x4186506E},{"securoguard_01", 0xDA2C984E},{"armoured_01", 0xCDEF5408},{"armoured_01", 0x95C76ECD},{"armoured_02", 0x63858A4A},{"marine_01", 0xF2DAA2ED},{"marine_02", 0xF0259D83},{"security_01", 0xD768B228},{"snowcop_01", 0x1AE8BB58},{"prisguard_01", 0x56C96FC6},{"pilot_01", 0xE75B4B1C},{"pilot_02", 0xF63DE8E1},{"blackops_01", 0xB3F3EE34},{"blackops_02", 0x7A05FA59},{"blackops_03", 0x5076A73B},{"hwaycop_01", 0x739B1EF5},{"marine_01", 0x65793043},{"marine_02", 0x58D696FE},{"marine_03", 0x72C0CAD2},{"ranger_01", 0xEF7135AE},{"robber_01", 0xC05E1399},{"sheriff_01", 0xB144F9B9},{"pilot_01", 0xAB300C07},{"swat_01", 0x8D8F1B10},{"fibmugger_01", 0x85B9C668},{"juggernaut_01", 0x90EF5134},{"rsranger_01", 0x3C438CD2},}
-
 local veh_list = {{"buzzard", 0x2F03547B, nil, nil},{"savage", 0xFB133A17, nil, nil},{"seasparrow", 0xD4AE63D9, 10, 1},{"valkyrie2", 0x5BFA5C4B, nil, nil},{"valkyrie", 0xA09E15FD, nil, nil},{"boxville5", 0x28AD20E1, nil, nil},{"apc", 0x2189D250, 10, 0},{"oppressor2", 0x7B54A9D3, 10, 1},{"oppressor", 0x34B82784, 10, 0},{"ruiner2", 0x381E10BD, nil, nil},{"scramjet", 0xD9F0503D, 10, 0},{"stromberg", 0x34DBA661},{"tampa3", 0xB7D9F7F1},{"khanjali", 0xAA6F980A, nil, nil},{"insurgent3", 0x8D4B7A8A, nil, nil},{"insurgent", 0x9114EADA, nil, nil},{"limo2", 0xF92AEC4D, nil, nil},{"mower", 0x6A4BD8F6, nil, nil},{"police2", 0x9F05F101, nil, nil},{"police3", 0x71FA16EA, nil, nil},{"police4", 0x8A63C7B9, nil, nil},{"police", 0x79FBB0C5, nil, nil},{"policeb", 0xFDEFAEC3, nil, nil},{"policeold1", 0xA46462F7, nil, nil},{"policeold2", 0x95F4C618, nil, nil},{"policet", 0x1B38E955, nil, nil},{"polmav", 0x1517D4D9, nil, nil},{"sheriff2", 0x72935408, nil, nil},{"sheriff", 0x9BAA707C, nil, nil},{"phantom2", 0x9DAE1398, nil, nil},{"ruiner3", 0x2E5AFD37, nil, nil},{"scorcher", 0xF4E1AA15, nil, nil},{"bmx", 0x43779C54, nil, nil},}
-
-
-    
 local ped_wep = {{"unarmed", 0xA2719263},{"parachute", 0xfbab5776},{"weapon_handcuffs", 0xD04C944D},{"stone_hatchet", 0x3813FC08},{"knife", 0x99B507EA},{"bat", 0x958A4A8F},{"weapon_machinepistol", 0xDB1AA450},	{"raypistol", 0xAF3696A1},{"stungun", 0x3656C8C1},{"weapon_gadgetpistol", 0x57A4368C},{"raycarbine", 0x476BF15},{"combatmg_mk2", 0xDBBD7280},{"Special RPG", 1752584910},{"Standard RPG", 2982836145},{"railgun", 0x6D544C99},{"minigun", 0x42BF8A85},{"rayminigun", 0xB62D1F6},}
-
 local missions = {"Force to Severe Weather","Force to Half Track","Force to Night Shark AAT","Force to APC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission2"}
 local BountyPresets = {0,1,42,69,420,666,1000,3000,5000,7000,9000,10000}
 local colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,024,025,026,027,028,029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,046,047,048,049,050,051,052,053,054,055,056,057,058,059,060,061,062,063,064,065,066,067,068,069,070,071,072,073,074,075,076,077,078,079,080,081,082,083,084,085,086,087,088,089,090,091,092,093,094,095,096,097,098,099,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215}
@@ -511,11 +506,9 @@ NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
 NetEvents[86] = "BLOCK_WEAPON_SELECTION"
 NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
 
-
 --TODO: Feature & Variable Arrays
 
 local global_func = {}
-
 local globalFeatures = {}
 local playerFeatures = {}
 local playerfeatVars = {}
@@ -569,12 +562,16 @@ end).id
 globalFeatures.Moist_Spam = menu.add_feature("Chat Spam", "parent", globalFeatures.parent).id
 globalFeatures.Preset_Chat = menu.add_feature("Chat Spam Presets", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_RUS = menu.add_feature("Russian Spam Presets", "parent", globalFeatures.Preset_Chat).id
-
 globalFeatures.Spam_Options = menu.add_feature("Spam Options", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
+
+--TODO: Player Feature Parents
 playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.1.9", "parent", 0).id
+local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
+local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
+playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
 playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", playerfeatVars.parent).id
 playerfeatVars.Preset_sms = menu.add_player_feature("SMS Spam Presets", "parent", playerfeatVars.spam_sms).id
 playerfeatVars.Preset_RUS = menu.add_player_feature("Russian Spam Presets", "parent", playerfeatVars.Preset_sms).id
@@ -603,8 +600,8 @@ end
 
 
 for i = 1, #russian_spam do
-    
-  spammRU.var[i] =  menu.add_feature(i..": " .. russian_spam[i][1], "value_i", globalFeatures.Preset_RUS, function(feat)
+
+    spammRU.var[i] =  menu.add_feature(i..": " .. russian_spam[i][1], "value_i", globalFeatures.Preset_RUS, function(feat)
         if feat.on then
             local text = tostring(russian_spam[i][2])
 
@@ -613,9 +610,9 @@ for i = 1, #russian_spam do
             return HANDLER_CONTINUE
         end
     end)
-spammRU.var[i].max_i = 1000
-spammRU.var[i].min_i = 0
-spammRU.var[i].value_i = setting["spam_wait"]
+    spammRU.var[i].max_i = 1000
+    spammRU.var[i].min_i = 0
+    spammRU.var[i].value_i = setting["spam_wait"]
 
 end
 
@@ -634,8 +631,8 @@ end
 
 
 for i = 1, #spam_preset do
-    
-   spamm.var[i] =  menu.add_feature(i..": " .. spam_preset[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
+
+    spamm.var[i] =  menu.add_feature(i..": " .. spam_preset[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
         if feat.on then
             local text = tostring(spam_preset[i][2])
 
@@ -693,9 +690,9 @@ end)
 
 
 spam_delay = menu.add_feature("Set Delay in ms", "action_value_i", globalFeatures.Spam_Options, function(feat)
-  
-  setting["spam_wait"] = feat.value_i
-    
+
+        setting["spam_wait"] = feat.value_i
+
 end)
 spam_delay.max_i = 1000
 spam_delay.min_i = 0
@@ -733,9 +730,9 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
                 return HANDLER_CONTINUE
             end
         end)
-    local spamm = {}
-   spamm.var = {}
-    spamm.var[i] = menu.add_feature(i ..": " .. spam_presets[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
+        local spamm = {}
+        spamm.var = {}
+        spamm.var[i] = menu.add_feature(i ..": " .. spam_presets[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
             if feat.on then
                 local text = tostring(spam_presets[i][2])
 
@@ -744,10 +741,10 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
                 return HANDLER_CONTINUE
             end
         end)
-         spamm.var[i].max_i = 1000
-         spamm.var[i].min_i = 0
-         spamm.var[i].value_i = setting["spam_wait"]
-         
+        spamm.var[i].max_i = 1000
+        spamm.var[i].min_i = 0
+        spamm.var[i].value_i = setting["spam_wait"]
+
 
 
 end)
@@ -775,7 +772,7 @@ spam_cus_long = menu.add_feature("Add Custom Long Preset", "action_value_i", glo
         end
         custom_count = 0
         if feat.value_i == 2 then
-        text[3] = " "
+            text[3] = " "
         end
         local text2 = string.format(text[1] .." " .. text[2] .." " ..text[3] .."\n")
         local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data", "a")
@@ -812,11 +809,6 @@ end)
 spam_cus_long.max_i = 3
 spam_cus_long.min_i = 2
 
-
---TODO: Online Player Feature Parents
-local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
-local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
-playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
 
 menu.add_player_feature("Save Players Current POS to file", "action", Player_Tools, function(feat, pid)
 
@@ -931,7 +923,7 @@ local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, fun
 end)
 ip_clip.threaded = false
 
-local mod_off = menu.add_player_feature("Toggle off Modder Mark", "toggle", playerfeatVars.parent, function(feat, pid)
+local mod_off = menu.add_player_feature("ToggleOFF  Modder Mark", "toggle", playerfeatVars.parent, function(feat, pid)
     while feat.on do
         if player.is_player_modder(pid, -1) == true
         then
@@ -990,6 +982,7 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
         spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
         ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
         entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
         pos.x = 347.04141235352
         pos.y = 4830.7163085938
@@ -1001,7 +994,7 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
         spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
         ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
         entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-
+        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
         pos.x = 343.0749206543
         pos.y = 4832.9965820312
         pos.z = -58.487403869629
@@ -1012,6 +1005,7 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
         spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
         ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
         entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
         pos.x = 339.48446655273
         pos.y = 4835.1568554686
@@ -1024,6 +1018,7 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
         spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
         ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
         entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
         pos.x = 335.99624633789
         pos.y = 4837.0795898438
@@ -1035,6 +1030,7 @@ local block_orbital = menu.add_feature("New Block Orbital", "action", globalFeat
         spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
         ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
         entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
         return HANDLER_POP
 end)
@@ -1171,12 +1167,8 @@ end)
 function blacklist_shit()
 
 local joining_players_logger = event.add_event_listener("player_join", function(e)
-    
-    
 
     local pid = e.player
-   
-    
     local scid = player.get_player_scid(pid)
     local schx = string.format("%x", scid)
     local name = tostring(player.get_player_name(pid))
@@ -1184,7 +1176,7 @@ local joining_players_logger = event.add_event_listener("player_join", function(
     local ip = player.get_player_ip(pid)
     local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
     
-    joined_data(name..":"..schx.."\n" ..name.." : |" ..pid .."| " .."["..scid.."]" .."\n["..ip.."]" .."[IPv4: "..sip.. "]\n")
+    joined_data(name..":"..schx.." : |" ..pid .."| " .."["..scid.."]" .."\n["..ip.."]" .."[IPv4: "..sip.. "]\n")
 
     return
     blacklist_check(pid)
@@ -1201,14 +1193,6 @@ function joined_data(text)
     io.write("\n" .. text)
     io.close()
 end
-
-function Joined_players(text)
-    local file = io.open(rootPath .. "\\lualogs\\PlayerJoins.md", "a")
-    io.output(file)
-    io.write(text)
-    io.close()
-end
-
 local hookID, hookID1, hookID2, hookID3, hookID4, hookID5, hookID05, hookID6
 local script_hook = 09
 
@@ -1238,7 +1222,7 @@ function get_datetime()
     local dtime = string.match(d, "%d%d:%d%d:%d%d")
 
     local dt = os.date("%d/%m/%y%y")
-    Cur_Date_Time = (string.format("["..dt.."]".."["..dtime.."]"))
+    Cur_Date_Time = (string.format("["..dt.." | "..dtime.."]"))
 end
 
 --TODO: ScriptHook Check Player
@@ -1257,7 +1241,7 @@ scriptlog_pid.value_i = 0
 
 local hook_pid = 0
 local lastpid_hooked = 0
-script_check_pid  = function(pid)
+local script_check_pid  = function(pid)
     if scriptlog_pid.on == true then
         hook_pid = hook.register_script_event_hook(script_event_hook_pid)
         lastpid_hooked = pid
@@ -1270,10 +1254,8 @@ script_check_pid  = function(pid)
     end
 end
 
-
-
 local paramspid = {}
-script_event_hook_pid = function(source, target, paramspid, count)
+local script_event_hook_pid = function(source, target, paramspid, count)
 
 
     local player_source = player.get_player_name(source)
@@ -1299,8 +1281,6 @@ script_event_hook_pid = function(source, target, paramspid, count)
         return false
     else
     end
-    -- system.wait(3000)
-
 end
 
 --TODO: ScriptHook Check
@@ -1319,8 +1299,7 @@ end
 
 
 local params = {}
-script_event_hook = function(source, target, params, count)
-
+local script_event_hook = function(source, target, params, count)
 
     local player_source = player.get_player_name(source)
     local scid = player.get_player_scid(source)
@@ -1350,10 +1329,7 @@ script_event_hook = function(source, target, params, count)
         cnt = cnt + 1
     end
 
-    -- system.wait(3000)
     return false
-
-
 end
 
 --TODO: Logging output
@@ -1538,8 +1514,7 @@ function KickPid(pid)
         debug_out(string.format("Black List: Host kicked " .. pid .. " (" .. name .. ")"))
         print("Black List: Host kicked " .. pid .. " (" .. name .. ").")
     else
-        -- for i = 1, #scriptEvents do
-        --player.set_player_as_modder(pid, mod_flag_2)
+
         ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
         ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
 
@@ -1561,17 +1536,15 @@ function MarkPidAsModder(pid)
     local name = player.get_player_name(pid)
     player.set_player_as_modder(pid, mod_flag_4)
     debug_out(string.format("Black List: Marked " .. pid .. " (" .. name .. ") as modder"))
-    print("Marked " .. pid .. " (" .. name .. ") as modder.")
 end
 
 menu.add_feature("Reload blacklist", "action", globalFeatures.parentID, function()
     LoadBlacklist()
-    ui.notify_above_map("Loaded blacklist. " .. scidN .. " entries.", "Blacklist", 140)
+    moist_notify("Blacklist Loaded ",scidN .. " entries")
 end)
 
 local MarkAsModderFeature
 local KickFeature
-
 
 local EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", globalFeatures.parentID, function(feat)
     if not feat.on then
@@ -1596,8 +1569,6 @@ local EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", g
             end
         end
     end
-
-
 end)
 EnabledBlacklistFeature.on = setting["Blacklist_ON"]
 
@@ -1612,7 +1583,7 @@ local MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalF
 end)
 MarkAsModderFeature.on = setting["Blacklist_Mark"]
 
-local KickFeature = menu.add_feature("Kick", "toggle", globalFeatures.parentID, function(feat)
+local KickFeature = menu.add_feature("Kick Player", "toggle", globalFeatures.parentID, function(feat)
     if not feat.on then
         setting["Blacklist_kick"] = false
         return HANDLER_POP
