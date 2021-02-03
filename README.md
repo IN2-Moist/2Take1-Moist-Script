@@ -1,5 +1,15 @@
 # 2Take1-Moist-Script (Build 2.0.1.9 : Moist Edition)
 
+** Credits & Thanks to Kektram for help with OTR Code and code Advice
+
+Thanks to haekkzer for his help and advice over time i was a tester for the menu
+
+Thanks to Sai for his help and code for the script loader
+
+Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
+script would  not exist! **
+
+
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
 ## Installation
@@ -22,7 +32,7 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 
 - autoexec.lua
 
- (Script loader this will  Auto load multiple LUA files on start)
+(Script loader this will  Auto load multiple LUA files on start)
 
 - settings.lua
 
@@ -93,36 +103,41 @@ are spawned and they shoot in each others direction`
 
 #### SMS Spam 
 - SMS Spam Presets (Default Presets & Your Custom Presets)
- - Russian Spam Presets (Few Default Russian Translated Presets)
- 
- #### Tools
- Save Players Current POS to file (Output is compatible for copy & Paste to your Config for menu use) `C:\Users\IN2Moist\AppData\Roaming\PopstarDevs\2Take1Menu\cfg\tele.cfg`
-  
+- Russian Spam Presets (Few Default Russian Translated Presets)
+
+#### Tools
+Save Players Current POS to file (Output is compatible for copy & Paste to your Config for menu use) `C:\Users\IN2Moist\AppData\Roaming\PopstarDevs\2Take1Menu\cfg\tele.cfg`
+
 #### Bounty Options 
- Anonymous Bounty (Anonomous (ON) = NPC Bounty (OFF) Bounty = By You)
- Custom Value `Enter any Value Between 0 & 10,000`
+Anonymous Bounty (Anonomous (ON) = NPC Bounty (OFF) Bounty = By You)
+Custom Value `Enter any Value Between 0 & 10,000`
 
 `List Preset Values`
 
 #### Force Player to Mission
- Force to Severe Weather
- Force to Half Track
- Force to Night Shark AAT
- Force to APC Mission
- Force to MOC Mission
- Force to Tampa Mission
- Force to Opressor Mission1
- Force to Opressor Mission2
- 
- Force Player to Island
- Copy IP to Clipboard
- Toggle off Modder Mark
- Add to blacklist
- Remove from blacklist
- Attach dildo in Skeleton root
- CEO BAN
- CEO DISMISS
- CEO TERMINATE
+- Force to Severe Weather
+- Force to Half Track
+- Force to Night Shark AAT
+- Force to APC Mission
+- Force to MOC Mission
+- Force to Tampa Mission
+- Force to Opressor Mission1
+- Force to Opressor Mission2
+
+
+** Inside Moist Script Parent **
+- Copy IP to Clipboard
+- ToggleOFF Modder Mark
+- Attach dildo in Skeleton root
+- CEO BAN
+- CEO DISMISS
+- CEO TERMINATE
+- Script Host Crash Kick
+
+** Outside of Moist Script Parent **
+- Force Player to Island
+- Add to blacklist
+- Remove from blacklist
 
 ## Online Session:
 
@@ -185,7 +200,6 @@ this will log any script events from that selected player only`
 
 `Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
 
-
 **Online Session:**
 
 ## Session Kicks
@@ -216,21 +230,19 @@ preventing them joining again. Does not effect you or friends just all others`
 
 ## Session Troll Functions
 
- Heart Beat
- `Timed Explosion like a Beating Heart`
- 
- Random Exp
- `(Explosion Type)`
- 
- Exp delay
- `Delay Between Random Exp`
+- Heart Beat
+`Timed Explosion like a Beating Heart`
+
+- Random Exp
+`(Explosion Type)`
+
+- Exp delay
+`Delay Between Random Exp`
 
 - set Bounty on Lobby
-
 `10 k Bounty for all including yourself!`
 
 - Block all Players Passive
-
 `Prevent any player from being able to use passive mode`
 
 **Play Game Sounds from all players ped + Coords**

@@ -1,5 +1,5 @@
 --[[
- Credits & Thanks to Kektram for help with OTR Code and some code Advice
+ Credits & Thanks to Kektram for help with OTR Code and code Advice
  Thanks to haekkzer for his help and advice over time i was a tester for the menu
  Thanks to Sai for his help and code for the script loader
  
@@ -7,6 +7,7 @@
  script would  not exist!
  
 --]]
+
 local rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 utils.make_dir(rootPath .. "\\Blacklist")
 utils.make_dir(rootPath .. "\\lualogs")
@@ -59,21 +60,21 @@ end
 function dataload()
     if not utils.file_exists(kickdata) then	return end
     for line in io.lines(kickdata) do data[#data + 1] = line end
-    --moist_notify("Moists Kick Data File 1 Loaded\n",  "Kick Type 1 Now Available")
+
 end
 dataload()
 
 function dataload2()
     if not utils.file_exists(kickdata2) then	return end
     for line in io.lines(kickdata2) do data2[#data2 + 1] = line end
-    --moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
+
 end
 dataload2()
 
 function dataload3()
     if not utils.file_exists(kickdata3) then	return end
     for line in io.lines(kickdata3) do data3[#data3 + 1] = line end
-    --moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
+
 end
 dataload3()
 
@@ -222,7 +223,6 @@ for line in io.lines(save_ini) do
 
 end
 
-
 --TODO: Arrays for function variables
 local OSD = {}
 local OptionsVar, PlyTracker = {},{}
@@ -261,14 +261,7 @@ local spawnoptions_loaded = false
 local mod_flag_1, mod_flag_2, mod_flag_3, mod_flag_4, mod_flag_5
 
 --Modder Detection Hooks
-local hook_id = 0
-local hookID = 01
-local hookID1 = 02
-local hookID2 = 03
-local hookID3 = 04
-local hookID4 = 05
-local hookID5 = 06
-local hookID6 = 07
+local hook_id, hookID, hookID1, hookID2, hookID3, hookID4, hookID5, hookID6 = 0, 01, 02, 03, 04, 05, 06, 07
 
 --Util functions
 local notif = ui.notify_above_map
@@ -305,7 +298,6 @@ function moist_notify(msg1, msg2)
     end
 
 end
-
 
 --TODO: Modder Flagging
 local int_flags = {65536, 131072, 262144, 524288, 1048576, 2097152, 4194304}
@@ -350,7 +342,6 @@ function modflag_set()
 end
 modflag_set()
 
-
 --TODO: Preset Data Arrays
 local spam_presets = {}
 local spamm = {}
@@ -382,7 +373,6 @@ russian_spam = {
     {"Learn English russian Sucks", "Учите английский! Русский отстой! !"},
     {"I'm going to kill all russians!", "Я собираюсь убить все русские! Пожалуйста Идентифицировать себя! Готовься к смерти"},
 }
-
 
 local heiststat_setup = {
     {"MP0_H3_COMPLETEDPOSIX", -1},
@@ -1300,7 +1290,7 @@ end
 
 local params = {}
 local script_event_hook = function(source, target, params, count)
-
+    
     local player_source = player.get_player_name(source)
     local scid = player.get_player_scid(source)
     local player_target = player.get_player_name(target)
@@ -2586,6 +2576,36 @@ local mental_stat = menu.add_feature("Get Mental State", "action", globalFeature
     moist_notify("Current Mental State:\n", stat_result)
 end)
 
+
+local parachute_stat1 = menu.add_feature("Get Parachute Current Tint", "action", globalFeatures.self_statcheck, function(feat)
+    local stat_hash = gameplay.get_hash_key("MP0_PARACHUTE_CURRENT_TINT")
+
+    local stat_result = stats.stat_get_int(stat_hash, 0)
+    moist_notify("Current Tint:\n", stat_result)
+end)
+
+
+local parachute_stat2 = menu.add_feature("Get Parachute Current Smoke", "action", globalFeatures.self_statcheck, function(feat)
+    local stat_hash = gameplay.get_hash_key("MP0_PARACHUTE_CURRENT_SMOKE")
+
+    local stat_result = stats.stat_get_int(stat_hash, 0)
+    moist_notify("Current Smoke:\n", stat_result)
+end)
+
+local parachute_stat3 = menu.add_feature("Get Parachute Current Pack", "action", globalFeatures.self_statcheck, function(feat)
+    local stat_hash = gameplay.get_hash_key("MP0_PARACHUTE_CURRENT_PACK")
+
+    local stat_result = stats.stat_get_int(stat_hash, 1)
+    moist_notify("Current Pack:\n", stat_result)
+end)
+
+local parachute_stat3 = menu.add_feature("Get Parachute Last Used", "action", globalFeatures.self_statcheck, function(feat)
+    local stat_hash = gameplay.get_hash_key("MP0_LAST_USED_PARACHUTE")
+
+    local stat_result = stats.stat_get_int(stat_hash, 1)
+    moist_notify("Last Used Pack:\n", stat_result)
+end)
+
 local thermal = menu.add_feature("Check Thermal/NV State", "action", globalFeatures.self_statcheck, function(feat)
     local stat_hash = gameplay.get_hash_key("MP0_HAS_DEACTIVATE_NIGHTVISION")
 
@@ -2610,6 +2630,42 @@ local helmet_visor = menu.add_feature("Helmet Visor State", "action", globalFeat
     end
     moist_notify("Helmet Visor State:\n", state)
 end)
+
+local Defenses_forceon = menu.add_feature("Force Yacht Defences ON Assosiates", "toggle", globalFeatures.self_statsetup, function(feat)
+    if feat.on then
+        local stat_hash = gameplay.get_hash_key("MP0_YACHT_DEFENCE_SETTING")
+
+        stats.stat_set_int(stat_hash, 7, true)
+        return HANDLER_CONTINUE
+    end
+
+end)
+
+local parachute_setstat1 = menu.add_feature("Set Parachute Current Pack", "action_value_i", globalFeatures.self_statsetup, function(feat)
+    local stat_hash = gameplay.get_hash_key("MP0_PARACHUTE_CURRENT_PACK")
+    local i = tonumber(feat.value_i)
+
+    stats.stat_set_int(stat_hash, i, true)
+
+    local stat_result = stats.stat_get_int(stat_hash, 1)
+    moist_notify("Current Pack:\n", stat_result)
+end)
+parachute_setstat1.max_i = 100
+parachute_setstat1.min_i = 0
+
+local parachute_setstat2 = menu.add_feature("Set Parachute Current Tint", "action_value_i", globalFeatures.self_statsetup, function(feat)
+    local stat_hash = gameplay.get_hash_key("MP0_PARACHUTE_CURRENT_TINT")
+
+    local i = tonumber(feat.value_i)
+
+    stats.stat_set_int(stat_hash, i, true)
+
+    local stat_result = stats.stat_get_int(stat_hash, 1)
+    moist_notify("Current Pack:\n", stat_result)
+end)
+parachute_setstat2.max_i = 80
+parachute_setstat2.min_i = 0
+
 
 --TODO: Force Mental State
 mental_statset = menu.add_feature("Set Mental State", "action_value_i", globalFeatures.self_statsetup, function(feat)
@@ -5468,6 +5524,7 @@ featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
 featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
 featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
 featureVars.str = menu.add_feature("Sound Functions", "parent", featureVars.tr.id)
+featureVars.at = menu.add_feature("Attachment Options", "parent", featureVars.f.id)
 featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id)
 featureVars.gr = menu.add_feature("Lester Ramjet", "parent", featureVars.g.id)
 featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
@@ -6341,7 +6398,9 @@ features["RotatingLights2"].feat.mod_i = 1
 features["RotatingLights2"].feat.value_i = 6
 
 
-features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo", "action", featureVars.tr.id, function(feat)
+menu.add_feature("Attach with Physics? (PhysicsGlitch) 0=OFF|1=ON", "action", featureVars.at.id, nil)
+
+features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo Physics? 0|1", "action_value_i", featureVars.at.id, function(feat)
 
     local pos = v3()
     local rot = v3(0.0,0.0,0.0)
@@ -6352,12 +6411,18 @@ features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo", "action",
     local i = #spawned_cunts + 1
     spawned_cunts[i] = object.create_object(3974683782, pos, true, false)
     system.wait(25)
+      if feat.value_i == 1 then
+    phys = true
+    end
 
-    entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, false, false, 0, true)
+    entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, phys, false, 0, true)
 
 end),  type = "action"}
+features["Broken_ufo"].feat.max_i = 1
+features["Broken_ufo"].feat.min_i = 0
+features["Broken_ufo"].feat.value_i = 1
 
-features["Attacch_building"] = {feat = menu.add_feature("Attach Building Physics? 0|1", "action_value_i", featureVars.tr.id, function(feat)
+features["Attacch_building"] = {feat = menu.add_feature("Attach Building Physics? 0|1", "action_value_i", featureVars.at.id, function(feat)
 
     local pos = v3()
     local rot = v3(0.0,0.0,0.0)
@@ -6376,10 +6441,34 @@ features["Attacch_building"] = {feat = menu.add_feature("Attach Building Physics
 end),  type = "action"}
 features["Attacch_building"].feat.max_i = 1
 features["Attacch_building"].feat.min_i = 0
-features["Attacch_building"].feat.value_i = 0
+features["Attacch_building"].feat.value_i = 1
 
+features["BeachFire"] = {feat = menu.add_feature("Attach Beach Fires", "action_value_i", featureVars.at.id, function(feat)
 
-features["attach_room"] = {feat = menu.add_feature("Room Attachment", "action", featureVars.tr.id, function(feat)
+        local pedd = player.get_player_ped(pid)
+        local pos = v3()
+        local offset = v3(0.0,0.0,10.0)
+        local bid1 =  ped.get_ped_bone_index(pedd, 31086)
+        local bid2 =  ped.get_ped_bone_index(pedd, 11816)
+        
+        if feat.value_i == 1 then
+        phys = true
+        end
+        
+            spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
+            entity.attach_entity_to_entity( spawned_cunts[#spawned_cunts], pedd,  bid1, pos, offset, true, phys, false, 0, false)
+            local offset = v3(0.0,0.0,-10.0)
+            spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
+            entity.attach_entity_to_entity( spawned_cunts[#spawned_cunts], pedd,  bid2, pos, offset, true, phys, false, 0, false)
+            
+
+    return HANDLER_POP
+end), type = "action"}
+features["BeachFire"].feat.max_i = 1
+features["BeachFire"].feat.min_i = 0
+features["BeachFire"].feat.value_i = 1
+
+features["attach_room"] = {feat = menu.add_feature("Room Attachment", "action", featureVars.at.id, function(feat)
 
         local pos = v3()
         pos.z = -0.5
@@ -6419,7 +6508,7 @@ end), type = "action"}
 features["attach_room"].feat.threaded = false
 
 
-features["attach_room1"] = {feat = menu.add_feature("Room Attachment v2", "action", featureVars.tr.id, function(feat)
+features["attach_room1"] = {feat = menu.add_feature("Room Attachment v2", "action", featureVars.at.id, function(feat)
 
         local pos = v3()
         pos.z = -0.5
@@ -6458,7 +6547,7 @@ features["attach_room1"] = {feat = menu.add_feature("Room Attachment v2", "actio
 end), type = "action"}
 features["attach_room1"].feat.threaded = false
 
-features["attach_room2"] = {feat = menu.add_feature("Room Attachment v3", "action", featureVars.tr.id, function(feat)
+features["attach_room2"] = {feat = menu.add_feature("Room Attachment v3", "action", featureVars.at.id, function(feat)
 
         local pos = v3()
         pos.z = -0.5
@@ -6780,9 +6869,7 @@ features["Give_Airstrike"] = {feat = menu.add_feature("Give last Weapon Impact S
             pedd = player.get_player_ped(pid)
             if not ped.is_ped_shooting(pedd) then
                 return HANDLER_CONTINUE end
-            print("ped Shooting")
-            --system.wait(10)
-
+                
             local posm = v3()
             posm = player.get_player_coords(pid)
 
@@ -6844,7 +6931,7 @@ features["Give_Airstrike"].feat.on = false
 features["Give_Airstrike"].feat.max_i = #StrikeGive
 features["Give_Airstrike"].feat.min_i = 1
 
-features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.f.id, function(feat)
+features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.tr.id, function(feat)
     if world_dumped then
         local pos = v3()
         pos = player.get_player_coords(pid)
@@ -6880,14 +6967,14 @@ features["blamer"] = {feat = menu.add_feature("Own The Blame For this shit?", "t
         blame = 0
         return HANDLER_POP
     end
-    if not blame == o or nil then
+    if not blame == 0 or nil then
         blame = PlayerPed
 
     end
     return HANDLER_CONTINUE
 end), type = "toggle"}
 
-features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.tr.id, function(feat)
+features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "action", featureVars.at.id, function(feat)
 
         local pedd = player.get_player_ped(pid)
         local pos = v3()
@@ -7041,24 +7128,6 @@ features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", f
         gameplay.shoot_single_bullet_between_coords(pos, player.get_player_coords(pid) + offset, 10000.00, hash, blame, true, false, 10000.0)
 
 
-end), type = "action"}
-
-features["BeachFire"] = {feat = menu.add_feature("Attach Beach Fires", "action", featureVars.g.id, function(feat)
-
-        local pedd = player.get_player_ped(pid)
-        local pos = v3()
-        local offset = v3(0.0,0.0,10.0)
-        local bid1 =  ped.get_ped_bone_index(pedd, 31086)
-        local bid2 =  ped.get_ped_bone_index(pedd, 11816)
-        
-            spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
-            entity.attach_entity_to_entity( spawned_cunts[#spawned_cunts], pedd,  bid1, pos, offset, true, true, false, 0, false)
-            local offset = v3(0.0,0.0,-10.0)
-            spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
-            entity.attach_entity_to_entity( spawned_cunts[#spawned_cunts], pedd,  bid2, pos, offset, true, true, false, 0, false)
-            
-
-    return HANDLER_POP
 end), type = "action"}
 
 
