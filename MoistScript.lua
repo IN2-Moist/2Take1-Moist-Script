@@ -2379,6 +2379,99 @@ local hydrafun = menu.add_feature("Spawn Hydra Triples offset", "action", global
     vehicle.control_landing_gear(spawned_cunts[i], 3)
 end)
 
+local spawn_cunt = {}
+--TODO: Hydra Triplets
+local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodyguard", "action", globalFeatures.self, function(feat)
+
+    local pedd = player.get_player_ped(player.player_id())
+    local bid = ped.get_ped_bone_index(pedd, 17916)
+    local rot = v3(0.0,0.0,0.0)
+    local offset = v3(15.0,0.0,0.0)
+    local pos = entity.get_entity_coords(pedd)
+    pos.x =  pos.x + 10.0
+    local i = #spawned_cunts + 1
+    local myplygrp =  player.get_player_group(player.player_id())
+    local model = 0x6E42FD26
+    streaming.request_model(0x7B54A9D3)
+    while (not streaming.has_model_loaded(0x7B54A9D3)) do
+        system.wait(10)
+    end
+    
+    spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
+    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
+    vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
+    ped.set_ped_into_vehicle(pedd, spawned_cunts[i], -1)
+    
+    local attacha = spawned_cunts[i]
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
+    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
+    vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
+    entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
+    vehicle.control_landing_gear(spawned_cunts[i], 3)
+    
+    local attachb = spawned_cunts[i]
+    
+    streaming.request_model(model)
+	
+    while not streaming.has_model_loaded(model) do
+		
+		system.wait(10)
+	end
+    local y = #spawn_cunt + 1
+
+    spawn_cunt[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+    
+    
+    
+    ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
+    ped.set_ped_never_leaves_group(spawn_cunt[y], true)
+    ped.set_ped_can_switch_weapons(spawn_cunt[y], true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 46, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 52, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 1, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 2, true)
+    ped.set_ped_combat_range(spawn_cunt[y], 2)
+    ped.set_ped_combat_ability(spawn_cunt[y], 2)
+    ped.set_ped_combat_movement(spawn_cunt[y], 2)
+    ped.set_ped_into_vehicle(spawn_cunt[y], spawned_cunts[i], -1)
+    
+    
+    local offset = v3(-15.0,0.0,0.0)
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
+    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
+    vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
+    entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
+    vehicle.control_landing_gear(spawned_cunts[i], 3)
+        local y = #spawn_cunt + 1
+
+    spawn_cunt[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+    
+    
+    
+    ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
+    ped.set_ped_never_leaves_group(spawn_cunt[y], true)
+    ped.set_ped_can_switch_weapons(spawn_cunt[y], true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 46, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 52, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 1, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 2, true)
+    ped.set_ped_combat_range(spawn_cunt[y], 2)
+    ped.set_ped_combat_ability(spawn_cunt[y], 2)
+    ped.set_ped_combat_movement(spawn_cunt[y], 2)
+    ped.set_ped_into_vehicle(spawn_cunt[y], spawned_cunts[i], -1)
+    
+    
+    
+end)
+
 
 --TODO: Countermeasure Hotkey
 
@@ -7649,7 +7742,7 @@ end),  type = "toggle", callback = function()
 end}
 features["Kick1_Type1"].feat.max_i = #data
 features["Kick1_Type1"].feat.min_i = 1
-features["Kick1_Type1"].feat.value_i = 584
+features["Kick1_Type1"].feat.value_i = 1
 features["Kick1_Type1"].feat.mod_i = 100
 features["Kick1_Type1"].feat.on = false
 
@@ -7688,7 +7781,7 @@ end),  type = "toggle", callback = function()
 end}
 features["Kick1_Type2"].feat.max_i = #data
 features["Kick1_Type2"].feat.min_i = 1
-features["Kick1_Type2"].feat.value_i = 199
+features["Kick1_Type2"].feat.value_i = 1
 features["Kick1_Type2"].feat.mod_i = 99
 features["Kick1_Type2"].feat.on = false
 
@@ -7721,7 +7814,7 @@ end),  type = "toggle", callback = function()
 end}
 features["Kick2_Type1"].feat.max_i = #data2
 features["Kick2_Type1"].feat.min_i = 1
-features["Kick2_Type1"].feat.value_i = 397
+features["Kick2_Type1"].feat.value_i = 1
 features["Kick2_Type1"].feat.mod_i = 99
 features["Kick2_Type1"].feat.on = false
 
@@ -7755,7 +7848,7 @@ end),  type = "toggle", callback = function()
 end}
 features["Kick2_Type2"].feat.max_i = #data2
 features["Kick2_Type2"].feat.min_i = 1
-features["Kick2_Type2"].feat.value_i = 584
+features["Kick2_Type2"].feat.value_i = 1
 features["Kick2_Type2"].feat.mod_i = 99
 features["Kick2_Type2"].feat.on = false
 
@@ -7788,7 +7881,7 @@ end),  type = "toggle", callback = function()
 end}
 features["Kick3_Type1"].feat.max_i = #data3
 features["Kick3_Type1"].feat.min_i = 1
-features["Kick3_Type1"].feat.value_i = 485
+features["Kick3_Type1"].feat.value_i = 1
 features["Kick3_Type1"].feat.mod_i = 99
 features["Kick3_Type1"].feat.on = false
 

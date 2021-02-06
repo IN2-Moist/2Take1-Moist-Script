@@ -1,4 +1,4 @@
-some of the new stuff shown here: https://youtu.be/gnysxvWqSUs
+some of the new stuff shown here: https://youtu.be/gnysxvWqSUs https://youtu.be/_hyGLX6QeeM
 
 # 2Take1-Moist-Script (Build 2.0.1.9 : Moist Edition)
 
