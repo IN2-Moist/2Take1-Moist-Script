@@ -1832,6 +1832,44 @@ end
 --TODO: Combat Functions
 globalFeatures.self_ped_combat = menu.add_feature("Combat Functions", "parent", globalFeatures.self_ped).id
 
+
+ewo_key = menu.add_feature("Airstrike Self", "value_i", globalFeatures.self_ped_combat, function(feat)
+    if feat.on then
+		
+        local key = MenuKey()
+        key:push_str("LCONTROL")
+        key:push_str("z")
+        if key:is_down() then
+            ui.notify_above_map("RIP NIGGER!!!", "KYS TRYHARD STYLE!", 75)
+			
+            local pedd = player.get_player_ped(player.player_id())
+			
+            local pos = v3()
+            pos = entity.get_entity_coords(pedd)
+			
+            local posz
+            posz, pos.z = gameplay.get_ground_z(pos)
+			
+            local offset = v3()
+            offset = pos
+            offset.z = offset.z + 250
+			
+            local speed = feat.value_i
+			
+            local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+            gameplay.shoot_single_bullet_between_coords(offset, pos, 10000.00, hash, pedd, true, false, speed)
+            system.wait(10)
+
+        end
+    end
+    return HANDLER_CONTINUE
+end)
+ewo_key.on = true 
+ewo_key.max_i = 100000
+ewo_key.min_i = 2000
+ewo_key.value_i = 50000
+ewo_key.mod_i = 50
+
 local damage = 2000
 local dam_multi = menu.add_feature("unfair aim Damage", "autoaction_value_i", globalFeatures.self_ped_combat, function(feat)
     damage = tonumber(feat.value_i)
