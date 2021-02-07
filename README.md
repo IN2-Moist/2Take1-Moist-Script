@@ -1,6 +1,5 @@
-some of the new stuff shown here: https://youtu.be/gnysxvWqSUs https://youtu.be/_hyGLX6QeeM
 
-# 2Take1-Moist-Script (Build 2.0.1.9 : Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.0 : Moist Edition)
 
 ** Credits & Thanks to Kektram for help with OTR Code and code Advice
 

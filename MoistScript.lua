@@ -113,10 +113,9 @@ end
 --TODO: Script Settings Set & save
 local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini"
 
-local toggle_setting = {}
-local setting = {}
+local toggle_setting, setting  = {}, {}
 toggle_setting[#toggle_setting+1] = "MoistsScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.1.9"
+setting[toggle_setting[#toggle_setting]] = "2.0.2.0"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.otr_plyr_osd"
@@ -249,13 +248,7 @@ local myplygrp, plygrp
 local spam_wait = setting["spam_wait"]
 local preset_color = setting["NotifyColorDefault"]
 local notifytype = setting["NotifyVarDefault"]
-local AnonymousBounty = true
-local trigger_time = nil
-local cleanup_done = true
-local world_dumped = true
-local kicklogsent = false
-local logsent = false
-local spawnoptions_loaded = false
+local AnonymousBounty, trigger_time, cleanup_done, world_dumped, kicklogsent, logsent, spawnoptions_loaded  = true, nil, true, true, false, false, false
 
 --Modder Flag Variables
 local mod_flag_1, mod_flag_2, mod_flag_3, mod_flag_4, mod_flag_5
@@ -267,7 +260,7 @@ local hook_id, hookID, hookID1, hookID2, hookID3, hookID4, hookID5, hookID6 = 0,
 local notif = ui.notify_above_map
 
 local function notify_above_map(msg)
-    ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", 175)
+    ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.0\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -277,24 +270,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.0\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.0\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.0\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.0\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.0\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.1.9\n~g~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.0\n~g~~h~Moist Edition", color)
     end
 
 end
@@ -374,26 +367,7 @@ russian_spam = {
     {"I'm going to kill all russians!", "Я собираюсь убить все русские! Пожалуйста Идентифицировать себя! Готовься к смерти"},
 }
 
-local heiststat_setup = {
-    {"MP0_H3_COMPLETEDPOSIX", -1},
-    {"MP0_H3OPT_APPROACH", 1},
-    {"MP0_H3_HARD_APPROACH", 3},
-    {"MP0_H3OPT_TARGET", 3},
-    {"MP0_H3OPT_POI", 1023},
-    {"MP0_H3OPT_ACCESSPOINTS", 2047},
-    {"MP0_H3OPT_BITSET1", -1},
-    {"MP0_H3OPT_CREWWEAP", 1},
-    {"MP0_H3OPT_CREWDRIVER", 1},
-    {"MP0_H3OPT_CREWHACKER", 5},
-    {"MP0_H3OPT_WEAPS", 1},
-    {"MP0_H3OPT_VEHS", 3},
-    {"MP0_H3OPT_DISRUPTSHIP", 3},
-    {"MP0_H3OPT_BODYARMORLVL", 3},
-    {"MP0_H3OPT_KEYLEVELS", 2},
-    {"MP0_H3OPT_MASKS", math.ceil(math.random(0, 12))},
-    {"MP0_H3OPT_BITSET0", -1},
-}
-
+local heiststat_setup = {{"MP0_H3_COMPLETEDPOSIX", -1},{"MP0_H3OPT_APPROACH", 1},{"MP0_H3_HARD_APPROACH", 3},{"MP0_H3OPT_TARGET", 3},{"MP0_H3OPT_POI", 1023},{"MP0_H3OPT_ACCESSPOINTS", 2047},{"MP0_H3OPT_BITSET1", -1},{"MP0_H3OPT_CREWWEAP", 1},{"MP0_H3OPT_CREWDRIVER", 1},{"MP0_H3OPT_CREWHACKER", 5},{"MP0_H3OPT_WEAPS", 1},{"MP0_H3OPT_VEHS", 3},{"MP0_H3OPT_DISRUPTSHIP", 3},{"MP0_H3OPT_BODYARMORLVL", 3},{"MP0_H3OPT_KEYLEVELS", 2},{"MP0_H3OPT_MASKS", math.ceil(math.random(0, 12))},{"MP0_H3OPT_BITSET0", -1},}
 local presets = {{"beyond_limits", -173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)", -1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",  -5784.258301,-8289.385742,-136.411270},{"Chiliad", 491.176,5529.808,777.503},{"Lesters House", 1275.544,-1721.774,53.967},{"arena", -264.297,-1877.562,27.756},{"ElysianIslandBridge", -260.923,-2414.139,124.008},{"LSIAFlightTower", -983.292,-2636.995,89.524},{"TerminalCargoShip", 983.303,-2881.645,21.619},{"ElBurroHeights", 1583.022,-2243.034,93.265},{"CypressFlats", 552.672,-2218.876,68.981},{"LaMesa", 1116.815,-1539.787,52.146},{"SupplyStreet", 777.631,-695.813,28.763},{"Noose", 2438.874,-384.409,92.993},{"TatavianMountains", 2576.999,445.654,108.456},{"PowerStation", 2737.046,1526.873,57.494},{"WindFarm", 2099.765,1766.219,102.698},{"Prison", 1693.473,2652.971,61.335},{"SandyShoresRadioTower", 1847.034,3772.019,33.151},{"AlamoSea", 719.878,4100.993,39.154},{"RebelRadioTower", 744.500,2644.334,44.400},{"GreatChaparral", -291.035,2835.124,55.530},{"ZancudoControlTower", -2361.625,3244.962,97.876},{"NorthChumash(Hookies)", -2205.838,4298.805,48.270},{"AltruistCampRadioTower", -1036.141,4832.858,251.595},{"CassidyCreek", -509.942,4425.454,89.828},{"MountChiliad", 462.795,5602.036,781.400},{"PaletoBayFactory", -125.284,6204.561,40.164},{"GreatOceanHwyCafe", 1576.385,6440.662,24.654},{"MountGordoRadioTower", 2784.536,5994.213,354.275},{"MountGordoLighthouse", 3285.519,5153.820,18.527},{"GrapeSeedWaterTower", 1747.518,4814.711,41.666},{"TatavianMountainsDam", 1625.209,-76.936,166.651},{"VinewoodHillsTheater", 671.748,512.226,133.446},{"VinewoodSignRadioTowerTop", 751.179,1245.13,353.832},{"Hawik", 472.588,-96.376,123.705},{"PacificSrandardBank", 195.464,224.341,143.946},{"WestVinewoodCrane", -690.273,219.728,137.518},{"ArcadiasRadioTower", -170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010, -1419.530,5.001},{"DelperoFerrisWheel", -1644.193,-1114.271,13.029},{"VespucciCanalsClockTower", -1238.729,-853.861,77.758},{"DelPeroNrMazebankwest", -1310.777,-428.985,103.465},{"pacifficBluffs", -2254.199,326.088,192.606},{"GWC&GolfingSociety", -1292.052,286.209,69.407},{"Burton", -545.979,-196.251,84.733},{"LosSantosMedicalCenter", 431.907,-1348.709,44.673},{"BanhamCanyon", -3085.451,774.426,20.237},{"TongvaHills", -1874.280,2064.565,150.852},{"SanChianskiMountainRange", 2900.166,4325.987,102.101},{"HumaineLabs", 3537.104,3689.238,45.228},{"YouToolStoreSanChianski", 2761.944,3466.951,55.679},{"GalileoObservatory", -422.917,1133.272,325.855},{"GrndSeroraDesertCementwks", 1236.649,1869.214,84.824}}
 local escort_ped = {{"juggalo_01", 0xDB134533},{"topless_01", 0x9CF26183},{"juggalo_02", 0x91CA3E2C},{"lester crest", 0xB594F5C3},{"cop", 0x9AB35F63},{"mp_agent14", 0x6DBBFC8B},{"ramp_marine", 0x616C97B9},{"trafficwarden", 0xDE2937F3},{"lestercrest_2", 0x6E42FD26},{"lestercrest", 0x4DA6E849},{"agent14", 0xFBF98469},{"m_pros_01", 0x6C9DD7C9},{"waremech_01", 0xF7A74139},{"weapexp_01", 0x36EA5B09},{"weapwork_01", 0x4186506E},{"securoguard_01", 0xDA2C984E},{"armoured_01", 0xCDEF5408},{"armoured_01", 0x95C76ECD},{"armoured_02", 0x63858A4A},{"marine_01", 0xF2DAA2ED},{"marine_02", 0xF0259D83},{"security_01", 0xD768B228},{"snowcop_01", 0x1AE8BB58},{"prisguard_01", 0x56C96FC6},{"pilot_01", 0xE75B4B1C},{"pilot_02", 0xF63DE8E1},{"blackops_01", 0xB3F3EE34},{"blackops_02", 0x7A05FA59},{"blackops_03", 0x5076A73B},{"hwaycop_01", 0x739B1EF5},{"marine_01", 0x65793043},{"marine_02", 0x58D696FE},{"marine_03", 0x72C0CAD2},{"ranger_01", 0xEF7135AE},{"robber_01", 0xC05E1399},{"sheriff_01", 0xB144F9B9},{"pilot_01", 0xAB300C07},{"swat_01", 0x8D8F1B10},{"fibmugger_01", 0x85B9C668},{"juggernaut_01", 0x90EF5134},{"rsranger_01", 0x3C438CD2},}
 local veh_list = {{"buzzard", 0x2F03547B, nil, nil},{"savage", 0xFB133A17, nil, nil},{"seasparrow", 0xD4AE63D9, 10, 1},{"valkyrie2", 0x5BFA5C4B, nil, nil},{"valkyrie", 0xA09E15FD, nil, nil},{"boxville5", 0x28AD20E1, nil, nil},{"apc", 0x2189D250, 10, 0},{"oppressor2", 0x7B54A9D3, 10, 1},{"oppressor", 0x34B82784, 10, 0},{"ruiner2", 0x381E10BD, nil, nil},{"scramjet", 0xD9F0503D, 10, 0},{"stromberg", 0x34DBA661},{"tampa3", 0xB7D9F7F1},{"khanjali", 0xAA6F980A, nil, nil},{"insurgent3", 0x8D4B7A8A, nil, nil},{"insurgent", 0x9114EADA, nil, nil},{"limo2", 0xF92AEC4D, nil, nil},{"mower", 0x6A4BD8F6, nil, nil},{"police2", 0x9F05F101, nil, nil},{"police3", 0x71FA16EA, nil, nil},{"police4", 0x8A63C7B9, nil, nil},{"police", 0x79FBB0C5, nil, nil},{"policeb", 0xFDEFAEC3, nil, nil},{"policeold1", 0xA46462F7, nil, nil},{"policeold2", 0x95F4C618, nil, nil},{"policet", 0x1B38E955, nil, nil},{"polmav", 0x1517D4D9, nil, nil},{"sheriff2", 0x72935408, nil, nil},{"sheriff", 0x9BAA707C, nil, nil},{"phantom2", 0x9DAE1398, nil, nil},{"ruiner3", 0x2E5AFD37, nil, nil},{"scorcher", 0xF4E1AA15, nil, nil},{"bmx", 0x43779C54, nil, nil},}
@@ -511,7 +485,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.1.9", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.0", "parent", 0).id
 
 --TODO: Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
@@ -558,7 +532,7 @@ globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", global
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
 
 --TODO: Player Feature Parents
-playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.1.9", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.0", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
@@ -1626,7 +1600,7 @@ function blacklist_check(pid)
     local scid = player.get_player_scid(pid)
     if ValidScid(scid) and scids[scid] then
         local name = player.get_player_name(pid)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.1.9\nBlack List", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.0\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -2349,6 +2323,7 @@ global_func.force_wBPH.on = setting["force_wBPH"]
 
 --TODO: Self Options
 
+local spawn_cunt = {}
 --TODO: Hydra Triplets
 local hydrafun = menu.add_feature("Spawn Hydra Triples offset", "action", globalFeatures.self, function(feat)
 
@@ -2379,8 +2354,7 @@ local hydrafun = menu.add_feature("Spawn Hydra Triples offset", "action", global
     vehicle.control_landing_gear(spawned_cunts[i], 3)
 end)
 
-local spawn_cunt = {}
---TODO: Hydra Triplets
+
 local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodyguard", "action", globalFeatures.self, function(feat)
 
     local pedd = player.get_player_ped(player.player_id())
@@ -2407,6 +2381,7 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
     local attacha = spawned_cunts[i]
     local i = #spawned_cunts + 1
     spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    entity.set_entity_god_mode(spawned_cunts[i], true)
     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
     vehicle.get_vehicle_mod(spawned_cunts[i], 10)
@@ -2444,6 +2419,7 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
     local offset = v3(-15.0,0.0,0.0)
     local i = #spawned_cunts + 1
     spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+     entity.set_entity_god_mode(spawned_cunts[i], true)
     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
     vehicle.get_vehicle_mod(spawned_cunts[i], 10)
@@ -2468,7 +2444,15 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
     ped.set_ped_combat_movement(spawn_cunt[y], 2)
     ped.set_ped_into_vehicle(spawn_cunt[y], spawned_cunts[i], -1)
     
-    
+    for x = 0, 32  do
+        local me = player.player_id()
+        
+        if x ~= me then
+        
+        ped.set_relationship_between_groups(5, player.get_player_group(x), myplygrp)
+        ped.set_relationship_between_groups(5, myplygrp, player.get_player_group(x))
+    end
+    end
     
 end)
 
@@ -2974,7 +2958,7 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
             return HANDLER_CONTINUE
 
         end
-
+         toggleOFF_kicks(hostnow)
 
         return HANDLER_POP
 end)
@@ -3060,6 +3044,10 @@ end)
 
 function toggle_kicks(pid)
     playerFeatures[pid].features["EventSpam_toggle"].feat.on = true
+end
+
+function toggleOFF_kicks(pid)
+    playerFeatures[pid].features["EventSpam_toggle"].feat.on = false
 end
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
@@ -7694,7 +7682,7 @@ features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggl
         playerFeatures[pid].features["Kick2_Type2"].feat.on = false
         playerFeatures[pid].features["Kick3_Type1"].feat.on = false
         playerFeatures[pid].features["Kick3_Type2"].feat.on = false
-        return HANDLER_CONTINUE
+        return HANDLER_POP
     end
 
 end),  type = "toggle", callback = function()
@@ -7705,6 +7693,7 @@ end),  type = "toggle", callback = function()
     playerFeatures[pid].features["Kick3_Type1"].feat.on = true
     playerFeatures[pid].features["Kick3_Type2"].feat.on = true
     return HANDLER_POP
+
 
 end}
 features["EventSpam_toggle"].feat.on = false
@@ -7946,6 +7935,14 @@ features["Kick3_Type3"].feat.min_i = 1
 features["Kick3_Type3"].feat.value_i = 1
 features["Kick3_Type3"].feat.mod_i = 1
 features["Kick3_Type3"].feat.on = false
+
+features["force-kick"] = {feat = menu.add_feature("Host Force  Kick Experiment", "action", featureVars.k.id, function(feat)
+   
+            local time = utils.time_ms() + 8000
+            while time > utils.time_ms() do end
+            network.network_session_kick_player(pid)
+   
+end), type = "action"}
 
 features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
     --player.unset_player_as_modder(pid, -1)
