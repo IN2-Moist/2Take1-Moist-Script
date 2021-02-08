@@ -1310,38 +1310,6 @@ function netlog_out(text)
     io.close()
 end
 
---TODO: Chat Logger
-function chat(name, text)
-    if not  chat_log.on then return end
-        local d = os.date()
-        local t = string.match(d, "%d%d:%d%d:%d%d")
-        local dt = os.date("%d/%m/%y%y")
-        local file = io.open(rootPath .. "\\lualogs\\chat.md", "a")
-        io.output(file)
-        io.write("[" .. dt .. " " .. t .. "]" .. " [" .. name .. "]")
-        io.write("\n" .. text .. "\n")
-        io.close()
-end
-
-function Console_chat(name, text)
-    if not chat_console.on then return end
-        local d = os.date()
-        local t = string.match(d, "%d%d:%d%d:%d%d")
-        print(t .." [ ".. name .." ] " .. text)
-end
-
-local ChatEventID = event.add_event_listener("chat", function(e)
-    if player.get_player_ped(e.player) == 0 then return end
-        local sender = player.get_player_name(e.player)
-        chat(sender, e.body)
-        Console_chat(sender, e.body)
-end)
-
-
-event.add_event_listener("exit", function()
-    event.remove_event_listener("chat", ChatEventID)
-end)
-
 --TODO: Blacklist
 function ValidScid(scid)
     return scid ~= -1 and scid ~= 4294967295
@@ -1580,13 +1548,52 @@ function blacklist_check(pid)
     end
 end
 LoadBlacklist()
+end
+blacklist_shit()
 
 --TODO: Blacklist Main function
 
 --TODO: Logging shit
+
+
+--TODO: Chat Logger
+function chat(name, text)
+    if not  chat_log.on then return end
+        local d = os.date()
+        local t = string.match(d, "%d%d:%d%d:%d%d")
+        local dt = os.date("%d/%m/%y%y")
+        local file = io.open(rootPath .. "\\lualogs\\chat.md", "a")
+        io.output(file)
+        io.write("[" .. dt .. " " .. t .. "]" .. " [" .. name .. "]")
+        io.write("\n" .. text .. "\n")
+        io.close()
+end
+
+function Console_chat(name, text)
+    if not chat_console.on then return end
+        local d = os.date()
+        local t = string.match(d, "%d%d:%d%d:%d%d")
+        print(t .." [ ".. name .." ] " .. text)
+end
+
+local ChatEventID = event.add_event_listener("chat", function(e)
+    if player.get_player_ped(e.player) == 0 then return end
+        local sender = player.get_player_name(e.player)
+        chat(sender, e.body)
+        Console_chat(sender, e.body)
+end)
+
+
+event.add_event_listener("exit", function()
+    event.remove_event_listener("chat", ChatEventID)
+end)
+
+
+
+
 local logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 
-local chat_log = menu.add_feature("Log in Game Chat", "toggle", logging.id, function(feat)
+chat_log = menu.add_feature("Log in Game Chat", "toggle", logging.id, function(feat)
     if not feat.on then
         setting["chat_log"] = false
         return HANDLER_POP
@@ -1596,7 +1603,7 @@ local chat_log = menu.add_feature("Log in Game Chat", "toggle", logging.id, func
 end)
 chat_log.on = setting["chat_log"]
 
-local chat_console = menu.add_feature("Ouput Game Chat to Debug Console", "toggle", logging.id, function(feat)
+chat_console = menu.add_feature("Ouput Game Chat to Debug Console", "toggle", logging.id, function(feat)
     if not feat.on then
         setting["chat_debug"] = false
         return HANDLER_POP
@@ -1614,9 +1621,6 @@ checkscript.on = setting["script_check_logger"]
 
 scriptevent_log = menu.add_feature("log event hash only", "toggle", logging.id, nil)
 scriptevent_log.on = false
-
-end
-blacklist_shit()
 
 --TODO: player Features --Griefing
 
