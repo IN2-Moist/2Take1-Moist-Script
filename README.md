@@ -64,6 +64,19 @@ The files and folders required are as they should be and should be extracted fro
 
 ### Moists Script ?.?.?.? (Build Number Version being used)
 ##### Online Players
+`List Of Players by name in the session with the below functions inside`
+Player Names have tags:
+
+-IN2Moist-[Y]      =  Y = You
+-IN2Moist-[F]      =  F = Social Club Friend
+-IN2Moist-[V]      =  V = Vehicle God Mode
+-IN2Moist-[G]      =  G = Player God Mode
+-IN2Moist-[.SPEC.] = .SPEC. Custom Tag by myself just indicating the Player Spectating outside or not in a dectected interior being in a vehicle inside say Arena Workshop triggers this if you spectate with mod 
+-IN2Moist-[M]      = M = Player is Marked by 2Take1 as a Modder for some Reason Check online Player Info Window for more Details!
+-IN2Moist-[O]      = O = Player is Currently using OTR Could be either Lester OTR CEO Ghost Organisation or a menu modded OTR if this has been on for more than 5mins pretty sure this is Modded!
+-IN2Moist-[H]      = H = Player is Currently The Session Host
+-IN2Moist-[S]      = S = Script Host of the session (Player Currently Hosting the Freemode.c Script fior the session)
+
 ##### Online Session
 ##### Player Functions
 ##### World Options
@@ -607,7 +620,9 @@ Toggle off Will Delete All`
 
 - Track all Players POS
 
-- Vehicle God OSD
+- OTR OSD
+` Text down the left side of the screen Indicating Off the Radar Players
+ **   "OTR : Players Name"  **
 
 - High Player Speed OSD
 
@@ -615,11 +630,21 @@ Toggle off Will Delete All`
 
 - Player Bar OSD
 
+`Black Bar across the top of the screen with all current session players displayed and Colour Coded to their Current State`
+
+- Red       Player is God Mode
+- Orange    Vehicle is God Mode
+- Pink      Player & Vehicle is God Mode
+
 - Date & Time OSD
+
+`Small Clock added to the Right hand side of the player bar`
 
 
 
 **Marker Options**
+
+`These toggle on depending on what you have selected or turned on to highlight a player in the local script Functions under any player`
 
 - fading red white Marker RGBA Changer
 - flash red white Marker RGBA Changer
