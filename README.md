@@ -68,14 +68,23 @@ The files and folders required are as they should be and should be extracted fro
 Player Names have tags:
 
 -IN2Moist-[Y]      =  Y = You
+
 -IN2Moist-[F]      =  F = Social Club Friend
+
 -IN2Moist-[V]      =  V = Vehicle God Mode
+
 -IN2Moist-[G]      =  G = Player God Mode
--IN2Moist-[.SPEC.] = .SPEC. Custom Tag by myself just indicating the Player Spectating outside or not in a dectected interior being in a vehicle inside say Arena Workshop triggers this if you spectate with mod 
+
+-IN2Moist-[.SPEC.] = .SPEC. Custom Tag by myself just indicating the Player Spectating outside or not in a dectected interior being in a vehicle inside say Arena Workshop triggers this if you spectate with mod
+
 -IN2Moist-[M]      = M = Player is Marked by 2Take1 as a Modder for some Reason Check online Player Info Window for more Details!
+
 -IN2Moist-[O]      = O = Player is Currently using OTR Could be either Lester OTR CEO Ghost Organisation or a menu modded OTR if this has been on for more than 5mins pretty sure this is Modded!
+
 -IN2Moist-[H]      = H = Player is Currently The Session Host
+
 -IN2Moist-[S]      = S = Script Host of the session (Player Currently Hosting the Freemode.c Script fior the session)
+
 
 ##### Online Session
 ##### Player Functions
@@ -169,14 +178,6 @@ Custom Value `Enter any Value Between 0 & 10,000`
 
 **Removed** `- Netevent Hook (Experimental NetEvent Modder Detection)`
 
-#### Logging Shit
-- Log in Game Chat
-
-**Removed** `- Log Netevents to File (Ouput all Received NetEvents to a log file)`
-
-- Hook Script Events & Log to File (Output and Log Script Events to a log file)
-- Log event hash only (Hash logger)
-								
 
 #### Orbital Room Block
 
@@ -428,9 +429,16 @@ to reset the changed stats should you need to`
 
 ##### Vehicle Options
 
-- ToggleOFF Player Vehicle God Mode
+- Player Vehicle God Mode ON
+- Player Vehicle God Mode OFF
 
-`Turns off players vehicle God Mode if it is on. Requires you to be in range of their vehicle`
+
+`Turns on/off players vehicle God Mode if it is on. Requires you to be in range of their vehicle`
+
+- Vehicle Targetable
+- Vehicle Not Targetable
+
+`Turns on / off other Players Ability to Missile Lock on to vehicle`
 
 - Set Boost & Forward Speed
 
@@ -609,7 +617,10 @@ Toggle off Will Delete All`
 #### Marker Options
 
 #### Notify Customisation
- 
+
+#### Logging Shit
+
+
 - Save Settings (Saves all Set options Currently Coded for Save including anything outside the options section)
 
 - Show & Load Spawn Options
@@ -652,3 +663,11 @@ Toggle off Will Delete All`
 - Above Marker RGBA Changer
 - Marker RGB Changer
 - Ground Marker RGBA Changer
+
+**Logging Shit**
+- Log in Game Chat
+
+
+- Hook Script Events & Log to File (Output and Log Script Events to a log file)
+- Log event hash only (Hash logger)
+
