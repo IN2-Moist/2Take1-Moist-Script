@@ -5692,7 +5692,6 @@ features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "a
 		return HANDLER_CONTINUE
 	end
         entity.set_entity_god_mode(plyveh, true)
-    end
     return HANDLER_CONTINUE
 end),  type = "action", callback = function()
 end}
@@ -5706,7 +5705,7 @@ features["godvehoff"] = {feat = menu.add_feature("Player Vehicle God Mode OFF", 
 		return HANDLER_CONTINUE
 	end
         entity.set_entity_god_mode(plyveh, false)
-    end
+
     return HANDLER_CONTINUE
 end),  type = "action", callback = function()
 end}
