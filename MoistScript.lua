@@ -466,21 +466,20 @@ globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.0", "parent", 0).i
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
+--session
 test = menu.add_feature("Modder Protex Detect", "parent", globalFeatures.protex, cb)
 globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
 globalFeatures.troll = menu.add_feature("Troll Functions", "parent", globalFeatures.lobby).id
 globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
 globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
+--Player
 globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
-globalFeatures.World = menu.add_feature("World Options", "parent", globalFeatures.parent).id
-globalFeatures.Wave = menu.add_feature("World Wave Modifiers", "parent", globalFeatures.World).id
-globalFeatures.cleanup = menu.add_feature("Clean Shit Up!", "parent", globalFeatures.World).id
-globalFeatures.entity_removal = menu.add_feature("World Clean-up", "parent", globalFeatures.cleanup).id
 globalFeatures.self_ped = menu.add_feature("Ped Functions", "parent", globalFeatures.self).id
-globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
 globalFeatures.self_veh = menu.add_feature("Vehicle Functions", "parent", globalFeatures.self).id
-globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
 globalFeatures.self_quickstat = menu.add_feature("Player Stats", "parent", globalFeatures.self).id
+globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
+globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
+--stats
 globalFeatures.self_statcheck = menu.add_feature("Player Stat Checks", "parent", globalFeatures.self_quickstat).id
 
 globalFeatures.self_statsetup = menu.add_feature("Player Stat Setup", "parent", globalFeatures.self_quickstat, function()
@@ -498,13 +497,23 @@ globalFeatures.quick_stats = menu.add_feature("Quick Stat Setups", "parent", glo
 
 end).id
 
+--world
+globalFeatures.World = menu.add_feature("World Options", "parent", globalFeatures.parent).id
+globalFeatures.cleanup = menu.add_feature("Clean Shit Up!", "parent", globalFeatures.World).id
+globalFeatures.entity_removal = menu.add_feature("World Clean-up", "parent", globalFeatures.cleanup).id
+globalFeatures.Wave = menu.add_feature("World Wave Modifiers", "parent", globalFeatures.World).id
+
+--spam
+
 globalFeatures.Moist_Spam = menu.add_feature("Chat Spam", "parent", globalFeatures.parent).id
 globalFeatures.Preset_Chat = menu.add_feature("Chat Spam Presets", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_RUS = menu.add_feature("Russian Spam Presets", "parent", globalFeatures.Preset_Chat).id
 globalFeatures.Spam_Options = menu.add_feature("Spam Options", "parent", globalFeatures.Moist_Spam).id
+--options
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
+logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 
 --TODO: Player Feature Parents
 playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.0", "parent", 0).id
@@ -1589,9 +1598,6 @@ event.add_event_listener("exit", function()
 end)
 
 
-
-
-local logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 
 chat_log = menu.add_feature("Log in Game Chat", "toggle", logging.id, function(feat)
     if not feat.on then
@@ -5678,37 +5684,55 @@ featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
 
 local features = {}
 --TODO: Vehicle Options
-features["godvehon"] = {feat = menu.add_feature("ToggleON Player Vehicle God Mode", "toggle", featureVars.v.id, function(feat)
-    if feat.on then
+features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
 
-        local plyped = player.get_player_ped(pid)
-
-        local plyveh = player.get_player_vehicle(pid)
-
-        network.request_control_of_entity(plyveh)
+    local plyveh = player.get_player_vehicle(pid)
+	while not network.has_control_of_entity(plyveh) do
+		network.request_control_of_entity(plyveh)
+		return HANDLER_CONTINUE
+	end
         entity.set_entity_god_mode(plyveh, true)
-        return HANDLER_CONTINUE
     end
-
-end),  type = "toggle", callback = function()
+    return HANDLER_CONTINUE
+end),  type = "action", callback = function()
 end}
 features["godvehon"].feat.on = false
 
-features["godvehoff"] = {feat = menu.add_feature("ToggleOFF Player Vehicle God Mode", "toggle", featureVars.v.id, function(feat)
-    if feat.on then
+features["godvehoff"] = {feat = menu.add_feature("Player Vehicle God Mode OFF", "action", featureVars.v.id, function(feat)
 
-        local plyped = player.get_player_ped(pid)
-
-        local plyveh = player.get_player_vehicle(pid)
-        network.request_control_of_entity(ped.get_vehicle_ped_is_using(plyped))
-        network.request_control_of_entity(plyveh)
+    local plyveh = player.get_player_vehicle(pid)
+	while not network.has_control_of_entity(plyveh) do
+		network.request_control_of_entity(plyveh)
+		return HANDLER_CONTINUE
+	end
         entity.set_entity_god_mode(plyveh, false)
     end
     return HANDLER_CONTINUE
-end),  type = "toggle", callback = function()
+end),  type = "action", callback = function()
 end}
-features["godvehoff"].feat.on = false
 
+features["LockOn"] = {feat = menu.add_feature("Vehicle Targetable", "action",  featureVars.v.id, function(feat)
+	local plyveh = player.get_player_vehicle(pid)
+	while not network.has_control_of_entity(plyveh) do
+		network.request_control_of_entity(plyveh)
+		return HANDLER_CONTINUE
+	end
+	vehicle.set_vehicle_can_be_locked_on(plyveh,true, true)
+	return HANDLER_POP
+	end), type = "action", callback = function()
+end}
+	 
+features["LockOFF"] = {feat = menu.add_feature("Vehicle Not Targetable", "action",  featureVars.v.id, function(feat)
+	local plyveh = player.get_player_vehicle(pid)
+	while not network.has_control_of_entity(plyveh) do
+		network.request_control_of_entity(plyveh)
+		return HANDLER_CONTINUE
+	end
+	vehicle.set_vehicle_can_be_locked_on(plyveh, false, false)
+	return HANDLER_POP
+	end), type = "action", callback = function()
+end}
+	 
 features["set_Boost"] = {feat = menu.add_feature("Set Boost & Forward Speed", "action", featureVars.v.id, function(feat)
     local plyveh = player.get_player_vehicle(pid)
     if plyveh ~= nil then
