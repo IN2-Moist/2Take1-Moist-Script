@@ -1,11 +1,50 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.0 : Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.1: Experimental Edition)
+    Change Log:
 
-** Credits & Thanks to Kektram for help with OTR Code and code Advice
+    Removed script loader due to errors executing scripts breaking the menu internal lua initialization script
+    Removed Kick Spam
+
+    Added Autoexec to run just this script will work with or without
+    
+    Script is now loaded into its own thread
+
+    Main loop feature giving all the tags for players in the menu is now executed on player joins & leaves and when you enter the online players section
+    hoping this should help free up some resources and improve performance
+    Main loop can be toggled on in settings should you prefer it
+
+    Player Bar has been reworked Tags added with better god mode(s) otr and modded health otr
+    players are checked for more variables before giving a tag, checks interior, visibility, etc seems less false positive like this !
+
+    player names will still change color with their current state tags will only be added to the end of their names if they fail the checks
+
+    [G] = God Mode Player [V] = Vehicle God [O] = Off The Radar (OTR) [G]+[V] = [G] & [V] are both on
+    [UO] = Undead OTR basically player has modified their max health like you can in this script to become UnDead and not visible on the radar
+
+    added in Game Chat command for Friends to kick players
+    non host kick added should you not have host - Host kick when you are session host
+    kick command is instantly cleared with ingame chat spam, a simple number count upto 30 to clear it 
+    Kick Commands if checks are passed will send sms confirming command and kick being sent
+    
+    added grenadelauncher waypoint (as self so is named)  (player ped combat)
+
+    added Airstrike/Missile Waypoint (anonomous) (player ped combat)
+
+    added weapon impact position waypoint function (player options)
+
+    fixed weapons being given with no ammo
+
+    PedsHate & Attack Player eject from vehicle if in one then using selected weapon will attack the player
+    peds are given 750 health units (about 2 stone hatchet hits to kill)
+
+    peds eject from vehicle troll option selection is type of eject 6 is default and bails from vehicle moving or not
+
+    self eject from vehicle same as above for peds
+
+
+ Credits & Thanks to Kektram for help with OTR Code and code Advice
 
 Thanks to haekkzer for his help and advice over time i was a tester for the menu
-
-Thanks to Sai for his help and code for the script loader
 
 Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
 script would  not exist! **
