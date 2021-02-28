@@ -7884,13 +7884,3 @@ Moist_Version()
 
 end
 threads[#threads + 1] = menu.create_thread(Moist_Script_thread, feat)
-
-
-function MoistLoad(feat)
-    local rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
-	local file = rootPath .. "\\scripts\\zblacklist 3.0.lua"
-	local a = assert(loadfile(file)) return a()
-    
-end
-threads[#threads + 1] = menu.create_thread(MoistLoad, feat)
-
