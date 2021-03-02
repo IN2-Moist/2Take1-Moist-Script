@@ -1,45 +1,25 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.1: Experimental Edition)
+# 2Take1-Moist-Script (Build 2.0.2.3: Moist Edition)
     Change Log:
+    DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!
+    Experiment Abandoned!
+    Revert back to the old Player list Loop since some functions would not work without it
 
-    Removed script loader due to errors executing scripts breaking the menu internal lua initialization script
-    Removed Kick Spam
+    Player Bar improved further
+    More checks added so if player is Complete Retarded cunt & going around invisible we now check their speed if they are moving faster than you can run in an interior
+    God Tags get applied
 
-    Added Autoexec to run just this script will work with or without
-    
-    Script is now loaded into its own thread
+    God mode check & notify has been added default off at the moment will add save at a later date
 
-    Main loop feature giving all the tags for players in the menu is now executed on player joins & leaves and when you enter the online players section
-    hoping this should help free up some resources and improve performance
-    Main loop can be toggled on in settings should you prefer it
+    Added Other Scripts Parent with a list of all scripts in your script folder click to run they will get hidden so you cant load them more than once
+    each loaded script is saved in a table so you can use the option at the top of the list (Save loaded scripts) to save them to file and allow them to autoload on start
 
-    Player Bar has been reworked Tags added with better god mode(s) otr and modded health otr
-    players are checked for more variables before giving a tag, checks interior, visibility, etc seems less false positive like this !
+    Options that are savable can now be done anytime, Hotkey to save Added Hold **`LCTRL+LSHIFT+S`** to save settings
 
     player names will still change color with their current state tags will only be added to the end of their names if they fail the checks
 
     [G] = God Mode Player [V] = Vehicle God [O] = Off The Radar (OTR) [G]+[V] = [G] & [V] are both on
     [UO] = Undead OTR basically player has modified their max health like you can in this script to become UnDead and not visible on the radar
-
-    added in Game Chat command for Friends to kick players
-    non host kick added should you not have host - Host kick when you are session host
-    kick command is instantly cleared with ingame chat spam, a simple number count upto 30 to clear it 
-    Kick Commands if checks are passed will send sms confirming command and kick being sent
-    
-    added grenadelauncher waypoint (as self so is named)  (player ped combat)
-
-    added Airstrike/Missile Waypoint (anonomous) (player ped combat)
-
-    added weapon impact position waypoint function (player options)
-
-    fixed weapons being given with no ammo
-
-    PedsHate & Attack Player eject from vehicle if in one then using selected weapon will attack the player
-    peds are given 750 health units (about 2 stone hatchet hits to kill)
-
-    peds eject from vehicle troll option selection is type of eject 6 is default and bails from vehicle moving or not
-
-    self eject from vehicle same as above for peds
 
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice

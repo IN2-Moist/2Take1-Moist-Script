@@ -2,7 +2,7 @@ local threads = {}
 MoistScript_thread = 0
 
 local Moist_Script_thread  = function(feat)
-local version_check, MoistVersion = nil,  "2.0.2.1"
+local version_check, MoistVersion = nil,  "2.0.2.3"
 
 --[[
 Credits & Thanks to Kektram for help with OTR Code and code Advice
@@ -20,7 +20,7 @@ utils.make_dir(rootPath .. "\\scripts\\MoistsLUA_cfg")
 
 --DATA FILES
 local data, data2, data3 = {}, {}, {}
-local configfile, scidFile, Player_DB, Spamtxt_Data, debugfile
+local configfile, scidFile, Player_DB, Spamtxt_Data
 configfile = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini"
 scidFile = rootPath .. "\\Blacklist\\scid.list"
 Player_DB = rootPath .. "\\scripts\\lualogs\\PlayerDB.md"
@@ -40,7 +40,7 @@ end
 function Debug_Out(text)
 
     local txt = Cur_Date_Time()
-    local file = io.open(debugfile, "a")
+    local file = io.open(rootPath.."\\lualogs\\Moists_debug.log", "a")
     io.output(file)
     io.write("\n" .. txt .. "\n")
     io.write(text)
@@ -84,7 +84,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 
 local toggle_setting, setting  = {}, {}
 toggle_setting[#toggle_setting+1] = "MoistScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.2.1"
+setting[toggle_setting[#toggle_setting]] = "2.0.2.3"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
@@ -116,8 +116,6 @@ setting[toggle_setting[#toggle_setting]] = 002
 toggle_setting[#toggle_setting+1] = "NotifyVarDefault"
 setting[toggle_setting[#toggle_setting]] = 4
 toggle_setting[#toggle_setting+1] = "Weapon_Recticle"
-setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "MainLoop"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "no_peds"
 setting[toggle_setting[#toggle_setting]] = false
@@ -235,9 +233,28 @@ function PlyPed(pid)
  return PlayerPed
 end
 
+local SH, H = nil, nil
 function GetHosts()
-    SessionHost =  player.get_host()
     ScriptHost = script.get_host_of_this_script()
+    SessionHost =  player.get_host()
+    SH = ScriptHost
+    H = SessionHost
+    
+    if SessionHost ~= H then
+        H = SessionHost
+        local name = player.get_player_name(H)
+        moist_notify("The session host is now:\n", name)
+        Debug_Out(string.format("session host is Now : " .. name))
+
+    end
+
+
+    if ScriptHost ~= SH then
+        SH = ScriptHost
+        local name = player.get_player_name(SH)
+        moist_notify("The script host is now:\n", name)
+        Debug_Out(string.format("Script Host is Now : " .. name))
+    end
 end
 
 
@@ -291,7 +308,7 @@ function dec2ip(decip)
 end
 
 function notify_above_map(msg)
-    ui.notify_above_map(tostring("<font size='12'>~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.1\n~p~~h~Moist Edition", 175)
+    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -301,24 +318,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.1\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.1\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.1\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.1\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.1\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.1\n~g~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~g~~h~Moist Edition", color)
     end
 
 end
@@ -488,17 +505,11 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.1", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.3", "parent", 0).id
 
 --TODO: Feature Parents
-playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent, function(feat)
-    while true do
-    loopFeat()
-    system.wait(250)
-    end
-     loopFeat()
-     return HANDLER_POP
-end)
+playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
+
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
 --session
@@ -543,15 +554,75 @@ globalFeatures.Moist_Spam = menu.add_feature("Chat Spam", "parent", globalFeatur
 globalFeatures.Preset_Chat = menu.add_feature("Chat Spam Presets", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_RUS = menu.add_feature("Russian Spam Presets", "parent", globalFeatures.Preset_Chat).id
 globalFeatures.Spam_Options = menu.add_feature("Spam Options", "parent", globalFeatures.Moist_Spam).id
+
+globalFeatures.Script_loader = menu.add_feature("Other Scripts", "parent", globalFeatures.parent).id
+
 --options
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
+globalFeatures.moist_tools = menu.add_feature("Moist Test Shit", "parent", globalFeatures.moistopt)
+globalFeatures.moist_tools.hidden = true
+
+
+SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFeatures.moistopt, function(feat)
+    if feat.on then
+
+        local key = MenuKey()
+        key:push_str("LCONTROL")
+        key:push_str("LSHIFT")
+        key:push_str("s")
+        if key:is_down() then
+            saveSettings()
+            moist_notify("Current Settings\n", "Saved")
+            system.wait(1200)
+        end
+    end
+    return HANDLER_CONTINUE
+end)
+SaveOptions_Hotkey.on = true
+
+moist_tools_hotkey = menu.add_feature("Moist Test Shit Hotkey", "toggle", globalFeatures.moist_tools.id, function(feat)
+    if feat.on then
+        
+        local key = MenuKey()
+        key:push_str("LCONTROL")
+        key:push_str("LSHIFT")
+        key:push_str("h")
+        if key:is_down() then
+            globalFeatures.moist_tools.hidden = not globalFeatures.moist_tools.hidden
+            system.wait(1200)
+        end
+        
+    return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end)
+moist_tools_hotkey.on = true 
+
+
+
+
+
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
-logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
-AutoHost=menu.add_feature("Auto BailKick Host until me","toggle",globalFeatures.moistopt,function(a)if not a.on then setting["AutoHost"]=false;return HANDLER_POP end;setting["AutoHost"]=true;if Online then SessionHost=player.get_host()if not player.is_player_host(me)then TakeHost(SessionHost)end end;return HANDLER_CONTINUE end)AutoHost.on=setting["AutoHost"]
+logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)  
+AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
+    if not feat.on then
+        setting["AutoHost"] = false
+        return HANDLER_POP
+    end
+    setting["AutoHost"] = true
+    if Online then
+        GetHosts()
+        if not player.is_player_host(me) then
+            TakeHost(SessionHost)
+            end
+    end
+    return HANDLER_CONTINUE
+end)
+AutoHost.on = setting["AutoHost"]
 
 --TODO: Player Feature Parents
-playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.1", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.3", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
@@ -794,6 +865,81 @@ end)
 spam_cus_long.max_i = 3
 spam_cus_long.min_i = 2
 
+--TODO: ScriptLoader
+
+function scriptloader()
+ScriptFiles = {}
+ScriptFeat = {}
+loadedScripts = {}
+local scriptload = rootPath .. "\\scripts\\MoistsLUA_cfg\\scriptloader.ini"
+
+if not utils.file_exists(scriptload) then
+    io.open(scriptload, "w+")
+    io.output(scriptload)
+    io.write("")
+    io.close()
+end
+
+
+ menu.add_feature("Save Loaded Scripts", "action", globalFeatures.Script_loader, function(feat)
+    io.open(scriptload, "w+")
+    io.output(scriptload)
+    for i = 1, #loadedScripts do
+        io.write(loadedScripts[i] .."\n")
+    end
+    io.close()
+ end)
+
+
+function GetScripts()
+    local files = utils.get_all_files_in_directory(rootPath .."\\scripts\\", "lua")
+    for i = 1, #files do
+        
+ScriptFiles[#ScriptFiles+1] =  files[i]
+    end
+end
+GetScripts()
+
+for i = 1, #ScriptFiles do
+    local feat_name, featname, funcname
+   feat_name = string.format(ScriptFiles[i])
+   featname = {feat_name:sub(1,6),feat_name}
+        ScriptFeat[i] = menu.add_feature(ScriptFiles[i], "action", globalFeatures.Script_loader, function(feat)
+        funcname = featname
+        LoadScript(ScriptFiles[i], ScriptFeat[i]) 
+      
+
+    end)
+   ScriptFeat[i].hidden = false
+    
+
+end
+
+
+function LoadScript(scriptname, feature)
+	local file = rootPath .. "\\scripts\\" .. scriptname
+    loadedScripts[#loadedScripts+1] = scriptname
+ 
+local a = assert(loadfile(file)) 
+feature.hidden = true
+
+return a()
+end
+
+
+for line in io.lines(scriptload) do
+    local file = rootPath .. "\\scripts\\" ..line
+    
+local f = assert(loadfile(file)) return f()
+
+end
+
+end
+scriptloader()
+
+
+
+
 
 menu.add_player_feature("Save Players Current POS to file", "action", Player_Tools, function(feat, pid)
 
@@ -877,6 +1023,7 @@ local Show_Spawn_Options = menu.add_feature("Show & Load SpawnOptions", "toggle"
         spawn_parent = menu.add_player_feature("Spawn Options", "parent", playerfeatVars.parent)
         playerfeatVars.b = menu.add_player_feature("Ped Spawns", "parent", spawn_parent.id).id
         load_spawn_options()
+        spawn_groups()
         spawnoptions_loaded = true
         return HANDLER_CONTINUE
     end
@@ -1416,10 +1563,7 @@ menu.add_feature("Reload blacklist", "action", globalFeatures.parentID, function
     moist_notify("Blacklist Loaded ",scidN .. " entries")
 end)
 
-local MarkAsModderFeature
-local KickFeature
-
-local EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", globalFeatures.parentID, function(feat)
+EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", globalFeatures.parentID, function(feat)
     if not feat.on then
         setting["Blacklist_ON"] = false
         return HANDLER_POP
@@ -1446,7 +1590,7 @@ end)
 EnabledBlacklistFeature.on = setting["Blacklist_ON"]
 
 
-local MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID, function(feat)
+MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID, function(feat)
     if not feat.on then
         setting["Blacklist_Mark"] = false
         return HANDLER_POP
@@ -1456,7 +1600,7 @@ local MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalF
 end)
 MarkAsModderFeature.on = setting["Blacklist_Mark"]
 
-local KickFeature = menu.add_feature("Kick Player", "toggle", globalFeatures.parentID, function(feat)
+KickFeature = menu.add_feature("Kick Player", "toggle", globalFeatures.parentID, function(feat)
     if not feat.on then
         setting["Blacklist_kick"] = false
         return HANDLER_POP
@@ -1509,7 +1653,7 @@ function blacklist_check(pid)
     local scid = player.get_player_scid(pid)
     if ValidScid(scid) and scids[scid] then
         local name = player.get_player_name(pid)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.1\nBlack List", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.3\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -2496,7 +2640,7 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
         system.wait(10)
     end
     
-    spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    spawned_cunts[i] = vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
     vehicle.get_vehicle_mod(spawned_cunts[i], 10)
@@ -2770,8 +2914,9 @@ local cross_hair = menu.add_feature("Show Weapon Recticle", "toggle", globalFeat
 end)
 cross_hair.on = setting["Weapon_Recticle"]
 
-function set_waypoint(pos)
-    if pos ~= nil then
+function set_waypoint(pid)
+  local pos = v3()
+  pos = player.get_player_coords(pid)
     if pos.x and pos.y then
         local coord = v2()
         coord.x = pos.x
@@ -2780,9 +2925,9 @@ function set_waypoint(pos)
     end
     
 end
-    ui.set_waypoint_off()
+
  
-end
+
 
 --TODO: Player stats
 
@@ -2983,6 +3128,20 @@ function Create_stat_RecoveryScript()
 end
 
 --TODO: local session functions
+
+blip_all =  menu.add_feature("Give everyone Enemy Blips", "action", globalFeatures.lobby, function(feat)
+    for i = 0, 32 do
+        local scid = player.get_player_scid(i)
+        if scid ~= 4294967295 then
+            local pped = PlyPed(i)
+            local oldblip = ui.get_blip_from_entity(pped)
+            ui.set_blip_colour(oldblip, 80)
+              BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
+               ui.set_blip_colour(BlipIDs[#BlipIDs], i)
+        end
+    end
+end)
+            
 
 function blockpassiveall()
 
@@ -3803,14 +3962,14 @@ menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function
             if pped ~= 0 then
 
 
-                local pos = v3()
+                local pos, offset, rot = v3(), v3(), v3()
 
-                local offset = v3()
+              
                 offset.x = 1.0
                 offset.y = 0.1
                 offset.z = -0.1
 
-                local rot = v3()
+          
                 rot.x = 1.0
                 rot.y = 1.0
                 rot.z = 1.0
@@ -3821,12 +3980,11 @@ menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function
                 local hash = gameplay.get_hash_key("prop_dummy_light")
                 spawned_cunts[#spawned_cunts + 1]  = object.create_object(hash, pos, true, false)
                 entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, false, false, false, 0, false)
-                local offset = v3()
+              
                 offset.x = 0.010
                 offset.y = 0.01
                 offset.z = 0.001
 
-                local rot = v3()
                 rot.x = 1.0
                 rot.y = 1.0
                 rot.z = 1.0
@@ -3847,14 +4005,13 @@ menu.add_feature("Everyone is a Dick Head!", "action", globalFeatures.troll, fun
             if pped ~= 0 then
 
 
-                local pos = v3()
+                local pos, rot, offset = v3(), v3(), v3()
 
-                local offset = v3()
+
                 offset.x = 0.08
                 offset.y = 0.0
                 offset.z = 0.0
 
-                local rot = v3()
                 rot.x = 40
                 rot.y = -83
                 rot.z = -134
@@ -3878,14 +4035,14 @@ menu.add_feature("Give all Dildo Dicks", "action", globalFeatures.troll, functio
             pped = PlyPed(i)
             if pped ~= 0 then
 
-                local pos = v3()
+                 local pos, rot, offset = v3(), v3(), v3()
 
-                local offset = v3()
+                
                 offset.x = 0.0
                 offset.y = 0.0
                 offset.z = 0.0
 
-                local rot = v3()
+              
                 rot.x = 293.0
                 rot.y = 28.0
                 rot.z = 24.0
@@ -3904,8 +4061,7 @@ end)
 local world_force = menu.add_feature("Apply force to world entities", "action", globalFeatures.lobby, function(feat)
     get_everything()
     system.wait(100)
-    local vel = v3()
-    local velo = v3()
+    local vel, velo = v3(), v3()
     velo.x = 0.0
     velo.y = 0.0
     velo.z = 1000.00
@@ -3954,17 +4110,41 @@ wephash = 0xA2719263
 local mod, modvalue, pedspawns
 
 --TODO: Ped Spawn functions
+local Ped_Haters, playergroups, playerpeds = {}, {}, {}
+local Group_Hate
+
+function spawn_groups()
+
+for pid = 0, 32 do
+        playergroups[pid + 1]  = player.get_player_group(pid)	
+        playerpeds[pid + 1] = PlyPed(pid)
+    
+end
+
+   
+   system.wait(100)
+
+ 
+ Group_Hate = ped.create_group()
+ 
+  for y = 1, #player_groups do
+      
+            ped.set_relationship_between_groups(5, player_groups[y], Group_Hate)
+            
+            
+            ped.set_relationship_between_groups(5, Group_Hate, player_groups[y])
+  end
+end
 
 function spawn_ped(pid, pedhash, offdist, attack, Posoff)
-    local hash = pedhash
-    plygrp =  player.get_player_group(pid)
+    hash = pedhash
     pped = PlyPed(pid)
     local offset = v3()
-    local OffSet = offdist
+    OffSet = offdist
 
     if not Posoff then
-        local pos = player.get_player_coords(pid)
-        local heading = player.get_player_heading(pid)
+        pos = player.get_player_coords(pid)
+        heading = player.get_player_heading(pid)
         heading = math.rad((heading - 180) * -1)
         offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
     else
@@ -3980,6 +4160,7 @@ function spawn_ped(pid, pedhash, offdist, attack, Posoff)
     local p = #escort + 1
  
     escort[p] = ped.create_ped(26, hash, offset, 0, true, false)
+       Ped_Haters[#Ped_Haters+1] = escort[p]
     print(escort[p])
     entity.set_entity_god_mode(escort[p], true)
     BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escort[p])
@@ -4003,9 +4184,9 @@ function spawn_ped(pid, pedhash, offdist, attack, Posoff)
 
     if not attack == true then
         ped.set_ped_combat_attributes(escort[p], 1424, false)
-        pedgroup = ped.get_ped_group(escort[p])
-        ped.set_ped_as_group_member(escort[p], plygrp)
-        pedgroup = ped.get_ped_group(escort[p])
+
+        ped.set_ped_as_group_member(escort[p], Group_Hate)
+
         ped.set_ped_never_leaves_group(escort[p], true)
 
     else
@@ -4075,14 +4256,11 @@ function spawn_ped_v2(pid, pedhash, attack)
 end
 
 function spawn_veh(pid, vehhash, offdist, mod, modvalue, Posoff)
-    local hash = vehhash
-    local pid = pid
-    local offset = v3()
-    local OffSet = offdist
+    local hash, OffSet = vehhash, offdist
 
     if not Posoff then
-        local pos = player.get_player_coords(pid)
-        local heading = player.get_player_heading(pid)
+        local pos, heading = player.get_player_coords(pid), player.get_player_heading(pid)
+
         heading = math.rad((heading - 180) * -1)
         offset = v3(pos.x + (math.sin(heading) * -offdist), pos.y + (math.cos(heading) * -offdist), pos.z)
     else
@@ -4097,6 +4275,9 @@ function spawn_veh(pid, vehhash, offdist, mod, modvalue, Posoff)
     end
 
     local y = #escortveh + 1
+    if streaming.is_model_a_heli(hash) then
+        offset = v3(-73.31681060791,-820.26013183594,326.17517089844)
+    end
     escortveh[y] = vehicle.create_vehicle(hash, offset, player.get_player_heading(pid), true, false)
 
     print(escortveh[y])
@@ -4508,7 +4689,6 @@ end)
 OSD.modvehspeed_osd.on = setting["OSD.modvehspeed_osd"]
 
 function TakeHost(pid)
- if not Online then return HANDLER_CONTINUE end
     ScriptTR(-81613951, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
     ScriptTR(-1292453789, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
     ScriptTR(1623637790, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
@@ -4516,8 +4696,10 @@ function TakeHost(pid)
     ScriptTR(1160415507, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
     ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
     ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+    send_SE_Kick(pid)
 end
 
+notifysent = {}
 --TODO: PlayerBar
 OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moistopt, function(feat)
     setting["OSD.Player_bar"] = true
@@ -4528,7 +4710,6 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 
         pos.x = 0.0001
         pos.y = 0.000001
-
         for i = 0, 32 do
             local pped = PlyPed(i)
             if pped ~= 0 then
@@ -4554,8 +4735,12 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     ui.set_text_color(playercolor[3][1], playercolor[3][2], playercolor[3][3], 255)
                     name = ("~h~"  ..name)
                     if  player.is_player_playing(i) and interior.get_interior_from_entity(PlyPed(i)) == 0 then
-                    if entity.is_entity_visible(pped) then
+
+                    if not entity.is_entity_visible(pped) and  tracking.playerped_speed1[i+1] >= 21 then
                         name = (name .."~h~ ~r~[G]~o~[V]")
+                    end
+                     if entity.is_entity_visible(pped) then
+                            name = (name .."~h~ ~r~[G]~o~[V]")
                         else
                         name =(name)
                     end
@@ -4568,9 +4753,13 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     ui.set_text_color(playercolor[2][1], playercolor[2][2], playercolor[2][3], 255)
                     name = ("~h~"  ..name) 
                     if player.is_player_playing(i) and  interior.get_interior_from_entity(PlyPed(i)) == 0 then
+                           if not entity.is_entity_visible(pped) and  tracking.playerped_speed1[i+1] >= 21 then
+                               name = (name .."~h~~r~ [G]")
+                           end
                     if entity.is_entity_visible(pped) then
                         name = (name .."~h~~r~ [G]")
                     else
+   
                         name = (name)
                     end
                 end
@@ -4579,17 +4768,29 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     ui.set_text_color(255, 170, 0, 255)
                     name = ("~h~"  ..name)                    
                     if  player.is_player_playing(i) and interior.get_interior_from_entity(PlyPed(i)) == 0 then
+                         if not entity.is_entity_visible(pped) and  tracking.playerped_speed1[i+1] >= 21 then
+                              name = (name .. "~h~~o~ [V]")
+                         end
                         if entity.is_entity_visible(pped) then
                         name = (name .. "~h~~o~ [V]")
-                        else name = (name)
+                        else
+                        name = (name)
                     end
                     goto Draw
                 end
                     end
-                    ::Draw::
+                  
                     if not (player.get_player_max_health(i) > 0) then
+                          if not notifysent[i+1] then
+                        notifysent[i+1] = true
+                       moist_notify("Confirmed Modder Detected:\n", Pname)
+                          end
                   name = (name .."~h~~r~ [G]~q~ [UO]")
+                  else
+                   notifysent[i+1] = false
+                   goto Draw
                     end
+                      ::Draw::
                 if pos.x > 0.95 then
                     pos.y = .015
                     pos.x = 0.0001
@@ -4614,6 +4815,161 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
     return HANDLER_POP
 end)
 OSD.Player_bar.on = setting["OSD.Player_bar"]
+
+function clearnotif()
+ for i = 1, 33 do
+notifysent[i] = false
+ end
+ end 
+ 
+notifyclear = menu.add_feature("clear notify", "toggle", globalFeatures.moist_tools.id, function(feat)
+    if feat.on then
+         clearnotif()
+        local delay = 0
+        repeat
+        delay = delay + 1
+        system.wait(30000)
+        until delay == 3
+        clearnotif()
+
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end)
+notifyclear.on = true
+notifyclear.hidden = false
+ 
+local God_Check = {}
+GodCheck = menu.add_feature("Check God loop", "toggle", globalFeatures.moist_tools.id, function(feat)
+    
+    if feat.on then
+          for i = 0, 32 do
+              GodModCheck(i)
+          end
+          return HANDLER_CONTINUE
+    end
+end)
+GodCheck.on = false
+GodCheck.hidden = false
+
+function GodModCheck(pid)
+        
+        local i = pid
+      
+    
+           if not notifysent[i+1] then  
+           
+            local pped = PlyPed(i)
+            local Pname = player.get_player_name(i)
+            if pped == 0 then return end
+               
+            if player.is_player_god(i) and not player.is_player_vehicle_god(i) then
+                if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
+                   
+                    system.wait(5000)
+                end
+            end
+          
+                if player.is_player_god(i) and not player.is_player_vehicle_god(i) then
+                  
+                    if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
+                       
+                        if entity.is_entity_visible(pped) then
+                           
+                            notifysent[i + 1] = true
+                            update_osd_text("true", false)
+                            moist_notify("God Mode Player Detected:\n", Pname)
+                           
+                        end
+                    end
+                end
+               
+                 
+                if player.is_player_vehicle_god(i) and not player.is_player_god(i) then
+                    if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
+                        
+                        system.wait(5000)
+                    end
+                end
+                
+                if player.is_player_vehicle_god(i) and not player.is_player_god(i) then
+                    
+                        if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
+                          
+                            if entity.is_entity_visible(pped) then
+                               
+                                notifysent[i + 1] = true
+                                 update_osd_text("true", false)
+                                moist_notify("God Mode Vehicle Detected:\n", Pname)
+                               
+                            end
+                        end
+                    end
+                    
+                    if player.is_player_vehicle_god(i) and player.is_player_god(i) then
+                       
+                        if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
+                            
+                            system.wait(5000)
+                        end
+                    end
+                    
+                    if player.is_player_vehicle_god(i) and player.is_player_god(i) then
+                            if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
+                                if entity.is_entity_visible(pped) then
+                                    notifysent[i + 1] = true
+                                     update_osd_text("true", false)
+                                    moist_notify("God Mode Player & Vehicle Detected:\n", Pname)
+                                end
+                            end
+                        end
+                     
+        
+            end
+
+end
+
+--TODO: Moist Tools
+
+local ScreenText = " "
+
+function update_osd_text(text, append)
+  if append then
+    local screentext = ScreenText
+    ScreenText = string.format(screentext .." : " ..text)
+  end
+  if not append then
+    ScreenText = " "
+   ScreenText = text
+  end   
+end
+   
+OSD_Debug = menu.add_feature("Debug OSD", "toggle", globalFeatures.moist_tools.id, function(feat)
+
+    if feat.on then
+   	ui.draw_rect(0.001, 0.990, 0.5, 0.070, 0, 0, 0, 180)
+        local pos = v2()
+
+
+        pos.x = 0.1
+        pos.y = .960
+
+        ui.set_text_scale(0.30)
+        ui.set_text_font(0)
+        ui.set_text_color(255, 255, 255, 255)
+        ui.set_text_centre(true)
+        ui.set_text_outline(1)
+        ui.draw_text(ScreenText, pos)
+      
+        return HANDLER_CONTINUE
+    end
+
+    return HANDLER_POP
+
+end)
+OSD_Debug.on = false
+OSD_Debug.hidden = false
+
 
 OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures.moistopt, function(feat)
     setting["osd_date_time"] = true
@@ -4820,7 +5176,7 @@ local Mark_WeapImpPOS = menu.add_feature("Mark Weapon Impact POS", "toggle", glo
      local success, pos = ped.get_ped_last_weapon_impact(pped, v3())
         if success then
         if pos.x and pos.y then
-             local coord = v2()
+        local coord = v2()
         coord.x = pos.x
         coord.y = pos.y
         ui.set_new_waypoint(coord)
@@ -5312,7 +5668,7 @@ function load_spawn_options()
 
                 system.wait(100)
                 local i = #escort
-                local pos = player.get_player_coords(pid)
+                 pos = player.get_player_coords(pid)
                 ai.task_parachute_to_target(escort[i], pos)
 
                 system.wait(12000)
@@ -5394,7 +5750,7 @@ function load_spawn_options()
     for i = 1, #playerFeat3 do
         menu.add_player_feature("Spawn as Escort & Task", "action", playerFeat3[i], function(feat, pid)
             spawn_ped(pid, model, -10, false, nil)
-            local groupIDs = {}
+            groupIDs = {}
             local i = #groupIDs + 1
             groupIDs[i] = ped.create_group()
             local y = #groupIDs + 1
@@ -5643,7 +5999,8 @@ function spawn_attach(hash, bone, pos, rot, col, pid)
 end
 
 --TODO: Player list
---function player_list()
+function player_list()
+local pos, PlyImpactPos, offset = v3(), v3(), v3()
 for pid = 0, 31 do
     local plyveh, pped
 
@@ -5708,7 +6065,7 @@ features = {}
 --TODO: Vehicle Options
 features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
 
-    local plyveh = player.get_player_vehicle(pid)
+     plyveh = player.get_player_vehicle(pid)
     while not network.has_control_of_entity(plyveh) do
         network.request_control_of_entity(plyveh)
         return HANDLER_CONTINUE
@@ -5721,7 +6078,7 @@ features["godvehon"].feat.on = false
 
 features["godvehoff"] = {feat = menu.add_feature("Player Vehicle God Mode OFF", "action", featureVars.v.id, function(feat)
 
-    local plyveh = player.get_player_vehicle(pid)
+     plyveh = player.get_player_vehicle(pid)
     while not network.has_control_of_entity(plyveh) do
         network.request_control_of_entity(plyveh)
         return HANDLER_CONTINUE
@@ -5733,7 +6090,7 @@ end),  type = "action", callback = function()
 end}
 
 features["LockOn"] = {feat = menu.add_feature("Vehicle Targetable", "action",  featureVars.v.id, function(feat)
-    local plyveh = player.get_player_vehicle(pid)
+     plyveh = player.get_player_vehicle(pid)
     while not network.has_control_of_entity(plyveh) do
         network.request_control_of_entity(plyveh)
         return HANDLER_CONTINUE
@@ -5744,7 +6101,7 @@ features["LockOn"] = {feat = menu.add_feature("Vehicle Targetable", "action",  f
 end}
 	 
 features["LockOFF"] = {feat = menu.add_feature("Vehicle Not Targetable", "action",  featureVars.v.id, function(feat)
-    local plyveh = player.get_player_vehicle(pid)
+     plyveh = player.get_player_vehicle(pid)
     while not network.has_control_of_entity(plyveh) do
         network.request_control_of_entity(plyveh)
         return HANDLER_CONTINUE
@@ -5755,7 +6112,7 @@ features["LockOFF"] = {feat = menu.add_feature("Vehicle Not Targetable", "action
 end}
 	 
 features["set_Boost"] = {feat = menu.add_feature("Set Boost & Forward Speed", "action", featureVars.v.id, function(feat)
-    local plyveh = player.get_player_vehicle(pid)
+     plyveh = player.get_player_vehicle(pid)
     if plyveh ~= nil then
         network.request_control_of_entity(plyveh)
         vehicle.set_vehicle_rocket_boost_active(plyveh, true)
@@ -5773,7 +6130,7 @@ features["vehicleexplode1"] = {feat = menu.add_feature("Vehicle Explode OnImpact
 
         pped = PlyPed(pid)
 
-        local plyveh = player.get_player_vehicle(pid)
+         plyveh = player.get_player_vehicle(pid)
         if plyveh ~= nil then
             network.request_control_of_entity(plyveh)
             vehicle.set_vehicle_out_of_control(plyveh, false, true)
@@ -5811,7 +6168,7 @@ end), type = "action"}
 
 features["vehaddexpl"] = {feat = menu.add_feature("Add Explosive Device", "action", featureVars.v.id, function(feat)
 
-        local plyveh = player.get_player_vehicle(pid)
+        plyveh = player.get_player_vehicle(pid)
         if plyveh == 0 or nil then return end
         network.request_control_of_entity(plyveh)
         vehicle.add_vehicle_phone_explosive_device(plyveh)
@@ -5820,7 +6177,7 @@ end), type = "action"}
 
 features["vehdetonate"] = {feat = menu.add_feature("Detonate Explosive Device (named)", "action", featureVars.v.id, function()
 
-        local plyveh = player.get_player_vehicle(pid)
+        plyveh = player.get_player_vehicle(pid)
         network.request_control_of_entity(plyveh)
         print(vehicle.has_vehicle_phone_explosive_device())
         if vehicle.has_vehicle_phone_explosive_device() then
@@ -5831,7 +6188,7 @@ end), type = "action"}
 
 features["timedexp"] = {feat = menu.add_feature("Set Vehicle Timed Explosion", "action", featureVars.v.id, function(feat)
 
-        local pos = v3()
+        pos = v3()
         pos = player.get_player_coords(pid)
 
         local plyveh
@@ -5850,7 +6207,7 @@ features["timedexp"].feat.threaded = false
 
 features["boostlag"] = {feat = menu.add_feature("Lag Vehicle Boost Refill", "action", featureVars.v.id, function(feat)
 
-        local plyveh = player.get_player_vehicle(pid)
+        plyveh = player.get_player_vehicle(pid)
         network.request_control_of_entity(plyveh)
         vehicle.set_vehicle_rocket_boost_active(plyveh, true)
         vehicle.set_vehicle_rocket_boost_refill_time(plyveh, 999999.999999999999)
@@ -5858,7 +6215,7 @@ end), type = "action"}
 features["boostlag"].feat.threaded = false
 features["boostrefill"] = {feat = menu.add_feature("Fast Vehicle Boost Refill", "action", featureVars.v.id, function(feat)
 
-        local plyveh = player.get_player_vehicle(pid)
+        plyveh = player.get_player_vehicle(pid)
         network.request_control_of_entity(plyveh)
         vehicle.set_vehicle_rocket_boost_refill_time(plyveh, 0.0000010)
 end), type = "action"}
@@ -5868,7 +6225,7 @@ features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "ac
 
         pped = PlyPed(pid)
 
-        local plyveh = player.get_player_vehicle(pid)
+        plyveh = player.get_player_vehicle(pid)
         if plyveh ~= nil then
             network.request_control_of_entity(plyveh)
         end
@@ -5883,7 +6240,7 @@ features["rapidmk2"] = {feat = menu.add_feature("MK2 Rapid fire", "toggle", feat
 
         pped = PlyPed(pid)
 
-        local plyveh = player.get_player_vehicle(pid)
+        plyveh = player.get_player_vehicle(pid)
         if plyveh ~= nil then
             network.request_control_of_entity(plyveh)
         end
@@ -7016,8 +7373,6 @@ end}
 features["RamJet_cleanup"].feat.on = false
 features["RamJet_cleanup"].feat.hidden = true
 
-    local pos, PlyImpactPos, offset = v3(), v3(), v3()
-
 features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
     if feat.on then
         pped = PlyPed(pid)
@@ -7104,6 +7459,7 @@ features["Give_Airstrike"] = {feat = menu.add_feature("Give last Weapon Impact S
 
 
 end),  type = "toggle", callback = function()
+
 end}
 
 features["Give_Airstrike"].feat.on = false
@@ -7235,9 +7591,6 @@ end), type = "toggle"}
 features["explodeply"].feat.max_i = 74
 features["explodeply"].feat.min_i = -1
 features["explodeply"].feat.value_i = 0
-
-
-
 
 features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
 
@@ -7378,7 +7731,7 @@ end), type = "action_value_i", callback = function()
 end}
 features["Ped_hate"].feat.max_i = #ped_wep
 features["Ped_hate"].feat.min_i = 1
-features["Ped_hate"].feat.value_i = 8
+features["Ped_hate"].feat.value_i = 10
   
 features["Peds_eject"] = {feat = menu.add_feature("Task NearbyPeds Bail/Exit Veh", "action_value_i", featureVars.tr.id, function(feat)
 
@@ -7625,21 +7978,26 @@ features["check_HPWP"] = {feat = menu.add_feature("Check Players HP Stats & Weap
 end), type = "action"  }
 
 features["Way-point"] = {feat = menu.add_feature("Set Way point On Player", "toggle", featureVars.n.id, function(feat)
+    
     if feat.on then
         for i=0,31 do
             if i ~= pid and playerFeatures[i].features["Way-point"].feat then
                 playerFeatures[i].features["Way-point"].feat.on = false
             end
+        
         end
+
+        
     else
      --  ui.set_waypoint_off()
 
     ui.set_waypoint_off()
-  
+
     end
+
     return HANDLER_POP
 end), type = "toggle", callback = function()
-           set_waypoint(player.get_player_coords(pid))
+    set_waypoint(pid)
 end}
 features["Way-point"].feat.threaded = false
 
@@ -7736,137 +8094,116 @@ featureVars.f.hidden = true
 end
 
 
-loop_Feat = menu.add_feature("Loop", "toggle", globalFeatures.moistopt, function(feat)
-    if not feat.on then
-        setting["MainLoop"] = false
-        return HANDLER_POP
-    end
-    setting["MainLoop"] = true            
-    loopFeat()
-    return HANDLER_CONTINUE
+local SessionHost = nil
+local ScriptHost = nil
+local loop_logsent = false
+local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
+                                  if feat.on then
+                                  	local Online = network.is_session_started()
+                                  	if not Online then
+                                  		SessionHost = nil
+                                  		ScriptHost = nil
+                                  		loop_logsent = false
+                                  	end
+                                  	local lpid = player.player_id()
+                                  	for pid=0,31 do
+                                  		local tbl = playerFeatures[pid]
+                                  		local f = tbl.feat
+                                  		local scid = player.get_player_scid(pid)
+                                  		if scid ~= 4294967295 then
+                                  			if f.hidden then f.hidden = false end
+                                  			local name = player.get_player_name(pid)
+                                  			local isYou = lpid == pid
+                                  			local tags = {}
+                                  			if Online then
+                                  				if isYou then
+                                  					tags[#tags + 1] = "Y"
+                                  				end
+                                  				if player.is_player_friend(pid) then
+                                  					tags[#tags + 1] = "F"
+                                  				end
+                                  				if player.is_player_vehicle_god(pid) then
+                                  					tags[#tags + 1] = "V"
+                                  					if not logsent then
+                                  						Debug_Out(string.format("Player: " ..name .." [Vehicle Godmode]"))
+                                  						logsent = true
+                                  					end
+                                  				end
+                                  				if player.is_player_god(pid) then
+                                  					tags[#tags + 1] = "G"
+                                  				end
+                                  				if player.is_player_modder(pid, -1) then
+                                  					tags[#tags + 1] = "M"
+                                  				end
+                                  				if player.is_player_host(pid) then
+                                  					tags[#tags + 1] = "H"
+                                  					if SessionHost ~= pid then
+                                  						SessionHost = pid
+                                  							moist_notify("The session host is now\n", (isYou and " you " or name) .. "  ")
+                                                    Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
+                                  					end
+                                  				end
+                                  				if pid == script.get_host_of_this_script() then
+                                  					tags[#tags + 1] = "S"
+                                  					if ScriptHost ~= pid then
+                                  						ScriptHost = pid
+                                  							moist_notify("The script host is now\n", (isYou and " you " or name) .. "  ")
+                                                    Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
+                                  					end
+                                  				end
+
+
+                                  				if tbl.scid ~= scid then
+                                  					for cf_name,cf in pairs(tbl.features) do
+                                  						if cf.type == "toggle" and cf.feat.on then
+                                  							cf.feat.on = false
+                                  						end
+                                  					end
+                                  					tbl.scid = scid
+                                  					if not isYou then
+                                  						--TODO: Modder shit
+
+
+                                  					end
+
+                                  				end
+                                  			end
+                                  			if #tags > 0 then
+                                  				name = name .. " [" .. table.concat(tags) .. "]"
+                                  			end
+                                  			if f.name ~= name then f.name = name end
+                                  			for cf_name,cf in pairs(tbl.features) do
+                                  				if (cf.type ~= "toggle" or cf.feat.on) and cf.callback then
+                                  					local status, err = pcall(cf.callback)
+                                  					if not status then
+                                  						moist_notify("Error running feature " .. i .. " on pid " .. pid)
+                                  						print(err)
+                                  					end
+                                  				end
+                                  			end
+                                  		else
+                                  			if not f.hidden then
+                                  				f.hidden = true
+                                  				for cf_name,cf in pairs(tbl.features) do
+                                  					if cf.type == "toggle" and cf.feat.on then
+                                  						cf.feat.on = false
+                                  					end
+                                  				end
+                                  			end
+                                  		end
+                                  	end
+                                  	return HANDLER_CONTINUE
+                                  end
+                                  return HANDLER_POP
 end)
-loop_Feat.on = setting["MainLoop"]
 
-function loopFeat()
-		if not Online then
-			SessionHost = nil
-			ScriptHost = nil
-		end
-		local lpid = player.player_id()
-		for pid=0,31 do
-			local tbl = playerFeatures[pid]
-			local f = tbl.feat
-			local scid = player.get_player_scid(pid)
+loopFeat.hidden = true
+loopFeat.threaded = false
+loopFeat.on = true
 
-			if scid ~= 4294967295 then
-				if f.hidden then f.hidden = false end
-				local name = player.get_player_name(pid)
-				local isYou = lpid == pid
-				local tags = {}
-				if Online then
-					if isYou then
-						tags[#tags + 1] = "Y"
-					end
-					if player.is_player_friend(pid) then
-						tags[#tags + 1] = "F"
-					end
-					if player.is_player_vehicle_god(pid) then
-						tags[#tags + 1] = "V"
-					end
-					if player.is_player_god(pid) then
-						tags[#tags + 1] = "G"
-					end
-					if player.is_player_modder(pid, -1) then
-						tags[#tags + 1] = "M"
-					end
-					if script.get_global_i(2425869 + (1 + (pid * 443)) + 204) == 1 then
-						tags[#tags + 1] = "O"
-						
-					end
-					if player.is_player_host(pid) then
-						tags[#tags + 1] = "H"
-						if SessionHost ~= pid then
-							SessionHost = pid
-							moist_notify("The session host is now:\n", (isYou and " you " or name) .. "  ")
-							Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
-						end
-					end
-					if pid == script.get_host_of_this_script() then
-						tags[#tags + 1] = "S"
-						if ScriptHost ~= pid then
-							ScriptHost = pid
-							moist_notify("The script host is now:\n", (isYou and " you " or name) .. "  ")
-							Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
-						end
-					end
-					
-					
-					if tbl.scid ~= scid then
-						for cf_name,cf in pairs(tbl.features) do
-							if cf.type == "toggle" and cf.feat.on then
-								cf.feat.on = false
-							end
-						end
-						tbl.scid = scid
-						if not isYou then
-							--TODO: Modder shit
-							
-							
-						end
-						
-					end
-				end
-				if #tags > 0 then
-					name = name .. " [" .. table.concat(tags) .. "]"
-				end
-				if f.name ~= name then f.name = name end
-				for cf_name,cf in pairs(tbl.features) do
-					if (cf.type ~= "toggle" or cf.feat.on) and cf.callback then
-						local status, err = pcall(cf.callback)
-						if not status then
-							moist_notify("Error running feature " .. i .. " on pid " .. pid)
-							print(err)
-						end
-					end
-				end
-				else
-				if not f.hidden then
-					f.hidden = true
-					for cf_name,cf in pairs(tbl.features) do
-						if cf.type == "toggle" and cf.feat.on then
-							cf.feat.on = false
-						end
 
-					end
-				end
-			end
-		end
-    if loop_Feat.on then
-		return HANDLER_CONTINUE
-	end
-    setting["MainLoop"] = false
-	return HANDLER_POP
 end
-
-
-MainLoopDeLoopUpdater = event.add_event_listener("player_join", function(e)
-      if not loop_Feat.on then
-    loopFeat()
-    end
-
-    return
-end)
-
-LoopDeLoopUpdater = event.add_event_listener("player_leave", function(e)
-     if not loop_Feat.on then
-    loopFeat()
-    end
-
-    return
-end)
-
--- end
--- player_list()
+player_list()
 
 
 function Moist_Version()
@@ -7879,8 +8216,6 @@ function Moist_Version()
         end
 end
 Moist_Version()
-
-
 
 end
 threads[#threads + 1] = menu.create_thread(Moist_Script_thread, feat)
