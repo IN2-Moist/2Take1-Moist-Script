@@ -2,7 +2,7 @@ local threads = {}
 MoistScript_thread = 0
 
 local Moist_Script_thread  = function(feat)
-local version_check, MoistVersion = nil,  "2.0.2.3"
+local version_check, MoistVersion = nil,  "2.0.2.4"
 
 --[[
 Credits & Thanks to Kektram for help with OTR Code and code Advice
@@ -84,7 +84,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 
 local toggle_setting, setting  = {}, {}
 toggle_setting[#toggle_setting+1] = "MoistScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.2.3"
+setting[toggle_setting[#toggle_setting]] = "2.0.2.4"
 toggle_setting[#toggle_setting+1] = "PlyTracker.track_all"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
@@ -308,7 +308,7 @@ function dec2ip(decip)
 end
 
 function notify_above_map(msg)
-    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", 175)
+    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.4\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -318,24 +318,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.4\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.4\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.4\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.4\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.4\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.3\n~g~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.4\n~g~~h~Moist Edition", color)
     end
 
 end
@@ -401,6 +401,39 @@ colorindex = {000,001,002,003,004,005,006,007,008,009,010,011,012,013,014,015,01
 ssb_wep = {"WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_REMOTESNIPER","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_PLAYER_BULLET","VEHICLE_WEAPON_PLAYER_LAZER","WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_TRAILER_MISSILE","VEHICLE_WEAPON_AKULA_MISSILE","VEHICLE_WEAPON_AKULA_BARRAGE","VEHICLE_WEAPON_AVENGER_CANNON","WEAPON_AIR_DEFENCE_GUN",}
 StrikeGive = {"WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_TRAILER_DUALAA","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_KHANJALI_CANNON_HEAVY","WEAPON_GRENADELAUNCHER","WEAPON_AIR_DEFENCE_GUN","VEHICLE_WEAPON_PLAYER_LAZER","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_TRAILER_MISSILE","WEAPON_AIR_DEFENCE_GUN",}
 local heiststat_setup = {{"MP0_H3_COMPLETEDPOSIX", -1},{"MP0_H3OPT_APPROACH", 1},{"MP0_H3_HARD_APPROACH", 3},{"MP0_H3OPT_TARGET", 3},{"MP0_H3OPT_POI", 1023},{"MP0_H3OPT_ACCESSPOINTS", 2047},{"MP0_H3OPT_BITSET1", -1},{"MP0_H3OPT_CREWWEAP", 1},{"MP0_H3OPT_CREWDRIVER", 1},{"MP0_H3OPT_CREWHACKER", 5},{"MP0_H3OPT_WEAPS", 1},{"MP0_H3OPT_VEHS", 3},{"MP0_H3OPT_DISRUPTSHIP", 3},{"MP0_H3OPT_BODYARMORLVL", 3},{"MP0_H3OPT_KEYLEVELS", 2},{"MP0_H3OPT_MASKS", math.ceil(math.random(0, 12))},{"MP0_H3OPT_BITSET0", -1},}
+local boneid = {
+	57597,
+	24818,
+	24817,
+	24816,
+	23553,
+	11816,
+	38180,
+	40269,
+	51826,
+	57005,
+	28252,
+	52301,
+	10706,
+	36864,
+	17916,
+	53251,
+	11816,
+	24532,
+	39317,
+	45509,
+	58271,
+	18905,
+	61163,
+	14201,
+	64729,
+	63931,
+	65068,
+	31086,
+	12844
+}
+
+
 --Event Data Arrays
 
 local NetEvents = {}
@@ -505,10 +538,11 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.3", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.4", "parent", 0).id
 
 --TODO: Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.parent)
+Recent = menu.add_feature("Recent Players", "parent", globalFeatures.parent).id
 
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.parent).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.lobby).id
@@ -622,7 +656,7 @@ end)
 AutoHost.on = setting["AutoHost"]
 
 --TODO: Player Feature Parents
-playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.3", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.4", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
@@ -936,9 +970,62 @@ end
 
 end
 scriptloader()
+--TODO: Recent Player Features
+function recentplayerslist()
+ 
+Recent_Players = {
+{name = {}, rid = {}, htoken = {}},
+}
+    
+local Join_Event_Check = event.add_event_listener("player_join", function(e)
 
+    local pid = e.player
+    playerRDB(pid)
+    return
 
+end)
 
+function playerRDB(pid)
+    
+    local scid, name, token, tokeen
+    scid = player.get_player_scid(pid)
+    playername = player.get_player_name(pid)
+    token = tostring(player.get_player_host_token(pid))
+    
+
+    tokeen = tostring(token:sub(1, 6))
+    local i = #Recent_Players + 1
+    for i = 1, #Recent_Players do
+    if Recent_Players[i].rid == scid then moist_notify("Recent Player Joined:\n", playername .. scid)  return end
+    end
+    if i > 1000 then Recent_Players = {{name = {}, rid = {}, htoken = {}},} end
+    Recent_Players[i] = {}
+    Recent_Players[i].name = playername
+    Recent_Players[i].rid = scid
+    Recent_Players[i].htoken = tokeen
+    Recent_Player(i)
+    
+    -- Recent_Players[i]["name"] = playername
+    -- Recent_Players[i]["rid"] = scid
+    -- Recent_Players[i]["htoken"] = tokeen
+    -- Recent_Player(i)
+ 
+end
+
+function Recent_Player(id)
+    rpid = id
+  id = menu.add_feature(Recent_Players[id].name, "parent", Recent).id
+    menu.add_feature("Copy SCID to Clipboard", "action", id, function(feat)
+        utils.to_clipboard(Recent_Players[rpid].rid)
+    end)
+    local scid, name  = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
+    menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
+    AddScid(scid, name)
+        end)
+
+end
+end
+recentplayerslist()
 
 
 menu.add_player_feature("Save Players Current POS to file", "action", Player_Tools, function(feat, pid)
@@ -1653,7 +1740,7 @@ function blacklist_check(pid)
     local scid = player.get_player_scid(pid)
     if ValidScid(scid) and scids[scid] then
         local name = player.get_player_name(pid)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.3\nBlack List", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.4\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -1804,6 +1891,40 @@ scriptevent_log.on = false
 
 --TODO: player Features --Griefing
 
+menu.add_player_feature("Attach Big dildo on every bone", "action", playerfeatVars.parent, function(feat, pid)
+        moist_notify("WARNING! OVER USE:\n", "WILL CRASH GTA")
+        pped = PlyPed(pid)
+
+        local pos = v3()
+        local hash = gameplay.get_hash_key("v_res_d_dildo_f")
+         streaming.request_model(hash)
+        while (not streaming.has_model_loaded(hash)) do
+            system.wait(10)
+        end
+        for i = 1, #boneid do
+        bone_idx = ped.get_ped_bone_index(pped, boneid[i])
+        spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, false)
+        entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
+        end
+        moist_notify("ensure to Delete:\n", "Spawned Cunts in Cleanup")
+end)
+
+menu.add_player_feature("Attach dildo on every bone", "action", playerfeatVars.parent, function(feat, pid)
+           moist_notify("WARNING! OVER USE:\n", "WILL CRASH GTA")
+        pped = PlyPed(pid)
+
+        local pos = v3()
+        for i = 1, #boneid do
+        bone_idx = ped.get_ped_bone_index(pped, boneid[i])
+        spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
+        entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
+        end
+        
+        moist_notify("ensure to Delete:\n", "Spawned Cunts in Cleanup")
+
+
+end)
+
 menu.add_player_feature("Attach dildo in Skeleton root", "action", playerfeatVars.parent, function(feat, pid)
 
         pped = PlyPed(pid)
@@ -1838,6 +1959,14 @@ end)
 menu.add_player_feature("CEO TERMINATE", "action", playerfeatVars.parent, function(feat, pid)
     ScriptTR(0x9DB77399, pid, {1, 1, 6})
     ScriptTR(0x9DB77399, pid, {0, 1, 6, 0})
+end)
+
+menu.add_player_feature("Mc Kick?", "action", playerfeatVars.parent, function(feat, pid)
+    ScriptTR(0x827B244F, pid, {0, 1, 5})
+    ScriptTR(0x827B244F, pid, {0, 1, 5, 0})
+    ScriptTR(0x827B244F, pid, {1, 1, 6})
+    ScriptTR(0x827B244F, pid, {0, 1, 6, 0})
+    
 end)
 
 for i = 1, #missions do
@@ -2598,9 +2727,9 @@ local hydrafun = menu.add_feature("Spawn Hydra Triples offset", "action", global
 
     pped = PlyPed(player.player_id())
     local bid = ped.get_ped_bone_index(pped, 17916)
-    local rot = v3(0.0,0.0,0.0)
-    local offset = v3(15.0,0.0,0.0)
-    local pos = player.get_player_coords(me)
+    local rot, offset, pos = v3(0.0,0.0,0.0), v3(15.0,0.0,0.0), v3()
+    local head = player.get_player_heading(me)
+    pos = player.get_player_coords(me)
     pos.x =  pos.x + 10.0
     local i = #spawned_cunts + 1
     
@@ -2609,10 +2738,10 @@ local hydrafun = menu.add_feature("Spawn Hydra Triples offset", "action", global
         system.wait(0)
     end
     
-    spawned_cunts[i] =  vehicle.create_vehicle(970385471, pos, pos.z, true, false)
+    spawned_cunts[i] =  vehicle.create_vehicle(970385471, pos, head, true, false)
     local attacha = spawned_cunts[i]
     local i = #spawned_cunts + 1
-    spawned_cunts[i] =  vehicle.create_vehicle(970385471, pos, pos.z, true, false)
+    spawned_cunts[i] =  vehicle.create_vehicle(970385471, pos, head, true, false)
     entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
     vehicle.control_landing_gear(spawned_cunts[i], 3)
     local attachb = spawned_cunts[i]
@@ -2628,9 +2757,9 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
 
     pped = PlyPed(player.player_id())
     local bid = ped.get_ped_bone_index(pped, 17916)
-    local rot = v3(0.0,0.0,0.0)
-    local offset = v3(15.0,0.0,0.0)
-    local pos = player.get_player_coords(me)
+    local rot, offset, pos = v3(0.0,0.0,0.0), v3(15.0,0.0,0.0), v3()
+    local head = player.get_player_heading(me)
+    pos = player.get_player_coords(me)
     pos.x =  pos.x + 10.0
     local i = #spawned_cunts + 1
     local myplygrp =  player.get_player_group(me)
@@ -2640,7 +2769,7 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
         system.wait(10)
     end
     
-    spawned_cunts[i] = vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    spawned_cunts[i] = vehicle.create_vehicle(0x7B54A9D3, pos, head, true, false)
     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
     vehicle.get_vehicle_mod(spawned_cunts[i], 10)
@@ -2649,7 +2778,7 @@ local opressor2_fleet  = menu.add_feature("Spawn Mk2 Triples with Lester Bodygua
     
     local attacha = spawned_cunts[i]
     local i = #spawned_cunts + 1
-    spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, pos.z, true, false)
+    spawned_cunts[i] =  vehicle.create_vehicle(0x7B54A9D3, pos, head, true, false)
     entity.set_entity_god_mode(spawned_cunts[i], true)
     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
@@ -4057,6 +4186,7 @@ menu.add_feature("Give all Dildo Dicks", "action", globalFeatures.troll, functio
         end
         return HANDLER_POP
 end)
+
 
 local world_force = menu.add_feature("Apply force to world entities", "action", globalFeatures.lobby, function(feat)
     get_everything()
