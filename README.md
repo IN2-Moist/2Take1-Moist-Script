@@ -1,7 +1,21 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.3: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.4: Moist Edition)
+
     Change Log:
-    DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!
+  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
+    
+   - Added Recent Players list into the menu stores 1000 players before resets or you restart the game or script
+  -  Added functions for recent players:
+    1. Copy SCID to clipboard for use with scid joiner / timeout blacklist
+    2. Add to blacklist to add them to the scripts blacklist
+   
+  - Added Notifys to Recently joined/Seen players giving you a count in the notify header of amount times seen since script was started
+    Fixed few functions not working correctly player list toggles toggle other functions correctly now
+    
+    Changed Spawn options so heli vehicles if selected will spawn on maze tower and go to and execute tasks
+    
+
+Last Update Changes:
     Experiment Abandoned!
     Revert back to the old Player list Loop since some functions would not work without it
 
