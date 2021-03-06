@@ -56,7 +56,7 @@ function Self_offsetPos(pos, heading, distance)
 end
 
 function get_offset2me(dist)
-    local pos = player.get_player_coords(player.player_id())
+    local pos = player.get_player_coords(me)
     print(string.format("%s, %s, %s", pos.x, pos.y, pos.z))
     SelfoffsetPos = Self_offsetPos(pos, player.get_player_heading(player.player_id()), dist)
     print(string.format("%s, %s, %s", SelfoffsetPos.x, SelfoffsetPos.y, SelfoffsetPos.z))
@@ -153,34 +153,35 @@ toggle_setting[#toggle_setting+1] = "spam_wait"
 setting[toggle_setting[#toggle_setting]] = 0
 
 
+
 function saveSettings()
 
-    save_ini = io.open(save_ini, "w")
-    io.output(save_ini)
+   local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini", "w")
+    io.output(file)
     for i, k in pairs(toggle_setting) do
         io.write(k.."="..tostring(setting[k]).."\n")
     end
-    io.close(save_ini)
+    io.close()
 end
 
-save_ini_file = io.open(configfile, "a")
+save_ini_file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini", "a")
 toggle = 1
 
-if not utils.file_exists(configfile) then
-    io.output(save_ini_file)
+if not utils.file_exists(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini") then
+    io.output(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini")
     io.write("[MoistScript]")
     io.close()
 end
 
 function OverWriteSettingFile()
-    io.open(save_ini, "w+")
-    io.output(save_ini)
+  local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini", "w+")
+    io.output(file)
     io.write("")
     io.close()
 end
 
 
-for line in io.lines(save_ini) do
+for line in io.lines(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini") do
     local line = string.gsub(line, toggle_setting[toggle] .. "=", "")
 
     if toggle == 1 and setting["MoistScript"] ~= line then
@@ -271,17 +272,18 @@ function Player_Check(pid)
        heldammotype = weapon.get_ped_ammo_type_from_weapon(pped, heldwep)
         moist_notify(weapon.get_weapon_name(heldwep), "\n".. heldwep.. " Ammotype: " ..heldammotype)
         Debug_Out(string.format("Current Held Weapon: " ..weapon.get_weapon_name(heldwep).. ' ('.. heldwep ..')'.. ' Ammotype: ('..heldammotype ..' )'))
-        if not entity.is_entity_visible(pped) then
-        moist_notify(string.format("Players Ped is not Visible!", "~h~~r~Check Failed!"))
-        Debug_Out(string.format("Players Ped is not Visible!"))
+        local sniper_ammo = {{"explosive", 2916183225},{"Incendiary", 2797387177},{"Armour Piercing", 2797387177},{"Full Metal Jacket", 4126262806},{"Normal Sniper", 1285032059}}
 
-        else
-         moist_notify(string.format("Players Ped is Visible!", "~h~~g~Check Passed!"))
-        Debug_Out(string.format("Players Ped is Visible!"))
+    if  weapon.has_ped_got_weapon(pped, 177293209) then
+        local ammoo = weapon.get_ped_ammo_type_from_weapon(pped, 177293209)
+        for i = 1, #sniper_ammo do
+        if sniper_ammo[i][2] == ammoo then
+        moist_notify("Player Has MK2 Sniper with:\n", sniper_ammo[i][1] .. "Bullets")
         end
-       
-
+        end
+        end
     end
+
     return HANDLER_POP
 end
 
@@ -598,8 +600,7 @@ globalFeatures.Script_loader = menu.add_feature("Other Scripts", "parent", globa
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 globalFeatures.moist_tools = menu.add_feature("Moist Test Shit", "parent", globalFeatures.moistopt)
 globalFeatures.moist_tools.hidden = true
-
-
+ 
 SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFeatures.moistopt, function(feat)
     if feat.on then
 
@@ -635,31 +636,37 @@ moist_tools_hotkey = menu.add_feature("Moist Test Shit Hotkey", "toggle", global
 end)
 moist_tools_hotkey.on = true 
 
-
-
-
-
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
 logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)  
 AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
-    if not feat.on then
-        setting["AutoHost"] = false
-        return HANDLER_POP
-    end
+    
+    
+    
     setting["AutoHost"] = true
-    if Online then
-        GetHosts()
+    if feat.on then
+        if SessionHost ~= me then
+            
+            
+            
+            
+            HostForce.on = true
+            else
+            HostForce.on = false
+        end
         
-    if SessionHost ~= me then
-    local pid = SessionHost
-    ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-    ScriptTR(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+        
+        
+        return HANDLER_CONTINUE
     end
-    end
-    return HANDLER_CONTINUE
+    
+    setting["AutoHost"] = false
+    return HANDLER_POP
+    
+    
 end)
 AutoHost.on = setting["AutoHost"]
+
 
 --TODO: Player Feature Parents
 playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.4", "parent", 0).id
@@ -1015,7 +1022,7 @@ function playerRDB(pid)
     
     Recent_Players[i] = {}
     Recent_Players[i].name = playername
-    Recent_Players[i].count = count + 1
+    Recent_Players[i].count = 1
     Recent_Players[i].rid = scid
     Recent_Players[i].htoken = tokeen
     Recent_Player(pid, i)
@@ -1024,7 +1031,7 @@ end
 function Recent_Player(pid, spid)
     rpid = spid
  local id = Recent_Players[rpid].rid
- name = tostring(Recent_Players[rpid].name:sub(1,8).." : "..id)
+ name = tostring(Recent_Players[rpid].name .." : "..id)
   id = menu.add_feature(name, "parent", Recent).id
     menu.add_feature("Copy SCID to Clipboard", "action", id, function(feat)
         utils.to_clipboard(Recent_Players[rpid].rid)
@@ -1047,7 +1054,7 @@ menu.add_player_feature("Save Players Current POS to file", "action", Player_Too
 
         local pos, name, r, s
         pos = v3()
-        pos = player.get_player_coords(player.player_id(pid))
+        pos = player.get_player_coords(pid)
         name = player.get_player_name(pid)
 
         r,s = input.get("Enter a Name to Label POS", "Pos from : "..name, 64, 0)
@@ -1985,15 +1992,15 @@ menu.add_player_feature("New Player Kick", "action", playerfeatVars.parent, func
         pos.y = math.floor(pos.y)
         pos.z = math.floor(pos.z)
         
-    ScriptTR(0x827B244F, pid, {-1, 1, -6, 9494561848749, 979161650, 0, 1, 5})
-    ScriptTR(0x827B244F, pid, {0, 1, -1, 1, -6, 9494561848749, 9791616505, 0})
-    ScriptTR(0xdf7de926, pid, {-1, 1, -6, 9494561848749, 979161650})
-    ScriptTR(1115000764, pid, {-1, 1, -6, 9494561848749, 979161650})
+    ScriptTR(0x827B244F, pid, {0, 1, 5})
+    ScriptTR(0x827B244F, pid, {0, 1, 5, 0})
+    ScriptTR(0x827B244F, pid, {1, 1, 6})
+    ScriptTR(0x827B244F, pid, {0, 1, 6, 0})
         
-    ScriptTR(0xD3FE818F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z })
-    ScriptTR(0x9DB77399, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
-    ScriptTR(-1975590661, pid, {pos.x, pos.y, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
-    ScriptTR(0xF90CC891, pid, {pos.x, pos.y, pos.z, pos.z, pos.z, pos.z, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y})
+    ScriptTR(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z })
+    ScriptTR(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
+    ScriptTR(0x827B244F, pid, {pos.x, pos.y, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
+    ScriptTR(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.z, pos.z, pos.z, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y})
     
 end)
 
@@ -2616,11 +2623,11 @@ local ewo_key = menu.add_feature("Self Suicide EWO", "toggle",  globalFeatures.s
         
         if key:is_down() then
             ui.notify_above_map("Suicide EWO", "KYS TRYHARD WANNABE!", 75)
-            pped = PlyPed(player.player_id())
+            pped = PlyPed(me)
 
-            pos = player.get_player_coords(player.player_id())
+            pos = player.get_player_coords(me)
               fire.add_explosion(pos, 2, true, false, 1, pped)
-            system.wait(10)
+            system.wait(100)
         end
     return HANDLER_CONTINUE
     end
@@ -2632,7 +2639,7 @@ ewo_key.on = true
 global_func.force_wPara = menu.add_feature("Force White parachute On", "toggle", globalFeatures.self_options, function(feat)
     setting["force_wPara"] = true
     if feat.on then
-        pped = PlyPed(player.player_id())
+        pped = PlyPed(me)
 
         if ped.get_ped_drawable_variation(pped, 5) ~= 58 then
             ped.set_ped_component_variation(pped, 5, 58, 8, 0)
@@ -2814,10 +2821,10 @@ local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalF
         if key:is_down() then
 
 
-            pped = PlyPed(player.player_id())
+            pped = PlyPed(me)
 
             local pos = v3()
-            pos = player.get_player_coords(pid)
+            pos = player.get_player_coords(me)
             pos.z =  pos.z + 15
 
             -- local posz
@@ -2831,7 +2838,7 @@ local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalF
             local speed = feat.value_i
 
             local hash = gameplay.get_hash_key("WEAPON_FLAREGUN")
-            gameplay.shoot_single_bullet_between_coords(pos, pos + offset, 10000.00, hash, pped, false, true, speed)
+            gameplay.shoot_single_bullet_between_coords(pos, pos + offset, 1000.00, hash, pped, false, true, speed)
             system.wait(10)
 
         end
@@ -2842,7 +2849,7 @@ local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalF
 end)
 Counter_key.on = setting["counter_Hotkey"]
 Counter_key.max_i = 10000
-Counter_key.min_i = 20
+Counter_key.min_i = 1
 Counter_key.value_i = 1550
 Counter_key.mod_i = 75
 
@@ -3305,16 +3312,30 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
                 ScriptTR(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
 
                 system.wait(200)
+                
+        ScriptTR(0xc5bc4c4b, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
+        ScriptTR(-2122716210, hostnow, {91645, -99683, 1788, 60877, 55085, 72028})
+        ScriptTR(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+        ScriptTR(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+        ScriptTR(-977515445, hostnow, {-1, 500000, 849451549, -1, -1})
+        ScriptTR(767605081, hostnow, {-1, 500000, 849451549, -1, -1})
+        ScriptTR(-1949011582, hostnow, {-1139568479, -1, 1, 100099})
+        ScriptTR(-2122716210, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+        ScriptTR(-922075519, hostnow, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+        ScriptTR(-1975590661, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+
+
               
             end
 
             if network.network_is_host() then
                 -- HostForce_togglecheck.on = false
-                moist_notify("Stolen Host by Force!", "\nSuccess")
-                HostForce.on = false
+                --moist_notify("Stolen Host by Force!", "\nSuccess")
+    
+       HostForce.on = false
+            return end
 
-            end
-
+    
 
             return HANDLER_CONTINUE
 
@@ -6885,11 +6906,11 @@ features["sound_troll10"] = {feat = menu.add_feature("Annoy With Water Sounds", 
 end), type = "action"}
 features["sound_troll10"].feat.threaded = false
 
-features["LightPOS1way"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.tr.id, function(feat)
+features["LightPOS1way"] = {feat = menu.add_feature("Update Lights POS(move with Player", "toggle", featureVars.tr.id, function(feat)
     if feat.on then
         local i, y, t = #spawned_cunt, (#spawned_cunt - 1), #spawned_cunt3
         if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
-            features["LightPOSway"].feat.on = false
+           playerFeatures[pid].features["LightPOSway"].feat.on = false
             return end
         local pos, offset, offset2, offset3
         pos = v3()
@@ -6921,7 +6942,7 @@ features["LightPOS1way"].feat.on = false
 features["LightPOS1way"].feat.hidden = true
 
 
-features["LightPOSway"] = {feat = menu.add_feature("Update Lights POS(move with Player)", "toggle", featureVars.tr.id, function(feat)
+features["LightPOSway"] = {feat = menu.add_feature("Update Lights POS(move with Player", "toggle", featureVars.tr.id, function(feat)
     if feat.on then
         local pos, offset, offset2
         pos = v3()
@@ -6979,9 +7000,9 @@ features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "act
 
         spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, true)
         entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, true)
-        features["LightPOS1way"].feat.on = true
+        playerFeatures[pid].features["LightPOS1way"].feat.on = true
 
-        features["LightPOSway"].feat.on = true
+        playerFeatures[pid].features["LightPOSway"].feat.on = true
 end),  type = "action"}
 
 
@@ -7656,6 +7677,49 @@ features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "acti
         return HANDLER_POP
 end), type = "action"}
 
+features["Firework_ply"] = {feat = menu.add_feature("Fireworks Around Player Delay: ", "value_i", featureVars.tr.id, function(feat)
+
+        if feat.on then
+        local pos, Pos, Rpos1, Rpos2
+        pos, Pos = v3(), v3()
+        pos = player.get_player_coords(pid)
+        Pos = player.get_player_coords(pid)
+
+            Pos.x = pos.x + math.random(-10, 20)
+            Pos.y = pos.y + math.random(-10, 20)
+            Pos.z = pos.z + math.random(5, 50)
+            fire.add_explosion(Pos, 38, true, false, 0, blame)
+            system.wait(feat.value_i)
+
+            Pos.x = pos.x + math.random(-10, 20)
+            Pos.y = pos.y + math.random(-10, 20)
+            Pos.z = pos.z + math.random(5, 50)
+                       
+            fire.add_explosion(Pos, 38,  true, false, 0, blame)
+             system.wait(feat.value_i)
+              pos = player.get_player_coords(pid)
+            Pos.x = pos.x + math.random(-100, 200)
+            Pos.y = pos.y + math.random(-100, 200)
+            Pos.z = pos.z + math.random(5, 50)
+             
+            fire.add_explosion(Pos, 38, true, false, 0, blame)
+            system.wait(feat.value_i)
+            
+            Pos.x = pos.x + math.random(1, 200)
+            Pos.y = pos.y + math.random(1, 200)
+            Pos.z = pos.z + math.random(5, 50)
+            fire.add_explosion(Pos, 38,  true, false, 0, blame)
+                        system.wait(feat.value_i)
+
+            return HANDLER_CONTINUE
+        end
+
+end), type = "toggle"}
+features["Firework_ply"].feat.max_i = 2000
+features["Firework_ply"].feat.min_i = 0
+features["Firework_ply"].feat.value_i = 100
+features["Firework_ply"].feat.mod_i = 10
+
 features["explodeply"] = {feat = menu.add_feature("Explosions Around Player", "value_i", featureVars.g.id, function(feat)
 
         if feat.on then
@@ -7836,7 +7900,7 @@ features["Peds_eject"].feat.value_i = 6
 
 features["Send_HunterLester"] = {feat = menu.add_feature("Send Lester Hunt them in savage", "action", featureVars.g.id, function(feat)
 
-        features["hunter_taskloop"].feat.on = true
+        playerFeatures[pid].features["hunter_taskloop"].feat.on = true
         local pos = v3(-73.31681060791,-820.26013183594,326.17517089844)
 
         local vehhash = veh_list[2][2]
@@ -7868,7 +7932,7 @@ end), type = "action"}
 
 
 features["Send_HunterLester1"] = {feat = menu.add_feature("Lester Thruster Hunter 2:weap", "action_value_i", featureVars.g.id, function(feat)
-        features["hunter_taskloop"].feat.on = true
+       playerFeatures[pid].features["hunter_taskloop"].feat.on = true
         local pos = v3(-73.31681060791,-820.26013183594,326.17517089844)
 
         local vehhash = 0x58CDAF30
@@ -8090,6 +8154,23 @@ end), type = "toggle", callback = function()
 end}
 features["Way-point"].feat.threaded = false
 
+features["Waypoint"] = {feat = menu.add_feature("Set Way point2 On Player", "toggle", featureVars.n.id, function(feat)
+    
+    if feat.on then
+ set_waypoint(pid)
+ else
+     --  ui.set_waypoint_off()
+
+    ui.set_waypoint_off()
+
+    end
+
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+    set_waypoint(pid)
+end}
+features["Waypoint"].feat.threaded = false
+
 --TODO: Kick System
 
 features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
@@ -8179,14 +8260,11 @@ features["SPE-kick"] = {feat = menu.add_feature("Script Event Crash", "action", 
 end), type = "action"}
 
 playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
-featureVars.f.hidden = true
+featureVars.f.hidden = setting["pid_hidden"]
 end
 
-
-local SessionHost = nil
-local ScriptHost = nil
 local loop_logsent = false
-local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
+local loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, function(feat)
                                   if feat.on then
                                   	local Online = network.is_session_started()
                                   	if not Online then
@@ -8196,9 +8274,9 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   	end
                                   	local lpid = player.player_id()
                                   	for pid=0,31 do
-                                  		local tbl = playerFeatures[pid]
-                                  		local f = tbl.feat
-                                  		local scid = GetSCID(pid)
+                                  	local tbl = playerFeatures[pid]
+                                  	local f = tbl.feat
+                                  		local scid = player.get_player_scid(pid)
                                   		if scid ~= 4294967295 then
                                   			if f.hidden then f.hidden = false end
                                   			local name = player.get_player_name(pid)
@@ -8212,7 +8290,7 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   					tags[#tags + 1] = "F"
                                   				end
                                   				if player.is_player_vehicle_god(pid) then
-                                  					tags[#tags + 1] = "V"
+                                  					tags[#tags + 1] = ".VG."
                                   					if not logsent then
                                   						Debug_Out(string.format("Player: " ..name .." [Vehicle Godmode]"))
                                   						logsent = true
@@ -8221,6 +8299,13 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   				if player.is_player_god(pid) then
                                   					tags[#tags + 1] = "G"
                                   				end
+                                  				if  not player.is_player_modder(pid, -1) then
+                                  					if player.is_player_spectating(pid) and player.is_player_playing(pid) and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
+                                  						tags[#tags + 1] = ".SPEC."
+                                  						-- moist_notify("Modded Specate Detected from " .. (isYou and "you " or name) .. " ")
+                                  						player.set_player_as_modder(pid, mod_flag_3)
+                                  					end
+                                  				end
                                   				if player.is_player_modder(pid, -1) then
                                   					tags[#tags + 1] = "M"
                                   				end
@@ -8228,16 +8313,16 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   					tags[#tags + 1] = "H"
                                   					if SessionHost ~= pid then
                                   						SessionHost = pid
-                                  							moist_notify("The session host is now\n", (isYou and " you " or name) .. "  ")
-                                                    Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
+                                  						moist_notify("The session host is now " , (isYou and " you " or name) .. "  ")
+                                  						Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
                                   					end
                                   				end
                                   				if pid == script.get_host_of_this_script() then
                                   					tags[#tags + 1] = "S"
                                   					if ScriptHost ~= pid then
                                   						ScriptHost = pid
-                                  							moist_notify("The script host is now\n", (isYou and " you " or name) .. "  ")
-                                                    Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
+                                  						moist_notify("The script host is now ",  (isYou and " you " or name) .. "  ")
+                                  						Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
                                   					end
                                   				end
 
@@ -8284,12 +8369,11 @@ local loopFeat = menu.add_feature("Loop", "toggle", 0, function(feat)
                                   	return HANDLER_CONTINUE
                                   end
                                   return HANDLER_POP
-end)
+                              end)
 
-loopFeat.hidden = true
+loopFeat.hidden = false
 loopFeat.threaded = false
 loopFeat.on = true
-
 
 end
 player_list()
@@ -8308,3 +8392,4 @@ Moist_Version()
 
 end
 threads[#threads + 1] = menu.create_thread(Moist_Script_thread, feat)
+
