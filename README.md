@@ -1,7 +1,33 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.4: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.5: Moist Edition)
 
     Change Log:
+        
+      **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
+
+    Bug Fixes where changes had been breaking or causing another function to not receive data making it malfunction 
+    Seems latest update had broken alot of smaller functions and detections,
+    i was not going to update this version again until i finish doing v 3.0.0.0 (Code Rewrite so its done in a better way using all the stuff i learned making this one)
+    **Dont expect a major update or any more bug fixes now until that version is finished!**
+    Chat Spam has had some layout changes
+    Added Chat spam Presets subfunction to Delete a preset
+    Added a new option in Spam Options to rewrite the preset save data so the deletes are permanent.
+    Added back Kick spam until spoofer and force host is back
+    Added Script Event Kick to the kick command for friends
+    Added Networked marker above players (under troll options currently)
+    Added v2 HP info checks players HP Shoots sniper bullets in your name with very low damage then rechecks health see if we can apply damage or not
+    Added UndeadOTR and OTR Tags in the local script functions playerlist (these will show when player is in interior etc or not also the undead otr when player has no ped (the i tag in the main playerlist))
+    God mode notifications and playerbar tagging have to pass through 2 check loops before being applied or notified the notify been sent resets after a few minutes the option to clear this is now default on 
+    with the god check options which are both having a savable setting now
+
+    ```
+    
+  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
+  **Dont expect a major update or any more bug fixes now until that version is finished!**
+
+    ```
+    
+    Last Update Changes:
    - Added Recent Players list into the menu stores 1000 players before resets or you restart the game or script
    - Added functions for recent players:
     1. Copy SCID to clipboard for use with scid joiner / timeout blacklist
@@ -14,7 +40,7 @@
     
       **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
 
-Last Update Changes:
+
     Experiment Abandoned!
     Revert back to the old Player list Loop since some functions would not work without it
 
