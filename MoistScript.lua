@@ -5149,67 +5149,6 @@ function update_osd_text(text, append)
   end   
 end
    
-OSD_Debug = menu.add_feature("Debug OSD", "toggle", globalFeatures.moist_tools.id, function(feat)
-
-    if feat.on then
-   	ui.draw_rect(0.001, 0.990, 0.5, 0.070, 0, 0, 0, 180)
-        local pos = v2()
-
-
-        pos.x = 0.1
-        pos.y = .960
-
-        ui.set_text_scale(0.30)
-        ui.set_text_font(0)
-        ui.set_text_color(255, 255, 255, 255)
-        ui.set_text_centre(true)
-        ui.set_text_outline(1)
-        ui.draw_text(ScreenText, pos)
-      
-        return HANDLER_CONTINUE
-    end
-
-    return HANDLER_POP
-
-end)
-OSD_Debug.on = false
-OSD_Debug.hidden = false
-
-function test()
-    attached_shit = {}
-local objcreate = menu.add_feature("Create object Remote sniper", "action", globalFeatures.moist_tools.id, function(feat)
-	
-	local pedd, objhash, i
-     pedd = PlyPed(me)
-	local pos = v3()
-	pos = player.get_player_coords(me)
-	
-	i = #attached_shit + 1
-	
-	objhash = gameplay.get_hash_key("p_rcss_s")
-	pos.x = pos.x + 3
-	attached_shit[i] = object.create_object(objhash, pos, true, false)
-end) 
-
-
-local objcreate1 = menu.add_feature("Create object Remote sniper folded", "action", globalFeatures.moist_tools.id, function(feat)
-	
-		
-	local pedd, objhash, i
-     pedd = PlyPed(me)
-	
-	local pos = v3()
-	pos = player.get_player_coords(me)
-	
-	 i = #attached_shit + 1
-	
-	objhash = gameplay.get_hash_key("p_rcss_folded")
-	pos.x = pos.x + 3
-	attached_shit[i] = object.create_object(objhash, pos, true, false)
-end)
-end
-test()
-
 
 
 OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures.moistopt, function(feat)
@@ -8756,7 +8695,7 @@ featureVars.f.hidden = setting["pid_hidden"]
 end
 
 local loop_logsent = false
-loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, function(feat)
+loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moistopt, function(feat)
                                   if feat.on then
                                   	local Online = network.is_session_started()
                                   	if not Online then
@@ -8878,7 +8817,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                                   return HANDLER_POP
                               end)
 
-loopFeat.hidden = false
+loopFeat.hidden = true
 loopFeat.threaded = false
 loopFeat.on = true
 Debug_Out("MoistScript Playerlist Loop executed")
