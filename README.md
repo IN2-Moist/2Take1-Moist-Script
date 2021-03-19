@@ -1,5 +1,7 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.5: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.6: Moist Edition)
+
+    **Bug Fix for my search and replace fucking everything XD**
 
     Change Log:
         

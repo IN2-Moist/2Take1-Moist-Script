@@ -17,7 +17,7 @@ function Debug_Out(text)
 end
 
 local Moist_Script_thread  = function(feat)
-local version_check, MoistVersion = nil,  "2.0.2.5"
+local version_check, MoistVersion = nil,  "2.0.2.6"
 
 --[[
 Credits & Thanks to Kektram for help with OTR Code and code Advice
@@ -73,6 +73,10 @@ end
 dataload3()
 
 
+--TODO: Function Localisation
+local ScriptTR, Online, me = script.trigger_script_event, network.is_session_started(), player.player_id()
+
+
 --Get Offset to self POS
 local SelfoffsetPos = v3()
 
@@ -110,7 +114,7 @@ local save_ini = rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.in
 
 local toggle_setting, setting  = {}, {}
 toggle_setting[#toggle_setting+1] = "MoistScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.2.5"
+setting[toggle_setting[#toggle_setting]] = "2.0.2.6"
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSD.Player_bar"
@@ -243,8 +247,6 @@ local escort, escortveh, spawned_cunts, groupIDs, allpeds, allveh, allobj, allpi
 local scids, scidN = {}, 0
 local spawned_cunt1, spawned_cunt2, spawned_cunt3, spawned_cunt, BlipIDs = {}, {}, {}, {}, {}
 
---TODO: Function Localisation
-local ScriptTR, Online, me = script.trigger_script_event, network.is_session_started(), player.player_id()
 
 --TODO: Function Variables
 local SessionHost, ScriptHost
@@ -343,7 +345,7 @@ function dec2ip(decip)
 end
 
 function notify_above_map(msg)
-    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.5\n~p~~h~Moist Edition", 175)
+    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.2.6\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -353,24 +355,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.6\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.6\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.6\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.6\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.5\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.6\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.5\n~g~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .."~h~" .. msg2, "~r~~h~Ω MoistsScript 2.0.2.6\n~g~~h~Moist Edition", color)
     end
 
 end
@@ -573,7 +575,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 
 --local Menu Functions
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.5", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.2.6", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
 --TODO: Feature Parents
@@ -633,25 +635,6 @@ globalFeatures.Script_loader = menu.add_feature("Other Scripts", "parent", globa
 
 --options
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
-globalFeatures.moist_tools = menu.add_feature("Moist Test Shit", "parent", globalFeatures.moistopt)
-globalFeatures.moist_tools.hidden = true
-
-InteriorTest = menu.add_feature("is interior test", "toggle", globalFeatures.moist_tools.id, function(feat)
-	if feat.on then
-	update_osd_text(interior.get_interior_from_entity(PlyPed(me)), false)
-	return HANDLER_CONTINUE
-	end
-end)
-
-spawnobject = menu.add_feature("spawnobject from clipboard", "action", globalFeatures.moist_tools.id, function(feat)
-	
-	local hash = gameplay.get_hash_key(utils.from_clipboard())
-	local pos = v3()
-	pos = get_offset(me, 10)
-
-	spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, true)
-	end)
-	
 	
 SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFeatures.moistopt, function(feat)
         if not feat.on then
@@ -675,24 +658,6 @@ SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFea
 end)
 
 SaveOptions_Hotkey.on = true
-
-moist_tools_hotkey = menu.add_feature("Moist Test Shit Hotkey", "toggle", globalFeatures.moist_tools.id, function(feat)
-    if feat.on then
-        
-        local key = MenuKey()
-        key:push_str("LCONTROL")
-        key:push_str("LSHIFT")
-        key:push_str("h")
-        if key:is_down() then
-            globalFeatures.moist_tools.hidden = not globalFeatures.moist_tools.hidden
-            system.wait(1200)
-        end
-        
-    return HANDLER_CONTINUE
-    end
-    return HANDLER_POP
-end)
-moist_tools_hotkey.on = true 
 
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
@@ -727,7 +692,7 @@ AutoHost.on = setting["AutoHost"]
 
 
 --TODO: Player Feature Parents
-playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.5", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.2.6", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Tools", "parent", playerfeatVars.parent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", playerfeatVars.parent).id
@@ -1207,12 +1172,12 @@ end)
 
 --TODO: Online Functions
 
--- menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
+menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
 
-        -- ScriptTR(0x4d8b1e65, pid, {1300962917})
+        ScriptTR(0x4d8b1e65, pid, {1300962917})
 
-        -- return HANDLER_POP
--- end)
+        return HANDLER_POP
+end)
 
 --TODO: Show Spawn option
 
@@ -1877,7 +1842,7 @@ function blacklist_check(pid)
     local scid = GetSCID(pid)
     if ValidScid(scid) and scids[scid] then
         local name = player.get_player_name(pid)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.5\nBlack List", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.2.6\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -3327,13 +3292,20 @@ end
 
 otr_all =  menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
      for pid = 0, 32 do
-            ScriptTR(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(2426097 + (1 + (pid * 443)) + 204)})
+          --  ScriptTR(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(2426097 + (1 + (pid * 443)) + 204)})
+		--	system.wait(100)
+            ScriptTR(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+
      end
 end)
      
+
+    
 nocops_all =  menu.add_feature("Give everyone Cop Bribe", "action", globalFeatures.lobby, function(feat)
          for pid = 0, 32 do
-            ScriptTR(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(2426097 + (1 + (pid * 443)) + 204)})
+           -- ScriptTR(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(2426097 + (1 + (pid * 443)) + 204)})
+			ScriptTR(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			
      end
 end)
 
@@ -6812,9 +6784,12 @@ end}
 features["ceo_money1"].feat.on = false
 
 features["ceo_otr"] = {feat = menu.add_feature("OTR", "action", featureVars.f.id, function(feat)
-  
-        ScriptTR(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(2426097 + (1 + (pid * 443)) + 204)})
-        
+
+		
+		ScriptTR(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+		
+		
+		
 
     return HANDLER_POP
 end), type = "toggle", callback = function()
@@ -6824,8 +6799,7 @@ features["ceo_otr"].feat.on = false
 
 features["give_nocops"] = {feat = menu.add_feature("Give Long Cop Bribe", "action", featureVars.f.id, function(feat)
 
-
-        ScriptTR(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(2426097 + (1 + (pid * 443)) + 204)})
+		ScriptTR(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
 
 
         return HANDLER_POP
@@ -8857,7 +8831,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 												-- flag_name = player.get_modder_flag_text(flags)
 												-- print(flag_name)
 
-                                  					tags[#tags + 1] = "M "
+                                  					tags[#tags + 1] = "[M]"
                                   				end
 
                                   				if tbl.scid ~= scid then
@@ -8876,7 +8850,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                                   				end
                                   			end
                                   			if #tags > 0 then
-                                  				name = name .. " [" .. table.concat(tags) .. "]"
+                                  				name = name .. " " .. table.concat(tags)
                                   			end
                                   			if f.name ~= name then f.name = name end
                                   			for cf_name,cf in pairs(tbl.features) do
