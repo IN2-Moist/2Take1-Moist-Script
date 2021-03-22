@@ -634,13 +634,13 @@ playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.Onl
 Recent = menu.add_feature("Recent Players", "parent", globalFeatures.Online_Session).id
 
 
+globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.Online_Session).id
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.Online_Session).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.Online_Session).id
-Blacklist = menu.add_feature("Token Blacklist", "parent", globalFeatures.protex)
+
 --session
 globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.lobby).id
 globalFeatures.troll = menu.add_feature("Troll Functions", "parent", globalFeatures.lobby).id
-globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
 globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.glitch = menu.add_feature("Block Glitch Spots", "parent", globalFeatures.protex).id
 
@@ -992,7 +992,6 @@ end)
 		moist_notify("rember to rewrite presets to save", "\nFound in spam options")
 		pfeat.hidden = true
     end)
-    #spam_presets do
 
         menu.add_player_feature("sms: " .. spam_presets[i][1], "toggle", playerfeatVars.spam_sms, function(feat, pid)
             if feat.on then
@@ -5404,23 +5403,36 @@ end)
 OSD.osd_My_speed2.on = setting["osd_My_speed2"]
 
 --TODO: Player Ped Weapons
+local weap, weaponz 
+weap = {}
+weaponz = {
+}
 
-local function give_weapon()
-    local weap, weapname = {}, {}
-    weap = weapon.get_all_weapon_hashes()
+function getwephashes()
+    weap =  weapon.get_all_weapon_hashes()
+    
+    
+    
     for i = 1, #weap do
-    weapname[#weapname+1] = weapon.get_weapon_name(weap[i])
+    weaponz[i] = {weap[i], weapon.get_weapon_name(weap[i])}
+
     end
-    for i = 1, #weap do
-	local wid = weap[i]
-    wid = menu.add_feature("Give: " ..weapname[i], "action", globalFeatures.self_wep, function(feat)
+end
+getwephashes()
+
+function give_weapon()
+
+    for i = 1, #weaponz do
+	local wid = weaponz[i][1]
+    wid = menu.add_feature("Give: " .. weaponz[i][2], "action", globalFeatures.self_wep, function(feat)
 		
             pped = PlyPed(me)
-            weapon.give_delayed_weapon_to_ped(pped, weap[i], 0, 1)
-            weapon.set_ped_ammo(pped, weap[i], 1000000)
+            weapon.give_delayed_weapon_to_ped(PlyPed(me), weaponz[i][1], 1, 1)
+            weapon.set_ped_ammo(PlyPed(me), weaponz[i][1], 1000000)
+            weapon.give_delayed_weapon_to_ped(pped, weaponz[i][1], 1, 1)
+            weapon.set_ped_ammo(pped, weaponz[i][1], 1000000)
         end)
 
-		
     end
 end
 give_weapon()
@@ -9094,7 +9106,7 @@ features["SPE-kick"] = {feat = menu.add_feature("Script Event Crash", "action", 
 end), type = "action"}
 
 playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
-featureVars.f.hidden = setting["pid_hidden"]
+featureVars.f.hidden = true
 end
 
 local loop_logsent = false
