@@ -1,11 +1,21 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.6: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.7: Moist Edition)
 
-    **Bug Fix for my search and replace fucking everything XD**
+      Change Log:
+      Added New player Crash & session crash
+      Added Kick Data 2 Type 3 Mass Event Spam with Retarded amount of Parameters and values this is also added to online session kicks
+      
+        Layout Updated
+        Improved Logging output
+        Performance update to the Netevent Logger no longer lags and freezes the game so hard.
+        Blips has its own section with colour adjustments & Radial Blips for players or their last used vehicle
+        default vehicle is set to distance of 3500 which is roughly the submarine guided missile range
+    
+    Last Update Changes:    
+    
+  **Bug Fix for my search and replace fucking everything XD**
 
-    Change Log:
-        
-      **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
+  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
 
     Bug Fixes where changes had been breaking or causing another function to not receive data making it malfunction 
     Seems latest update had broken alot of smaller functions and detections,
@@ -29,7 +39,7 @@
 
     ```
     
-    Last Update Changes:
+
    - Added Recent Players list into the menu stores 1000 players before resets or you restart the game or script
    - Added functions for recent players:
     1. Copy SCID to clipboard for use with scid joiner / timeout blacklist
