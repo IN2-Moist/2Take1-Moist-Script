@@ -6,6 +6,7 @@
       added kickdata2 type 4 mass spam toggle
       improved session kickdata2 kick
       added player ped modifiers (model swap) --needs to be tested further and remove hashes that wont work
+      more script event hashes added to data2
 
     Last Update Changes:   
     
