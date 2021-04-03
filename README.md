@@ -1,8 +1,15 @@
 
-# 2Take1-Moist-Script (Build 2.0.2.7: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.2.8: Moist Edition)
 
       Change Log:
-      Added New player Crash & session crash
+      improved event spam kickdata2 type3
+      added kickdata2 type 4 mass spam toggle
+      improved session kickdata2 kick
+      added player ped modifiers (model swap) --needs to be tested further and remove hashes that wont work
+
+    Last Update Changes:   
+    
+          Added New player Crash & session crash
       Added Kick Data 2 Type 3 Mass Event Spam with Retarded amount of Parameters and values this is also added to online session kicks
       
         Layout Updated
@@ -10,8 +17,6 @@
         Performance update to the Netevent Logger no longer lags and freezes the game so hard.
         Blips has its own section with colour adjustments & Radial Blips for players or their last used vehicle
         default vehicle is set to distance of 3500 which is roughly the submarine guided missile range
-    
-    Last Update Changes:    
     
   **Bug Fix for my search and replace fucking everything XD**
 
