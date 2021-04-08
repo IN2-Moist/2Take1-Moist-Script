@@ -5454,19 +5454,45 @@ local setup_casinostats = menu.add_feature("Setup Casino Heist Stealth Diamonds"
 end)
 
 
-local char_design = menu.add_feature("Character Design Stats to log", "action", globalFeatures.self_statcheck, function(feat)
-    
-    local character_design = {"MESH_HEADBLEND","MESH_TEXBLEND","MESH_VARBLEND","HEADBLEND_OVER_BLEMISH_PC","HEADBLEND_OVERLAY_BEARD_PC","HEADBLEND_OVERLAY_EYEBRW_PC","HEADBLEND_OVERLAY_WETHR_PC","HEADBLEND_OVERLAY_MAKEUP_PC","HEADBLEND_OVERLAY_DAMAGE_PC","HEADBLEND_OVERLAY_BASE_PC","HEADBLEND_GEOM_BLEND","HEADBLEND_TEX_BLEND","HEADBLEND_VAR_BLEND","HEADBLEND_DOM"}
+script_recovery = menu.add_feature("Recovery/Transfer", "parent", globalFeatures.self_statsetup)
+local character_design = {"MESH_HEADBLEND","MESH_TEXBLEND","MESH_VARBLEND","HEADBLEND_OVER_BLEMISH_PC","HEADBLEND_OVERLAY_BEARD_PC","HEADBLEND_OVERLAY_EYEBRW_PC","HEADBLEND_OVERLAY_WETHR_PC","HEADBLEND_OVERLAY_MAKEUP_PC","HEADBLEND_OVERLAY_DAMAGE_PC","HEADBLEND_OVERLAY_BASE_PC","HEADBLEND_GEOM_BLEND","HEADBLEND_TEX_BLEND","HEADBLEND_VAR_BLEND","HEADBLEND_DOM","FEATURE_0","FEATURE_1","FEATURE_2","FEATURE_3","FEATURE_4","FEATURE_5","FEATURE_6","FEATURE_7","FEATURE_8","FEATURE_9","FEATURE_10","FEATURE_11","FEATURE_12","FEATURE_13","FEATURE_14","FEATURE_15","FEATURE_16","FEATURE_17","FEATURE_18","FEATURE_19","FEATURE_20","HEADBLENDOVERLAYCUTS_PC","HEADBLENDOVERLAYMOLES_PC","HEADBLEND_OVERLAY_BLUSHER","OVERLAY_BODY_2","OVERLAY_BODY_3","OVERLAY_BODY_1"}
+local des_rec = {}
+char_design = menu.add_feature("Create Character Design Script", "action", script_recovery.id, function(feat)
+
+        local design_value = {"1.0", "0.0", "1.0", "1.0", "1.0", "1.0", "1.0", "0.050000000745058", "0.83787792921066", "0.0", "0.0"}
         for  i = 1, #character_design do
             local stat = Get_Last_MP(character_design[i])
             local stat_hash = gameplay.get_hash_key(stat)
-           local design =  stats.stat_get_float(stat_hash, 0)
-           Debug_Out(stat .. " : " .. design.."\n")
-        end
+           des_rec[i] = stats.stat_get_float(stat_hash, 0)
+
+         end
+        Create_stat_Script()
 
 end)
 
 
+function write_stat(text)
+    local file = io.open(rootPath .. "\\scripts\\Moists_stat_out.lua", "a")
+    io.output(file)
+    io.write(text)
+    io.close()
+end
+
+function Create_stat_Script()
+  local txt = Cur_Date_Time()
+ write_stat('function Get_Last_MP(a)local b=a;local c=gameplay.get_hash_key("MPPLY_LAST_MP_CHAR")local d=stats.stat_get_int(c,1)return string.format("MP"..d.."_"..b)end;function Get_Hash(e)return gameplay.get_hash_key(e)end\n\n')
+ write_stat('menu.add_feature("statwriter Player Design'..txt ..'", "action", 0, function(feat)\n\n')
+    for i = 1, #character_design do
+   
+write_stat('local stat = Get_Hash(Get_Last_MP("'..character_design[i]..'"))\n')
+
+        write_stat('stats.stat_set_float(stat, '..des_rec[i]..', '..'true)\n')
+    end
+    write_stat('end)\n\n')
+
+    des_rec = {}
+
+end
 
 function write_recScript(text)
     local file = io.open(rootPath .. "\\scripts\\Moists_statrecovery.lua", "a")
