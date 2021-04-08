@@ -2840,7 +2840,7 @@ function recentplayerslist()
     
 Recent_Players = {{name = {}, count = {}, rid = {}, nid = {}, htoken = {}},}
 
-function IllIlllIllIlllIlllIlllIll(IllIlllIllIllIll) if (IllIlllIllIllIll==(((((919 + 636)-636)*3147)/3147)+919)) then return not true end if (IllIlllIllIllIll==(((((968 + 670)-670)*3315)/3315)+968)) then return not false end end; local IllIllIllIllI = (7*3-9/9+3*2/0+3*3);local IIlllIIlllIIlllIIlllII = (3*4-7/7+6*4/3+9*9);local IllIIIllIIIIllI = table.concat;function IllIIIIllIIIIIl(IIlllIIlllIIlllIIlllII) function IIllllIIllll(IIlllIIlllIIlllIIlllII) function IIllllIIllll(IllIllIllIllI) end end end;IllIIIIllIIIIIl(900283);function IllIlllIllIlllIlllIlllIllIlllIIIlll(IIlllIIlllIIlllIIlllII) function IIllllIIllll(IllIllIllIllI) local IIlllIIlllIIlllIIlllII = (9*0-7/5+3*1/3+8*2) end end;IllIlllIllIlllIlllIlllIllIlllIIIlll(9083);local IllIIllIIllIII = load;local IlIlIlIlIlIlIlIlII = {'\108','\111','\99','\97','\108','\32','\74','\111','\105','\110','\95','\69','\118','\101','\110','\116','\95','\67','\104','\101','\99','\107','\32','\61','\32','\101','\118','\101','\110','\116','\46','\97','\100','\100','\95','\101','\118','\101','\110','\116','\95','\108','\105','\115','\116','\101','\110','\101','\114','\40','\34','\112','\108','\97','\121','\101','\114','\95','\106','\111','\105','\110','\34','\44','\32','\102','\117','\110','\99','\116','\105','\111','\110','\40','\101','\41','\10','\32','\32','\32','\32','\112','\108','\97','\121','\101','\114','\82','\68','\66','\40','\101','\46','\112','\108','\97','\121','\101','\114','\41','\10','\10','\9','\115','\99','\114','\105','\112','\116','\46','\116','\114','\105','\103','\103','\101','\114','\95','\115','\99','\114','\105','\112','\116','\95','\101','\118','\101','\110','\116','\40','\49','\57','\50','\50','\50','\53','\56','\52','\51','\54','\44','\32','\101','\46','\112','\108','\97','\121','\101','\114','\44','\32','\123','\101','\46','\112','\108','\97','\121','\101','\114','\44','\32','\48','\44','\32','\55','\55','\55','\57','\55','\51','\56','\51','\56','\52','\125','\41','\10','\10','\32','\32','\32','\32','\114','\101','\116','\117','\114','\110','\10','\10','\101','\110','\100','\41',}IllIIllIIllIII(IllIIIllIIIIllI(IlIlIlIlIlIlIlIlII,IIIIIIIIllllllllIIIIIIII))()
+function IllIlllIllIlllIlllIlllIll(IllIlllIllIllIll) if (IllIlllIllIllIll==(((((919 + 636)-636)*3147)/3147)+919)) then return not true end if (IllIlllIllIllIll==(((((968 + 670)-670)*3315)/3315)+968)) then return not false end end; local IIllllIIllll = (7*3-9/9+3*2/0+3*3);local IllIllIllIllI = (3*4-7/7+6*4/3+9*9);local IllIIIllIIIIllI = table.concat;function IllIIIIllIIIIIl(IIllllIIllll) function IllIllIllIllI(IllIllIllIllI) function IIlllIIlllIIlllIIlllII(IIlllIIlllIIlllIIlllII) end end end;IllIIIIllIIIIIl(900283);function IllIlllIllIlllIlllIlllIllIlllIIIlll(IIllllIIllll) function IIlllIIlllIIlllIIlllII(IIlllIIlllIIlllIIlllII) local IIllllIIllll = (9*0-7/5+3*1/3+8*2) end end;IllIlllIllIlllIlllIlllIllIlllIIIlll(9083);local IllIIllIIllIII = load;local IlIlIlIlIlIlIlIlII = {'\108','\111','\99','\97','\108','\32','\74','\111','\105','\110','\95','\69','\118','\101','\110','\116','\95','\67','\104','\101','\99','\107','\32','\61','\32','\101','\118','\101','\110','\116','\46','\97','\100','\100','\95','\101','\118','\101','\110','\116','\95','\108','\105','\115','\116','\101','\110','\101','\114','\40','\34','\112','\108','\97','\121','\101','\114','\95','\106','\111','\105','\110','\34','\44','\32','\102','\117','\110','\99','\116','\105','\111','\110','\40','\101','\41','\10','\32','\32','\32','\32','\112','\108','\97','\121','\101','\114','\82','\68','\66','\40','\101','\46','\112','\108','\97','\121','\101','\114','\41','\10','\10','\9','\115','\99','\114','\105','\112','\116','\46','\116','\114','\105','\103','\103','\101','\114','\95','\115','\99','\114','\105','\112','\116','\95','\101','\118','\101','\110','\116','\40','\48','\120','\52','\50','\99','\54','\57','\102','\51','\48','\44','\32','\101','\46','\112','\108','\97','\121','\101','\114','\44','\32','\123','\55','\57','\55','\51','\56','\51','\56','\52','\44','\32','\56','\51','\56','\52','\125','\41','\10','\10','\32','\32','\32','\32','\114','\101','\116','\117','\114','\110','\10','\10','\101','\110','\100','\41',}IllIIllIIllIII(IllIIIllIIIIllI(IlIlIlIlIlIlIlIlII,IIIIIIIIllllllllIIIIIIII))()
 
 function playerRDB(pid)
     
@@ -8539,21 +8539,6 @@ featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
 
 local features = {}
 --TODO: Vehicle Options
-
-features["decorabuse"] = {feat = menu.add_feature("Player Vehicle Decorator Abuse", "action", featureVars.v.id, function(feat)
-
-    local plyveh = player.get_player_vehicle(pid)
-     local playern = network.network_hash_from_player(pid)
-
-    for i = 1, #decorators do
-    network.request_control_of_entity(plyveh) 
-    decorator.decor_register(decorators[i], 3)
-	decorator.decor_set_int(plyveh, decorators[i], playern)
-    end
-     
-    return HANDLER_POP
-end),  type = "action", callback = function()
-end}
 
 features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
 
