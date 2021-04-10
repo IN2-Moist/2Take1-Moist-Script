@@ -2281,7 +2281,6 @@ Recent = menu.add_feature("Recent Players", "parent", globalFeatures.Online_Sess
 
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.Online_Session).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.Online_Session).id
-threads[#threads + 1] = menu.create_thread(MoistLoad, feat)
 --session
 globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.Online_Session).id
 globalFeatures.troll = menu.add_feature("Troll Functions", "parent", globalFeatures.lobby).id
@@ -2950,7 +2949,6 @@ function Recent_Player(pid, spid)
     local scid, name, token  = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
     menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
      AddScid(scid, name)
-     AddTokenID(token, name)
      LoadBlacklist()
      
     end) 
