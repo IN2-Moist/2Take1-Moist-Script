@@ -1,5 +1,5 @@
-
-# 2Take1-Moist-Script (Build 2.0.2.8: Moist Edition)
+![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
+# 2Take1-Moist-Script (Build 2.0.2.9: Moist Edition)
 
       Change Log:
       improved event spam kickdata2 type3
