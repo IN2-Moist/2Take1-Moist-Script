@@ -2,13 +2,27 @@
 # 2Take1-Moist-Script (Build 2.0.2.9: Moist Edition)
 
       Change Log:
+      Added Option Script Notify Me (Turns off Most Script Functions using Notify)
+      Added Active Script item Player info (Player Info OSD when inside Function for online players)
+      Added Function Testing Section : (Some stuff im working on)
+        Added Test functions: Orbital Explosion with fx still working on audio for this cant get it to play the actual explosion sound as yet
+        Added Test Functions 2D+3D OSD Player Distance from self
+      Added New Section under Online Session Troll functions Sound Annoyances
+      Added 385 Sounds under this section to piss the session off with
+      Added Fuck Ability to Play (can put player on perma loading screen)
+      Added Passive Player Detection to the PlayerBar Passive is Faded Grey colour
+      Fixed some Broken functionality
+      Removed Force Host Auto Kick from options (Session Kick version still there for manual use)
+
+  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
+    Last Update Changes:   
+
       improved event spam kickdata2 type3
       added kickdata2 type 4 mass spam toggle
       improved session kickdata2 kick
       added player ped modifiers (model swap) --needs to be tested further and remove hashes that wont work
       more script event hashes added to data2
 
-    Last Update Changes:   
     
           Added New player Crash & session crash
       Added Kick Data 2 Type 3 Mass Event Spam with Retarded amount of Parameters and values this is also added to online session kicks
@@ -21,7 +35,6 @@
     
   **Bug Fix for my search and replace fucking everything XD**
 
-  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
 
     Bug Fixes where changes had been breaking or causing another function to not receive data making it malfunction 
     Seems latest update had broken alot of smaller functions and detections,
