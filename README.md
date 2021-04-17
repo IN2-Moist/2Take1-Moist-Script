@@ -1,6 +1,11 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.2.9: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.3.0: Moist Edition)
 
+************* BUG FIX!! ***************
+  Fixed issues with some sounds causing a crash
+  Fixed OSD Logic
+  Fixed Logic for Info Window causing Crash
+***************************************
       Change Log:
       Added Option Script Notify Me (Turns off Most Script Functions using Notify)
       Added Active Script item Player info (Player Info OSD when inside Function for online players)
