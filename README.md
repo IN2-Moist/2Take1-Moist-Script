@@ -1,12 +1,19 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.0: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.3.1: Moist Edition)
 
+      Change Log:
+      Possible Crash Fix for Playerinfo OSD
+      Weapon info and being in a vehicle causing a crash
+      Updated Spawn Triplet  vehicles now a submenu full of various vehicles to choose from with spawn vehicle or spawn vehicle with bodyguard
+      Audio Annoyances now play through 3 variations Audio from entity Coordinates and Frontend should minimise sounds that wont play
+      Orbital explosions updated still experimental
+
+    Last Update Changes:   
 ************* BUG FIX!! ***************
   Fixed issues with some sounds causing a crash
   Fixed OSD Logic
   Fixed Logic for Info Window causing Crash
 ***************************************
-      Change Log:
       Added Option Script Notify Me (Turns off Most Script Functions using Notify)
       Added Active Script item Player info (Player Info OSD when inside Function for online players)
       Added Function Testing Section : (Some stuff im working on)
@@ -20,7 +27,6 @@
       Removed Force Host Auto Kick from options (Session Kick version still there for manual use)
 
   **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
-    Last Update Changes:   
 
       improved event spam kickdata2 type3
       added kickdata2 type 4 mass spam toggle
