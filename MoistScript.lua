@@ -2792,10 +2792,10 @@ end)
 dist.max_i = 32
 dist.min_i = 0
 
-function Get_Distance(ent)
-	local pped = PlyPed(me)
-	local playerCoord = player.get_player_coords(me)
-	local coord = entity.get_entity_coords(ent)
+function Get_Distance(pid)
+	local pped = PlyPed(pid)
+	local playerCoord = player.get_player_coords(player.player_id())
+	local coord = entity.get_entity_coords(pped)
 	local xDis = playerCoord.x - coord.x;
 	local yDis = playerCoord.y - coord.y;
 	local distance = math.sqrt(xDis*xDis+yDis*yDis);
@@ -2804,7 +2804,7 @@ end
 
 function Get_Distance3D(ent)
 	local pped = PlyPed(me)
-	local playerCoord = player.get_player_coords(me)
+	local playerCoord = player.get_player_coords(player.player_id())
 	local coord = entity.get_entity_coords(ent)
 	local xDis = playerCoord.x - coord.x --PED
 	local yDis = playerCoord.y - coord.y	--PED
