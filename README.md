@@ -1,6 +1,14 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.1: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.3.1b: Moist Edition)
 
+************* BUG FIX!! ***************
+
+      Crash Fix for Player info
+      Moved Clean Shit up from World options to Online
+      Added Override Weather stuff into World Options
+      Changed Player info Distance from 2D distance to 3D
+      
+***************************************
       Change Log:
       Possible Crash Fix for Playerinfo OSD
       Weapon info and being in a vehicle causing a crash
