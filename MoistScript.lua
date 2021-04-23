@@ -5558,15 +5558,18 @@ function TripletVeh(hash)
     end
 
     spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     local attacha = spawned_cunts[i]
     local i = #spawned_cunts + 1
     spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
     vehicle.control_landing_gear(spawned_cunts[i], 3)
     local attachb = spawned_cunts[i]
     local offset = v3(-15.0, 0.0, 0.0)
     local i = #spawned_cunts + 1
     spawned_cunts[i] = vehicle.create_vehicle(hash, pos, pos.z, true, false)
+     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
     entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
     vehicle.control_landing_gear(spawned_cunts[i], 3)
 end
