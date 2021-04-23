@@ -174,7 +174,8 @@ toggle_setting[#toggle_setting+1] = "Notify_Me"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "playerscriptinfo"
 setting[toggle_setting[#toggle_setting]] = true
-
+toggle_setting[#toggle_setting+1] = "OSDDebug2"
+setting[toggle_setting[#toggle_setting]] = false
 
 function saveSettings()
 
@@ -342,14 +343,32 @@ function Player_Check(pid)
 	health = player.get_player_health(pid)
     maxhp = player.get_player_max_health(pid)
     armo = player.get_player_armour(pid)
-    if not ped.is_ped_in_any_vehicle(pped) then
-        heldwep = ped.get_current_ped_weapon(pped)
+    if ped.is_ped_in_any_vehicle(pped) then 
+    return("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\n~s~Weapon:"),  ("\n\t\t " .. curweap .. "\t~p~ Ammo: ~w~~h~" .. expsnipe .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\nNetHash:\t\t " .. playern)
+    else
+        heldwep = ped.get_current_ped_weapon(pped) or "none"
         curweap = weapon.get_weapon_name(heldwep) or "none"
        heldammotype = weapon.get_ped_ammo_type_from_weapon(pped, heldwep)
-        local sniper_ammo = {{"explosive", 2916183225},{"Incendiary", 2797387177},{"Armour Piercing", 2797387177},{"Full Metal Jacket", 4126262806},{"Normal", 1285032059}}
-    end
-        return ("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\n~s~Weapon:  " .. curweap), (expsnipe .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp .. "~w~\nNetHash:\t\t " .. playern)
+       expsnipe = Get_AmmoType(heldammotype) or "Normal"
+           end
+           return ("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\n~b~Weapon: ~w~"), ("\n\t\t" .. curweap .. "\n~p~Ammo: ~w~~h~" .. expsnipe .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\n\nNetHash:\t\t " .. playern)
+
 end
+
+ local ammois = "Normal"
+function Get_AmmoType(ammohash)
+    local ammo
+    for i = 1, #AmmoType do
+        if AmmoType[i][2] == ammohash then
+            ammo = AmmoType[i][1]
+    return ammo
+        end
+        
+    end
+end
+    
+    
+   
 
 math.randomseed(utils.time_ms())
 
@@ -420,6 +439,8 @@ StrikeGive = {"WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE
 heiststat_setup = {{"H3_COMPLETEDPOSIX", -1},{"H3OPT_APPROACH", 1},{"H3_HARD_APPROACH", 3},{"H3OPT_TARGET", 3},{"H3OPT_POI", 1023},{"H3OPT_ACCESSPOINTS", 2047},{"H3OPT_BITSET1", -1},{"H3OPT_CREWWEAP", 1},{"H3OPT_CREWDRIVER", 1},{"H3OPT_CREWHACKER", 5},{"H3OPT_WEAPS", 1},{"H3OPT_VEHS", 3},{"H3OPT_DISRUPTSHIP", 3},{"H3OPT_BODYARMORLVL", 3},{"H3OPT_KEYLEVELS", 2},{"H3OPT_MASKS", math.ceil(math.random(0, 12))},{"H3OPT_BITSET0", -1},}
 int_flags = {65536, 131072, 262144, 524288, 1048576, 2097152, 4194304}
 boneid = {57597,24818,24817,24816,23553,11816,38180,40269,51826,57005,28252,52301,10706,36864,17916,53251,11816,24532,39317,45509,58271,18905,61163,14201,64729,63931,65068,31086,12844}
+AmmoType = {{"FullMetalJacket", 1586900444},{"FullMetalJacket", 4126262806},{"FullMetalJacket", 234717365},{"FullMetalJacket", 758230489},{"FullMetalJacket", 3162174467},{"Tracer", 3101486635},{"Tracer", 1226421483},{"Tracer", 1569785553},{"Tracer", 1184011213},{"HollowPoint" , 670318226},{"HollowPoint" , 3458447638},{"HollowPoint" , 2089185906},{"Explosive", 2916183225},{"Explosive", 3985664341},{"Incendiary", 2878251257},{"Incendiary", 1461941360},{"Incendiary", 2465278413},{"Incendiary", 3685537684},{"Incendiary", 3962074599},{"Incendiary", 796697766},{"ArmourPiercing", 784861712},{"ArmourPiercing", 2797387177},{"ArmourPiercing", 423744068},{"ArmourPiercing", 423744068},{"ArmourPiercing",  1923327840}}
+
 ped_hashes = {
     {"Abigail", 121493657},
     {"AbigailCutscene", 3845721982},
@@ -2676,15 +2697,16 @@ Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle",
     setting["playerscriptinfo"] = true
     if feat.on then
     if Active_menu ~= nil then
-    local health, infoT = Player_Check(Active_menu)
+    local health, infoA, infoB = Player_Check(Active_menu)
     local name = player.get_player_name(Active_menu) or "Empty Slot"
     local pped = player.get_player_ped(Active_menu)
-    local dist =  Get_Distance(pped)
-    if dist < 1000 then
+    local dist =  Get_Distance(Active_menu)
+    if dist < 1000.00 then
     dist = "~r~~h~\t\t " .. dist
     end
-    
-    update_osd_text2(health, infoT.."\nDistance: " ..dist)
+    local info =  infoB ..  "\nDistance: " ..dist
+
+    update_osd_text2(health, infoA, info)
     end
     system.wait(200)
     return HANDLER_CONTINUE
@@ -2796,54 +2818,115 @@ end
 
 soundtest = menu.add_feature("Orbital Anon pid", "action_value_i", globalFeatures.moist_test.id, function(feat)
 
-        local pos = v3()
-        pped = PlyPed(feat.value_i)
-        pos = entity.get_entity_coords(pped)
-        offset = v3(0.0,0.0,-2000.00)
+    local pos = v3()
+    pped = PlyPed(feat.value_i)
+    pos = entity.get_entity_coords(pped)
+    offset = v3(0.0,0.0,-2000.00)
 
-        graphics.set_next_ptfx_asset("scr_xm_orbital")
-        while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-            graphics.request_named_ptfx_asset("scr_xm_orbital")
-            system.wait(0)
-        end
-        graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
-        fire.add_explosion(pos, 59, true, false, 1.5, pped)
+    graphics.set_next_ptfx_asset("scr_xm_orbital")
+    while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+        graphics.request_named_ptfx_asset("scr_xm_orbital")
+        system.wait(0)
+    end
+    gameplay.set_override_weather(3)
+    gameplay.clear_cloud_hat()
+    
+    graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+    audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", v3(-910000.00,-10000.0,-19000.00), "MP_LOBBY_SOUNDS", true, 0, false)
+    fire.add_explosion(pos, 59, true, false, 1.5, pped)
 
-        fire.add_explosion(pos + offset, 60, true, false, 1.8, pped)
+    fire.add_explosion(pos + offset, 60, true, false, 1.8, pped)
 
-        fire.add_explosion(pos + offset, 62, true, false, 2.0, pped)
+    fire.add_explosion(pos + offset, 62, true, false, 2.0, pped)
+    fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, pped)
 
-        fire.add_explosion(pos + v3(100.0,100.0,-2000.00), 50, true, false, 1.0, pped)
+    fire.add_explosion(pos, 50, true, false, 1.0, pped)
 
 
-        system.wait(100)
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_LASER", pos, 0, true, 10000, false)
-        system.wait(100)
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
-        system.wait(100)
-        graphics.set_next_ptfx_asset("scr_xm_orbital")
-        while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-            graphics.request_named_ptfx_asset("scr_xm_orbital")
-            system.wait(0)
-        end
-        graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_SUB",  pos, "DLC_XM_ION_CANNON", true, 10000, false)
 
-        audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon_fire", pos, "DLC_XM_ION_CANNON", true, 10000, false)
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions", true, 10000, false)
-        audio.play_sound_from_coord(-1, "exp_tag_orbital_cannon",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
+    system.wait(100)
 
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_LASER", pos, 0, true, 10000, false)
-        audio.play_sound_from_coord(-1, "DLC_XM_Explosions_ORBITAL_CANNON_FIRE_EXPLOSION",  pos, 0, true, 10000, false)
-        audio.play_sound_from_coord(-1, "DLC_XM_Explosions_ORBITAL_CANNON_FIRE_SUB",  pos, 0, true, 10000, false)
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_SUB",  pos, "DLC_XM_ION_CANNON", true, 10000, false)
+    system.wait(100)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
+    system.wait(100)
+    graphics.set_next_ptfx_asset("scr_xm_orbital")
+    while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+        graphics.request_named_ptfx_asset("scr_xm_orbital")
+        system.wait(0)
+    end
+    graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
 
-        audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon_fire", pos, "DLC_XM_ION_CANNON", true, 10000, false)
-        audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions", true, 10000, false)
-        audio.play_sound_from_coord(-1, "exp_tag_orbital_cannon",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_SUB",  pos, "DLC_XM_ION_CANNON", true, 10000, false)
 
-        audio.play_sound_from_coord(-1, "Explosions_Orbital_Cannon", pos, "DLC_CHRISTMAS2017", true, 10000, false)
-        audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "DLC_CHRISTMAS2017/XM_ION_CANNON", true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, 0, true, 10000, false)
+    audio.play_sound_from_coord(-1, "XM_ION_CANNON_ORBITAL_CANNON_FIRE_SUB",  pos, 0, true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_SUB",  pos, "DLC_XM_ION_CANNON", true, 10000, false)
+
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "XM_ION_CANNON", true, 10000, false)
+
+
+end)
+soundtest.max_i = 32
+soundtest.min_i = 0
+
+soundtest = menu.add_feature("Orbital blame pid", "action_value_i", globalFeatures.moist_test.id, function(feat)
+
+    local pos = v3()
+    pped = PlyPed(me)
+    pos = entity.get_entity_coords(pped)
+    offset = v3(0.0,0.0,-2000.00)
+
+    graphics.set_next_ptfx_asset("scr_xm_orbital")
+    while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+        graphics.request_named_ptfx_asset("scr_xm_orbital")
+        system.wait(0)
+    end
+    gameplay.set_override_weather(3)
+    gameplay.clear_cloud_hat()
+    
+    
+    graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+    fire.add_explosion(pos, 59, true, false, 1.5, pped)
+
+    fire.add_explosion(pos, 60, true, false, 1.8, pped)
+
+    fire.add_explosion(pos, 62, true, false, 2.0, pped)
+
+    fire.add_explosion(pos, 52, true, false, 1.0, pped)
+
+    fire.add_explosion(pos, 50, true, false, 1.0, pped)
+
+   audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", pos + v3(100.0,100.0,7000.00), "MP_LOBBY_SOUNDS", true, 10000, false)
+
+    system.wait(100)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_LASER", pos, 0, true, 10000, false)
+    system.wait(100)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
+    system.wait(100)
+    graphics.set_next_ptfx_asset("scr_xm_orbital")
+    while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+        graphics.request_named_ptfx_asset("scr_xm_orbital")
+        system.wait(0)
+    end
+    graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+    audio.play_sound_from_coord(-1, "0x01B48D98",  pos, "mp_resident", true, 10000, false)
+
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon_fire", pos, "DLC_XM_ION_CANNON", true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions", true, 10000, false)
+    audio.play_sound_from_coord(-1, "exp_tag_orbital_cannon",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
+
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_LASER", pos, 0, true, 10000, false)
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_ORBITAL_CANNON_FIRE_EXPLOSION",  pos, 0, true, 10000, false)
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_ORBITAL_CANNON_FIRE_SUB",  pos, 0, true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_SUB",  pos, "DLC_XM_ION_CANNON", true, 10000, false)
+
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon_fire", pos, "DLC_XM_ION_CANNON", true, 10000, false)
+    audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION",  pos, "DLC_XM_Explosions", true, 10000, false)
+    audio.play_sound_from_coord(-1, "exp_tag_orbital_cannon",  pos, "DLC_XM_Explosions_Orbital_Cannon", true, 10000, false)
+
+    audio.play_sound_from_coord(-1, "Explosions_Orbital_Cannon", pos, "DLC_CHRISTMAS2017", true, 10000, false)
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "DLC_CHRISTMAS2017/XM_ION_CANNON", true, 10000, false)
 
 
 end)
@@ -2852,20 +2935,30 @@ soundtest.min_i = 0
 
 soundtest = menu.add_feature("orbital blame me pid:", "action_value_i", globalFeatures.moist_test.id, function(feat)
 
-        local pos = v3()
-        pped = PlyPed(feat.value_i)
-        local Me = PlyPed(me)
-        pos = entity.get_entity_coords(pped)
-				graphics.set_next_ptfx_asset("scr_xm_orbital")
-				while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-					graphics.request_named_ptfx_asset("scr_xm_orbital")
-					system.wait(0)
-				end
-				graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 1000.000, false, false, true)
-                fire.add_explosion(pos, 59, true, false, 1, Me)
-                fire.add_explosion(pos, 60, true, false, 1, Me)
-                fire.add_explosion(pos, 62, true, false, 1, Me)
-                fire.add_explosion(pos, 60, true, false, 1, Me)
+    local pos = v3()
+    pped = PlyPed(feat.value_i)
+    local Me = PlyPed(me)
+    pos = entity.get_entity_coords(pped)
+
+            graphics.set_next_ptfx_asset("scr_xm_orbital")
+            while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+                graphics.request_named_ptfx_asset("scr_xm_orbital")
+                system.wait(0)
+            end
+            gameplay.set_override_weather(3)
+            gameplay.clear_cloud_hat()
+            graphics.start_networked_particle_fx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 1000.000, false, false, true)
+                   audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", pos + v3(10000.0,10000.0,19000.00), "MP_LOBBY_SOUNDS", true, 1000, false)
+
+            fire.add_explosion(pos, 59, true, false, 1, Me)
+            fire.add_explosion(pos, 60, true, false, 1, Me)
+            fire.add_explosion(pos, 62, true, false, 1, Me)
+            fire.add_explosion(pos, 60, true, false, 1, Me)
+
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "dlc_xm_orbital_cannon_sounds", true, 10000, false)
+    audio.play_sound_from_entity(-1, "DLC_XM_Explosions_Orbital_Cannon", pped, "dlc_xm_orbital_cannon_sounds", true)
+    audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "DLC_CHRISTMAS2017/XM_ION_CANNON", true, 10000, false)
+    audio.play_sound_from_entity(-1, "DLC_XM_Explosions_Orbital_Cannon", pped, "DLC_CHRISTMAS2017/XM_ION_CANNON", true)
 
 end)
 soundtest.max_i = 32
@@ -5308,6 +5401,20 @@ end)
 
 --TODO: Self Options
 
+function vehicle_hash()
+    local filepath = rootPath .. "\\scripts\\MoistsLUA_cfg\\"
+
+    local luafiles = {"vehicle-hashes.lua"}
+    for i = 1, #luafiles do
+        dofile(string.format(filepath .. luafiles[i]))
+    end
+    function dofile(filename)
+        local f = assert(loadfile(filename))
+        return f()
+    end
+end
+vehicle_hash()
+
 local ewo_key = menu.add_feature("Self Suicide EWO", "toggle",  globalFeatures.self_options, function(feat)
     if feat.on then
         local pos = v3()  
@@ -5412,6 +5519,7 @@ function vehicle_hash()
     end
 end
 vehicle_hash()
+
 
 local spawn_cunt = {}
 --TODO: Hydra Triplets
@@ -6877,6 +6985,7 @@ local pasivall = menu.add_feature("Block all players Passive", "action", globalF
 end)
 
 
+
 function AudioAnnoyance(Snd, Aud)
     local pos = v3()
     for i = 0, 31 do
@@ -6884,7 +6993,10 @@ function AudioAnnoyance(Snd, Aud)
         pscid = GetSCID(i)
         if (pscid ~= -1 and pped ~= 0) then
             pos = entity.get_entity_coords(pped)
+            audio.play_sound_frontend(-1, Snd, Aud, true)
+            audio.play_sound_from_entity(-1, Snd, pped, Aud)
             audio.play_sound_from_coord(-1, Snd, pos, Aud, true, 10000, true)
+            
         end
     end
 end
@@ -6900,8 +7012,7 @@ for i = 1, #SoundAnnoy do
     end)
 end
         
-    
-
+   
 
 
 local session_soundRape = function()
@@ -8122,7 +8233,7 @@ function testfail_recheck(pid)
 --TODO: -------- Moist Tools
 
 local ScreenText = " "
-text1, text2 = "", ""
+text1, text2, text3 = "", "", ""
 
 function update_osd_text(text, append)
   if append then
@@ -8135,15 +8246,16 @@ function update_osd_text(text, append)
   end
 end
 
-function update_osd_text2(Text1, Text2)
+function update_osd_text2(Text1, Text2, Text3)
     text1 = Text1
     text2 = Text2
+    text3 = Text3
 end
 
 OSD_Debug = menu.add_feature("Debug OSD", "toggle", globalFeatures.moist_tools.id, function(feat)
 
     if feat.on then
-   	ui.draw_rect(0.001, 0.990, 0.325, 0.200, 0, 0, 0, 255)
+   	ui.draw_rect(0.001, 0.990, 0.325, 0.200, 0, 0, 0, 180)
 
         local pos = v2()
 
@@ -8187,16 +8299,15 @@ OSD_Debug.hidden = false
 
 text_scale = 0.0
 OSD_Debug2 = menu.add_feature("Debug OSD2", "toggle", globalFeatures.moist_tools.id, function(feat)
-    if not setting["playerscriptinfo"]  then return end
-
+    if not setting["playerscriptinfo"] then return end
 local Scr_x, Scr_y = graphics.get_screen_width(), graphics.get_screen_height()
 
     if feat.on then
-    text_scale = 0.30
+    text_scale = 0.28
     if Scr_x == 1920 and Scr_y  > 1020 then
-    text_scale = 0.20
+    text_scale = 0.18
     end
-   	ui.draw_rect(0.001, 0.990, 0.325, 0.200, 0, 0, 0, 255)
+   	ui.draw_rect(0.001, 0.990, 0.325, 0.200, 0, 0, 0, 180)
 
         local pos = v2()
 
@@ -8209,6 +8320,7 @@ local Scr_x, Scr_y = graphics.get_screen_width(), graphics.get_screen_height()
         ui.set_text_color(255, 255, 255, 255)
         ui.set_text_centre(false)
         ui.set_text_outline(1)
+        if text1 == nil then text1 = "NaN" end
         ui.draw_text(text1, pos)
         ui.set_text_scale(text_scale)
         ui.set_text_font(0)
@@ -8217,20 +8329,29 @@ local Scr_x, Scr_y = graphics.get_screen_width(), graphics.get_screen_height()
         ui.set_text_outline(1)
         
         pos.x = 0.001
-        pos.y = .910
+        pos.y = .890
         ui.draw_text(text2, pos)
+        ui.set_text_scale(text_scale)
+        ui.set_text_font(0)
+        ui.set_text_color(255, 255, 255, 255)
+        ui.set_text_centre(false)
+        ui.set_text_outline(1)
+        
+        pos.x = 0.001
+        pos.y = .925
+        ui.draw_text(text3, pos)
         
          return HANDLER_CONTINUE
     end
     ScreenText = ""
     text1 = ""
     text2 = ""
+    text3 = ""
     return HANDLER_POP
 
 end)
 OSD_Debug2.on = false
 OSD_Debug2.hidden = false
-
 
 
 OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures.moistopt, function(feat)
