@@ -333,8 +333,8 @@ function Player_Check(pid)
     maxhp = player.get_player_max_health(pid)
     armo = player.get_player_armour(pid)
     local dist = Get_Distance3D(pid)
-    if dist > 1500 or player.is_player_in_any_vehicle(pid) then
-        return("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\nWeapon:"),  ("\n\t\t~h~~w~Player is in a Vehicle " .. "~p~No Check Done" .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\nNetHash:\t\t " .. playern)
+    if dist > 900 or player.is_player_in_any_vehicle(pid) then
+        return("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\nWeapon:"),  ("\n\t\t~h~~w~Player Could be in Vehicle " .. "~p~No Check Done" .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\nNetHash:\t\t " .. playern)
     else
         heldwep = ped.get_current_ped_weapon(pped) or "none"
         curweap = weapon.get_weapon_name(heldwep) or "none"
