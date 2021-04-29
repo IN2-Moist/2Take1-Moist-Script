@@ -321,6 +321,7 @@ function spawn_object_onp(hash, pid)
 	
 end
 
+
 function Player_Check(pid)
     local pped, health, heldwep, heldammotype, vped, playern, plygrp, plyteam
     curweap = tostring("none")
@@ -329,12 +330,14 @@ function Player_Check(pid)
     plygrp = player.get_player_group(pid)
     playern = network.network_hash_from_player(pid)
     pped = PlyPed(pid)
+    attached = entity.is_entity_attached(pped)
     health = player.get_player_health(pid)
     maxhp = player.get_player_max_health(pid)
     armo = player.get_player_armour(pid)
     local dist = Get_Distance3D(pid)
-    if dist > 900 or player.is_player_in_any_vehicle(pid) then
-        return("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\nWeapon:"),  ("\n\t\t~h~~w~Player Could be in Vehicle " .. "~p~No Check Done" .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\nNetHash:\t\t " .. playern)
+    if  dist > 900 or player.is_player_in_any_vehicle(pid) or attached then
+
+        return("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\nWeapon:"),  ("\n\t\t~h~~w~Player is in a Vehicle " .. "~p~No Check Done" .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\nNetHash:\t\t " .. playern)
     else
         heldwep = ped.get_current_ped_weapon(pped) or "none"
         curweap = weapon.get_weapon_name(heldwep) or "none"
@@ -342,8 +345,8 @@ function Player_Check(pid)
         expsnipe = Get_AmmoType(heldammotype) or "Normal"
         return ("~h~~r~H.~o~P~w~ | ~y~A:~r~\t\t " .. health .. "~w~ / ~o~" .. maxhp .. "~h~~w~ | ~y~" .. armo .. "\n~b~Weapon: ~w~"), ("\n\t\t" .. curweap .. "\n~p~Ammo: ~w~~h~" .. expsnipe .. "\n~b~Team~w~ | ~y~Group:~b~ \t " .. plyteam  .."~w~ |~y~ " .. plygrp), ("~w~\n\nNetHash:\t\t " .. playern)
     end
-
 end
+
 
 local ammois = "Normal"
 function Get_AmmoType(ammohash)
@@ -2005,396 +2008,331 @@ ped_hashes = {
     {"u_m_y_staggrm_01", 2442448387},
     {"u_m_y_tattoo_01", 2494442380},
     {"u_m_y_ushi", 4218162071},
-    {"u_m_y_zombie_01", 2890614022}
+    {"u_m_y_zombie_01", 2890614022},
     }
 
-SoundAnnoy = {
-{"10s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-{"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"3_2_1", "HUD_MINI_GAME_SOUNDSET"},
-{"3_2_1", "HUD_MINI_GAME_SOUNDSET"},
-{"3_2_1_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
-{"5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET"},
-{"5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"5s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-{"5s_To_Event_Start_Countdown", "GTAO_FM_Events_Soundset"},
-{"Airhorn", "DLC_TG_Running_Back_Sounds"},
-{"Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet"},
-{"ARM_3_CAR_GLASS_CRASH", "0"},
-{"ARM_3_PISTOL_COCK", "0"},
-{"ARM_WRESTLING_WHOOSH_MASTER", "0"},
-{"Arming_Countdown", "GTAO_Speed_Convoy_Soundset"},
-{"ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", "ASSASSINATION_MULTI"},
-{"ATM_WINDOW", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"BACK", "HUD_AMMO_SHOP_SOUNDSET"},
-{"BACK", "HUD_FREEMODE_SOUNDSET"},
-{"BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"BACK", "HUD_FRONTEND_MP_SOUNDSET"},
-{"BACK", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
-{"BACK", "HUD_MINI_GAME_SOUNDSET"},
-{"Banshee2_Upgrade", "JA16_Super_Mod_Garage_Sounds"},
-{"BASE_JUMP_PASSED", "HUD_AWARDS"},
-{"Beast_Checkpoint", "APT_BvS_Soundset"},
-{"Beast_Checkpoint_NPC", "APT_BvS_Soundset"},
-{"Bed", "WastedSounds"},
-{"Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Blade_Appear", "APT_BvS_Soundset"},
-{"BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS"},
-{"Bomb_Disarmed", "GTAO_Speed_Convoy_Soundset"},
-{"Boss_Blipped", "GTAO_Magnate_Hunt_Boss_SoundSet"},
-{"Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset"},
-{"Breaker_01", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"Breaker_02", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"BULL_SHARK_TESTOSTERONE_END_MASTER", ""},
-{"BULL_SHARK_TESTOSTERONE_START_MASTER", ""},
-{"Bus_Schedule_Pickup", "DLC_PRISON_BREAK_HEIST_SOUNDS"},
-{"CABLE_SNAPS", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-{"CAM_PAN_DARTS", "HUD_MINI_GAME_SOUNDSET"},
-{"Camera_Shoot", "Phone_Soundset_Franklin"},
-{"CANCEL", "HUD_FREEMODE_SOUNDSET"},
-{"CANCEL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
-{"CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"CANCEL", "HUD_LIQUOR_STORE_SOUNDSET"},
-{"CANCEL", "HUD_MINI_GAME_SOUNDSET"},
-{"CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS"},
-{"CHALLENGE_UNLOCKED", "HUD_AWARDS"},
-{"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
-{"Checkpoint_Beast_Hit", "FM_Events_Sasquatch_Sounds"},
-{"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"},
-{"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
-{"Checkpoint_Hit", "GTAO_FM_Events_Soundset"},
-{"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"},
-{"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"},
-{"CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET"},
-{"Checkpoint_Teammate", "GTAO_Shepherd_Sounds"},
-{"CHECKPOINT_UNDER_THE_BRIDGE", "HUD_MINI_GAME_SOUNDSET"},
-{"Cheers", "DLC_TG_Running_Back_Sounds"},
-{"Click", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE"},
-{"Click_Fail", "WEB_NAVIGATION_SOUNDS_PHONE"},
-{"Click_Special", "WEB_NAVIGATION_SOUNDS_PHONE"},
-{"CLOSE_WINDOW", "LESTER1A_SOUNDS"},
-{"CLOSED", "DLC_APT_YACHT_DOOR_SOUNDS"},
-{"CLOSED", "MP_PROPERTIES_ELEVATOR_DOORS"},
-{"COMPUTERS_MOUSE_CLICK", "0"},
-{"CONFIRM_BEEP", "HUD_MINI_GAME_SOUNDSET"},
-{"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Continue_Accepted", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Continue_Appears", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Crash", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset"},
-{"Criminal_Damage_Kill_Player", "GTAO_FM_Events_Soundset"},
-{"Criminal_Damage_Low_Value", "GTAO_FM_Events_Soundset"},
-{"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_01", "0"},
-{"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_02", "0"},
-{"Cycle_Item", "DLC_Dmod_Prop_Editor_Sounds"},
-{"DELETE", "HUD_DEATHMATCH_SOUNDSET"},
-{"Delete_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Deliver_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"DiggerRevOneShot", "BulldozerDefault"},
-{"Door_Open", "DOCKS_HEIST_FINALE_2B_SOUNDS"},
-{"Drill_Pin_Break", "DLC_HEIST_FLEECA_SOUNDSET"},
-{"Dropped", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"DRUG_TRAFFIC_AIR_BOMB_DROP_ERROR_MASTER", "0"},
-{"DRUG_TRAFFIC_AIR_SCREAMS", "0"},
-{"EDIT", "HUD_DEATHMATCH_SOUNDSET"},
-{"End_Squelch", "CB_RADIO_SFX"},
-{"Enemy_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
-{"Enemy_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Enemy_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Enter_1st", "GTAO_FM_Events_Soundset"},
-{"Enter_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
-{"Enter_Area", "DLC_Lowrider_Relay_Race_Sounds"},
-{"Enter_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
-{"ERROR", "HUD_AMMO_SHOP_SOUNDSET"},
-{"ERROR", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
-{"ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"ERROR", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
-{"ERROR", "HUD_LIQUOR_STORE_SOUNDSET"},
-{"Event_Message_Purple", "GTAO_FM_Events_Soundset"},
-{"Event_Start_Text", "GTAO_FM_Events_Soundset"},
-{"EXILE_3_TRAIN_BRAKE_PULL_MASTER", "0"},
-{"EXILE_3_TRAIN_BRAKE_RELEASE_MASTER", "0"},
-{"EXIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Exit_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Failure", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Falling_Crates", "EXILE_1"},
-{"FAMILY_1_CAR_BREAKDOWN", "FAMILY1_BOAT"},
-{"FAMILY_1_CAR_BREAKDOWN_ADDITIONAL", "FAMILY1_BOAT"},
-{"Faster_Bar_Full", "RESPAWN_ONLINE_SOUNDSET"},
-{"Faster_Click", "RESPAWN_ONLINE_SOUNDSET"},
-{"FestiveGift", "Feed_Message_Sounds"},
-{"FIRST_PLACE", "HUD_MINI_GAME_SOUNDSET"},
-{"FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS"},
-{"FLYING_STREAM_END_INSTANT", "FAMILY_5_SOUNDS"},
-{"FocusIn", "HintCamSounds"},
-{"FocusOut", "HintCamSounds"},
-{"Friend_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Frontend_Beast_Fade_Screen", "FM_Events_Sasquatch_Sounds"},
-{"Frontend_Beast_Freeze_Screen", "FM_Events_Sasquatch_Sounds"},
-{"Frontend_Beast_Text_Hit", "FM_Events_Sasquatch_Sounds"},
-{"Frontend_Beast_Transform_Back", "FM_Events_Sasquatch_Sounds"},
-{"GO", "HUD_MINI_GAME_SOUNDSET"},
-{"GO_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
-{"Goal", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"GOLF_BIRDIE", "HUD_AWARDS"},
-{"GOLF_EAGLE", "HUD_AWARDS"},
-{"GOLF_HUD_HOLE_IN_ONE_MASTER", "0"},
-{"GOLF_HUD_SCORECARD_MASTER", "0"},
-{"GOLF_NEW_RECORD", "HUD_AWARDS"},
-{"Goon_Paid_Small", "GTAO_Boss_Goons_FM_Soundset"},
-{"Grab_Parachute", "BASEJUMPS_SOUNDS"},
-{"Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"HACKING_CLICK", "0"},
-{"HACKING_CLICK_BAD", "0"},
-{"HACKING_CLICK_GOOD", "0"},
-{"HACKING_FAILURE", "0"},
-{"HACKING_MOVE_CURSOR", "0"},
-{"HACKING_SUCCESS", "0"},
-{"Hang_Up", "Phone_SoundSet_Michael"},
-{"HIGHLIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Highlight_Accept", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Highlight_Cancel", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Highlight_Error", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Highlight_Move", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"HIGHLIGHT_NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Hit", "RESPAWN_ONLINE_SOUNDSET"},
-{"Hit", "RESPAWN_SOUNDSET"},
-{"Hit_1", "LONG_PLAYER_SWITCH_SOUNDS"},
-{"Hit_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"Hit_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"HOORAY", "BARRY_02_SOUNDSET"},
-{"HORDE_COOL_DOWN_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"HUD_FREEMODE_CANCEL_MASTER", "0"},
-{"Kill_List_Counter", "GTAO_FM_Events_Soundset"},
-{"LAMAR1_PARTYGIRLS_master", "0"},
-{"LEADER_BOARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"LEADERBOARD", "HUD_MINI_GAME_SOUNDSET"},
-{"Lester_Laugh_Phone", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Lights_On", "GTAO_MUGSHOT_ROOM_SOUNDS"},
-{"LIMIT", "DLC_APT_YACHT_DOOR_SOUNDS"},
-{"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-{"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
-{"Load_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
-{"LOCAL_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"LOCAL_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"LOOSE_MATCH", "HUD_MINI_GAME_SOUNDSET"},
-{"Lose_1st", "GTAO_FM_Events_Soundset"},
-{"Lose_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
-{"LOSER", "HUD_AWARDS"},
-{"Lowrider_Upgrade", "Lowrider_Super_Mod_Garage_Sounds"},
-{"Map_Roll_Down", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Map_Roll_Up", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"MARKER_ERASE", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"MARTIN1_DISTANT_TRAIN_HORNS_MASTER", "0"},
-{"MEDAL_BRONZE", "HUD_AWARDS"},
-{"MEDAL_GOLD", "HUD_AWARDS"},
-{"MEDAL_SILVER", "HUD_AWARDS"},
-{"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"},
-{"Menu_Accept", "Phone_SoundSet_Default"},
-{"MICHAEL_LONG_SCREAM", "FAMILY_5_SOUNDS"},
-{"MICHAEL_SOFA_REMOTE_CLICK_VOLUME_MASTER", "0"},
-{"MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER", "0"},
-{"MICHAEL_SOFA_TV_ON_MASTER", "0"},
-{"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_Flash", "WastedSounds"},
-{"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_Impact", "WastedSounds"},
-{"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"NAV", "HUD_AMMO_SHOP_SOUNDSET"},
-{"Nav_Arrow_Ahead", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Nav_Arrow_Behind", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Nav_Arrow_Left", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Nav_Arrow_Right", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"NAV_LEFT_RIGHT", "HUD_FREEMODE_SOUNDSET"},
-{"NAV_LEFT_RIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"NAV_LEFT_RIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_LIQUOR_STORE_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_MINI_GAME_SOUNDSET"},
-{"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"},
-{"NET_RACE_START_EVENT_MASTER", "0"},
-{"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
-{"Object_Collect_Remote", "GTAO_FM_Events_Soundset"},
-{"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
-{"Off_High", "MP_RADIO_SFX"},
-{"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"ON", "NOIR_FILTER_SOUNDS"},
-{"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-{"OOB_Cancel", "GTAO_FM_Events_Soundset"},
-{"OOB_Start", "GTAO_FM_Events_Soundset"},
-{"OPEN_WINDOW", "LESTER1A_SOUNDS"},
-{"OPENED", "MP_PROPERTIES_ELEVATOR_DOORS"},
-{"OTHER_TEXT", "HUD_AWARDS"},
-{"Out_Of_Area", "DLC_Lowrider_Relay_Race_Sounds"},
-{"Out_Of_Bounds_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Paper_Shuffle", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Parcel_Vehicle_Lost", "GTAO_FM_Events_Soundset"},
-{"Payment_Non_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
-{"Payment_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
-{"Pen_Tick", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"PERSON_SCROLL", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"PERSON_SELECT", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET"},
-{"Phone_Generic_Key_03", "HUD_MINIGAME_SOUNDSET"},
-{"PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"PICK_UP_WEAPON", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-{"PICK_UP_SOUND", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-{"PICKUP_WEAPON_SMOKEGRENADE", "HUD_FRONTEND_WEAPONS_PICKUPS_SOUNDSET"},
-{"Pin_Bad", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"PIN_BUTTON", "ATM_SOUNDS"},
-{"Pin_Centred", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"Pin_Good", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"PIPES_LAND", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-{"Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Player_Collect", "DLC_PILOT_MP_HUD_SOUNDS"},
-{"Player_Enter_Line", "GTAO_FM_Cross_The_Line_Soundset"},
-{"Player_Exit_Line", "GTAO_FM_Cross_The_Line_Soundset"},
-{"Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Pre_Screen_Stinger", "DLC_HEISTS_FAILED_SCREEN_SOUNDS"},
-{"Pre_Screen_Stinger", "DLC_HEISTS_FINALE_SCREEN_SOUNDS"},
-{"Pre_Screen_Stinger", "DLC_HEISTS_PREP_SCREEN_SOUNDS"},
-{"PROPERTY_PURCHASE", "HUD_AWARDS"},
-{"PROPERTY_PURCHASE_MEDIUM", "HUD_PROPERTY_SOUNDSET"},
-{"PS2A_DISTANT_TRAIN_HORNS_MASTER", "0"},
-{"PS2A_MONEY_LOST", "PALETO_SCORE_2A_BANK_SS"},
-{"PURCHASE", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
-{"PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET"},
-{"PUSH", "DLC_APT_YACHT_DOOR_SOUNDS"},
-{"PUSH", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-{"PUSH", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
-{"Put_Away", "Phone_SoundSet_Michael"},
-{"QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"QUIT_WHOOSH", "HUD_MINI_GAME_SOUNDSET"},
-{"RACE_PLACED", "HUD_AWARDS"},
-{"Radar_Beast_Blip", "FM_Events_Sasquatch_Sounds"},
-{"RAMP_DOWN", "TRUCK_RAMP_DOWN"},
-{"RAMP_UP", "TRUCK_RAMP_DOWN"},
-{"RAMPAGE_KILLED_COUNTER_MASTER", "0"},
-{"RAMPAGE_KILLED_HEAD_SHOT_MASTER", "0"},
-{"RAMPAGE_PASSED_MASTER", "0"},
-{"RAMPAGE_ROAR_MASTER", "0"},
-{"RANK_UP", "HUD_AWARDS"},
-{"REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"REMOTE_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Remote_Sniper_Rifle_Fire", "0"},
-{"Reset_Prop_Position", "DLC_Dmod_Prop_Editor_Sounds"},
-{"RESTART", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Retune_High", "MP_RADIO_SFX"},
-{"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-{"ROPE_CUT", "ROPE_CUT_SOUNDSET"},
-{"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
-{"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
-{"SCOPE_UI_MASTER", "0"},
-{"SCREEN_FLASH", "CELEBRATION_SOUNDSET"},
-{"ScreenFlash", "MissionFailedSounds"},
-{"ScreenFlash", "WastedSounds"},
-{"SCREEN_SWIPE", "CELEBRATION_SWIPE"},
-{"SELECT", "HUD_FREEMODE_SOUNDSET"},
-{"SELECT", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"},
-{"SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"SELECT", "HUD_FRONTEND_MP_SOUNDSET"},
-{"SELECT", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
-{"SELECT", "HUD_LIQUOR_STORE_SOUNDSET"},
-{"SELECT", "HUD_MINI_GAME_SOUNDSET"},
-{"Select_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Shard_Disappear", "GTAO_Boss_Goons_FM_Shard_Sounds"},
-{"Shard_Disappear", "GTAO_FM_Events_Soundset"},
-{"SHOOTING_RANGE_ROUND_OVER", "HUD_AWARDS"},
-{"Short_Transition_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"Short_Transition_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"SKIP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Start", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Start_Squelch", "CB_RADIO_SFX"},
-{"STUN_COLLECT", "MINUTE_MAN_01_SOUNDSET"},
-{"Success", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"SultanRS_Upgrade", "JA16_Super_Mod_Garage_Sounds"},
-{"Swap_Sides", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-{"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
-{"Tattooing_Oneshot", "TATTOOIST_SOUNDS"},
-{"Tattooing_Oneshot_Remove", "TATTOOIST_SOUNDS"},
-{"Team_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
-{"TENNIS_MATCH_POINT", "HUD_AWARDS"},
-{"TENNIS_POINT_WON", "HUD_AWARDS"},
-{"TextHit", "WastedSounds"},
-{"Thermal_Off", "CAR_STEAL_2_SOUNDSET"},
-{"Thermal_On", "CAR_STEAL_2_SOUNDSET"},
-{"THERMAL_VISION_GOGGLES_OFF_MASTER", "0"},
-{"THERMAL_VISION_GOGGLES_OFF_MASTER", "0"},
-{"THERMAL_VISION_GOGGLES_ON_MASTER", "0"},
-{"TIME_LAPSE_MASTER", "0"},
-{"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Timer_10s", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"TIMER_STOP", "HUD_MINI_GAME_SOUNDSET"},
-{"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Traffic_Control_Fail", "BIG_SCORE_3A_SOUNDS"},
-{"Traffic_Control_Fail_Blank", "BIG_SCORE_3A_SOUNDS"},
-{"Traffic_Control_Light_Switch_Back", "BIG_SCORE_3A_SOUNDS"},
-{"TRAFFIC_CONTROL_MOVE_CROSSHAIR", "BIG_SCORE_3A_SOUNDS"},
-{"Turn", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"UNDER_THE_BRIDGE", "HUD_AWARDS"},
-{"UNDER_WATER_COME_UP", "0"},
-{"UNDO", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"WAYPOINT_SET", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"WEAKEN", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-{"WEAPON_AMMO_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_ATTACHMENT_EQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_ATTACHMENT_UNEQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_ARMOR", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_BATON", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_FUEL_CAN", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_GRENADE_LAUNCHER", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_HANDGUN", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_KNIFE", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_OTHER", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_PARACHUTE", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_RIFLE", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_RPG_LAUNCHER", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_SHOTGUN", "HUD_AMMO_SHOP_SOUNDSET"},
-{"Whistle", "DLC_TG_Running_Back_Sounds"},
-{"Whoosh_1s_L_to_R", "MP_LOBBY_SOUNDS"},
-{"Whoosh_1s_R_to_L", "MP_LOBBY_SOUNDS"},
-{"WIN", "HUD_AWARDS"},
-{"WOODEN_DOOR_CLOSED_AT", "0"},
-{"WOODEN_DOOR_CLOSED_AT", "0"},
-{"WOODEN_DOOR_CLOSING_AT", "0"},
-{"WOODEN_DOOR_CLOSING_AT", "0"},
-{"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
-{"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
-{"WOODEN_DOOR_OPEN_NO_HANDLE_AT", "0"},
-{"YES", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Zone_Enemy_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Zone_Neutral", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Zone_Team_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Zoom_In", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Zoom_Left", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Zoom_Right", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-}
+    
+
+    SoundAnnoy = {
+        {"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"5s_To_Event_Start_Countdown", "GTAO_FM_Events_Soundset"},
+        {"10s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+        {"5s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+        {"5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET"},
+        {"3_2_1_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
+        {"3_2_1", "HUD_MINI_GAME_SOUNDSET"},
+        {"Arming_Countdown", "GTAO_Speed_Convoy_Soundset"},
+        {"Bomb_Disarmed", "GTAO_Speed_Convoy_Soundset"},
+        {"Boss_Blipped", "GTAO_Magnate_Hunt_Boss_SoundSet"},
+        {"Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset"},
+        {"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+        {"Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet"},
+        {"ARM_3_CAR_GLASS_CRASH", "0"},
+        {"ARM_3_PISTOL_COCK", "0"},
+        {"ARM_WRESTLING_WHOOSH_MASTER", "0"},
+        {"ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", "ASSASSINATION_MULTI"},
+        {"ATM_WINDOW", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"BASE_JUMP_PASSED", "HUD_AWARDS"},
+        {"Bed", "WastedSounds"},
+        {"Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Blade_Appear", "APT_BvS_Soundset"},
+        {"BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS"},
+        {"Breaker_01", "DLC_HALLOWEEN_FVJ_Sounds"},
+        {"Breaker_02", "DLC_HALLOWEEN_FVJ_Sounds"},
+        {"Bus_Schedule_Pickup", "DLC_PRISON_BREAK_HEIST_SOUNDS"},
+        {"CABLE_SNAPS", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+        {"CAM_PAN_DARTS", "HUD_MINI_GAME_SOUNDSET"},
+        {"Camera_Shoot", "Phone_Soundset_Franklin"},
+        {"CANCEL", "HUD_FREEMODE_SOUNDSET"},
+        {"CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS"},
+        {"CHALLENGE_UNLOCKED", "HUD_AWARDS"},
+        {"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
+        {"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"},
+        {"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
+        {"Checkpoint_Hit", "GTAO_FM_Events_Soundset"},
+        {"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"},
+        {"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"},
+        {"CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET"},
+        {"Checkpoint_Teammate", "GTAO_Shepherd_Sounds"},
+        {"CHECKPOINT_UNDER_THE_BRIDGE", "HUD_MINI_GAME_SOUNDSET"},
+        {"Click", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE"},
+        {"Click_Fail", "WEB_NAVIGATION_SOUNDS_PHONE"},
+        {"Click_Special", "WEB_NAVIGATION_SOUNDS_PHONE"},
+        {"CLOSED", "MP_PROPERTIES_ELEVATOR_DOORS"},
+        {"COMPUTERS_MOUSE_CLICK", "0"},
+        {"CONFIRM_BEEP", "HUD_MINI_GAME_SOUNDSET"},
+        {"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Continue_Accepted", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Continue_Appears", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Crash", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset"},
+        {"Criminal_Damage_Kill_Player", "GTAO_FM_Events_Soundset"},
+        {"Criminal_Damage_Low_Value", "GTAO_FM_Events_Soundset"},
+        {"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_01", "0"},
+        {"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_02", "0"},
+        {"Cycle_Item", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"DELETE", "HUD_DEATHMATCH_SOUNDSET"},
+        {"Delete_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"Deliver_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"DiggerRevOneShot", "BulldozerDefault"},
+        {"Door_Open", "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+        {"Drill_Pin_Break", "DLC_HEIST_FLEECA_SOUNDSET"},
+        {"Dropped", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"DRUG_TRAFFIC_AIR_BOMB_DROP_ERROR_MASTER", "0"},
+        {"DRUG_TRAFFIC_AIR_SCREAMS", "0"},
+        {"EDIT", "HUD_DEATHMATCH_SOUNDSET"},
+        {"Start_Squelch", "CB_RADIO_SFX"},
+        {"End_Squelch", "CB_RADIO_SFX"},
+        {"Enemy_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
+        {"Enemy_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"Enemy_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"Enter_1st", "GTAO_FM_Events_Soundset"},
+        {"Enter_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
+        {"Enter_Area", "DLC_Lowrider_Relay_Race_Sounds"},
+        {"Enter_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
+        {"ERROR", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"Event_Message_Purple", "GTAO_FM_Events_Soundset"},
+        {"Event_Start_Text", "GTAO_FM_Events_Soundset"},
+        {"EXIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Exit_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
+        {"Failure", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Falling_Crates", "EXILE_1"},
+        {"Faster_Bar_Full", "RESPAWN_ONLINE_SOUNDSET"},
+        {"Faster_Click", "RESPAWN_ONLINE_SOUNDSET"},
+        {"FestiveGift", "Feed_Message_Sounds"},
+        {"FIRST_PLACE", "HUD_MINI_GAME_SOUNDSET"},
+        {"FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS"},
+        {"FLYING_STREAM_END_INSTANT", "FAMILY_5_SOUNDS"},
+        {"FocusIn", "HintCamSounds"},
+        {"FocusOut", "HintCamSounds"},
+        {"Friend_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+        {"GO", "HUD_MINI_GAME_SOUNDSET"},
+        {"GO_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
+        {"Goal", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"GOLF_BIRDIE", "HUD_AWARDS"},
+        {"GOLF_EAGLE", "HUD_AWARDS"},
+        {"GOLF_HUD_HOLE_IN_ONE_MASTER", "0"},
+        {"GOLF_HUD_SCORECARD_MASTER", "0"},
+        {"GOLF_NEW_RECORD", "HUD_AWARDS"},
+        {"Goon_Paid_Small", "GTAO_Boss_Goons_FM_Soundset"},
+        {"Grab_Parachute", "BASEJUMPS_SOUNDS"},
+        {"Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+        {"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+        {"HACKING_CLICK", "0"},
+        {"HACKING_CLICK_BAD", "0"},
+        {"HACKING_CLICK_GOOD", "0"},
+        {"HACKING_FAILURE", "0"},
+        {"HACKING_MOVE_CURSOR", "0"},
+        {"HACKING_SUCCESS", "0"},
+        {"Hang_Up", "Phone_SoundSet_Michael"},
+        {"HIGHLIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Highlight_Accept", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Highlight_Cancel", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Highlight_Error", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Highlight_Move", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"HIGHLIGHT_NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Hit", "RESPAWN_ONLINE_SOUNDSET"},
+        {"Hit", "RESPAWN_SOUNDSET"},
+        {"Hit_1", "LONG_PLAYER_SWITCH_SOUNDS"},
+        {"Hit_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+        {"Hit_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+        {"HOORAY", "BARRY_02_SOUNDSET"},
+        {"HORDE_COOL_DOWN_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"HUD_FREEMODE_CANCEL_MASTER", "0"},
+        {"Kill_List_Counter", "GTAO_FM_Events_Soundset"},
+        {"LAMAR1_PARTYGIRLS_master", "0"},
+        {"LEADER_BOARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"LEADERBOARD", "HUD_MINI_GAME_SOUNDSET"},
+        {"Lester_Laugh_Phone", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Lights_On", "GTAO_MUGSHOT_ROOM_SOUNDS"},
+        {"LIMIT", "DLC_APT_YACHT_DOOR_SOUNDS"},
+        {"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+        {"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+        {"Load_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"LOCAL_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"LOCAL_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"LOOSE_MATCH", "HUD_MINI_GAME_SOUNDSET"},
+        {"Lose_1st", "GTAO_FM_Events_Soundset"},
+        {"Lose_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
+        {"LOSER", "HUD_AWARDS"},
+        {"Lowrider_Upgrade", "Lowrider_Super_Mod_Garage_Sounds"},
+        {"Map_Roll_Down", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Map_Roll_Up", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"MARKER_ERASE", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+        {"MARTIN1_DISTANT_TRAIN_HORNS_MASTER", "0"},
+        {"MEDAL_BRONZE", "HUD_AWARDS"},
+        {"MEDAL_GOLD", "HUD_AWARDS"},
+        {"MEDAL_SILVER", "HUD_AWARDS"},
+        {"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"},
+        {"Menu_Accept", "Phone_SoundSet_Default"},
+        {"MICHAEL_LONG_SCREAM", "FAMILY_5_SOUNDS"},
+        {"MICHAEL_SOFA_REMOTE_CLICK_VOLUME_MASTER", "0"},
+        {"MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER", "0"},
+        {"MICHAEL_SOFA_TV_ON_MASTER", "0"},
+        {"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"MP_Flash", "WastedSounds"},
+        {"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"MP_Impact", "WastedSounds"},
+        {"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"NAV", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"Nav_Arrow_Ahead", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"Nav_Arrow_Behind", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"Nav_Arrow_Left", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"Nav_Arrow_Right", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"NAV_LEFT_RIGHT", "HUD_FREEMODE_SOUNDSET"},
+        {"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"},
+        {"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"},
+        {"NET_RACE_START_EVENT_MASTER", "0"},
+        {"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
+        {"Object_Collect_Remote", "GTAO_FM_Events_Soundset"},
+        {"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
+        {"Off_High", "MP_RADIO_SFX"},
+        {"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"ON", "NOIR_FILTER_SOUNDS"},
+        {"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+        {"OOB_Cancel", "GTAO_FM_Events_Soundset"},
+        {"OOB_Start", "GTAO_FM_Events_Soundset"},
+        {"OPEN_WINDOW", "LESTER1A_SOUNDS"},
+        {"OPENED", "MP_PROPERTIES_ELEVATOR_DOORS"},
+        {"OTHER_TEXT", "HUD_AWARDS"},
+        {"Out_Of_Area", "DLC_Lowrider_Relay_Race_Sounds"},
+        {"Out_Of_Bounds_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"Paper_Shuffle", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Parcel_Vehicle_Lost", "GTAO_FM_Events_Soundset"},
+        {"Payment_Non_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
+        {"Payment_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
+        {"Pen_Tick", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"PERSON_SCROLL", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+        {"PERSON_SELECT", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+        {"Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET"},
+        {"Phone_Generic_Key_03", "HUD_MINIGAME_SOUNDSET"},
+        {"PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"PICK_UP_WEAPON", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+        {"PICK_UP_SOUND", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+        {"PICKUP_WEAPON_SMOKEGRENADE", "HUD_FRONTEND_WEAPONS_PICKUPS_SOUNDSET"},
+        {"Pin_Bad", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+        {"PIN_BUTTON", "ATM_SOUNDS"},
+        {"Pin_Centred", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+        {"Pin_Good", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+        {"PIPES_LAND", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+        {"Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"Player_Collect", "DLC_PILOT_MP_HUD_SOUNDS"},
+        {"Player_Enter_Line", "GTAO_FM_Cross_The_Line_Soundset"},
+        {"Player_Exit_Line", "GTAO_FM_Cross_The_Line_Soundset"},
+        {"Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Pre_Screen_Stinger", "DLC_HEISTS_FAILED_SCREEN_SOUNDS"},
+        {"Pre_Screen_Stinger", "DLC_HEISTS_FINALE_SCREEN_SOUNDS"},
+        {"Pre_Screen_Stinger", "DLC_HEISTS_PREP_SCREEN_SOUNDS"},
+        {"PROPERTY_PURCHASE", "HUD_AWARDS"},
+        {"PROPERTY_PURCHASE_MEDIUM", "HUD_PROPERTY_SOUNDSET"},
+        {"PS2A_DISTANT_TRAIN_HORNS_MASTER", "0"},
+        {"PS2A_MONEY_LOST", "PALETO_SCORE_2A_BANK_SS"},
+        {"PURCHASE", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
+        {"PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET"},
+        {"PUSH", "DLC_APT_YACHT_DOOR_SOUNDS"},
+        {"PUSH", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+        {"PUSH", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+        {"Put_Away", "Phone_SoundSet_Michael"},
+        {"QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"QUIT_WHOOSH", "HUD_MINI_GAME_SOUNDSET"},
+        {"RACE_PLACED", "HUD_AWARDS"},
+        {"Radar_Beast_Blip", "FM_Events_Sasquatch_Sounds"},
+        {"RAMP_DOWN", "TRUCK_RAMP_DOWN"},
+        {"RAMP_UP", "TRUCK_RAMP_DOWN"},
+        {"RAMPAGE_KILLED_COUNTER_MASTER", "0"},
+        {"RAMPAGE_KILLED_HEAD_SHOT_MASTER", "0"},
+        {"RAMPAGE_PASSED_MASTER", "0"},
+        {"RAMPAGE_ROAR_MASTER", "0"},
+        {"RANK_UP", "HUD_AWARDS"},
+        {"REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"REMOTE_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+        {"Remote_Sniper_Rifle_Fire", "0"},
+        {"Reset_Prop_Position", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"RESTART", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Retune_High", "MP_RADIO_SFX"},
+        {"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+        {"ROPE_CUT", "ROPE_CUT_SOUNDSET"},
+        {"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
+        {"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"SCOPE_UI_MASTER", "0"},
+        {"SCREEN_FLASH", "CELEBRATION_SOUNDSET"},
+        {"ScreenFlash", "MissionFailedSounds"},
+        {"ScreenFlash", "WastedSounds"},
+        {"SCREEN_SWIPE", "CELEBRATION_SWIPE"},
+        {"SELECT", "HUD_FREEMODE_SOUNDSET"},
+        {"Select_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
+        {"Shard_Disappear", "GTAO_Boss_Goons_FM_Shard_Sounds"},
+        {"Shard_Disappear", "GTAO_FM_Events_Soundset"},
+        {"SHOOTING_RANGE_ROUND_OVER", "HUD_AWARDS"},
+        {"Short_Transition_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+        {"Short_Transition_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+        {"SKIP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Start", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"STUN_COLLECT", "MINUTE_MAN_01_SOUNDSET"},
+        {"Success", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"Swap_Sides", "DLC_HALLOWEEN_FVJ_Sounds"},
+        {"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+        {"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+        {"Tattooing_Oneshot", "TATTOOIST_SOUNDS"},
+        {"Tattooing_Oneshot_Remove", "TATTOOIST_SOUNDS"},
+        {"Team_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
+        {"TENNIS_MATCH_POINT", "HUD_AWARDS"},
+        {"TENNIS_POINT_WON", "HUD_AWARDS"},
+        {"TextHit", "WastedSounds"},
+        {"TIME_LAPSE_MASTER", "0"},
+        {"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Timer_10s", "DLC_HALLOWEEN_FVJ_Sounds"},
+        {"TIMER_STOP", "HUD_MINI_GAME_SOUNDSET"},
+        {"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"Traffic_Control_Fail", "BIG_SCORE_3A_SOUNDS"},
+        {"Traffic_Control_Fail_Blank", "BIG_SCORE_3A_SOUNDS"},
+        {"Traffic_Control_Light_Switch_Back", "BIG_SCORE_3A_SOUNDS"},
+        {"TRAFFIC_CONTROL_MOVE_CROSSHAIR", "BIG_SCORE_3A_SOUNDS"},
+        {"Turn", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+        {"UNDER_THE_BRIDGE", "HUD_AWARDS"},
+        {"UNDER_WATER_COME_UP", "0"},
+        {"UNDO", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+        {"WAYPOINT_SET", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+        {"WEAKEN", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+        {"WEAPON_AMMO_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"WEAPON_ATTACHMENT_EQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"WEAPON_ATTACHMENT_UNEQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"WEAPON_SELECT_ARMOR", "HUD_AMMO_SHOP_SOUNDSET"},
+        {"Whistle", "DLC_TG_Running_Back_Sounds"},
+        {"Whoosh_1s_L_to_R", "MP_LOBBY_SOUNDS"},
+        {"Whoosh_1s_R_to_L", "MP_LOBBY_SOUNDS"},
+        {"WIN", "HUD_AWARDS"},
+        {"WOODEN_DOOR_CLOSED_AT", "0"},
+        {"WOODEN_DOOR_CLOSED_AT", "0"},
+        {"WOODEN_DOOR_CLOSING_AT", "0"},
+        {"WOODEN_DOOR_CLOSING_AT", "0"},
+        {"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
+        {"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
+        {"WOODEN_DOOR_OPEN_NO_HANDLE_AT", "0"},
+        {"Zone_Enemy_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
+        {"Zone_Neutral", "DLC_Apartments_Drop_Zone_Sounds"},
+        {"Zone_Team_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
+        {"Zoom_In", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Zoom_Left", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        {"Zoom_Right", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+        }
+        
 --TODO: Modder Flagging
 function modflag_set()
     for i = 1, #int_flags do
@@ -2696,22 +2634,20 @@ ply_seat.max_i = 14
 ply_seat.min_i = -1
 ply_seat.value_i = -1
 	
+local health, infoA, infoB
 Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
     setting["playerscriptinfo"] = true
     if feat.on then
+    local pid = Active_menu
     if Active_menu ~= nil then
-    local health, infoA, infoB = Player_Check(Active_menu)
-    local name = player.get_player_name(Active_menu) or "Empty Slot"
-    local pped = player.get_player_ped(Active_menu)
-    local dist =  Get_Distance3D(Active_menu)
-    if dist < 1000.00 then
-    dist = "~r~~h~\t\t " .. dist
-    end
-    local info =  infoB ..  "\nDistance: " ..dist
 
+    local dist =  Get_Distance3D(pid)
+    if dist < 1000.00 then
+    dist = "~r~~h~" .. dist
+    end
+    local info = infoB ..  "\nDistance:\t\t " ..dist
     update_osd_text2(health, infoA, info)
     end
-    system.wait(200)
     return HANDLER_CONTINUE
     end
    setting["playerscriptinfo"] = false
@@ -2806,7 +2742,7 @@ function Get_Distance(pid)
 end
 
 function Get_Distance3D(ent)
-	local pped = PlyPed(me)
+	local pped = PlyPed(player.player_id())
 	local playerCoord = player.get_player_coords(player.player_id())
 	local coord = entity.get_entity_coords(ent)
 	local xDis = playerCoord.x - coord.x --PED
@@ -2876,7 +2812,7 @@ soundtest.min_i = 0
 soundtest = menu.add_feature("Orbital blame pid", "action_value_i", globalFeatures.moist_test.id, function(feat)
 
     local pos = v3()
-    pped = PlyPed(me)
+    pped = PlyPed(player.player_id())
     pos = entity.get_entity_coords(pped)
     offset = v3(0.0,0.0,-2000.00)
 
@@ -2940,7 +2876,7 @@ soundtest = menu.add_feature("orbital blame me pid:", "action_value_i", globalFe
 
     local pos = v3()
     pped = PlyPed(feat.value_i)
-    local Me = PlyPed(me)
+    local Me = PlyPed(player.player_id())
     pos = entity.get_entity_coords(pped)
 
             graphics.set_next_ptfx_asset("scr_xm_orbital")
@@ -2969,7 +2905,7 @@ soundtest.min_i = 0
 
 InteriorTest = menu.add_feature("is interior test", "toggle", globalFeatures.moist_tools.id, function(feat)
 	if feat.on then
-	update_osd_text(interior.get_interior_from_entity(PlyPed(me)), false)
+	update_osd_text(interior.get_interior_from_entity(PlyPed(player.player_id())), false)
 	return HANDLER_CONTINUE
 	end
 end)
@@ -4682,12 +4618,12 @@ for i = 1, #HP_modifiers do
 
     menu.add_feature("set: " ..HP_modifiers[i][1], "action", globalFeatures.self_ped_modify, function(feat)
 
-            chp0 = ped.get_ped_max_health(PlyPed(me))
-            ped.set_ped_max_health(PlyPed(me), HP_modifiers[i][2])
+            chp0 = ped.get_ped_max_health(PlyPed(player.player_id()))
+            ped.set_ped_max_health(PlyPed(player.player_id()), HP_modifiers[i][2])
 
-            chp1 = ped.get_ped_max_health(PlyPed(me))
+            chp1 = ped.get_ped_max_health(PlyPed(player.player_id()))
             if chp1 ~= 0 then
-                ped.set_ped_health(PlyPed(me), HP_modifiers[i][2])
+                ped.set_ped_health(PlyPed(player.player_id()), HP_modifiers[i][2])
             else
             end
             moist_notify(string.format("Max Health Now:~y~~h~ " ..chp1 .."~r~\n From:~y~~h~ "..chp0 ,chp0))
@@ -4722,7 +4658,7 @@ local BlameMe, StrikeSpeed = 0, 1000.00
 
 Blame_Me = menu.add_feature("Blame Strike on Me!", "toggle", globalFeatures.self_ped_combat_POI, function(feat)
     if feat.on then
-    BlameMe = PlyPed(me)
+    BlameMe = PlyPed(player.player_id())
     end
     if not feat.on then
     BlameMe = 0
@@ -4959,7 +4895,7 @@ local unfair_aimbot = menu.add_feature("unfair aim/Ped Head shot", "value_i", gl
     update_osd_text(ssb_wep[feat.value_i], false)
  
     local offset, offset2 = v3(), v3(0.0,0.0,2.8)
-    pped = PlyPed(me)
+    pped = PlyPed(player.player_id())
 
     if not notify_sent then
         moist_notify("Weapon Projectile Selected:\n", ssb_wep[feat.value_i])
@@ -4994,7 +4930,7 @@ local pos, ImpactPos = v3(), v3()
 weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
     if feat.on then
     OSD_Debug.on = true
-    local pped = PlyPed(me)
+    local pped = PlyPed(player.player_id())
         local success, pos = ped.get_ped_last_weapon_impact(pped, v3())
         if success then
             ImpactPos = pos
@@ -5016,7 +4952,7 @@ impact_strike = menu.add_feature("Air strike last Weapon impact POS", "value_i",
     if feat.on then
         update_osd_text(string.format("Weapon Strike:\n" .. ssb_wep[feat.value_i]), false)
         weapon_impact_pos.on = true
-        pped = PlyPed(me)
+        pped = PlyPed(player.player_id())
         if not ped.is_ped_shooting(pped) then
             return HANDLER_CONTINUE
         end
@@ -5066,7 +5002,7 @@ impact_strike2 = menu.add_feature("2nd wep impact POS", "value_i", globalFeature
     update_osd_text(string.format("Weapon Strike:\n" .. ssb_wep[feat.value_i]), false)
         weapon_impact_pos.on = true
         local hash = gameplay.get_hash_key(ssb_wep[feat.value_i])
-        pped = PlyPed(me)
+        pped = PlyPed(player.player_id())
         if not ped.is_ped_shooting(pped) then
             return HANDLER_CONTINUE
         end
@@ -5092,7 +5028,7 @@ impact_strike = menu.add_feature("Air strike Array 2 last impact POS", "value_i"
     if feat.on then
         update_osd_text(string.format("Weapon Strike:\n" .. StrikeGive[feat.value_i]), false)
         weapon_impact_pos.on = true
-        pped = PlyPed(me)
+        pped = PlyPed(player.player_id())
         if not ped.is_ped_shooting(pped) then
             return HANDLER_CONTINUE
         end
@@ -5141,7 +5077,7 @@ impact_strike2 = menu.add_feature("Weapon Array 2 2nd Impact POS", "value_i", gl
         update_osd_text(string.format("Weapon Strike:\n" .. StrikeGive[feat.value_i]), false)
         weapon_impact_pos.on = true
         local hash = gameplay.get_hash_key(StrikeGive[feat.value_i])
-        pped = PlyPed(me)
+        pped = PlyPed(player.player_id())
         if not ped.is_ped_shooting(pped) then
             return HANDLER_CONTINUE
         end
@@ -5166,7 +5102,7 @@ aim_strike = menu.add_feature("Air strike aim entity (D pad R)", "toggle", globa
     if feat.on then
         if controls.is_control_pressed(6,54) then
 		   local hash
-            pped = PlyPed(me)
+            pped = PlyPed(player.player_id())
 
             local target = player.get_entity_player_is_aiming_at(me)
 
@@ -5228,21 +5164,21 @@ Ragdoll_set.value_i = 1
 function Ragdoll0_3(feat)
     Number1, Number2, Number3, Number4, Number5 = 1900, 2000, 2000, 3000, 99999
 
-   pped = PlyPed(me)
+   pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number1, Number5, 0)
-   pped = PlyPed(me)
+   pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number5, Number5, Ragdoll_Sel)
-    entity.apply_force_to_entity(PlyPed(me), 1, 12, 20, 10.5, 31, 12.1, 10.3, true, true)
+    entity.apply_force_to_entity(PlyPed(player.player_id()), 1, 12, 20, 10.5, 31, 12.1, 10.3, true, true)
 end
 
 function RagdollButton(feat)
   Number1, Number2, Number3, Number4 = 1900, 2000, 2000, 3000
 
-    entity.apply_force_to_entity(PlyPed(me), 4, 10.0, 0.0, 10.0, 3.0, 0.0, 10.3, true, true)
-   pped = PlyPed(me)
+    entity.apply_force_to_entity(PlyPed(player.player_id()), 4, 10.0, 0.0, 10.0, 3.0, 0.0, 10.3, true, true)
+   pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number1, Number2, 0)
-    entity.apply_force_to_entity(PlyPed(me), 4, 2,0, 0.8, 3, 2.1, 10.3, false, true)
-   pped = PlyPed(me)
+    entity.apply_force_to_entity(PlyPed(player.player_id()), 4, 2,0, 0.8, 3, 2.1, 10.3, false, true)
+   pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number3, Number4, Ragdoll_Sel)
     -- end
     return HANDLER_POP
@@ -5254,10 +5190,10 @@ function RagdollButtontoggle(feat)
 
   Number1, Number2, Number3, Number4 = 1900, 2000, 2000, 3000
 
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number1, Number2, 3)
-        entity.apply_force_to_entity(PlyPed(me), 5, 2, 2, 5.8, 3, 2.1, 10.3, true, true)
-       pped = PlyPed(me)
+        entity.apply_force_to_entity(PlyPed(player.player_id()), 5, 2, 2, 5.8, 3, 2.1, 10.3, true, true)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number3, Number4, Ragdoll_Sel)
         -- end
         return HANDLER_CONTINUE
@@ -5270,17 +5206,17 @@ function Ragdolltoggle(feat)
     do
     Number1, Number2, Number3, Number4, Number5 = 1900, 2000, 2000, 3000, 99999
 
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number1, Number2, Ragdoll_Sel)
         system.wait(100)
-        entity.apply_force_to_entity(PlyPed(me), 1, 2,0, 0.8, 3, 2.1, 10.3, true, false)
+        entity.apply_force_to_entity(PlyPed(player.player_id()), 1, 2,0, 0.8, 3, 2.1, 10.3, true, false)
         system.wait(100)
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number3, Number4, Ragdoll_Sel)
         system.wait(100)
-        entity.apply_force_to_entity(PlyPed(me), 1, 2,0, 0.8, 3, 2.1, 10.3, true, false)
+        entity.apply_force_to_entity(PlyPed(player.player_id()), 1, 2,0, 0.8, 3, 2.1, 10.3, true, false)
         system.wait(100)
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number4, Number5, Ragdoll_Sel)
         system.wait(100)
         -- end
@@ -5294,18 +5230,18 @@ function Ragdolltoggle1(feat)
     do
 
     Number1, Number2, Number3, Number4, Number5 = 1900, 2000, 2000, 3000, 99999
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number1, Number2, Ragdoll_Sel)
         --system.wait(100)
         --entity.apply_force_to_entity(pped, 4, 2,0, 0.8, 3, 2.1, 10.3, true, false)
         --system.wait(100)
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number3, Number4, Ragdoll_Sel)
         --system.wait(100)
         --entity.apply_force_to_entity(pped, 4, 2,0, 0.8, 3, 2.1, 10.3, true, false)
         --system.wait(100)
         
-       pped = PlyPed(me)
+       pped = PlyPed(player.player_id())
 ped.set_ped_to_ragdoll(pped, Number4, Number5, Ragdoll_Sel)
         --system.wait(100)
         -- end
@@ -5345,7 +5281,7 @@ rag_self = menu.add_feature("Lifeless Ragdoll(Hotkey Preset)", "toggle", Ragdoll
     if feat.on then
 
         local Number1, Number2, Number3, Number4 = 1900, 2000, 2000, 3000
-        pped = PlyPed(me) ;
+        pped = PlyPed(player.player_id()) ;
 
         ped.set_ped_to_ragdoll(pped, Number1, Number2, 0)
         entity.apply_force_to_entity(pped, 4, 2,0, 0.8, 3, 2.1, 10.3, false, true)
@@ -5372,15 +5308,15 @@ menu.add_feature("give self glowstick", "action", globalFeatures.self_ped, funct
     rot.y = 0.0
     rot.z = 0.0
 
-    bone = ped.get_ped_bone_index(PlyPed(me), 18905)
+    bone = ped.get_ped_bone_index(PlyPed(player.player_id()), 18905)
     spawned_cunts[#spawned_cunts+1] = object.create_object(3324004640, pos, true, false)
 
-    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], PlyPed(me), bone, offset, rot, true, false, true, 0, true)
+    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], PlyPed(player.player_id()), bone, offset, rot, true, false, true, 0, true)
 
 end)
 
 global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
-    pped = PlyPed(me)
+    pped = PlyPed(player.player_id())
     if ped.get_ped_drawable_variation(pped, 7) == 25 then
         ped.set_ped_component_variation(pped, 7, 0, 0, 0)
     else
@@ -5389,14 +5325,14 @@ global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFea
 end)
 
 global_func.self = menu.add_feature("Set Handcuffs Locked Position", "action", globalFeatures.self_ped, function(feat)
-    pped = PlyPed(me)
+    pped = PlyPed(player.player_id())
     ped.set_ped_component_variation(pped, 7, 25, 0, 0)
     weapon.give_delayed_weapon_to_ped(pped, ped_wep[2][2], 0, 1)
 end)
 
 global_func.self = menu.add_feature("White Team parachute Pack", "action", globalFeatures.self_ped, function(feat)
 
-        pped = PlyPed(me)
+        pped = PlyPed(player.player_id())
         ped.get_ped_drawable_variation(pped, 5)
         ped.set_ped_component_variation(pped, 5, 58, 8, 0)
 
@@ -5427,7 +5363,7 @@ local ewo_key = menu.add_feature("Self Suicide EWO", "toggle",  globalFeatures.s
         
         if key:is_down() then
             ui.notify_above_map("Suicide EWO", "KYS TRYHARD WANNABE!", 75)
-            pped = PlyPed(me)
+            pped = PlyPed(player.player_id())
 
             pos = player.get_player_coords(me)
               fire.add_explosion(pos, 2, true, false, 1, pped)
@@ -5578,7 +5514,7 @@ function TripletVeh(hash)
 end
 
 function TripletVeh_WithPed(hash)
-    pped = PlyPed(me)
+    pped = PlyPed(player.player_id())
     local bid = ped.get_ped_bone_index(pped, 17916)
     local rot, offset, pos = v3(0.0, 0.0, 0.0), v3(15.0, 0.0, 0.0), v3()
     local head = player.get_player_heading(me)
@@ -5681,7 +5617,7 @@ local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalF
         if key:is_down() then
 
 
-            pped = PlyPed(me)
+            pped = PlyPed(player.player_id())
 
             local pos = v3()
             pos = player.get_player_coords(me)
@@ -5714,7 +5650,7 @@ Counter_key.value_i = 1550
 Counter_key.mod_i = 75
 
 global_func.BailExit = menu.add_feature("Bail/Exit Vehicle", "action_value_i", globalFeatures.self_veh, function(feat)
-  pped = PlyPed(me)
+  pped = PlyPed(player.player_id())
 
 
    local eject = {0, 1, 16, 64, 256, 4160, 262144, 320, 512, 131072}
@@ -7001,10 +6937,12 @@ function AudioAnnoyance(Snd, Aud)
             pos = entity.get_entity_coords(pped)
             audio.play_sound_frontend(-1, Snd, Aud, true)
             audio.play_sound_from_entity(-1, Snd, pped, Aud)
-            audio.play_sound_from_coord(-1, Snd, pos, Aud, true, 10000, true)
+            
             
         end
     end
+    audio.play_sound_from_coord(-1, Snd, pos, Aud, true, 1000, true)
+    
 end
    
 
@@ -7985,7 +7923,7 @@ notifysent = {}
 OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moistopt, function(feat)
     setting["OSD.Player_bar"] = true
     if feat.on then
-        ui.draw_rect(0.001, 0.001, 2.5, 0.065, 0, 0, 0, 180)
+        ui.draw_rect(0.001, 0.001, 2.5, 0.065, 0, 0, 0, 195)
         local pos = v2()
 
         pos.x = 0.0001
@@ -7997,10 +7935,10 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                 local name = player.get_player_name(i)
                 local Pname = player.get_player_name(i)
                 if i == SessionHost then
-                    name = "~h~" .. name .. "~h~~b~ [H] "
+                    name = "~h~" .. name .. "~h~~b~[H] "
                 end
                 if i == ScriptHost then
-                    name = "~h~" .. name .. "~h~~y~ [S] "
+                    name = "~h~" .. name .. "~h~~y~[S] "
                 end
 
                 local playercolor = {{255, 255, 255}, {255, 0, 0}, {255, 0, 255}, {0, 255, 255}}
@@ -8008,7 +7946,7 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 
                 if (script.get_global_i(2426097 + (1 + (i * 443)) + 204) == 1) then
                     ui.set_text_color(0, 255, 0, 255)
-                    name = "~h~" .. name .. "~h~~g~ [O]"
+                    name = "~h~" .. name .. "~g~[O]"
                 end
                 
                 if player.is_player_god(i) and player.is_player_vehicle_god(i) then
@@ -8017,10 +7955,10 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     if  player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
 
                     if not entity.is_entity_visible(pped) and  tracking.playerped_speed1[i+1] >= 21 then
-                        name = (name .."~h~ ~r~[G]~o~[V]")
+                        name = (name .."~q~[GV]")
                     end
                      if entity.is_entity_visible(pped) then
-                            name = (name .."~h~ ~r~[G]~o~[V]")
+                            name = (name .."~q~[GV]")
                         else
                         name =(name)
                     end
@@ -8034,10 +7972,10 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     name = ("~h~"  ..name) 
                     if player.is_player_playing(i) and  interior.get_interior_from_entity(pped) == 0 then
                            if not entity.is_entity_visible(pped) and  tracking.playerped_speed1[i+1] >= 21 then
-                               name = (name .."~h~~r~ [G]")
+                               name = (name .."~r~[G]")
                            end
                     if entity.is_entity_visible(pped) then
-                        name = (name .."~h~~r~ [G]")
+                        name = (name .."~r~[G]")
                     else
    
                         name = (name)
@@ -8049,10 +7987,10 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     name = ("~h~"  ..name)                    
                     if  player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
                          if not entity.is_entity_visible(pped) and  tracking.playerped_speed1[i+1] >= 21 then
-                              name = (name .. "~h~~o~ [V]")
+                              name = (name .. "~o~[V]")
                          end
                         if entity.is_entity_visible(pped) then
-                        name = (name .. "~h~~o~ [V]")
+                        name = (name .. "~o~[V]")
                         else
                         name = (name)
                     end
@@ -8065,7 +8003,7 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                         notifysent[i+1] = true
                        moist_notify("Confirmed Modder Detected:\n", Pname)
                           end
-                  name = (name .."~h~~q~ [UO]")
+                  name = (name .."~p~[UO]")
                   else
                    notifysent[i+1] = false
                    goto Draw
@@ -8080,7 +8018,7 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     pos.x = 0.0001
                 else
                 end
-                ui.set_text_scale(0.20)
+                ui.set_text_scale(0.185)
                 ui.set_text_font(0)
 
                 ui.set_text_centre(false)
@@ -8303,6 +8241,7 @@ end)
 OSD_Debug.on = false
 OSD_Debug.hidden = false
 
+
 text_scale = 0.0
 OSD_Debug2 = menu.add_feature("Debug OSD2", "toggle", globalFeatures.moist_tools.id, function(feat)
     if not setting["playerscriptinfo"] then return end
@@ -8358,6 +8297,8 @@ local Scr_x, Scr_y = graphics.get_screen_width(), graphics.get_screen_height()
 end)
 OSD_Debug2.on = false
 OSD_Debug2.hidden = false
+
+
 
 
 OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures.moistopt, function(feat)
@@ -8525,9 +8466,9 @@ function give_weapon()
 	local wid = weaponz[i][1]
     wid = menu.add_feature("Give: " .. weaponz[i][2], "action", globalFeatures.self_wep, function(feat)
 		
-            pped = PlyPed(me)
-            weapon.give_delayed_weapon_to_ped(PlyPed(me), weaponz[i][1], 1, 1)
-            weapon.set_ped_ammo(PlyPed(me), weaponz[i][1], 1000000)
+            pped = PlyPed(player.player_id())
+            weapon.give_delayed_weapon_to_ped(PlyPed(player.player_id()), weaponz[i][1], 1, 1)
+            weapon.set_ped_ammo(PlyPed(player.player_id()), weaponz[i][1], 1000000)
             weapon.give_delayed_weapon_to_ped(pped, weaponz[i][1], 1, 1)
             weapon.set_ped_ammo(pped, weaponz[i][1], 1000000)
         end)
@@ -8585,7 +8526,7 @@ RPG_HOTFIRE.on = setting["RPG_HOTFIRE"]
 
 Mark_WeapImpPOS = menu.add_feature("Mark Weapon Impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
     if feat.on then
-     pped = PlyPed(me)
+     pped = PlyPed(player.player_id())
      
      local success, pos = ped.get_ped_last_weapon_impact(pped, v3())
         if success then
@@ -9421,23 +9362,20 @@ function IllIlllIllIlllIlllIlllIll(IllIlllIllIllIll) if (IllIlllIllIllIll==(((((
 ScriptLocals["playerlist"] = function()
 local pos, PlyImpactPos, offset  = v3(), v3(), v3()
 for pid = 0, 31 do
-   
+
 ScriptLocals["featureVars"] = featureVars
-    featureVars = {}
-     OSD_Debug.on = false
-     featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, function(feat)
-        Active_menu = pid
-        ply_veh[pid+1] = player.get_player_vehicle(pid)
-        ply_ped[pid+1] = PlyPed(pid)
-        if Active_menu == pid and setting["playerscriptinfo"] == true then
-            OSD_Debug2.on = true
-        elseif not Active_menu == pid or setting["playerscriptinfo"] == false then
-            OSD_Debug2.on = false
-            Active_menu = nil
-        end
-        return HANDLER_POP
-    end)
-      
+featureVars = {}
+OSD_Debug2.on = false
+featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, function(feat)
+    Active_menu = pid
+    health, infoA, infoB = Player_Check(pid)
+    OSD_Debug2.on = true
+    
+    ply_veh[pid+1] = player.get_player_vehicle(pid)
+    ply_ped[pid+1] = PlyPed(pid) 
+ return HANDLER_POP
+end)
+   
 featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
 featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id)
 featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)
@@ -11538,7 +11476,7 @@ end), type = "action"}
 features["HomingFlare"] = {feat = menu.add_feature("Flare assisted Homing", "action", featureVars.g.id, function(feat)
     
     
-            pped = PlyPed(me)
+            pped = PlyPed(player.player_id())
 
             local pos = v3()
             pos = player.get_player_coords(pid)
@@ -11597,7 +11535,7 @@ end), type = "action"}
 features["Homing_Flare"] = {feat = menu.add_feature("Flare assisted Homing v2", "action", featureVars.g.id, function(feat)
     
     
-            pped = PlyPed(me)
+            pped = PlyPed(player.player_id())
 
             local pos = v3()
             pos = player.get_player_coords(pid)
