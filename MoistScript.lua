@@ -10052,8 +10052,54 @@ features["marker_active5"].feat.value_i = 28
 features["marker_active5"].feat.on = false
 
 --TODO: CEO Money
+featureVars.ceo = menu.add_feature("CEO Money Shit", "parent", featureVars.f.id)
 
-features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.f.id, function(feat)
+features["ceo_money_a1"] = {feat = menu.add_feature("CEO 10k v1", "action", featureVars.ceo.id, function(feat)
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+end}
+features["ceo_money_a1"].feat.on = false
+
+features["ceo_money_a01"] = {feat = menu.add_feature("CEO 10k v2", "action", featureVars.ceo.id, function(feat)
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, 198210293, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        
+
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+end}
+features["ceo_money_a01"].feat.on = false
+
+features["ceo_money_a2"] = {feat = menu.add_feature("CEO 30k 1 shot", "action", featureVars.ceo.id, function(feat)
+
+    ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+    ScriptTR(-2029779863, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+end}
+features["ceo_money_a2"].feat.on = false
+
+features["ceo_money_a02"] = {feat = menu.add_feature("CEO 30k v1", "value_i", featureVars.ceo.id, function(feat)
+    if feat.on then
+    ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+    ScriptTR(-2029779863, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+    system.wait(feat.value_i)
+    return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+end}
+features["ceo_money_a02"].feat.on = false
+features["ceo_money_a02"].feat.max_i = 200000
+features["ceo_money_a02"].feat.min_i = 30000
+features["ceo_money_a02"].feat.value_i = 30000
+features["ceo_money_a02"].feat.mod_i = 1000
+features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.ceo.id, function(feat)
     while feat.on do
         print("Money Trigger loop")
         print(os.date())
@@ -10069,6 +10115,134 @@ features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle"
 end), type = "toggle", callback = function()
 end}
 features["ceo_money1"].feat.on = false
+
+features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.ceo.id, function(feat)
+    while feat.on do
+        print("Money Trigger loop")
+        print(os.date())
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(31000)
+        print(os.date())
+        return HANDLER_CONTINUE
+    end
+    print("loop end")
+
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+end}
+features["ceo_money1"].feat.on = false
+
+features["ceo_money2"] = {feat = menu.add_feature("CEO 20k money loop", "toggle", featureVars.ceo.id, function(feat)
+    while feat.on do
+        print("20k Money Trigger loop")
+        print(os.date())
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+    
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+
+        system.wait(31000)
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+    
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, 198210293, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+
+        system.wait(31000)
+
+
+        print(os.date())
+        return HANDLER_CONTINUE
+    end
+    print("loop end")
+
+    return HANDLER_POP
+
+end), type = "toggle", callback = function()
+end}
+features["ceo_money2"].feat.on = false
+
+features["ceo_money3"] = {feat = menu.add_feature("Quick CEO Money", "toggle", featureVars.ceo.id, function(feat)
+    while feat.on do
+        print("Money Trigger loop")
+        print(os.date())
+        print("ceo 10k sell")
+        --transaction id:1
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+        print("10k sell Complete")
+        print(os.date())
+      
+        print("Money Trigger 10k Wage")
+        print(os.date())
+        --transaction id:2
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+        system.wait(31000)
+        print("10k Wage Complete")
+        print(os.date())
+        system.wait(1200)
+        print("Money Trigger 20k sell")
+        print(os.date())
+        --transaction id:3
+        ScriptTR(-2029779863, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+
+        system.wait(31000)
+        print("20k Sell Complete")
+        print(os.date())
+        
+        print("Money Trigger 10k Wage")
+        print(os.date())
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+        system.wait(31000)
+        system.wait(1200)
+
+        print("20k sell Complete")
+        print(os.date())
+        
+        return HANDLER_CONTINUE
+    end
+    print("loop end")
+
+    return HANDLER_POP
+
+end), type = "toggle", callback = function()
+end}
+features["ceo_money3"].feat.on = false
+
+features["ceo_money4"] = {feat = menu.add_feature("Fast 10k CEO Money", "toggle", featureVars.ceo.id, function(feat)
+    while feat.on do
+        print("Money Trigger loop")
+        print(os.date())
+        print("ceo 10k sell")
+        --transaction id:1
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+        print("10k sell Complete")
+        print(os.date())
+      
+        print("Money Trigger 10k Wage")
+        print(os.date())
+        --transaction id:2
+
+        ScriptTR(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
+        system.wait(1200)
+        system.wait(31000)
+      
+        return HANDLER_CONTINUE
+    end
+    print("loop end")
+
+    return HANDLER_POP
+
+end), type = "toggle", callback = function()
+end}
+features["ceo_money4"].feat.on = false
 
 features["ceo_otr"] = {feat = menu.add_feature("OTR", "action", featureVars.f.id, function(feat)
 
