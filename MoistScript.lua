@@ -5832,7 +5832,7 @@ end)
 local activecharacter_stat = menu.add_feature("is Active Character", "action", globalFeatures.self_statcheck, function(feat)
     local stat_hash = gameplay.get_hash_key("MP0_CHAR_ISACTIVE")
 
-    local stat_result = stats.stat_get_bool(stat_hash, 0)
+    local stat_result = tostring(stats.stat_get_bool(stat_hash, 0))
     moist_notify("Last Used Character:\n", stat_result)
 end)
 
