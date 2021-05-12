@@ -1,115 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.1b: Moist Edition)
-
-************* BUG FIX!! ***************
-
-      Crash Fix for Player info
-      Moved Clean Shit up from World options to Online
-      Added Override Weather stuff into World Options
-      Changed Player info Distance from 2D distance to 3D
-      
-***************************************
-      Change Log:
-      Possible Crash Fix for Playerinfo OSD
-      Weapon info and being in a vehicle causing a crash
-      Updated Spawn Triplet  vehicles now a submenu full of various vehicles to choose from with spawn vehicle or spawn vehicle with bodyguard
-      Audio Annoyances now play through 3 variations Audio from entity Coordinates and Frontend should minimise sounds that wont play
-      Orbital explosions updated still experimental
-
-    Last Update Changes:   
-************* BUG FIX!! ***************
-  Fixed issues with some sounds causing a crash
-  Fixed OSD Logic
-  Fixed Logic for Info Window causing Crash
-***************************************
-      Added Option Script Notify Me (Turns off Most Script Functions using Notify)
-      Added Active Script item Player info (Player Info OSD when inside Function for online players)
-      Added Function Testing Section : (Some stuff im working on)
-        Added Test functions: Orbital Explosion with fx still working on audio for this cant get it to play the actual explosion sound as yet
-        Added Test Functions 2D+3D OSD Player Distance from self
-      Added New Section under Online Session Troll functions Sound Annoyances
-      Added 385 Sounds under this section to piss the session off with
-      Added Fuck Ability to Play (can put player on perma loading screen)
-      Added Passive Player Detection to the PlayerBar Passive is Faded Grey colour
-      Fixed some Broken functionality
-      Removed Force Host Auto Kick from options (Session Kick version still there for manual use)
-
-  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
-
-      improved event spam kickdata2 type3
-      added kickdata2 type 4 mass spam toggle
-      improved session kickdata2 kick
-      added player ped modifiers (model swap) --needs to be tested further and remove hashes that wont work
-      more script event hashes added to data2
-
-    
-          Added New player Crash & session crash
-      Added Kick Data 2 Type 3 Mass Event Spam with Retarded amount of Parameters and values this is also added to online session kicks
-      
-        Layout Updated
-        Improved Logging output
-        Performance update to the Netevent Logger no longer lags and freezes the game so hard.
-        Blips has its own section with colour adjustments & Radial Blips for players or their last used vehicle
-        default vehicle is set to distance of 3500 which is roughly the submarine guided missile range
-    
-  **Bug Fix for my search and replace fucking everything XD**
-
-
-    Bug Fixes where changes had been breaking or causing another function to not receive data making it malfunction 
-    Seems latest update had broken alot of smaller functions and detections,
-    i was not going to update this version again until i finish doing v 3.0.0.0 (Code Rewrite so its done in a better way using all the stuff i learned making this one)
-    **Dont expect a major update or any more bug fixes now until that version is finished!**
-    Chat Spam has had some layout changes
-    Added Chat spam Presets subfunction to Delete a preset
-    Added a new option in Spam Options to rewrite the preset save data so the deletes are permanent.
-    Added back Kick spam until spoofer and force host is back
-    Added Script Event Kick to the kick command for friends
-    Added Networked marker above players (under troll options currently)
-    Added v2 HP info checks players HP Shoots sniper bullets in your name with very low damage then rechecks health see if we can apply damage or not
-    Added UndeadOTR and OTR Tags in the local script functions playerlist (these will show when player is in interior etc or not also the undead otr when player has no ped (the i tag in the main playerlist))
-    God mode notifications and playerbar tagging have to pass through 2 check loops before being applied or notified the notify been sent resets after a few minutes the option to clear this is now default on 
-    with the god check options which are both having a savable setting now
-
-    ```
-    
-  **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
-  **Dont expect a major update or any more bug fixes now until that version is finished!**
-
-    ```
-    
-
-   - Added Recent Players list into the menu stores 1000 players before resets or you restart the game or script
-   - Added functions for recent players:
-    1. Copy SCID to clipboard for use with scid joiner / timeout blacklist
-    2. Add to blacklist to add them to the scripts blacklist
-   
-  - Added Notifys to Recently joined/Seen players giving you a count in the notify header of amount times seen since script was started
-    Fixed few functions not working correctly player list toggles toggle other functions correctly now
-    
-    Changed Spawn options so heli vehicles if selected will spawn on maze tower and go to and execute tasks
-    
-      **  DELETE YOUR SAVED SETTINGS IF YOU DO NOT WANT ERRORS!**
-
-
-    Experiment Abandoned!
-    Revert back to the old Player list Loop since some functions would not work without it
-
-    Player Bar improved further
-    More checks added so if player is Complete Retarded cunt & going around invisible we now check their speed if they are moving faster than you can run in an interior
-    God Tags get applied
-
-    God mode check & notify has been added default off at the moment will add save at a later date
-
-    Added Other Scripts Parent with a list of all scripts in your script folder click to run they will get hidden so you cant load them more than once
-    each loaded script is saved in a table so you can use the option at the top of the list (Save loaded scripts) to save them to file and allow them to autoload on start
-
-    Options that are savable can now be done anytime, Hotkey to save Added Hold **`LCTRL+LSHIFT+S`** to save settings
-
-    player names will still change color with their current state tags will only be added to the end of their names if they fail the checks
-
-    [G] = God Mode Player [V] = Vehicle God [O] = Off The Radar (OTR) [G]+[V] = [G] & [V] are both on
-    [UO] = Undead OTR basically player has modified their max health like you can in this script to become UnDead and not visible on the radar
-
+# 2Take1-Moist-Script (Build 2.0.3.2: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -141,19 +31,8 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 
 - autoexec.lua
 
-(Script loader this will  Auto load multiple LUA files on start)
+(Basic Autoload for my script)
 
-- settings.lua
-
- **This is a Dependent file for Script loader (autoexec.lua) to function** 
-
-`
-also in Folder: **MoistsLUA_cfg**
-`
-- MoistsScript_settings.ini
-
-(This is Default LUA Save to include Main Script when starting)
-`
 
 For Better Compatibility with **2take1script**:
 
@@ -194,14 +73,15 @@ Player Names have tags:
 -IN2Moist-[S]      = S = Script Host of the session (Player Currently Hosting the Freemode.c Script fior the session)
 
 
-##### Online Session
-##### Player Functions
-##### World Options
-##### Chat Spam
+##### Online Features
+##### Player Features
+##### Combat Features
+##### Other Scripts
+##### Function Testing
 ##### Options
 
 ### Online Player Script Features
-
+** Inside Moist Script Parent **
 #### Spawn Options 
 **`This Section is empty until you turn on the Show & Load SpawnOptions
 in the Main Options Section under Local Script Features!`**
@@ -232,11 +112,7 @@ will follow player until they are dead.
 Ped's may attack each other if too many
 are spawned and they shoot in each others direction`
 
-#### SMS Spam 
-- SMS Spam Presets (Default Presets & Your Custom Presets)
-- Russian Spam Presets (Few Default Russian Translated Presets)
-
-#### Tools
+#### Player Tools
 Save Players Current POS to file (Output is compatible for copy & Paste to your Config for menu use) `C:\Users\IN2Moist\AppData\Roaming\PopstarDevs\2Take1Menu\cfg\tele.cfg`
 
 #### Bounty Options 
@@ -254,104 +130,47 @@ Custom Value `Enter any Value Between 0 & 10,000`
 - Force to Tampa Mission
 - Force to Opressor Mission1
 - Force to Opressor Mission2
+- 
+#### SMS Spam 
+- SMS Spam Presets (Default Presets & Your Custom Presets)
+- Russian Spam Presets (Few Default Russian Translated Presets)
 
-
-** Inside Moist Script Parent **
-- Copy IP to Clipboard
 - ToggleOFF Modder Mark
+- Attach Big Dildo on every bone
+- Attach dildo on every bone
 - Attach dildo in Skeleton root
 - CEO BAN
 - CEO DISMISS
 - CEO TERMINATE
-- Script Host Crash Kick
 
 ** Outside of Moist Script Parent **
 - Force Player to Island
+- Copy IP to Clipboard
 - Add to blacklist
 - Remove from blacklist
+- Script Host Crash Kick
+  
 
-## Online Session:
+## Online Features:
 
-### Online Protection
+### Online Players
 
-#### Black list
-- Reload blacklist
-- Enable blacklist
-- Mark As Modder
-- Kick
-- Manually add scid
-- Remove blacklist (list of players on the list)
+- List of online players see Player Features below for info of functions inside each player
 
-#### Modder Protex Detect
+### Recent players
 
-**Removed** `- Netevent Hook (Experimental NetEvent Modder Detection)`
+- List of Recently Encountered Players
+- Copy SCID
+- Add to Blacklist
 
+### Online Session
 
-#### Orbital Room Block
+#### Troll Features
+#### Sound Annoyances
 
-- Teleport to block location?
+- list of sounds
 
-(Teleport's you directly in front of the orbital entrance you need to be inside your facility
-otherwise game kicks you out of the interior)
-
-- New Orbital Block
-
-(Puts a New Moving Wall Across the Wall the Orbital Door is located in)
-
-- Block Orbital Entrance with Wall
-
-`Puts a invisible wall inside the room blocking players ability to go past the doorway`
-
-- Orbital Inactive Screens over Block
-
-'Places the TV Screens you see inside the orbital showing you the Orbital cannons state or activity these show by default Orbital Inactive
-RIP ORBITAL WARRIORS!!''
-
-**Online Protection**
-
-- Log Player Script Events (Value Toggle)
-
-`Select a value that matches the player id in the online info window for that player and toggle on
-this will log any script events from that selected player only`
-
-- UnMark all Players as Modder
-
-`Turns off all protections that are being blocked from all Players if they are marked as a Modder
-(includes any other detection not set by this script)`
-
-- Mark all Players as Modder (toggle)
-
-`Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
-
-**Online Session:**
-
-## Session Kicks
-
-- NetBail ScriptHost Fuckarino
-
-`Network bail Kick, with a Script host targeted kick which will kick all in session and will force the script host to send kicks
-this has a really bad effect on yourself game ui goes flickery due to you being a script host and you getting spammed with those
-kicks although 2take1 protects you from being kicked it makes the game harder to play with the ui going crazy so last resort kick!`
-
-- Kick Host until Session host
-
-`Fast kick all hosts until you are host`
-
-- Network Bail Kick
-
-`Network kick using globals to force the player to bail from the session very effective against most Modder's but most good menus 
-would be protected against this! if it is going to work and kick them it would instantly remove them with no delay`
-
-- Test Kick
-
-` Experimental Script Event Kick`
-
-- Host Kick All
-
-`Only works while you are the current session host, but will kick all players with a Players have voted you out of session message
-preventing them joining again. Does not effect you or friends just all others`
-
-## Session Troll Functions
+**Troll Features**
 
 - Heart Beat
 `Timed Explosion like a Beating Heart`
@@ -381,9 +200,148 @@ preventing them joining again. Does not effect you or friends just all others`
 - Give all Dildo Dicks (Big Ass Black Dildo between everyones legs)
 
 **Online Session**
+- Give Everyone OTR
+- Give Everyone Cop Bribe
+- Give Everyone Enemy Blips
 - Apply force to world entitys (First Applies Upward force then after delay Random Force on each direction)
 - Freeze World Vehicles & Objects
 - Any Friends Online (Friend online & in Muliplayer Check & Notify)
+
+
+### Online Protection
+
+#### Black list
+- Reload blacklist
+- Enable blacklist
+- Mark As Modder
+- Kick
+- Manually add scid
+- Remove blacklist (list of players on the list)
+
+
+#### Orbital Room Block
+
+- Teleport to block location?
+
+(Teleport's you directly in front of the orbital entrance you need to be inside your facility
+otherwise game kicks you out of the interior)
+
+- New Orbital Block
+
+(Puts a New Moving Wall Across the Wall the Orbital Door is located in)
+
+- Block Orbital Entrance with Wall
+
+`Puts a invisible wall inside the room blocking players ability to go past the doorway`
+
+- Orbital Inactive Screens over Block
+
+'Places the TV Screens you see inside the orbital showing you the Orbital cannons state or activity these show by default Orbital Inactive
+RIP ORBITAL WARRIORS!!''
+
+#### Block Glitch Spots
+
+- Various Glitch Spots like Casino God Mode Glitch are in here
+
+- Log Player Script Events (Value Toggle)
+
+`Select a value that matches the player id in the online info window for that player and toggle on
+this will log any script events from that selected player only`
+
+- UnMark all Players as Modder
+
+`Turns off all protections that are being blocked from all Players if they are marked as a Modder
+(includes any other detection not set by this script)`
+
+- Mark all Players as Modder (toggle)
+
+`Turns on Protections to block everything from all Players on a loop to ensure everyone gets marked on join`
+
+
+### Session Kicks
+
+- NetBail ScriptHost Fuckarino
+
+`Network bail Kick, with a Script host targeted kick which will kick all in session and will force the script host to send kicks
+this has a really bad effect on yourself game ui goes flickery due to you being a script host and you getting spammed with those
+kicks although 2take1 protects you from being kicked it makes the game harder to play with the ui going crazy so last resort kick!`
+
+- Session Kick Data2 Type2
+  
+  `Kicks session using all data2 kicks`
+
+- Script Event Crash Session
+  
+- Kick Host until Session host
+
+`Fast kick all hosts until you are host`
+
+- Network Bail Kick
+
+`Network kick using globals to force the player to bail from the session very effective against most Modder's but most good menus 
+would be protected against this! if it is going to work and kick them it would instantly remove them with no delay`
+
+- Test Kick
+
+` Experimental Script Event Kick`
+
+- Host Kick All
+
+`Only works while you are the current session host, but will kick all players with a Players have voted you out of session message
+preventing them joining again. Does not effect you or friends just all others`
+
+### Clean Shit Up!
+
+#### World Clean-up
+
+- Fetch World Entities Move & Delete
+- Fetch all Peds Move & Delete
+- Fetch all objects Move & Delete
+- Fetch all Vehicles Move & Delete
+- Fetch all Pickups Move & Delete
+
+`Clean up entities we can get control of and removes them from the map and deletes this excludes any player owned vehicles`
+
+- Delete Spawned Cunts
+- Delete Blips Added
+- Delete Alkonost Lag Spawns
+- Delete Ped Spawns
+- Delete Ped Spawns + Vehicles
+
+### World Options
+
+#### Weather Overide
+
+- Reset Overide weather
+- Clear Cloud Hat
+- list of weathers
+  
+#### World Wave Modifiers
+
+- Get Current Wave Intensity
+- Persistant Wave Intensity toggle Value Modifier
+- Change Wave Intensity Value Modifier
+- Reset Intensity
+
+### Chat Spam
+
+- Preset Spam 
+ `list of preset spam`
+- Your Custom Spam
+  `list of your own saved presets`
+- Russian Spam
+  `list of preset russian spam`
+- Spam Options
+  `Add Presets and set delay options here`
+
+- no text spam
+  `very fast blank spam`
+- Send Clipboard Contents
+  `Sends text in clipboard`
+- String Char Randomised spam
+  `fast random ascii character spam`
+- String Char Randomised Delayspam
+  `Delayed random ascii character spam`
 
 ## Player Functions:
 

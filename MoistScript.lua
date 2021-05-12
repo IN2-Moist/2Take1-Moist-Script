@@ -54,7 +54,7 @@ Player_DB = (rootPath .. "\\scripts\\lualogs\\PlayerDB.md")
 Spamtxt_Data = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data")
 debugfile = (rootPath.."\\lualogs\\Moists_debug.log")
 
---output functions
+--output Features
 function Cur_Date_Time()
     local d, dtime, dt
     d = os.date()
@@ -361,7 +361,7 @@ function Get_AmmoType(ammohash)
     end
 end
 
---functions
+--Features
 function dec2ip(decip) 
 	local div, quote, ip;
 	for i = 3, 0, -1 do
@@ -2518,7 +2518,7 @@ playerFeat2 = {}
 playerFeat3 = {}
 playerFeat4 = {}
 
---local Menu Functions
+--local Menu Features
 globalFeatures.parent = menu.add_feature("Moists Script 2.0.3.1b", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
@@ -2534,17 +2534,17 @@ globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatur
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.Online_Session).id
 --session
 globalFeatures.kick = menu.add_feature("Session Kicks", "parent", globalFeatures.Online_Session).id
-globalFeatures.troll = menu.add_feature("Troll Functions", "parent", globalFeatures.lobby).id
+globalFeatures.troll = menu.add_feature("Troll Features", "parent", globalFeatures.lobby).id
 SoundAnnoyances = menu.add_feature("Sound Annoyances", "parent", globalFeatures.troll)
 globalFeatures.parentID = menu.add_feature("Blacklist", "parent", globalFeatures.protex).id
 globalFeatures.orbital = menu.add_feature("Orbital Room Block", "parent", globalFeatures.protex).id
 globalFeatures.glitch = menu.add_feature("Block Glitch Spots", "parent", globalFeatures.protex).id
 
 --Player
-globalFeatures.self = menu.add_feature("Player Functions", "parent", globalFeatures.parent).id
-globalFeatures.self_ped_combat = menu.add_feature("Combat Functions", "parent", globalFeatures.parent).id
-globalFeatures.self_ped = menu.add_feature("Ped Functions", "parent", globalFeatures.self).id
-globalFeatures.self_veh = menu.add_feature("Vehicle Functions", "parent", globalFeatures.self).id
+globalFeatures.self = menu.add_feature("Player Features", "parent", globalFeatures.parent).id
+globalFeatures.self_ped_combat = menu.add_feature("Combat Features", "parent", globalFeatures.parent).id
+globalFeatures.self_ped = menu.add_feature("Ped Features", "parent", globalFeatures.self).id
+globalFeatures.self_veh = menu.add_feature("Vehicle Features", "parent", globalFeatures.self).id
 globalFeatures.self_quickstat = menu.add_feature("Player Stats", "parent", globalFeatures.self).id
 globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
 globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
@@ -3485,7 +3485,7 @@ menu.add_feature("Save settings", "action", globalFeatures.moistopt, function(fe
     moist_notify("Settings: ",  "saved!")
 end)
 
---TODO: Online Functions
+--TODO: Online Features
 
 menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
 
@@ -4545,7 +4545,7 @@ for i = 1, #BountyPresets do
 end
 end
 griefing()
---TODO: Functions
+--TODO: Features
 function playervehspd(pid, speed)
 
     local plyveh = player.get_player_vehicle(pid)
@@ -4585,7 +4585,7 @@ global_func.lag_out = menu.add_feature("Lag Self out of session", "toggle", glob
 end)
 global_func.lag_out.on = setting["lag_out"]
 
---TODO: World Functions
+--TODO: World Features
 global_func.no_traffic = menu.add_feature("No World Traffic", "toggle", globalFeatures.moistopt, function(feat)
 
         setting["no_traffic"] = true
@@ -4611,7 +4611,7 @@ global_func.no_peds = menu.add_feature("No World Peds", "toggle", globalFeatures
 end)
 global_func.no_peds.on = setting["no_peds"]
 
---TODO: Self Functions
+--TODO: Self Features
 
 -- Self modifiers --Max Health 0:0 1: 2: 3: 4: 5: 6:
 HP_modifiers = {
@@ -4665,7 +4665,7 @@ for i = 1, #ped_hashes do
     end)
 end
 
---TODO: Combat Functions
+--TODO: Combat Features
 
 globalFeatures.self_ped_combat_POI = menu.add_feature("WayPoint Weapon Strike", "parent", globalFeatures.self_ped_combat).id
 local BlameMe, StrikeSpeed = 0, 1000.00
@@ -6117,7 +6117,7 @@ function Create_stat_RecoveryScript()
 
 end
 
---TODO: local session functions
+--TODO: local session Features
 
 otr_all =  menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
      for pid = 0, 32 do
@@ -7257,7 +7257,7 @@ local world_force = menu.add_feature("Apply force to world entities", "action", 
     end
 end)
 
---TODO: Spawn Functions
+--TODO: Spawn Features
 
 --spawn variables defaults
 model = 0xDB134533
@@ -7265,7 +7265,7 @@ vehhash = 788747387
 wephash = 0xA2719263
 local mod, modvalue, pedspawns
 
---TODO: Ped Spawn functions
+--TODO: Ped Spawn Features
 local Ped_Haters, playergroups, playerpeds = {}, {}, {}
 local Group_Hate
 
@@ -7762,7 +7762,7 @@ world_dumped = true
  allpeds, allveh, allobj, allpickups = {}, {}, {},{}
 end
 
---TODO: Option Functions
+--TODO: Option Features
 --[[
 21	INPUT_SPRINT	LEFT SHIFT			A
 22	INPUT_JUMP		SPACEBAR			X
@@ -9271,7 +9271,7 @@ menu.add_feature("Any Friends Online?", "action", globalFeatures.lobby, function
     end
 end)
 
---TODO: Orbitor Functions
+--TODO: Orbitor Features
 
 Degree = 0
 
@@ -9436,7 +9436,7 @@ end)
 featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
 featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
 featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
-featureVars.str = menu.add_feature("Sound Functions", "parent", featureVars.tr.id)
+featureVars.str = menu.add_feature("Sound Features", "parent", featureVars.tr.id)
 featureVars.at = menu.add_feature("Attachment Options", "parent", featureVars.f.id)
 featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id)
 featureVars.lgr = menu.add_feature("Lester Griefer", "parent", featureVars.g.id)
