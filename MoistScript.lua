@@ -2758,6 +2758,18 @@ function Get_Distance3D(ent)
 
 end
 
+function Get_Dist3D(pid, v3pos)
+	local pped = PlyPed(pid)
+	local playerCoord = v3pos
+	local coord = entity.get_entity_coords(pped)
+	local xDis = playerCoord.x - coord.x --PED
+	local yDis = playerCoord.y - coord.y	--PED
+	local zDis = playerCoord.z - coord.z	--PED
+	local distance = math.sqrt(xDis*xDis+yDis*yDis+zDis*zDis);
+	return distance
+
+end
+
 --TODO: ---------------------orbital experiment
 
 soundtest = menu.add_feature("Orbital Anon pid", "action_value_i", globalFeatures.moist_test.id, function(feat)
