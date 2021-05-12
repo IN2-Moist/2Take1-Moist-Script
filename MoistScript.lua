@@ -50,6 +50,7 @@ scidFile = (rootPath .. "\\Blacklist\\scid.list")
 kickdata = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.data")
 kickdata2 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.data")
 kickdata3 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks3.data")
+interiorpos = (rootPath .. "\\scripts\\MoistsLUA_cfg\\interiors.lua")
 Player_DB = (rootPath .. "\\scripts\\lualogs\\PlayerDB.md")
 Spamtxt_Data = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data")
 debugfile = (rootPath.."\\lualogs\\Moists_debug.log")
@@ -85,6 +86,12 @@ function dataload3()
 end
 dataload3()
 
+function interiors_load()
+    if not utils.file_exists(interiorpos) then	return end
+    local f = assert(loadfile(interiorpos)) return f()
+
+end
+interiors_load()
 
 --TODO: Script Settings Set & save
 local save_ini = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini")
@@ -223,7 +230,7 @@ end
 --TODO: Arrays for function variables
 local OSD, OptionsVar, PlyTracker, tracking, ply_veh, ply_ped = {}, {}, {}, {}, {}, {}
 tracking.playerped_posi, tracking.playerped_speed1, tracking.playerped_speed2, tracking.playerped_speed3 = {}, {}, {}, {}
-Modders_DB = {{flag = {}, ismod = {}}}
+Modders_DB = {{flag = {}, flags = {}, ismod = {}}}
 
 --TODO: Function Data & Entity Arrays
 AttachedCunt={}AttachedCunt2={}
@@ -2983,26 +2990,49 @@ end
 
 
 function modstart()
-for pid = 1, 32 do
+for pid = 0, 32 do
     Modders_DB[pid] = {}
     Modders_DB[pid].flag = nil
+    Modders_DB[pid].flags = nil
     Modders_DB[pid].ismod = false
 end
 end
 modstart()
 
+--TODO: *************MODDER FLAG LOGS
 function modderflag(pid)
     if not Modders_DB[pid].ismod then
-
     local flags = player.get_player_modder_flags(pid)
     local flaghex = string.format("%x", flags)
+    Print(flaghex)
     local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
     local flag_name = player.get_modder_flag_text(flags)
 
     Modders_DB[pid].flag = flag_name
+    Modders_DB[pid].flags = flags
+    Print(Modders_DB[pid].flags)
     Modders_DB[pid].ismod = true
     local name = player.get_player_name(pid)
     Debug_Out(string.format("Modder:" .. name .. "\nmodder Flags:" ..  flag_name))
+    elseif Modders_DB[pid].ismod then
+    test = player.get_player_modder_flags(pid)
+   -- Print(test)
+   -- Print(Modders_DB[pid].flags)
+    if Modders_DB[pid].flags ~= test then
+    player.unset_player_as_modder(pid, Modders_DB[pid].flags)
+   -- return end
+    local flags = player.get_player_modder_flags(pid)
+    local flaghex = string.format("%x", flags)
+     Print(flaghex)
+    local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
+    local flag_name = player.get_modder_flag_text(flags)
+
+    Modders_DB[pid].flag = flag_name
+    Modders_DB[pid].flags = flags
+    Modders_DB[pid].ismod = true
+    local name = player.get_player_name(pid)
+    Debug_Out(string.format("Modder:" .. name .. "\nmodder Flags:" ..  flag_name))
+    end
     end
     return HANDLER_POP
 end
@@ -8106,7 +8136,10 @@ function GodModCheck(pid)
 			local scid = player.get_player_scid(pid)
 			local pped = PlyPed(i)
             if scid ~= 4294967295 then
-
+            
+            for i = 1, # interiors do
+            local apartmen = Get_Dist3D(pid,  interiors[i][2])
+            if apartmen >= 600 then
                
             if player.is_player_god(i) and not player.is_player_vehicle_god(i) then
                 if player.is_player_playing(i) and interior.get_interior_from_entity(pped) == 0 then
@@ -8136,11 +8169,16 @@ function GodModCheck(pid)
                                 end
                             end
                         end
+                  
+            elseif apartmen < 600 then
+            testfail = false
+            end
             end
             if testfail then
             testfail_recheck(pid)
             end
 
+end
 end
 end
 
