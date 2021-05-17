@@ -42,13 +42,14 @@ script would  not exist!
 --]]
 
 --DATA FILES
-local data, data2, data3 = {}, {}, {}
+local data, data2, data3, kick_param_data = {}, {}, {}, {}
 local configfile, scidFile, Player_DB, Spamtxt_Data, kickdata, kickdata2, kickdata3
 configfile = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini")
 scidFile = (rootPath .. "\\Blacklist\\scid.list")
 kickdata = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.data")
 kickdata2 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.data")
 kickdata3 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks3.data")
+kickparam = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_KickParam.data")
 interiorpos = (rootPath .. "\\scripts\\MoistsLUA_cfg\\interiors.lua")
 Player_DB = (rootPath .. "\\scripts\\lualogs\\PlayerDB.md")
 Spamtxt_Data = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data")
@@ -84,6 +85,15 @@ function dataload3()
     --moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
 end
 dataload3()
+
+
+function paramload()
+    if not utils.file_exists(kickparam) then	return end
+    for line in io.lines(kickparam) do kick_param_data[#kick_param_data + 1] = line end
+    --moist_notify("Moists Kick Data File 2 Loaded\n", "Kick Type 2 Now Available")
+end
+paramload()
+
 
 function interiors_load()
     if not utils.file_exists(interiorpos) then	return end
@@ -12155,8 +12165,8 @@ features["Waypoint"].feat.threaded = false
 	features["Kick1_Type1"].feat.value_i = 584
 	features["Kick1_Type1"].feat.mod_i = 100
 	features["Kick1_Type1"].feat.on = false
-	
-	features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_i", featureVars.ses.id, function(feat)
+
+features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
@@ -12164,6 +12174,8 @@ features["Waypoint"].feat.threaded = false
 			
 			local b = a + 99
 			if b > #data then b = #data end
+			Print(b .. ", "..a)
+			
 			for i = a, b do
 				
 				par1 = math.random(-1000, 99999999)
@@ -12173,20 +12185,51 @@ features["Waypoint"].feat.threaded = false
 				par5 = math.random(-99999999999999, -46190868)
 				par6 = math.random(9999999999, 9999999899990868)
 				ScriptTR(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+                system.wait(0)				
 				ScriptTR(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
+
 			end
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
 		
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick1_Type2"].feat.max_i = #data
-	features["Kick1_Type2"].feat.min_i = 1
-	features["Kick1_Type2"].feat.value_i = 199
-	features["Kick1_Type2"].feat.mod_i = 99
-	features["Kick1_Type2"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
+features["Kick1_Type2"].feat.max_i = #data
+features["Kick1_Type2"].feat.min_i = 1
+features["Kick1_Type2"].feat.value_i = 199
+features["Kick1_Type2"].feat.mod_i = 99
+features["Kick1_Type2"].feat.on = false
+    
+    	
+features["Kick1_Type3"] = {feat = menu.add_feature("Kick Data 1 Type 3", "toggle", featureVars.ses.id, function(feat)
+		if feat.on then
+        for i = 1, #data do
+				par1 = kick_param_data[math.random(1, #kick_param_data)]
+				par2 = kick_param_data[math.random(1, #kick_param_data)]
+				par3 = kick_param_data[math.random(1, #kick_param_data)]
+				par4 = kick_param_data[math.random(1, #kick_param_data)]
+				par5 = kick_param_data[math.random(1, #kick_param_data)]
+				par6 = kick_param_data[math.random(1, #kick_param_data)]
+				ScriptTR(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+				system.wait(0)
+                ScriptTR(data[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par6, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par6, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par6})
+                system.wait(0)				
+                ScriptTR(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
+
+                system.wait(0)				
+
+    end
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+		
+end),  type = "toggle", callback = function()
+end}
+features["Kick1_Type3"].feat.on = false
+
 	
+
 	features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
