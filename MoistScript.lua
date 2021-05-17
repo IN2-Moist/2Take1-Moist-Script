@@ -10428,6 +10428,7 @@ features["sound_troll10"] = {feat = menu.add_feature("Annoy With Water Sounds", 
 end), type = "action"}
 features["sound_troll10"].feat.threaded = false
 
+
 features["arrowindicator"] = {feat = menu.add_feature("Bouncing Arrow above Player", "action", featureVars.tr.id, function(feat)
 
         if playerFeatures[pid].features["arrow_indicator2"].feat.on then
@@ -10439,13 +10440,16 @@ features["arrowindicator"] = {feat = menu.add_feature("Bouncing Arrow above Play
         spawned_cunts[#spawned_cunts + 1] = AttachedCunt[pid+1]
         spawned_cunts[#spawned_cunts + 1] = AttachedCunt2[pid+1]
         system.wait(100)
+        playerFeatures[pid].features["arrow_indicator"].feat.hidden = false
         playerFeatures[pid].features["arrow_indicator"].feat.on = true
         return HANDLER_POP
 end), type = "action", callback = function()
 end}
+features["arrowindicator"].feat.hidden = false
 		
 features["arrow_indicator"] = {feat = menu.add_feature("Arrow move & Bounce with Player", "toggle", featureVars.tr.id, function(feat)
 
+       playerFeatures[pid].features["arrowindicator"].feat.hidden = true
     if feat.on then
         local pos, offset
         pos = v3()
@@ -10486,6 +10490,8 @@ features["arrow_indicator"] = {feat = menu.add_feature("Arrow move & Bounce with
 		z = 0
         return HANDLER_CONTINUE
     end
+        playerFeatures[pid].features["arrowindicator"].feat.hidden = false
+        playerFeatures[pid].features["arrow_indicator"].feat.hidden = true
         network.request_control_of_entity(AttachedCunt[pid+1])
         entity.delete_entity(AttachedCunt[pid+1])
         network.request_control_of_entity(AttachedCunt2[pid+1])
@@ -10494,6 +10500,8 @@ features["arrow_indicator"] = {feat = menu.add_feature("Arrow move & Bounce with
 end),  type = "toggle", callback = function()
 end}
 features["arrow_indicator"].feat.on = false
+features["arrow_indicator"].feat.hidden = true
+
 
 features["arrowindicator2"] = {feat = menu.add_feature("Arrow Indicator above Player", "action", featureVars.tr.id, function(feat)
         
@@ -10506,13 +10514,15 @@ features["arrowindicator2"] = {feat = menu.add_feature("Arrow Indicator above Pl
         spawned_cunts[#spawned_cunts + 1] = AttachedCunt[pid+1]
         spawned_cunts[#spawned_cunts + 1] = AttachedCunt2[pid+1]
         system.wait(100)
+        playerFeatures[pid].features["arrow_indicator2"].feat.hidden = false
         playerFeatures[pid].features["arrow_indicator2"].feat.on = true
         return HANDLER_POP
 end), type = "action", callback = function()
 end}
-		
-features["arrow_indicator2"] = {feat = menu.add_feature("Arrow update move with Player", "toggle", featureVars.tr.id, function(feat)
+features["arrowindicator2"].feat.hidden = false
 
+features["arrow_indicator2"] = {feat = menu.add_feature("Arrow update move with Player", "toggle", featureVars.tr.id, function(feat)
+   playerFeatures[pid].features["arrowindicator2"].feat.hidden = true
     if feat.on then
         local pos, offset
         pos = v3()
@@ -10522,6 +10532,8 @@ features["arrow_indicator2"] = {feat = menu.add_feature("Arrow update move with 
         entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
         return HANDLER_CONTINUE
     end
+        playerFeatures[pid].features["arrowindicator2"].feat.hidden = false
+        playerFeatures[pid].features["arrow_indicator2"].feat.hidden = true
         network.request_control_of_entity(AttachedCunt[pid+1])
         entity.delete_entity(AttachedCunt[pid+1])
         network.request_control_of_entity(AttachedCunt2[pid+1])
@@ -10530,6 +10542,7 @@ features["arrow_indicator2"] = {feat = menu.add_feature("Arrow update move with 
 end),  type = "toggle", callback = function()
 end}
 features["arrow_indicator2"].feat.on = false
+features["arrow_indicator2"].feat.hidden = true
 
 features["LightPOS1way"] = {feat = menu.add_feature("Update Lights POS(move with Player", "toggle", featureVars.tr.id, function(feat)
     if feat.on then
