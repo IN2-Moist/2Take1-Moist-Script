@@ -91,7 +91,7 @@ in the Main Options Section under Local Script Features!`**
 - Weapon list / Vehicle list
 ##### Selected Weapon / Vehicle
 
-#### Ped + Weapon Functions
+#### Ped + Weapon Features
 - Send Attacker via Parachute
 `Spawns in the air above Player Parachutes down
 to kill the player with selected weapon`
@@ -343,14 +343,14 @@ preventing them joining again. Does not effect you or friends just all others`
 - String Char Randomised Delayspam
   `Delayed random ascii character spam`
 
-## Player Functions:
+## Player Features:
 
-#### Ped Functions
-#### Vehicle Functions
+#### Ped Features
+#### Vehicle Features
 #### Player Options
 #### Player Stats
 
-##### Ped Functions 
+##### Ped Features 
 
 ##### Player Weapons
 
@@ -367,7 +367,7 @@ preventing them joining again. Does not effect you or friends just all others`
 - Set Health to 90000
 - Set Health to 328 (level 120)
 
-##### Combat Functions
+##### Combat Features
 
 - unfair aim damage (multiplier)
 - unfair aim/ped headshot (value select weapon type)
@@ -376,13 +376,13 @@ preventing them joining again. Does not effect you or friends just all others`
 - 2nd wep last weapon impact strike (value selection weapon type this shoots second Weaponfire from your hand as if its your gun shooting)
 - Air Srike Aim Entity (aim @ any world entity and hit Dpad Right to send an airstrike down on it)
 
-**Ped Functions**
+**Ped Features**
 - Give Self Glowstick
 - Put Handcuffs on Self
 - Set Handcuffs Locked Position
 - White Team parachute Pack
 
-#####  Vehicle Functions
+#####  Vehicle Features
 
 - Flare Countermeasures (Hotkey = "CTRL" Value = Speed of Flare Projectile)
 - Voltic Boost Delayed Refill (Designed for MK1 Opressor Refills instantly after short delay no need to be on ground)
@@ -422,55 +422,7 @@ preventing them joining again. Does not effect you or friends just all others`
 masks are chosen at random, this will also make a stat recovery script which can be loaded
 to reset the changed stats should you need to`
 
-### World Options
-
-#### World Wave Modifiers
-
-- Get Current Wave Intensity (Toggle to show OSD Currrent Intensity)
-- Persistant Wave Intensity (Toggle to keep the Intensity Set)
-- Change Wave Intensity (value Modifier Change Value Click to set)
-- Change step Size (Step size of above options Adjust to value and click to set)
-- Reset Intensity (Click to reset Intensity to game Default)
-
-#### Clean Shit Up!
-
-#### - World Clean up
-
-- Fetched World Entities Move & Delete
-
-`Slowly Removes all Entities in Controllable distance`
-
-- Force Removal (Missed Anything?)
-
-`For anything control could not be obtained for and is left does nothing if there is nothing left over`
-
-- Fetch all Peds Move & Delete
-
-`Slowly Removes all Peds in Controllable distance`
-
-- Fetch all objects Move & Delete
-
-`Slowly Removes all Objects in Controllable distance`
-
-- Fetch all Vehicles Move & Delete
-
-`Slowly Removes all Vehicles in Controllable distance Also you if your inside one! Ignores Player Owned Vehicles`
-
-**Clean Shit Up!**
-
-- Delete Spawned Cunts
-`Removes Orbital Block, Attaches Spawned on players, and any future or current general spawns`
-
-- Delete Ped Spawns
-
-`Remove Just Peds Spawned via the OnlinePlayer Features`
-
-- Delete Ped Spawns + Vehicles
-
-`Remove Both Spawned Ped & Vehicles Created via the OnlinePlayer Features`
-
-
-## Online Player functions
+## Online Player Features
 
 
 ##### Remove Player Options
@@ -587,6 +539,8 @@ Red & White Above: Flash Ground: Fading
 - Rotating Lights
 - Attach Broken ufo
 `Attaches Broken Smoking UFO on Target`
+
+#### Attachment Options
 
 ###### **Experiments**
 - Room Attachment
