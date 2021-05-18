@@ -2,7 +2,6 @@ local threads = {}
 local ScriptLocals = {}
 MoistScript_thread = 0
 math.randomseed(utils.time_ms())
-version = "2.0.2.7"
 local rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 utils.make_dir(rootPath .. "\\Blacklist")
 utils.make_dir(rootPath .. "\\lualogs")
@@ -345,7 +344,9 @@ end
 
 
 function Player_Check(pid)
-    if not Active_scriptmenu.on then return end
+    if not Active_scriptmenu.on then 
+        OSD_Debug2.on = false
+        return end
     local pped, health, heldwep, heldammotype, vped, playern, plygrp, plyteam
     curweap = tostring("none")
     expsnipe = ""
@@ -2034,311 +2035,326 @@ ped_hashes = {
     {"u_m_y_zombie_01", 2890614022},
 }
 
+
 SoundAnnoy = {
-    {"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"5s_To_Event_Start_Countdown", "GTAO_FM_Events_Soundset"},
-    {"10s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-    {"5s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-    {"5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET"},
-    {"3_2_1_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
-    {"3_2_1", "HUD_MINI_GAME_SOUNDSET"},
-    {"Arming_Countdown", "GTAO_Speed_Convoy_Soundset"},
-    {"Bomb_Disarmed", "GTAO_Speed_Convoy_Soundset"},
-    {"Boss_Blipped", "GTAO_Magnate_Hunt_Boss_SoundSet"},
-    {"Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset"},
-    {"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-    {"Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet"},
-    {"ARM_3_CAR_GLASS_CRASH", "0"},
-    {"ARM_3_PISTOL_COCK", "0"},
-    {"ARM_WRESTLING_WHOOSH_MASTER", "0"},
-    {"ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", "ASSASSINATION_MULTI"},
-    {"ATM_WINDOW", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"BASE_JUMP_PASSED", "HUD_AWARDS"},
-    {"Bed", "WastedSounds"},
-    {"Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"Blade_Appear", "APT_BvS_Soundset"},
-    {"BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS"},
-    {"Breaker_01", "DLC_HALLOWEEN_FVJ_Sounds"},
-    {"Breaker_02", "DLC_HALLOWEEN_FVJ_Sounds"},
-    {"Bus_Schedule_Pickup", "DLC_PRISON_BREAK_HEIST_SOUNDS"},
-    {"CABLE_SNAPS", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-    {"CAM_PAN_DARTS", "HUD_MINI_GAME_SOUNDSET"},
-    {"Camera_Shoot", "Phone_Soundset_Franklin"},
-    {"CANCEL", "HUD_FREEMODE_SOUNDSET"},
-    {"CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS"},
-    {"CHALLENGE_UNLOCKED", "HUD_AWARDS"},
-    {"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
-    {"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"},
-    {"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
-    {"Checkpoint_Hit", "GTAO_FM_Events_Soundset"},
-    {"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"},
-    {"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"},
-    {"CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET"},
-    {"Checkpoint_Teammate", "GTAO_Shepherd_Sounds"},
-    {"CHECKPOINT_UNDER_THE_BRIDGE", "HUD_MINI_GAME_SOUNDSET"},
-    {"Click", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE"},
-    {"Click_Fail", "WEB_NAVIGATION_SOUNDS_PHONE"},
-    {"Click_Special", "WEB_NAVIGATION_SOUNDS_PHONE"},
-    {"CLOSED", "MP_PROPERTIES_ELEVATOR_DOORS"},
-    {"COMPUTERS_MOUSE_CLICK", "0"},
-    {"CONFIRM_BEEP", "HUD_MINI_GAME_SOUNDSET"},
-    {"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Continue_Accepted", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Continue_Appears", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Crash", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset"},
-    {"Criminal_Damage_Kill_Player", "GTAO_FM_Events_Soundset"},
-    {"Criminal_Damage_Low_Value", "GTAO_FM_Events_Soundset"},
-    {"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_01", "0"},
-    {"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_02", "0"},
-    {"Cycle_Item", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"DELETE", "HUD_DEATHMATCH_SOUNDSET"},
-    {"Delete_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"Deliver_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"DiggerRevOneShot", "BulldozerDefault"},
-    {"Door_Open", "DOCKS_HEIST_FINALE_2B_SOUNDS"},
-    {"Drill_Pin_Break", "DLC_HEIST_FLEECA_SOUNDSET"},
-    {"Dropped", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"DRUG_TRAFFIC_AIR_BOMB_DROP_ERROR_MASTER", "0"},
-    {"DRUG_TRAFFIC_AIR_SCREAMS", "0"},
-    {"EDIT", "HUD_DEATHMATCH_SOUNDSET"},
-    {"Start_Squelch", "CB_RADIO_SFX"},
-    {"End_Squelch", "CB_RADIO_SFX"},
-    {"Enemy_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
-    {"Enemy_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"Enemy_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"Enter_1st", "GTAO_FM_Events_Soundset"},
-    {"Enter_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
-    {"Enter_Area", "DLC_Lowrider_Relay_Race_Sounds"},
-    {"Enter_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
-    {"ERROR", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"Event_Message_Purple", "GTAO_FM_Events_Soundset"},
-    {"Event_Start_Text", "GTAO_FM_Events_Soundset"},
-    {"EXIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Exit_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
-    {"Failure", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"Falling_Crates", "EXILE_1"},
-    {"Faster_Bar_Full", "RESPAWN_ONLINE_SOUNDSET"},
-    {"Faster_Click", "RESPAWN_ONLINE_SOUNDSET"},
-    {"FestiveGift", "Feed_Message_Sounds"},
-    {"FIRST_PLACE", "HUD_MINI_GAME_SOUNDSET"},
-    {"FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS"},
-    {"FLYING_STREAM_END_INSTANT", "FAMILY_5_SOUNDS"},
-    {"FocusIn", "HintCamSounds"},
-    {"FocusOut", "HintCamSounds"},
-    {"Friend_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-    {"GO", "HUD_MINI_GAME_SOUNDSET"},
-    {"GO_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
-    {"Goal", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"GOLF_BIRDIE", "HUD_AWARDS"},
-    {"GOLF_EAGLE", "HUD_AWARDS"},
-    {"GOLF_HUD_HOLE_IN_ONE_MASTER", "0"},
-    {"GOLF_HUD_SCORECARD_MASTER", "0"},
-    {"GOLF_NEW_RECORD", "HUD_AWARDS"},
-    {"Goon_Paid_Small", "GTAO_Boss_Goons_FM_Soundset"},
-    {"Grab_Parachute", "BASEJUMPS_SOUNDS"},
-    {"Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-    {"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-    {"HACKING_CLICK", "0"},
-    {"HACKING_CLICK_BAD", "0"},
-    {"HACKING_CLICK_GOOD", "0"},
-    {"HACKING_FAILURE", "0"},
-    {"HACKING_MOVE_CURSOR", "0"},
-    {"HACKING_SUCCESS", "0"},
-    {"Hang_Up", "Phone_SoundSet_Michael"},
-    {"HIGHLIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Highlight_Accept", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Highlight_Cancel", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Highlight_Error", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Highlight_Move", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"HIGHLIGHT_NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Hit", "RESPAWN_ONLINE_SOUNDSET"},
-    {"Hit", "RESPAWN_SOUNDSET"},
-    {"Hit_1", "LONG_PLAYER_SWITCH_SOUNDS"},
-    {"Hit_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-    {"Hit_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-    {"HOORAY", "BARRY_02_SOUNDSET"},
-    {"HORDE_COOL_DOWN_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"HUD_FREEMODE_CANCEL_MASTER", "0"},
-    {"Kill_List_Counter", "GTAO_FM_Events_Soundset"},
-    {"LAMAR1_PARTYGIRLS_master", "0"},
-    {"LEADER_BOARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"LEADERBOARD", "HUD_MINI_GAME_SOUNDSET"},
-    {"Lights_On", "GTAO_MUGSHOT_ROOM_SOUNDS"},
-    {"LIMIT", "DLC_APT_YACHT_DOOR_SOUNDS"},
-    {"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-    {"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
-    {"Load_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"LOCAL_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"LOCAL_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"LOOSE_MATCH", "HUD_MINI_GAME_SOUNDSET"},
-    {"Lose_1st", "GTAO_FM_Events_Soundset"},
-    {"Lose_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
-    {"LOSER", "HUD_AWARDS"},
-    {"Map_Roll_Down", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Map_Roll_Up", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"MARKER_ERASE", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-    {"MARTIN1_DISTANT_TRAIN_HORNS_MASTER", "0"},
-    {"MEDAL_BRONZE", "HUD_AWARDS"},
-    {"MEDAL_GOLD", "HUD_AWARDS"},
-    {"MEDAL_SILVER", "HUD_AWARDS"},
-    {"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"},
-    {"Menu_Accept", "Phone_SoundSet_Default"},
-    {"MICHAEL_LONG_SCREAM", "FAMILY_5_SOUNDS"},
-    {"MICHAEL_SOFA_REMOTE_CLICK_VOLUME_MASTER", "0"},
-    {"MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER", "0"},
-    {"MICHAEL_SOFA_TV_ON_MASTER", "0"},
-    {"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"MP_Flash", "WastedSounds"},
-    {"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"MP_Impact", "WastedSounds"},
-    {"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"NAV", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"Nav_Arrow_Ahead", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"Nav_Arrow_Behind", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"Nav_Arrow_Left", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"Nav_Arrow_Right", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"NAV_LEFT_RIGHT", "HUD_FREEMODE_SOUNDSET"},
-    {"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"},
-    {"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"},
-    {"NET_RACE_START_EVENT_MASTER", "0"},
-    {"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
-    {"Object_Collect_Remote", "GTAO_FM_Events_Soundset"},
-    {"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
-    {"Off_High", "MP_RADIO_SFX"},
-    {"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"ON", "NOIR_FILTER_SOUNDS"},
-    {"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-    {"OOB_Cancel", "GTAO_FM_Events_Soundset"},
-    {"OOB_Start", "GTAO_FM_Events_Soundset"},
-    {"OPEN_WINDOW", "LESTER1A_SOUNDS"},
-    {"OPENED", "MP_PROPERTIES_ELEVATOR_DOORS"},
-    {"OTHER_TEXT", "HUD_AWARDS"},
-    {"Out_Of_Area", "DLC_Lowrider_Relay_Race_Sounds"},
-    {"Out_Of_Bounds_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"Paper_Shuffle", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Parcel_Vehicle_Lost", "GTAO_FM_Events_Soundset"},
-    {"Payment_Non_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
-    {"Payment_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
-    {"Pen_Tick", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"PERSON_SCROLL", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-    {"PERSON_SELECT", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-    {"Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET"},
-    {"Phone_Generic_Key_03", "HUD_MINIGAME_SOUNDSET"},
-    {"PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"PICK_UP_WEAPON", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-    {"PICK_UP_SOUND", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-    {"PICKUP_WEAPON_SMOKEGRENADE", "HUD_FRONTEND_WEAPONS_PICKUPS_SOUNDSET"},
-    {"Pin_Bad", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-    {"PIN_BUTTON", "ATM_SOUNDS"},
-    {"Pin_Centred", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-    {"Pin_Good", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-    {"PIPES_LAND", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-    {"Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"Player_Collect", "DLC_PILOT_MP_HUD_SOUNDS"},
-    {"Player_Enter_Line", "GTAO_FM_Cross_The_Line_Soundset"},
-    {"Player_Exit_Line", "GTAO_FM_Cross_The_Line_Soundset"},
-    {"Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"Pre_Screen_Stinger", "DLC_HEISTS_FAILED_SCREEN_SOUNDS"},
-    {"Pre_Screen_Stinger", "DLC_HEISTS_FINALE_SCREEN_SOUNDS"},
-    {"Pre_Screen_Stinger", "DLC_HEISTS_PREP_SCREEN_SOUNDS"},
-    {"PROPERTY_PURCHASE", "HUD_AWARDS"},
-    {"PROPERTY_PURCHASE_MEDIUM", "HUD_PROPERTY_SOUNDSET"},
-    {"PS2A_MONEY_LOST", "PALETO_SCORE_2A_BANK_SS"},
-    {"PURCHASE", "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"},
-    {"PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET"},
-    {"PUSH", "DLC_APT_YACHT_DOOR_SOUNDS"},
-    {"PUSH", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-    {"PUSH", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
-    {"Put_Away", "Phone_SoundSet_Michael"},
-    {"QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"QUIT_WHOOSH", "HUD_MINI_GAME_SOUNDSET"},
-    {"RACE_PLACED", "HUD_AWARDS"},
-    {"RAMP_DOWN", "TRUCK_RAMP_DOWN"},
-    {"RAMP_UP", "TRUCK_RAMP_DOWN"},
-    {"RANK_UP", "HUD_AWARDS"},
-    {"REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"REMOTE_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-    {"Reset_Prop_Position", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"RESTART", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-    {"ROPE_CUT", "ROPE_CUT_SOUNDSET"},
-    {"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
-    {"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"SCOPE_UI_MASTER", "0"},
-    {"SCREEN_FLASH", "CELEBRATION_SOUNDSET"},
-    {"ScreenFlash", "MissionFailedSounds"},
-    {"ScreenFlash", "WastedSounds"},
-    {"SCREEN_SWIPE", "CELEBRATION_SWIPE"},
-    {"SELECT", "HUD_FREEMODE_SOUNDSET"},
-    {"Select_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
-    {"Shard_Disappear", "GTAO_Boss_Goons_FM_Shard_Sounds"},
-    {"Shard_Disappear", "GTAO_FM_Events_Soundset"},
-    {"SHOOTING_RANGE_ROUND_OVER", "HUD_AWARDS"},
-    {"Short_Transition_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-    {"Short_Transition_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-    {"SKIP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Start", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"STUN_COLLECT", "MINUTE_MAN_01_SOUNDSET"},
-    {"Success", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"Swap_Sides", "DLC_HALLOWEEN_FVJ_Sounds"},
-    {"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-    {"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
-    {"Tattooing_Oneshot", "TATTOOIST_SOUNDS"},
-    {"Tattooing_Oneshot_Remove", "TATTOOIST_SOUNDS"},
-    {"Team_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
-    {"TENNIS_MATCH_POINT", "HUD_AWARDS"},
-    {"TENNIS_POINT_WON", "HUD_AWARDS"},
-    {"TextHit", "WastedSounds"},
-    {"TIME_LAPSE_MASTER", "0"},
-    {"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Timer_10s", "DLC_HALLOWEEN_FVJ_Sounds"},
-    {"TIMER_STOP", "HUD_MINI_GAME_SOUNDSET"},
-    {"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"Turn", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-    {"UNDER_THE_BRIDGE", "HUD_AWARDS"},
-    {"UNDER_WATER_COME_UP", "0"},
-    {"UNDO", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-    {"WAYPOINT_SET", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-    {"WEAKEN", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-    {"WEAPON_AMMO_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"WEAPON_ATTACHMENT_EQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"WEAPON_ATTACHMENT_UNEQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"WEAPON_SELECT_ARMOR", "HUD_AMMO_SHOP_SOUNDSET"},
-    {"Whistle", "DLC_TG_Running_Back_Sounds"},
-    {"Whoosh_1s_L_to_R", "MP_LOBBY_SOUNDS"},
-    {"Whoosh_1s_R_to_L", "MP_LOBBY_SOUNDS"},
-    {"WIN", "HUD_AWARDS"},
-    {"WOODEN_DOOR_CLOSED_AT", "0"},
-    {"WOODEN_DOOR_CLOSED_AT", "0"},
-    {"WOODEN_DOOR_CLOSING_AT", "0"},
-    {"WOODEN_DOOR_CLOSING_AT", "0"},
-    {"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
-    {"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
-    {"WOODEN_DOOR_OPEN_NO_HANDLE_AT", "0"},
-    {"Zone_Enemy_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
-    {"Zone_Neutral", "DLC_Apartments_Drop_Zone_Sounds"},
-    {"Zone_Team_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
-    {"Zoom_In", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Zoom_Left", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-    {"Zoom_Right", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"TIME_LAPSE_MASTER", "0"},
+{"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Timer_10s", "DLC_HALLOWEEN_FVJ_Sounds"},
+{"TIMER_STOP", "HUD_MINI_GAME_SOUNDSET"},
+{"5s_To_Event_Start_Countdown", "GTAO_FM_Events_Soundset"},
+{"10s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+{"5s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+{"5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET"},
+{"3_2_1_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
+{"3_2_1", "HUD_MINI_GAME_SOUNDSET"},
+{"WIND", "EXTREME_01_SOUNDSET"},
+{"HOUSE_FIRE", "JOSH_03_SOUNDSET"},
+{"Burglar_Bell", "Generic_Alarms"},
+{"Generic_Alarm_Fire_Electronic", "0"},
+{"ALARMS_KLAXON_03_FAR", 0},
+{"ALARMS_KLAXON_03_CLOSE", 0},
+{"Hot_Tub_Loop", "GTAO_Yacht_SoundSet"},
+{"Arming_Countdown", "GTAO_Speed_Convoy_Soundset"},
+{"Bomb_Disarmed", "GTAO_Speed_Convoy_Soundset"},
+{"Boss_Blipped", "GTAO_Magnate_Hunt_Boss_SoundSet"},
+{"Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset"},
+{"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+{"Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet"},
+{"ARM_3_CAR_GLASS_CRASH", "0"},
+{"ARM_3_PISTOL_COCK", "0"},
+{"ARM_WRESTLING_WHOOSH_MASTER", "0"},
+{"ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", "ASSASSINATION_MULTI"},
+{"ATM_WINDOW", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"BASE_JUMP_PASSED", "HUD_AWARDS"},
+{"Bed", "WastedSounds"},
+{"Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"Blade_Appear", "APT_BvS_Soundset"},
+{"BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS"},
+{"Breaker_01", "DLC_HALLOWEEN_FVJ_Sounds"},
+{"Breaker_02", "DLC_HALLOWEEN_FVJ_Sounds"},
+{"Bus_Schedule_Pickup", "DLC_PRISON_BREAK_HEIST_SOUNDS"},
+{"CABLE_SNAPS", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+{"CAM_PAN_DARTS", "HUD_MINI_GAME_SOUNDSET"},
+{"Camera_Shoot", "Phone_Soundset_Franklin"},
+{"CANCEL", "HUD_FREEMODE_SOUNDSET"},
+{"CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS"},
+{"CHALLENGE_UNLOCKED", "HUD_AWARDS"},
+{"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
+{"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"},
+{"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
+{"Checkpoint_Hit", "GTAO_FM_Events_Soundset"},
+{"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"},
+{"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"},
+{"CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET"},
+{"Checkpoint_Teammate", "GTAO_Shepherd_Sounds"},
+{"CHECKPOINT_UNDER_THE_BRIDGE", "HUD_MINI_GAME_SOUNDSET"},
+{"Click", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE"},
+{"Click_Fail", "WEB_NAVIGATION_SOUNDS_PHONE"},
+{"Click_Special", "WEB_NAVIGATION_SOUNDS_PHONE"},
+{"CLOSED", "MP_PROPERTIES_ELEVATOR_DOORS"},
+{"COMPUTERS_MOUSE_CLICK", "0"},
+{"CONFIRM_BEEP", "HUD_MINI_GAME_SOUNDSET"},
+{"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Continue_Accepted", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Continue_Appears", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Crash", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset"},
+{"Criminal_Damage_Kill_Player", "GTAO_FM_Events_Soundset"},
+{"Criminal_Damage_Low_Value", "GTAO_FM_Events_Soundset"},
+{"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_01", "0"},
+{"CUTSCENE_DIALOGUE_OVERRIDE_SOUND_02", "0"},
+{"Cycle_Item", "DLC_Dmod_Prop_Editor_Sounds"},
+{"DELETE", "HUD_DEATHMATCH_SOUNDSET"},
+{"Delete_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
+{"Deliver_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"DiggerRevOneShot", "BulldozerDefault"},
+{"Door_Open", "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+{"Drill_Pin_Break", "DLC_HEIST_FLEECA_SOUNDSET"},
+{"Dropped", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"DRUG_TRAFFIC_AIR_BOMB_DROP_ERROR_MASTER", "0"},
+{"DRUG_TRAFFIC_AIR_SCREAMS", "0"},
+{"EDIT", "HUD_DEATHMATCH_SOUNDSET"},
+{"Start_Squelch", "CB_RADIO_SFX"},
+{"End_Squelch", "CB_RADIO_SFX"},
+{"Enemy_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
+{"Enemy_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"Enemy_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"Enter_1st", "GTAO_FM_Events_Soundset"},
+{"Enter_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
+{"Enter_Area", "DLC_Lowrider_Relay_Race_Sounds"},
+{"Enter_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
+{"ERROR", "HUD_AMMO_SHOP_SOUNDSET"},
+{"Event_Message_Purple", "GTAO_FM_Events_Soundset"},
+{"Event_Start_Text", "GTAO_FM_Events_Soundset"},
+{"EXIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Exit_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
+{"Failure", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"Falling_Crates", "EXILE_1"},
+{"Faster_Bar_Full", "RESPAWN_ONLINE_SOUNDSET"},
+{"Faster_Click", "RESPAWN_ONLINE_SOUNDSET"},
+{"FestiveGift", "Feed_Message_Sounds"},
+{"FIRST_PLACE", "HUD_MINI_GAME_SOUNDSET"},
+{"FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS"},
+{"FLYING_STREAM_END_INSTANT", "FAMILY_5_SOUNDS"},
+{"FocusIn", "HintCamSounds"},
+{"FocusOut", "HintCamSounds"},
+{"Friend_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+{"GO", "HUD_MINI_GAME_SOUNDSET"},
+{"GO_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
+{"Goal", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"GOLF_BIRDIE", "HUD_AWARDS"},
+{"GOLF_EAGLE", "HUD_AWARDS"},
+{"GOLF_HUD_HOLE_IN_ONE_MASTER", "0"},
+{"GOLF_HUD_SCORECARD_MASTER", "0"},
+{"GOLF_NEW_RECORD", "HUD_AWARDS"},
+{"Goon_Paid_Small", "GTAO_Boss_Goons_FM_Soundset"},
+{"Grab_Parachute", "BASEJUMPS_SOUNDS"},
+{"Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+{"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+{"BBQ_EXPLODE", "JOSH_03_SOUNDSET"},
+{"HACKING_CLICK", "0"},
+{"HACKING_CLICK_BAD", "0"},
+{"HACKING_CLICK_GOOD", "0"},
+{"HACKING_FAILURE", "0"},
+{"HACKING_MOVE_CURSOR", "0"},
+{"HACKING_SUCCESS", "0"},
+{"Hang_Up", "Phone_SoundSet_Michael"},
+{"HIGHLIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Highlight_Accept", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Highlight_Cancel", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Highlight_Error", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Highlight_Move", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"HIGHLIGHT_NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Hit", "RESPAWN_ONLINE_SOUNDSET"},
+{"Hit", "RESPAWN_SOUNDSET"},
+{"Hit_1", "LONG_PLAYER_SWITCH_SOUNDS"},
+{"Hit_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+{"Hit_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+{"HOORAY", "BARRY_02_SOUNDSET"},
+{"HORDE_COOL_DOWN_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"HUD_FREEMODE_CANCEL_MASTER", "0"},
+{"Kill_List_Counter", "GTAO_FM_Events_Soundset"},
+{"LAMAR1_PARTYGIRLS_master", "0"},
+{"LEADER_BOARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"LEADERBOARD", "HUD_MINI_GAME_SOUNDSET"},
+{"Lights_On", "GTAO_MUGSHOT_ROOM_SOUNDS"},
+{"LIMIT", "DLC_APT_YACHT_DOOR_SOUNDS"},
+{"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+{"LIMIT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+{"Load_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
+{"LOCAL_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"LOCAL_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"LOOSE_MATCH", "HUD_MINI_GAME_SOUNDSET"},
+{"Lose_1st", "GTAO_FM_Events_Soundset"},
+{"Lose_1st", "GTAO_Magnate_Boss_Modes_Soundset"},
+{"LOSER", "HUD_AWARDS"},
+{"Map_Roll_Down", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Map_Roll_Up", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"MARKER_ERASE", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+{"MARTIN1_DISTANT_TRAIN_HORNS_MASTER", "0"},
+{"MEDAL_BRONZE", "HUD_AWARDS"},
+{"MEDAL_GOLD", "HUD_AWARDS"},
+{"MEDAL_SILVER", "HUD_AWARDS"},
+{"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"},
+{"Menu_Accept", "Phone_SoundSet_Default"},
+{"MICHAEL_LONG_SCREAM", "FAMILY_5_SOUNDS"},
+{"MICHAEL_SOFA_REMOTE_CLICK_VOLUME_MASTER", "0"},
+{"MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER", "0"},
+{"MICHAEL_SOFA_TV_ON_MASTER", "0"},
+{"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"MP_Flash", "WastedSounds"},
+{"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"MP_Impact", "WastedSounds"},
+{"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"NAV", "HUD_AMMO_SHOP_SOUNDSET"},
+{"Nav_Arrow_Ahead", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"Nav_Arrow_Behind", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"Nav_Arrow_Left", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"Nav_Arrow_Right", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"NAV_LEFT_RIGHT", "HUD_FREEMODE_SOUNDSET"},
+{"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"},
+{"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"},
+{"NET_RACE_START_EVENT_MASTER", "0"},
+{"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
+{"Object_Collect_Remote", "GTAO_FM_Events_Soundset"},
+{"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
+{"Off_High", "MP_RADIO_SFX"},
+{"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"ON", "NOIR_FILTER_SOUNDS"},
+{"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
+{"OOB_Cancel", "GTAO_FM_Events_Soundset"},
+{"OOB_Start", "GTAO_FM_Events_Soundset"},
+{"OPEN_WINDOW", "LESTER1A_SOUNDS"},
+{"OPENED", "MP_PROPERTIES_ELEVATOR_DOORS"},
+{"OTHER_TEXT", "HUD_AWARDS"},
+{"Out_Of_Area", "DLC_Lowrider_Relay_Race_Sounds"},
+{"Out_Of_Bounds_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"Paper_Shuffle", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Parcel_Vehicle_Lost", "GTAO_FM_Events_Soundset"},
+{"Payment_Non_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
+{"Payment_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
+{"Pen_Tick", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"PERSON_SCROLL", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+{"PERSON_SELECT", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+{"Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET"},
+{"Phone_Generic_Key_03", "HUD_MINIGAME_SOUNDSET"},
+{"PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"PICK_UP_WEAPON", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+{"PICK_UP_SOUND", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+{"PICKUP_WEAPON_SMOKEGRENADE", "HUD_FRONTEND_WEAPONS_PICKUPS_SOUNDSET"},
+{"Pin_Bad", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+{"PIN_BUTTON", "ATM_SOUNDS"},
+{"Pin_Centred", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+{"Pin_Good", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+{"PIPES_LAND", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+{"Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds"},
+{"Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds"},
+{"Player_Collect", "DLC_PILOT_MP_HUD_SOUNDS"},
+{"Player_Enter_Line", "GTAO_FM_Cross_The_Line_Soundset"},
+{"Player_Exit_Line", "GTAO_FM_Cross_The_Line_Soundset"},
+{"Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"Pre_Screen_Stinger", "DLC_HEISTS_FAILED_SCREEN_SOUNDS"},
+{"Pre_Screen_Stinger", "DLC_HEISTS_FINALE_SCREEN_SOUNDS"},
+{"Pre_Screen_Stinger", "DLC_HEISTS_PREP_SCREEN_SOUNDS"},
+{"PROPERTY_PURCHASE", "HUD_AWARDS"},
+{"PROPERTY_PURCHASE_MEDIUM", "HUD_PROPERTY_SOUNDSET"},
+{"PS2A_DISTANT_TRAIN_HORNS_MASTER", "0"},
+{"PS2A_MONEY_LOST", "PALETO_SCORE_2A_BANK_SS"},
+{"PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET"},
+{"Put_Away", "Phone_SoundSet_Michael"},
+{"QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"QUIT_WHOOSH", "HUD_MINI_GAME_SOUNDSET"},
+{"RACE_PLACED", "HUD_AWARDS"},
+{"RAMP_DOWN", "TRUCK_RAMP_DOWN"},
+{"RAMP_UP", "TRUCK_RAMP_DOWN"},
+{"RANK_UP", "HUD_AWARDS"},
+{"REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"REMOTE_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+{"Reset_Prop_Position", "DLC_Dmod_Prop_Editor_Sounds"},
+{"RESTART", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
+{"ROPE_CUT", "ROPE_CUT_SOUNDSET"},
+{"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
+{"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
+{"SCOPE_UI_MASTER", "0"},
+{"SCREEN_FLASH", "CELEBRATION_SOUNDSET"},
+{"ScreenFlash", "WastedSounds"},
+{"SCREEN_SWIPE", "CELEBRATION_SWIPE"},
+{"SELECT", "HUD_FREEMODE_SOUNDSET"},
+{"Select_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
+{"Shard_Disappear", "GTAO_FM_Events_Soundset"},
+{"SHOOTING_RANGE_ROUND_OVER", "HUD_AWARDS"},
+{"Short_Transition_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+{"Short_Transition_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+{"SKIP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Start", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"STUN_COLLECT", "MINUTE_MAN_01_SOUNDSET"},
+{"Success", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"Swap_Sides", "DLC_HALLOWEEN_FVJ_Sounds"},
+{"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+{"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_WOOD_SOUNDS"},
+{"Tattooing_Oneshot", "TATTOOIST_SOUNDS"},
+{"Tattooing_Oneshot_Remove", "TATTOOIST_SOUNDS"},
+{"Team_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
+{"TENNIS_MATCH_POINT", "HUD_AWARDS"},
+{"TENNIS_POINT_WON", "HUD_AWARDS"},
+{"TextHit", "WastedSounds"},
+{"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"Turn", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+{"UNDER_THE_BRIDGE", "HUD_AWARDS"},
+{"UNDER_WATER_COME_UP", "0"},
+{"UNDO", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+{"WAYPOINT_SET", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+{"WEAKEN", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
+{"WEAPON_AMMO_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
+{"WEAPON_ATTACHMENT_EQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
+{"WEAPON_ATTACHMENT_UNEQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
+{"WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
+{"WEAPON_SELECT_ARMOR", "HUD_AMMO_SHOP_SOUNDSET"},
+{"Whistle", "DLC_TG_Running_Back_Sounds"},
+{"Whoosh_1s_L_to_R", "MP_LOBBY_SOUNDS"},
+{"Whoosh_1s_R_to_L", "MP_LOBBY_SOUNDS"},
+{"WIN", "HUD_AWARDS"},
+{"WOODEN_DOOR_CLOSED_AT", "0"},
+{"WOODEN_DOOR_CLOSED_AT", "0"},
+{"WOODEN_DOOR_CLOSING_AT", "0"},
+{"WOODEN_DOOR_CLOSING_AT", "0"},
+{"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
+{"WOODEN_DOOR_OPEN_HANDLE_AT", "0"},
+{"WOODEN_DOOR_OPEN_NO_HANDLE_AT", "0"},
+{"Zone_Enemy_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
+{"Zone_Neutral", "DLC_Apartments_Drop_Zone_Sounds"},
+{"Zone_Team_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
+{"Zoom_In", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Zoom_Left", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"Zoom_Right", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+{"DLC_XM_Explosions_Orbital_Cannon", 0},
+{"DLC_XM_Explosions_Orbital_Cannon_fire", "DLC_XM_ION_CANNON"},
+{"ORBITAL_CANNON_FIRE_LASER", 0},
+{"DLC_XM_Explosions_ORBITAL_CANNON_FIRE_EXPLOSION",  0},
+{"DLC_XM_Explosions_ORBITAL_CANNON_FIRE_SUB",  0},
+{"ORBITAL_CANNON_FIRE_SUB",  "DLC_XM_ION_CANNON"},
+{"DLC_XM_Explosions_Orbital_Cannon_fire", "DLC_XM_ION_CANNON"},
+{"ORBITAL_CANNON_FIRE_EXPLOSION",  "DLC_XM_Explosions"},
+{"Explosions_Orbital_Cannon", "DLC_CHRISTMAS2017"},
+{"DLC_XM_Explosions_Orbital_Cannon", "DLC_CHRISTMAS2017/XM_ION_CANNON"},
 }
+
 
 --TODO: Modder Flagging
 function modflag_set()
@@ -2989,12 +3005,12 @@ function modderflag(pid)
     if not Modders_DB[pid].ismod then
         local flags = player.get_player_modder_flags(pid)
         local flaghex = string.format("%x", flags)
-        Print(flaghex)
+        print(flaghex)
         local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
         local flag_name = player.get_modder_flag_text(flags)
         Modders_DB[pid].flag = flag_name
         Modders_DB[pid].flags = flags
-        Print(Modders_DB[pid].flags)
+        print(Modders_DB[pid].flags)
         Modders_DB[pid].ismod = true
         local name = player.get_player_name(pid)
         Debug_Out(string.format("Modder:" .. name .. "\nmodder Flags:" .. flag_name))
@@ -3004,7 +3020,7 @@ function modderflag(pid)
             player.unset_player_as_modder(pid, Modders_DB[pid].flags)
             local flags = player.get_player_modder_flags(pid)
             local flaghex = string.format("%x", flags)
-            Print(flaghex)
+            print(flaghex)
             local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
             local flag_name = player.get_modder_flag_text(flags)
             Modders_DB[pid].flag = flag_name
@@ -6312,11 +6328,28 @@ end
 	passivehook_Alert = menu.add_feature("Custom SEP Passive", "toggle", globalFeatures.moist_tools.id, sep)
 	passivehook_Alert.on = true
 
+local SECrash = {-977515445,767605081,-1730227041,-1949011582,-2122716210,-1882923979}
+
+
+
+function build_params(argcnt)
+local ParaMs = {}
+
+    for i = 1, argcnt do
+    local y = math.random(1, #kick_param_data)
+    ParaMs[i] = kick_param_data[y]
+    end
+    return ParaMs
+end
+
 local SEC_SESS = menu.add_feature("Script Event Crash Session", "toggle", globalFeatures.kick, function(feat)
+    local Params = build_params(70)
     	if feat.on then
                 for pid = 0, 32 do
                 if pid ~= me then
-                ScriptEventCrash(pid)
+                for i = 1, #SECrash do
+                ScriptTR(SECrash[i], pid, {Params})
+                end
                 end
                 end
                 return HANDLER_CONTINUE
@@ -9408,14 +9441,10 @@ ScriptLocals["featureVars"] = featureVars
 
      OSD_Debug2.on = false
 featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, function(feat)
-    print("pid: " ..pid)
+
     Active_menu = pid
     health, infoA, infoB = Player_Check(pid)
-	print("info: " ..health)
-	print("info: " ..infoA)
-	print("info: " ..infoB)
-	print("Activemenu item: " ..Active_menu)
-	
+
     OSD_Debug2.on = true
     
     ply_veh[pid+1] = player.get_player_vehicle(pid)
@@ -12110,12 +12139,50 @@ end}
 features["Waypoint"].feat.threaded = false
 
 --TODO: Kick System
-	featureVars.ses = menu.add_feature("Script Event Spam", "parent", featureVars.k.id)
-	features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggle", featureVars.ses.id, function(feat)
+featureVars.ses = menu.add_feature("Script Event Spam", "parent", featureVars.k.id)
+local params = {}
+function paramreq()
+    while playerFeatures[pid].features["SE_CRASH_DATA1"].feat.on do
+     params = build_params(70)
+     system.wait(20000)
+end
+end
+
+features["SE_CRASH_DATA1"] = {feat = menu.add_feature("Data 1 SE Crash", "toggle", featureVars.k.id, function(feat)
+    paramreq()
+        if feat.on then
+
+			--player.unset_player_as_modder(pid, -1)
+
+				for i = 1, #data do
+				par1 = math.random(-1000, 99999999)
+				par2 = math.random(-1, 9)
+				par3 = math.random(-1, 1)
+				par4 = math.random(-1, 9)
+				par5 = math.random(-1, 1)
+
+				ScriptTR(data[i], pid, {par3, par5, par2, par3, par2})
+                system.wait(200)				
+				ScriptTR(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+               system.wait(200)	
+                ScriptTR(data[i], pid, params)
+                system.wait(200)				
+				ScriptTR(data[i], pid, params)
+				system.wait(200)
+			end
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+end),  type = "toggle", callback = function()
+end}
+features["SE_CRASH_DATA1"].feat.on = false
+
+features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggle", featureVars.ses.id, function(feat)
 		if not feat.on then
 
 			playerFeatures[pid].features["Kick1_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick1_Type2"].feat.on = false
+			playerFeatures[pid].features["Kick1_Type3"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type1"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type2"].feat.on = false
 			playerFeatures[pid].features["Kick2_Type3"].feat.on = false
@@ -12124,9 +12191,10 @@ features["Waypoint"].feat.threaded = false
 		return HANDLER_POP
 		end
 		
-	end),  type = "toggle", callback = function()
+end),  type = "toggle", callback = function()
 		playerFeatures[pid].features["Kick1_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick1_Type2"].feat.on = true
+		playerFeatures[pid].features["Kick1_Type3"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type1"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type2"].feat.on = true
 		playerFeatures[pid].features["Kick2_Type3"].feat.on = true
@@ -12134,18 +12202,14 @@ features["Waypoint"].feat.threaded = false
 		playerFeatures[pid].features["Kick3_Type2"].feat.on = true
 		return HANDLER_POP
 			
-	end}
-	features["EventSpam_toggle"].feat.on = false
+end}
+features["EventSpam_toggle"].feat.on = false
 	
-	features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "value_i", featureVars.ses.id, function(feat)
+features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
-			local a = feat.value_i
-			if a < 1 then a = 1 end
-			
-			local b = a + 99
-			if b > #data then b = #data end
-			for i = a, b do
+
+				for i = 1, #data do
 				par1 = math.random(-1000, 99999999)
 				par2 = math.random(-1, 9)
 				par3 = math.random(-1, 1)
@@ -12153,30 +12217,23 @@ features["Waypoint"].feat.threaded = false
 				par5 = math.random(-1, 1)
 				
 				ScriptTR(data[i], pid, {par3, par5, par2, par3, par2})
+                system.wait(0)				
 				ScriptTR(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+				
 			end
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick1_Type1"].feat.max_i = #data
-	features["Kick1_Type1"].feat.min_i = 1
-	features["Kick1_Type1"].feat.value_i = 584
-	features["Kick1_Type1"].feat.mod_i = 100
-	features["Kick1_Type1"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
 
-features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_i", featureVars.ses.id, function(feat)
+features["Kick1_Type1"].feat.on = false
+
+features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "toggle", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
-			local a = feat.value_i
-			if a < 1 then a = 1 end
-			
-			local b = a + 99
-			if b > #data then b = #data end
-			Print(b .. ", "..a)
-			
-			for i = a, b do
+
+			for i = 1, #data do
 				
 				par1 = math.random(-1000, 99999999)
 				par2 = math.random(-99999999999999, -9)
@@ -12195,10 +12252,6 @@ features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "value_
 		
 end),  type = "toggle", callback = function()
 end}
-features["Kick1_Type2"].feat.max_i = #data
-features["Kick1_Type2"].feat.min_i = 1
-features["Kick1_Type2"].feat.value_i = 199
-features["Kick1_Type2"].feat.mod_i = 99
 features["Kick1_Type2"].feat.on = false
     
     	
@@ -12229,8 +12282,7 @@ end}
 features["Kick1_Type3"].feat.on = false
 
 	
-
-	features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_i", featureVars.ses.id, function(feat)
+features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
@@ -12238,6 +12290,8 @@ features["Kick1_Type3"].feat.on = false
 			
 			local b = a + 99
 			if b > #data2 then b = #data2 end
+
+			
 			for i = a, b do
 				
 				par1 = math.random(-1000, 99999999)
@@ -12247,75 +12301,83 @@ features["Kick1_Type3"].feat.on = false
 				par5 = math.random(-1, 1)
 				
 				ScriptTR(data2[i], pid, {par3, par5, par2, par3, par2})
-			end
+end
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
 		
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick2_Type1"].feat.max_i = #data2
-	features["Kick2_Type1"].feat.min_i = 1
-	features["Kick2_Type1"].feat.value_i = 397
-	features["Kick2_Type1"].feat.mod_i = 99	
-	features["Kick2_Type1"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
+features["Kick2_Type1"].feat.max_i = #data2
+features["Kick2_Type1"].feat.min_i = 1
+features["Kick2_Type1"].feat.value_i = 397
+features["Kick2_Type1"].feat.mod_i = 99	
+features["Kick2_Type1"].feat.on = false
 	
-	features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "value_i", featureVars.ses.id, function(feat)
+features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
+			
 			local b = a + 99
 			if b > #data2 then b = #data2 end
+			
 			for i = a, b do
+				
 				par1 = math.random(-1000, 99999999)
 				par2 = math.random(-99999999999999, -9)
 				par3 = math.random(46190868, 999999999)
 				par4 = math.random(-1, 9)
 				par5 = math.random(-99999999999999, -46190868)
+				
 				ScriptTR(data2[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+
 			end
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick2_Type2"].feat.max_i = #data2
-	features["Kick2_Type2"].feat.min_i = 1
-	features["Kick2_Type2"].feat.value_i = 584
-	features["Kick2_Type2"].feat.mod_i = 99
-	features["Kick2_Type2"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
+features["Kick2_Type2"].feat.max_i = #data2
+features["Kick2_Type2"].feat.min_i = 1
+features["Kick2_Type2"].feat.value_i = 584
+features["Kick2_Type2"].feat.mod_i = 99
+features["Kick2_Type2"].feat.on = false
 		
-	features["Kick2_Type3"] = {feat = menu.add_feature("Kick Data 2 Type 3", "value_i", featureVars.ses.id, function(feat)
+features["Kick2_Type3"] = {feat = menu.add_feature("Kick Data 2 Type 3", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
 			if a < 1 then a = 1 end
+			
 			local b = a + 99
-			if b > #data2 then b = #data2 end
-			print(b .. ", "..a)
+			if b > #data2 then b = #data2 end            
 			for i = a, b do
+				
+        
                 par1 = math.random(104574922, 9999999999)
 				par2 = math.random(-99999999999999, -1)
 				par3 = math.random(461908681885, 99999999999999)
 				par4 = math.random(-999999999999, -1)
 				par5 = math.random(9999999999999, 46190868453454)
+
+
 				ScriptTR(data2[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+	
 			end
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick2_Type3"].feat.max_i = #data2
-	features["Kick2_Type3"].feat.min_i = 1
-	features["Kick2_Type3"].feat.value_i = 584
-	features["Kick2_Type3"].feat.mod_i = 99
-	features["Kick2_Type3"].feat.on = false
-
-features["Kick2_Type4"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
+features["Kick2_Type3"].feat.max_i = #data2
+features["Kick2_Type3"].feat.min_i = 1
+features["Kick2_Type3"].feat.value_i = 584
+features["Kick2_Type3"].feat.mod_i = 99
+features["Kick2_Type3"].feat.on = false
         
-	features["Kick3_Type1"] = {feat = menu.add_feature("Kick Data 3 Type 1", "value_i", featureVars.ses.id, function(feat)
+features["Kick3_Type1"] = {feat = menu.add_feature("Kick Data 3 Type 1", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
 			local a = feat.value_i
@@ -12323,8 +12385,6 @@ features["Kick2_Type4"].feat.on = false
 			
 			local b = a + 99
 			if b > #data3 then b = #data3 end
-			print(b .. ", "..a)
-			
 			for i = a, b do
 				
 				par1 = math.random(-1000, 99999999)
@@ -12334,50 +12394,51 @@ features["Kick2_Type4"].feat.on = false
 				par5 = math.random(-1, 1)
 				
 				ScriptTR(data3[i], pid, {par3, par5, par2, par3, par2})
-			end
+                end
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
 		
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick3_Type1"].feat.max_i = #data3
-	features["Kick3_Type1"].feat.min_i = 1
-	features["Kick3_Type1"].feat.value_i = 485
-	features["Kick3_Type1"].feat.mod_i = 99	
-	features["Kick3_Type1"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
+features["Kick3_Type1"].feat.max_i = #data3
+features["Kick3_Type1"].feat.min_i = 1
+features["Kick3_Type1"].feat.value_i = 485
+features["Kick3_Type1"].feat.mod_i = 99	
+features["Kick3_Type1"].feat.on = false
 	
 features["Kick3_Type2"] = {feat = menu.add_feature("Kick Data 3 Type 2", "value_i", featureVars.ses.id, function(feat)
-        if feat.on then
-            -- player.unset_player_as_modder(pid, -1)
-            local a = feat.value_i
-            if a < 1 then
-                a = 1
-            end
-            local b = a + 99
-            if b > #data3 then
-                b = #data3
-            end
-            for i = a, b do
-                par1 = math.random(-1000, 99999999)
-                par2 = math.random(-99999999999999, -9)
-                par3 = math.random(46190868, 999999999)
-                par4 = math.random(-1, 9)
-                par5 = math.random(-99999999999999, -46190868)
-                ScriptTR(data3[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
-            end
-            return HANDLER_CONTINUE
-        end
-        return HANDLER_POP
-    end), type = "toggle", callback = function()
- end}
-	features["Kick3_Type2"].feat.max_i = #data3
-	features["Kick3_Type2"].feat.min_i = 1
-	features["Kick3_Type2"].feat.value_i = 1
-	features["Kick3_Type2"].feat.mod_i = 99
-	features["Kick3_Type2"].feat.on = false
+		if feat.on then
+			--player.unset_player_as_modder(pid, -1)
+			local a = feat.value_i
+			if a < 1 then a = 1 end
+			
+			local b = a + 99
+			if b > #data3 then b = #data3 end
+			
+			for i = a, b do
+				
+				par1 = math.random(-1000, 99999999)
+				par2 = math.random(-99999999999999, -9)
+				par3 = math.random(46190868, 999999999)
+				par4 = math.random(-1, 9)
+				par5 = math.random(-99999999999999, -46190868)
+				
+				ScriptTR(data3[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
+					
+			end
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+end),  type = "toggle", callback = function()
+end}
+features["Kick3_Type2"].feat.max_i = #data3
+features["Kick3_Type2"].feat.min_i = 1
+features["Kick3_Type2"].feat.value_i = 1
+features["Kick3_Type2"].feat.mod_i = 99
+features["Kick3_Type2"].feat.on = false
 	
-	features["Kick3_Type3"] = {feat = menu.add_feature("Kick Data 3 Type 3", "value_i", featureVars.ses.id, function(feat)
+features["Kick3_Type3"] = {feat = menu.add_feature("Kick Data 3 Type 3", "value_i", featureVars.ses.id, function(feat)
 		if feat.on then
 			--player.unset_player_as_modder(pid, -1)
 
@@ -12394,13 +12455,13 @@ features["Kick3_Type2"] = {feat = menu.add_feature("Kick Data 3 Type 2", "value_
 			return HANDLER_CONTINUE
 		end
 		return HANDLER_POP
-	end),  type = "toggle", callback = function()
-	end}
-	features["Kick3_Type3"].feat.max_i = #data3
-	features["Kick3_Type3"].feat.min_i = 1
-	features["Kick3_Type3"].feat.value_i = 1
-	features["Kick3_Type3"].feat.mod_i = 1
-	features["Kick3_Type3"].feat.on = false
+end),  type = "toggle", callback = function()
+end}
+features["Kick3_Type3"].feat.max_i = #data3
+features["Kick3_Type3"].feat.min_i = 1
+features["Kick3_Type3"].feat.value_i = 1
+features["Kick3_Type3"].feat.mod_i = 1
+features["Kick3_Type3"].feat.on = false
 	
 
 features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
@@ -12429,6 +12490,7 @@ features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck",
     local name = tostring(player.get_player_name(pid))
     ScriptTR(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 2147483647, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
     ScriptTR(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 1000, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
+   
     ScriptTR(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
     ScriptTR(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
     ScriptTR(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
@@ -12467,14 +12529,45 @@ features["SPE-kick"] = {feat = menu.add_feature("SPECIAL KICK", "action", featur
 
 end), type = "action"}
 
+features["SPE-kick"] = {feat = menu.add_feature("Script Event Crash", "toggle", featureVars.k.id, function(feat)
+
+        if feat.on  then
+        while playerFeatures[pid].scid ~= 4294967295 do
+
+        par1 = kick_param_data[math.random(1, #kick_param_data)]
+		par2 = kick_param_data[math.random(1, #kick_param_data)]
+		par3 = kick_param_data[math.random(1, #kick_param_data)]
+		par4 = kick_param_data[math.random(1, #kick_param_data)]
+		par5 = kick_param_data[math.random(1, #kick_param_data)]
+        
+    ScriptTR(data[math.random(1, #data)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+    system.wait(0)
+
+    ScriptTR(data2[math.random(1, #data2)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+    system.wait(0)
+    ScriptTR(data3[math.random(1, #data3)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+    if playerFeatures[pid].scid == 4294967295 or -1 then
+    break end
+    end
+    return HANDLER_CONTINUE
+    end
+end), type = "action"}
+
 features["PSE-Crash"] = {feat = menu.add_feature("Persistant Script Event Crash", "toggle", featureVars.k.id, function(feat)
     if feat.on then
-        par1 = math.random(104574922, 9999999999)
-		par2 = math.random(-99999999999999, -1)
-		par3 = math.random(461908681885, 99999999999999)
-		par4 = math.random(-999999999999, -1)
-		par5 = math.random(9999999999999, 46190868453454)   
+        local Params = {}
+        par1 = kick_param_data[math.random(1, #kick_param_data)]
+		par2 = kick_param_data[math.random(1, #kick_param_data)]
+		par3 = kick_param_data[math.random(1, #kick_param_data)]
+		par4 = kick_param_data[math.random(1, #kick_param_data)]
+		par5 = kick_param_data[math.random(1, #kick_param_data)]
+
     ScriptTR(-1949011582, pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+       Params =  build_params(80)
+            for i = 1, #SECrash do
+                ScriptTR(SECrash[i], pid, Params)
+                system.wait(1)
+            end
     return HANDLER_CONTINUE
     end
     return HANDLER_POP
@@ -12482,24 +12575,38 @@ end), type = "toggle", callback = function()
 end}
 features["PSE-Crash"].feat.on = false
 
+features["SE-Crash"] = {feat = menu.add_feature("Script Event Crash Player", "toggle", featureVars.k.id, function(feat)
+        if feat.on then
+       local Params = {}
+       Params =  build_params(80)
+            for i = 1, #SECrash do
+                ScriptTR(SECrash[i], pid, Params)
+                system.wait(1)
+            end
+        return HANDLER_CONTINUE
+        end
+    return HANDLER_POP
+end), type = "toggle", callback = function()
+end}
+features["SE-Crash"].feat.on = false
+
 features["inv_ent-Crash"] = {feat = menu.add_feature("Invalid Entity Crash", "action", featureVars.k.id, function(feat)
 
-    local model = gameplay.get_hash_key("slod_human")
+        local model = gameplay.get_hash_key("slod_human")
         streaming.request_model(model)
 
         while (not streaming.has_model_loaded(model)) do
-system.wait(10)
+            system.wait(10)
         end
-       local pos = get_offset(pid, -10)
-           crashped = ped.create_ped(26, model, pos, 0.0, true, false)
-            streaming.set_model_as_no_longer_needed(model)
-            entity.set_entity_as_no_longer_needed(crashped)
+        local pos = get_offset(pid, -10)
+        crashped = ped.create_ped(26, model, pos, 0.0, true, false)
+        streaming.set_model_as_no_longer_needed(model)
+        entity.set_entity_as_no_longer_needed(crashped)
 
-end), type = "action"}
- 
+ end),type = "action"}
+
 playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
 featureVars.f.hidden = false
-
 end
 
 local loop_logsent = false
@@ -12516,6 +12623,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
             local tbl = playerFeatures[pid]
             local f = tbl.feat
             local scid = player.get_player_scid(pid)
+            playerFeatures[pid].scid = scid
             if scid ~= 4294967295 then
                 if f.hidden then f.hidden = false end
                 local name = player.get_player_name(pid)
