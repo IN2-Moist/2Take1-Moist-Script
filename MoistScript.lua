@@ -11482,6 +11482,8 @@ features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:"
 		return HANDLER_POP
 end),  type = "toggle", callback = function()
 end}
+features["SE_CRASH_DATA1"].feat.max_i = 100
+features["SE_CRASH_DATA1"].feat.min_i = 1
 features["SE_CRASH_DATA1"].feat.on = false
 
 features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle", featureVars.ses.id, function(feat)
