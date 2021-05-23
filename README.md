@@ -1,6 +1,27 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
 # 2Take1-Moist-Script (Build 2.0.3.2: Moist Edition)
 
+
+**** CURRENT STATE OF 2.0.3.2 ****
+
+```
+
+Functional Update
+New Method Added for Script Event Kicks/Crashes
+Script Event Parameter Builder introduced.
+Random Apartment Invite Spam Added
+Delay added to  invalid entity spawn & marking no longer needed
+Major Improvement for interior detection and Marking of Players.
+Script Spam Breaking Script now fixed
+More Functions are now in threads
+introduced a small delay into some loop functions to improve overall performance
+Interior Coord's Checking on players only done when god mode & interior not detected.
+Players are now being put into arrays and info stored to improve some functions.
+Player Bar fixed for  the render of some players being drawn in same place.
+Tagging, God Detections & Player bar style for all this is currently Experimental
+
+```
+
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
 Thanks to haekkzer for his help and advice over time i was a tester for the menu
