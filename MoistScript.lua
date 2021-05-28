@@ -2,7 +2,6 @@ local threads = {}
 kick_param = {}
 MoistScript_thread = 0
 math.randomseed(utils.time_ms())
-version = "2.0.2.7"
 rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 utils.make_dir(rootPath .. "\\Blacklist")
 utils.make_dir(rootPath .. "\\lualogs")
@@ -12317,13 +12316,17 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                             if Players[pid].OTRBlipID == nil then
                                 Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
                                 ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                        elseif Players[pid].OTRBlipID ~= nil then
+                            end
+                        end
+
+                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
+                            if Players[pid].OTRBlipID ~= nil then
                              ui.remove_blip(Players[pid].OTRBlipID)
                              Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
                              ui.remove_blip(Players[pid].OTRBlipID)
                              Players[pid].OTRBlipID = nil
+                            end
                         end
-                    end
                 
                     if not player.is_player_modder(pid, -1) then
                         if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
