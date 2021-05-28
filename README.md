@@ -7,6 +7,11 @@
 ```
 
 Functional Update
+Improvements on performance with options to tweak most feature loops and functions with a delay of your choice
+Functions with script events can have a set delay for each event loop or on session wide ones a delay between sending to each player
+Experimental Bounty Tagging added its pretty much hit and miss as to when it is detected most bounties set in a session but not ones via the script event from you.
+Players will get marked with [B:value] tag in player features on the local tab and in purple text on player bar.
+Players going OTR now will have a Green Blip added to their ped so they will always be visible on the radar, Blips are removed when they are no longer OTR.
 New Method Added for Script Event Kicks/Crashes
 Script Event Parameter Builder introduced.
 Random Apartment Invite Spam Added
