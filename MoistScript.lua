@@ -2367,8 +2367,10 @@ function God_notify(pid)
                         moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
                     end
                 end
-        elseif plyveh ~= 0 then
-                if not Players[pid].isint and not player.is_player_god(pid) and player.is_player_vehicle_god(pid) and
+            end
+            if plyveh ~= 0 then
+                if
+                    not Players[pid].isint and not player.is_player_god(pid) and player.is_player_vehicle_god(pid) and
                         entity.is_entity_visible(pped) ~= true or
                         entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[pid + 1] >= 21) or
                         entity.is_entity_visible(plyveh)
@@ -2379,21 +2381,23 @@ function God_notify(pid)
                         moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
                     end
                 end
-            elseif not Players[pid].isint and player.is_player_god(pid) and player.is_player_vehicle_god(pid) and
-            entity.is_entity_visible(pped) ~= true or
-            entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[pid + 1] >= 21) or
-            entity.is_entity_visible(plyveh)
-     then
-        if NotifyGod.on then
-            Entity = "Player & Player Vehicle God mode"
-            Players[pid].isvgod = true
-            moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
-        end
+                if
+                    not Players[pid].isint and player.is_player_god(pid) and player.is_player_vehicle_god(pid) and
+                        entity.is_entity_visible(pped) ~= true or
+                        entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[pid + 1] >= 21) or
+                        entity.is_entity_visible(plyveh)
+                 then
+                    if NotifyGod.on then
+                        Entity = "Player & Player Vehicle God mode"
+                        Players[pid].isvgod = true
+                        moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
+                    end
+                end
             end
         end
     end
 end
-
+ 
 --TODO: *************MODDER FLAG LOGS
 function modderflag(pid)
     if not Modders_DB[pid].ismod then
@@ -12282,34 +12286,63 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                             Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
                         end
                     end
-                    if player.is_player_playing(pid) and player.is_player_god(pid) then
+                    if player.is_player_playing(pid) and player.is_player_god(pid) and not player.is_player_vehicle_god(pid) then
                         tags[#tags + 1] = "G"
-
-                    if not Players[pid].isint and player.is_player_god(pid) then
-                            if not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid+1] >= 21) or entity.is_entity_visible(pped) then
-                            toname = tostring(toname .. "~h~~r~[G]")
-                            God_notify(pid)
-                            elseif not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid+1] < 20) and not Players[pid].isint  then
-                             toname = tostring(toname)
+                    
+                        if not Players[pid].isint and player.is_player_god(pid) then
+                            if
+                                not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or
+                                    entity.is_entity_visible(pped)
+                             then
+                                toname = tostring(toname .. "~h~~r~[G]")
+                                God_notify(pid)
+                            elseif
+                                not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] < 20) and not Players[pid].isint
+                             then
+                                toname = tostring(toname)
                             end
                         end
                     end
-                    if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
-                        tags[#tags + 1] = "V"
-                        if not logsent then
-                            Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
-                            logsent = true
-                        end
-                        if not Players[pid].isint and player.is_player_vehicle_god(pid) then
-                            if not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or entity.is_entity_visible(pped) then
-                                toname = tostring(toname .. "~h~~o~[V]")
-                                God_notify(pid)
-                                elseif not entity.is_entity_visible(pped) and tracking.playerped_speed1[pid + 1] < 20 and not Players[pid].isint then
+                        if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) and not player.is_player_god(pid) then
+                            tags[#tags + 1] = "V"
+                            if not logsent then
+                                Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
+                                logsent = true
+                            end
+                            if not Players[pid].isint and player.is_player_vehicle_god(pid) then
+                                if
+                                    not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or
+                                        entity.is_entity_visible(pped)
+                                 then
+                                    toname = tostring(toname .. "~h~~o~[V]")
+                                    God_notify(pid)
+                                elseif
+                                    not entity.is_entity_visible(pped) and tracking.playerped_speed1[pid + 1] < 20 and
+                                        not Players[pid].isint
+                                 then
                                     toname = tostring(toname)
-                                end
                                 end
                             end
                         end
+                    
+                    if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) and player.is_player_god(pid) then
+                        tags[#tags + 1] = "GV"
+                        if not logsent then
+                            Debug_Out(string.format("Player: " .. name .. " [Player & Vehicle Godmode]"))
+                            logsent = true
+                        end
+                        if not Players[pid].isint and player.is_player_vehicle_god(pid) and player.is_player_vehicle_god(pid) then
+                            if
+                                not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or
+                                    entity.is_entity_visible(pped)
+                             then
+                                toname = tostring(toname .. "~h~~q~[GV]")
+                                God_notify(pid)
+                            elseif not entity.is_entity_visible(pped) and tracking.playerped_speed1[pid + 1] < 20 and not Players[pid].isint then
+                                toname = tostring(toname)
+                            end
+                        end
+                    end
 
                     if Players[pid].isint ~= true then
                         if player.is_player_spectating(pid) and player.is_player_playing(pid) then
@@ -12335,6 +12368,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                              Players[pid].OTRBlipID = nil
                             end
                         end
+                    end
                 
                     if not player.is_player_modder(pid, -1) then
                         if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
