@@ -2350,37 +2350,45 @@ notifyclear.on = setting["GodCheckNotif"]
 notifyclear.hidden = false
 
 function God_notify(pid)
-    local entity
+    local Entity = ""
     pped = PlyPed(pid)
     plyveh = player.get_player_vehicle(pid)
     system.yield(500)
     if pid ~= player.player_id() then
         if pped ~= 0 then
-            if not Players[pid].isint and player.is_player_god(pid) then
+            if not Players[pid].isint and player.is_player_god(pid) and not player.is_player_vehicle_god(pid) then
                 if
                     entity.is_entity_visible(pped) ~= true and (tracking.playerped_speed1[pid + 1] >= 21) or
                         entity.is_entity_visible(pped)
                  then
                     if NotifyGod.on then
-                        entity = "Player God mode"
+                        Entity = "Player God mode"
                         Players[pid].isgod = true
-                        moist_notify(entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
+                        moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
                     end
                 end
-            end
-            if plyveh ~= 0 then
-                if
-                    not Players[pid].isint and player.is_player_vehicle_god(pid) and
+        elseif plyveh ~= 0 then
+                if not Players[pid].isint and not player.is_player_god(pid) and player.is_player_vehicle_god(pid) and
                         entity.is_entity_visible(pped) ~= true or
                         entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[pid + 1] >= 21) or
                         entity.is_entity_visible(plyveh)
                  then
                     if NotifyGod.on then
-                        entity = "Player Vehicle God mode"
+                        Entity = "Player Vehicle God mode"
                         Players[pid].isvgod = true
-                        moist_notify(entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
+                        moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
                     end
                 end
+            elseif not Players[pid].isint and player.is_player_god(pid) and player.is_player_vehicle_god(pid) and
+            entity.is_entity_visible(pped) ~= true or
+            entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[pid + 1] >= 21) or
+            entity.is_entity_visible(plyveh)
+     then
+        if NotifyGod.on then
+            Entity = "Player & Player Vehicle God mode"
+            Players[pid].isvgod = true
+            moist_notify(Entity, "\n" .. pid .. ":" .. SessionPlayers[pid].Name)
+        end
             end
         end
     end
