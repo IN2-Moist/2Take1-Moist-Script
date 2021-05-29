@@ -2353,7 +2353,7 @@ function God_notify(pid)
     local Entity = ""
     pped = PlyPed(pid)
     plyveh = player.get_player_vehicle(pid)
-    system.yield(500)
+    system.yield(5000)
     if pid ~= player.player_id() then
         if pped ~= 0 then
             if not Players[pid].isint and player.is_player_god(pid) and not player.is_player_vehicle_god(pid) then
@@ -5845,17 +5845,19 @@ Passive_trackerIN = event.add_event_listener("player_join", function(e)
   passive_players[pid +  1] = false
      return
 end)	
- 
+
 Passive_trackerOUT = event.add_event_listener("player_leave", function(e)
-      local pid = tonumber(e.player)
-    Modders_DB[pid + 1].flag = nil
-    Modders_DB[pid + 1].ismod = false
-    passive_players[pid +  1] = false
-    Players[pid].bounty = false
-    Players[pid].bountyvalue = nil
-    Players[pid].isvgod = false
-    Players[pid].isgod = false
-    return
+    local pid = tonumber(e.player)
+  Modders_DB[pid + 1].flag = nil
+  Modders_DB[pid + 1].ismod = false
+  passive_players[pid +  1] = false
+  Players[pid].bounty = false
+  Players[pid].bountyvalue = nil
+  Players[pid].isvgod = false
+  Players[pid].isgod = false
+  SessionPlayers[pid].scid = 4294967295
+  SessionPlayers[pid].Name = "nil"
+  return
 end)
 
 --TODO: Bounty SEP
