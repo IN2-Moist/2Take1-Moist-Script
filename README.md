@@ -1,31 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.2: Moist Edition)
-
-
-**** CURRENT STATE OF 2.0.3.3 ****
-
-```
-
-Functional Update
-Improvements on performance with options to tweak most feature loops and functions with a delay of your choice
-Functions with script events can have a set delay for each event loop or on session wide ones a delay between sending to each player
-Experimental Bounty Tagging added its pretty much hit and miss as to when it is detected most bounties set in a session but not ones via the script event from you.
-Players will get marked with [B:value] tag in player features on the local tab and in purple text on player bar.
-Players going OTR now will have a Green Blip added to their ped so they will always be visible on the radar, Blips are removed when they are no longer OTR.
-New Method Added for Script Event Kicks/Crashes
-Script Event Parameter Builder introduced.
-Random Apartment Invite Spam Added
-Delay added to  invalid entity spawn & marking no longer needed
-Major Improvement for interior detection and Marking of Players.
-Script Spam Breaking Script now fixed
-More Functions are now in threads
-introduced a small delay into some loop functions to improve overall performance
-Interior Coord's Checking on players only done when god mode & interior not detected.
-Players are now being put into arrays and info stored to improve some functions.
-Player Bar fixed for  the render of some players being drawn in same place.
-Tagging, God Detections & Player bar style for all this is currently Experimental
-
-```
+# 2Take1-Moist-Script (Build 2.0.3.3b: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -252,7 +226,11 @@ Custom Value `Enter any Value Between 0 & 10,000`
 (Teleport's you directly in front of the orbital entrance you need to be inside your facility
 otherwise game kicks you out of the interior)
 
-- New Orbital Block
+- New Orbital Block Blast Door
+
+(Puts a Blast Door in place of the orbital room door)
+
+- Moving Wall Orbital Block
 
 (Puts a New Moving Wall Across the Wall the Orbital Door is located in)
 
