@@ -215,6 +215,8 @@ toggle_setting[#toggle_setting+1] = "playerscriptinfo"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSDDebug2"
 setting[toggle_setting[#toggle_setting]] = false
+toggle_setting[#toggle_setting+1] = "OTR_Blips"
+setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "playerlist_loop"
 setting[toggle_setting[#toggle_setting]] = 50
 toggle_setting[#toggle_setting+1] = "loop_feat_delay"
@@ -2610,26 +2612,19 @@ moist_tools_hotkey = menu.add_feature("Moist Test Shit Hotkey", "toggle", global
 end)
 moist_tools_hotkey.on = true 
 
-
-AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
-    setting["AutoHost"] = true
-    if feat.on then
-        if SessionHost ~= me then
-        if SessionHost ~= player.is_player_friend(SessionHost) then
-            HostForce.on = true
-        end
-        end
-        HostForce.on = false
-        return HANDLER_CONTINUE
-    end   
-    HostForce.on = false
-    setting["AutoHost"] = false
-    return HANDLER_POP
-
-end)
-AutoHost.on = setting["AutoHost"]
-
 --TODO: Modder Flag logs
+
+Auto_OTR_Blips = menu.add_feature("Auto Add OTR Player Blips", "toggle", globalFeatures.moistopt, function(feat)
+    if feat.on then
+
+        setting["OTR_Blips"] = true
+        system.wait(200)
+        return HANDLER_CONTINUE
+    end
+    setting["OTR_Blips"] = false
+    return HANDLER_POP
+end)
+Auto_OTR_Blips.on = setting["OTR_Blips"]
 
 Auto_Off_RAC = menu.add_feature("Auto Remove RAC ModderMarking", "toggle", globalFeatures.moistopt)
 Auto_Off_RAC.on = False
@@ -3257,7 +3252,7 @@ function Recent_Player(pid, spid)
             utils.to_clipboard(scid)
         end)
 
-        local scid, name (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
+        local scid, name = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
 
         menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
 
@@ -12685,28 +12680,29 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                         end
                     end
 
-                    if not player.is_player_modder(pid, -1) then
-                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
-                            tags[#tags + 1] = "O"
-                            tagz[#tagz + 1] = "~h~~g~[O]"
-                            toname = tostring(toname .. "~h~~g~[O]")
-                            if Players[pid].OTRBlipID == nil then
-                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
-                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                            end
-                        end
+                                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
+                                            tags[#tags + 1] = "O"
+                                            tagz[#tagz + 1] = "~h~~g~[O]"
+                                            toname = tostring(toname .. "~h~~g~[O]")
+                                            if Players[pid].OTRBlipID == nil then
+                                                if setting["OTR_Blips"] then
+                                                    Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+                                                    ui.set_blip_colour(Players[pid].OTRBlipID, 2)
+                                                else
+                                            end
+                                        end
 
-                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
-                            if Players[pid].OTRBlipID ~= nil then
-                             ui.remove_blip(Players[pid].OTRBlipID)
-                             Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
-                             ui.remove_blip(Players[pid].OTRBlipID)
-                             Players[pid].OTRBlipID = nil
-                            end
-                        end
-                    end
-                
-                    if not player.is_player_modder(pid, -1) then
+                                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
+                                            if setting["OTR_Blips"] then
+                                            if Players[pid].OTRBlipID ~= nil then
+                                                ui.remove_blip(Players[pid].OTRBlipID)
+                                                Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+                                                ui.remove_blip(Players[pid].OTRBlipID)
+                                                Players[pid].OTRBlipID = nil
+                                            end
+                                        else
+                                        end
+                                    end
                         if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
                             tags[#tags + 1] = "U"
                             tagz[#tagz + 1] = "~h~~q~[U]"
