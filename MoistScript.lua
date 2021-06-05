@@ -8,9 +8,6 @@ utils.make_dir(rootPath .. "\\lualogs")
 utils.make_dir(rootPath .. "\\scripts\\MoistsLUA_cfg")
 
 
-io.stdout:write(rootPath.."\\lualogs\\Moists_debug.log", "a")
-io.stderr:write(rootPath.."\\lualogs\\Moists_debug.log", "a")
-
 function Debug_Out(text)
 
     local txt = Cur_Date_Time()
@@ -279,7 +276,7 @@ end
 local OSD, OptionsVar, PlyTracker, tracking, ply_veh, ply_ped = {}, {}, {}, {}, {}, {}
 tracking.playerped_posi, tracking.playerped_speed1, tracking.playerped_speed2, tracking.playerped_speed3 = {}, {}, {}, {}
 Modders_DB = {{flag = {}, flags = {}, ismod = {}}}
-SessionPlayers = {{Name = {}, Tags = {}, Scid = {}}}
+SessionPlayers = {{Name = {}, Tags = {}, tags = {}, Scid = {}}}
 Players = {{isHost = {}, isScHost = {}, isOTR = {}, OTRBlipID = {}, bounty = {}, bountyvalue = {}, isUnDead = {}, isPassive = {}, flag = {}, flags = {}, ismod = {}, isgod = {}, isvgod = {}, isint = {}, isvis = {}, speedK = {}, speedM = {}}}
 
 --TODO: Function Data & Entity Arrays
@@ -392,7 +389,7 @@ end
 
 --TODO: interior Check
 
-interior_thread = {{pid = {}}}
+interior_thread = {pid = {}}
 
 function Get_Dist3D(pid, v3pos)
     local pped = player.get_player_ped(pid)
@@ -416,29 +413,36 @@ function interiorcheckpid(pid)
 end
 	
 interiorcheck_thread = function(context)
-    while player.is_player_valid(context.pid) do
+   if player.is_player_valid(context.pid) then
         local pped = player.get_player_ped(context.pid)
         local apartmen
-        local isInterior = false
-        if interior.get_interior_from_entity(pped) == 0 and player.is_player_god(context.pid) or
-            player.is_player_vehicle_god(context.pid) then
+
+        if interior.get_interior_from_entity(pped) == 0 and player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
             for i = 1, #interiors do
                 apartmen = Get_Dist3D(context.pid, interiors[i][2])
-                if apartmen < 210 then
+                if apartmen < 200 then
                     Players[context.pid].isint = true
-                    isInterior = true
-                elseif apartmen >= 210 then
-                    Players[context.pid].isint = false
-                    isInterior = false
                 end
+                if apartmen >= 200 then
+                    Players[context.pid].isint = false
+                end
+                local zbool, gz = gameplay.get_ground_z(player.get_player_coords(context.pid))
+                pos = player.get_player_coords(context.pid)
+                if pos.z < gz then
+                    Players[context.pid].isint = true
+                end
+                if pos.z >= gz then
+                    Players[context.pid].isint = false
+                end
+                system.yield(setting["loop_feat_delay"])
             end
-            system.yield(setting["loop_feat_delay"])
-        end
-        if interior.get_interior_from_entity(pped) ~= 0 then
-            Players[context.pid].isint = true
-            isInterior = true
+            if interior.get_interior_from_entity(pped) ~= 0 then
+                Players[context.pid].isint = true
+                isInterior = true
+            end
         end
         system.wait(200)
+        return HANDLER_CONTINUE
     end
 end
 
@@ -2130,7 +2134,7 @@ function modstart()
         Modders_DB[pid].ismod = false
         SessionPlayers[pid] = {}
         SessionPlayers[pid].Name = "nil"
-        SessionPlayers[pid].Tags = nil
+        SessionPlayers[pid].Tags = {}
         SessionPlayers[pid].Scid = 4294967295
         Players[pid] = {}
        -- Tags[pid + 1] = {}
@@ -2151,8 +2155,8 @@ function modstart()
         Players[pid].isvis = false
         Players[pid].speed = 0.00
     end
-    end
-    modstart()
+end
+ modstart()
     
 
 --TODO: Feature & Variable Arrays
@@ -2172,13 +2176,16 @@ globalFeatures.parent = menu.add_feature("Moists Script 2.0.3.3b", "parent", 0).
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
 --TODO: Feature Parents
-playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.Online_Session, function(feature)
+playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.Online_Session, function(feat)
     Active_menu = nil
     OSD_Debug2.on = false
 
 end)
 
 Recent = menu.add_feature("Recent Players", "parent", globalFeatures.Online_Session).id
+-- God_Threads_Created = menu.add_feature("Current PlayerCheck threads", "parent", globalFeatures.Online_Session)
+-- God_Threads_Created.hidden = false
+
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.Online_Session).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.Online_Session).id
 --session
@@ -2265,6 +2272,9 @@ end)
 
 globalFeatures.moist_hotkeys = menu.add_feature("Hotkeys", "parent", globalFeatures.moistopt).id
 
+globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
+globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
+logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 --TODO: Save Settings Hotkey	
 SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFeatures.moist_hotkeys, function(feat)
         if not feat.on then
@@ -2295,7 +2305,7 @@ playerlistloop = menu.add_feature("Player List Loop Delay ms:", "autoaction_valu
 end)
 playerlistloop.max_i = 500
 playerlistloop.min_i = 0
-playerlistloop.mod_i = 2
+playerlistloop.mod_i = 10
 playerlistloop.value_i = setting["playerlist_loop"]
 
 loopfeatdelay = menu.add_feature("Other FeatureLoops Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
@@ -2303,7 +2313,7 @@ loopfeatdelay = menu.add_feature("Other FeatureLoops Delay ms:", "autoaction_val
 end)
 loopfeatdelay.max_i = 1000
 loopfeatdelay.min_i = 0
-loopfeatdelay.mod_i = 2
+loopfeatdelay.mod_i = 100
 loopfeatdelay.value_i = setting["loop_feat_delay"]
 
 ScriptEvent_delay = menu.add_feature("Scriptevent Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
@@ -2311,7 +2321,7 @@ ScriptEvent_delay = menu.add_feature("Scriptevent Delay ms:", "autoaction_value_
 end)
 ScriptEvent_delay.max_i = 1000
 ScriptEvent_delay.min_i = 0
-ScriptEvent_delay.mod_i = 2
+ScriptEvent_delay.mod_i = 50
 ScriptEvent_delay.value_i = setting["ScriptEvent_delay"]
 
 hotkeyloop_delay = menu.add_feature("Hotkey loop Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
@@ -2319,7 +2329,7 @@ hotkeyloop_delay = menu.add_feature("Hotkey loop Delay ms:", "autoaction_value_i
 end)
 hotkeyloop_delay.max_i = 10
 hotkeyloop_delay.min_i = 0
-hotkeyloop_delay.mod_i = 1
+hotkeyloop_delay.mod_i = 2
 hotkeyloop_delay.value_i = setting["loop_feat_delay"]
 
 ToBeNotify =  menu.add_feature("Script Notify Me", "toggle", globalFeatures.moistopt, function(feat)
@@ -2348,18 +2358,6 @@ end)
 ply_seat.max_i = 14
 ply_seat.min_i = -1
 ply_seat.value_i = -1
-	
-Active_pickupdel = menu.add_feature("Del pickups", "toggle", globalFeatures.moistopt, function(feat)
-if feat.on then    
-allpickups = object.get_all_pickups()
-for i = 1, #allpickups do
-    
-    network.request_control_of_entity(allpickups[i])
-    entity.delete_entity(allpickups[i])  
-end
-return HANDLER_CONTINUE
-end
-end)
 
 local health, infoA, infoB
 Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
@@ -2382,43 +2380,6 @@ Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle",
     return HANDLER_POP
 end)
 Active_scriptmenu.on = setting["playerscriptinfo"]
-
-event_test1 = menu.add_feature("Frames", "toggle", globalFeatures.moist_tools.id, function(feat)
-	local ft, fc, th, tm, ts, rt, rs
-    if feat.on then
-
-    th = time.get_clock_hours()
-    tm = time.get_clock_minutes()
-    ts = time.get_clock_seconds()
-    if tm < 10 then
-    tm = 0 ..tm
-    end
-    rt = utils.time()
-    rs = utils.time_ms()
-    local GameTime = string.format("\nGametime " ..th ..":"..tm ..":" ..ts .. "\n" .. rt .." : " ..rs)
-    
-   	ui.draw_rect(0.001, 0.990, 0.8, 0.120, 0, 0, 0, 180)
-
-        local pos = v2()
-
-
-        pos.x = 0.001
-        pos.y = .920
-
-        ui.set_text_scale(0.30)
-        ui.set_text_font(0)
-        ui.set_text_color(255, 255, 255, 255)
-        ui.set_text_centre(false)
-        ui.set_text_outline(1)
-        ui.draw_text(GameTime, pos)
-      
-        return HANDLER_CONTINUE
-    end
-
-    return HANDLER_POP
-
-end)
-
 
 --TODO: ---------------------orbital experiment
 
@@ -2604,7 +2565,6 @@ end)
 soundtest.max_i = 32
 soundtest.min_i = 0
 
-
 InteriorTest = menu.add_feature("is interior test", "toggle", globalFeatures.moist_tools.id, function(feat)
 	if feat.on then
     OSD_DEBUG.on = true
@@ -2650,9 +2610,6 @@ moist_tools_hotkey = menu.add_feature("Moist Test Shit Hotkey", "toggle", global
 end)
 moist_tools_hotkey.on = true 
 
-globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
-globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
-logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 
 AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
     setting["AutoHost"] = true
@@ -2674,7 +2631,7 @@ AutoHost.on = setting["AutoHost"]
 
 --TODO: Modder Flag logs
 
-Auto_Off_RAC = menu.add_feature("Disable RAC Detection Experimental", "toggle", globalFeatures.moistopt)
+Auto_Off_RAC = menu.add_feature("Auto Remove RAC ModderMarking", "toggle", globalFeatures.moistopt)
 Auto_Off_RAC.on = False
     
 function RAC_OFF(pid)
@@ -2718,7 +2675,7 @@ end)
 notifyclear.on = setting["GodCheckNotif"]
 notifyclear.hidden = false
 
-God_thread = {pid = {}}
+God_thread, God_thread1 = {pid = {}}, {pid = {}}
 feat = {}
 
 delete_God_thread = function(feat, data)
@@ -2737,79 +2694,70 @@ function God_Check_pid(pid)
     -- feat[i] = menu.add_feature("Delete God Check Thread: ".. pid, "action", God_Threads_Created.id, delete_God_thread)
     -- feat[i].data = {thread = God_thread[pid]}
 end
-	
+
+
+function God_Check1_pid(pid)
+    if pid == player.player_id() then return end
+    God_thread1[pid] = {}
+    local player_id = pid
+    God_thread1[pid] = menu.create_thread(God_Check1_pid_thread, { pid = player_id } )
+    -- local i = #feat + 1
+    -- feat[i] = menu.add_feature("Delete God Check Thread: ".. pid, "action", God_Threads_Created.id, delete_God_thread)
+    -- feat[i].data = {thread = God_thread[pid]}
+end
+
+God_Check1_pid_thread = function(context)
+    if player.is_player_valid(context.pid) then
+        local pped = player.get_player_ped(context.pid)
+        if ped.is_ped_shooting(pped) and player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
+            if NotifyGod.on and not Players[context.pid].isgod then
+                ui.notify_above_map("~h~~b~".. SessionPlayers[context.pid].Name .."~h~~r~God Check fail\n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
+                Players[context.pid].isgod = true
+            end
+        end
+        return HANDLER_CONTINUE
+    end
+end
+
+
+
 God_Check_pid_thread = function(context)
-    while player.is_player_valid(context.pid) do
-        checkloop = 0
-        system.wait(25000)
+    local pped, plyveh
+    if player.is_player_valid(context.pid) then
         local Entity = ""
         pped = player.get_player_ped(context.pid)
-        plyveh = player.get_player_vehicle(context.pid)
-        if pped ~= 0 or plyveh ~= 0 then
-
+        if pped ~= nil or pped ~= 0 then
+            local pos = v3()
+            plyveh = player.get_player_vehicle(context.pid)
+            if Players[context.pid].isint then return end
             if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
-                if entity.is_entity_visible(pped) and not Players[context.pid].isint then
-                    system.wait(10000)
-                    if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and not Players[context.pid].isint then
-                    if NotifyGod.on and not Players[context.pid].isgod then
-                        Entity = "Player God modder"
-                        Players[context.pid].isgod = true
-                        --  moist_notify(Entity, "\n" .. context.pid .. ":" .. SessionPlayers[context.pid].Name)
-                        ui.notify_above_map("~h~~b~" ..Entity .."\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
-                    end
-                end
-                else
-                    system.wait(10000)
-                    if context.pid ~= player.player_id() then
-                        if pped ~= 0 then
-                            if not Players[context.pid].isint and player.is_player_god(context.pid) and not player.is_player_vehicle_god(context.pid) then
-                                if
-                                    entity.is_entity_visible(pped) ~= true and (tracking.playerped_speed1[context.pid + 1] >= 21) or
-                                    entity.is_entity_visible(pped)
-                                then
-                                    system.wait(10000)
-                                    if player.is_player_god(context.pid) and not Players[context.pid].isint then
-
-                                        if NotifyGod.on and not Players[context.pid].isgod then
-                                            Entity = "Player God mode"
-                                            Players[context.pid].isgod = true
-                                            --  moist_notify(Entity, "\n" .. context.pid .. ":" .. SessionPlayers[context.pid].Name)
-                                            ui.notify_above_map("~h~~b~" ..Entity .."\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
-                                        end
-                                    end
-                                end
+                system.wait(10000)
+                if not Players[context.pid].isint then
+                    if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
+                        local zbool, gz = gameplay.get_ground_z(player.get_player_coords(context.pid))
+                        pos = player.get_player_coords(context.pid)
+                        if pos.z >= gz and (tracking.playerped_speed1[context.pid + 1] >= 21) then
+                            if NotifyGod.on and not Players[context.pid].isgod then
+                                Entity = "Player God mode"
+                                Players[context.pid].isgod = true
+                                ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
                             end
-                            if plyveh ~= 0 then
-                                if
-                                    not Players[context.pid].isint and not player.is_player_god(context.pid) and player.is_player_vehicle_god(context.pid) and
-                                    entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[context.pid + 1] >= 21) or
-                                    entity.is_entity_visible(plyveh)
-                                then
-                                    system.wait(10000)
-                                    if player.is_player_vehicle_god(context.pid) and not Players[context.pid].isint then
-
-                                        if NotifyGod.on and not Players[context.pid].isvgod then
-                                            Entity = "Player Vehicle God mode"
-                                            Players[context.pid].isvgod = true
-                                            --   moist_notify(Entity, "\n" .. context.pid .. ":" .. SessionPlayers[context.pid].Name)
-                                            ui.notify_above_map("~h~~b~" ..Entity .."\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
-                                        end
-                                    end
-                                end
-                                if
-                                    not Players[context.pid].isint and player.is_player_god(context.pid) and player.is_player_vehicle_god(context.pid) and
-                                    entity.is_entity_visible(pped) ~= true or
-                                    entity.is_entity_visible(plyveh) ~= true and (tracking.playerped_speed1[context.pid + 1] >= 21) or
-                                    entity.is_entity_visible(plyveh)
-                                then
-                                    system.wait(10000)
-                                    if not Players[context.pid].isint and player.is_player_god(context.pid) and player.is_player_vehicle_god(context.pid) then
-                                        if NotifyGod.on and not Players[context.pid].isvgod or not Players[context.pid].isgod then
-                                            Entity = "Player & Player Vehicle God mode"
-                                            Players[context.pid].isvgod = true
-                                            ui.notify_above_map("~h~~b~" ..Entity .."\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
-                                            --  moist_notify(Entity, "\n" .. context.pid .. ":" .. SessionPlayers[context.pid].Name)
-                                        end
+                        end
+                    end
+                    plyveh = player.get_player_vehicle(context.pid)
+                    if plyveh ~= nil or plyveh ~= 0 then
+                        if Players[context.pid].isint then return end
+                        if player.is_player_vehicle_god(context.pid) then
+                            local zbool, gz = gameplay.get_ground_z(player.get_player_coords(context.pid))
+                            pos = player.get_player_coords(context.pid)
+                            if pos.z < gz and (tracking.playerped_speed1[context.pid + 1] >= 21) then
+                                system.wait(10000)
+                                if not player.is_player_vehicle_god(context.pid) or Players[context.pid].isint then return end
+                                if player.is_player_vehicle_god(context.pid) then
+                                    if NotifyGod.on and not Players[context.pid].isvgod then
+                                        Entity = "Player Vehicle God mode"
+                                        Players[context.pid].isvgod = true
+                                        ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
                                     end
                                 end
                             end
@@ -2817,14 +2765,10 @@ God_Check_pid_thread = function(context)
                     end
                 end
             end
-
         end
+        return HANDLER_CONTINUE
     end
 end
-
-
-
-function God_notify_thread(feat)
 
 Playerleave_thread_check = event.add_event_listener("player_leave", function(e)
     local pid = e.player
@@ -2833,6 +2777,7 @@ Playerleave_thread_check = event.add_event_listener("player_leave", function(e)
             interior_thread[pid] = nil
 
         end
+        
         if not God_thread[pid] == 0 or not God_thread[pid] == nil then
 
             menu.delete_thread(God_thread[e.player])
@@ -2842,9 +2787,7 @@ Playerleave_thread_check = event.add_event_listener("player_leave", function(e)
         return
 end)
 
-end
 
-threads[#threads + 1] = menu.create_thread(God_notify_thread, feat)
 
 --TODO: *************MODDER FLAG LOGS
 function modderflag(pid)
@@ -3256,9 +3199,10 @@ function recentplayerslist()
   
 Recent_Players = {{name = {}, count = {}, rid = {}, nid = {}, htoken = {}},}
     
-local Join_Event_Check = event.add_event_listener("player_join", function(e)
+Join_Event_Check = event.add_event_listener("player_join", function(e)
     playerRDB(e.player)
     God_Check_pid(e.player)
+    God_Check1_pid(e.player)
     interiorcheckpid(e.player)
     return
 
@@ -3269,10 +3213,12 @@ function playerRDB(pid)
     local scid, name, token, tokeen, count
     scid = GetSCID(pid)
     playername = player.get_player_name(pid)
-    token = tostring(player.get_player_host_token(pid))
     count = 0
 
-    tokeen = tostring(token:sub(1, 7))
+ 
+    token = player.get_player_host_token(pid)
+    tokhex = string.format("%x", token)
+    tokeen = tostring(tokhex:sub(1, 10))
     local i = #Recent_Players + 1
     for y = 1, #Recent_Players do
     
@@ -3296,28 +3242,31 @@ function playerRDB(pid)
 end
 
 function Recent_Player(pid, spid)
-    rpid = spid
-    local count = spid + 1 
+    if player.is_player_valid(pid) then
+        rpid = spid
+        local count = spid + 1
 
- local id = Recent_Players[rpid].rid
- name = tostring(count ..": " .. Recent_Players[rpid].name)
-  id = menu.add_feature(name, "parent", Recent).id
-  local scid = Recent_Players[spid].rid
-  local npid = Recent_Players[spid].nid
-    menu.add_feature("Players SCID = " .. scid, "action", id, nil)
-    menu.add_feature("Players nethash = " .. npid, "action", id, nil)
-    menu.add_feature("Copy SCID to Clipboard", "action", id, function(feat)
-        utils.to_clipboard(scid)
-    end)
-    
-    local scid, name  = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
-    
-    menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
+        local id = Recent_Players[rpid].rid
+        name = tostring(count .. ": " .. Recent_Players[rpid].name)
+        id = menu.add_feature(name, "parent", Recent).id
+        local scid = Recent_Players[spid].rid
+        local npid = Recent_Players[spid].nid
+        menu.add_feature("Players SCID = " .. scid, "action", id, nil)
+        menu.add_feature("Players nethash = " .. npid, "action", id, nil)
+        menu.add_feature("Copy SCID to Clipboard", "action", id, function(feat)
+            utils.to_clipboard(scid)
+        end)
 
-     AddScid(scid, name)
-     LoadBlacklist()
-    end) 
-    
+        local scid, name (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
+
+        menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
+
+            AddScid(scid, name)
+            LoadBlacklist()
+
+        end)
+    end
+
 end
 
 
@@ -3872,6 +3821,10 @@ local joining_players_logger = event.add_event_listener("player_join", function(
     token = player.get_player_host_token(pid)
     tokhex = string.format("%x", token)
     prior = player.get_player_host_priority(pid)
+    if player.get_player_ip(pid) == 1162167621 then
+        KickPid(pid)
+    end
+
     ip = GetIP(pid)
     sip = dec2ip(ip)
 
@@ -3879,7 +3832,7 @@ local joining_players_logger = event.add_event_listener("player_join", function(
     joined_data(name .. ":" .. schx .. "|" .. pid .. "|" .. scid .. "|" .. token .. "|"  ..tokhex .. "|" .. prior .. "|"  .. ip ..  "|" .. sip .. "\n")
     joined_csv(name ..',' .. schx .. ',' .. pid .. ',' .. scid .. ',' .. token .. ','.. tokhex .. ',' .. prior .. ',' .. ip ..  ',' .. sip)
     
-    playerDB(pid, ip)
+    playerDB(pid, player.get_player_ip(pid))
     blacklist_check(pid)
     return 
 end)
@@ -3914,7 +3867,8 @@ function joined_csv(text)
 end
 
 function playerDB(pid, ip)
-    
+    if player.is_player_valid(pid) then
+  
     local scid, name, token, file1, file2, tokeen
     scid = GetSCID(pid)
     name = player.get_player_name(pid)
@@ -3924,13 +3878,14 @@ function playerDB(pid, ip)
     io.output(file1)
        tokeen = tostring(token:sub(1, 7))
     
-    io.write(tokeen .. "|" .. name .."|  |" .. scid .. "|" .. name .. "\n" ..ip)
+    io.write("\n" .. tokeen .. "|" .. name .. ", " .. scid .. "|" .. name .. ", " ..ip)
     io.close()
     
     file2 = io.open(rootPath .. "\\lualogs\\IP_LIST.txt", "a")
     io.output(file2)
     io.write(ip .."\n")
     io.close()
+    end
 
 end
 
@@ -4042,7 +3997,6 @@ function KickPid(pid)
         Debug_Out(string.format("Black List: Host kicked " .. pid .. " (" .. name .. ")"))
         print("Black List: Host kicked " .. pid .. " (" .. name .. ").")
     else
-   -- playerFeatures[pid].features["EventSpam_toggle"].feat.on = true
         script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
         script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
     Debug_Out(string.format("Black List: Non-Host kicked " .. pid .. " (" .. name .. ")"))
@@ -4147,7 +4101,7 @@ for i =1, #globalFeatures.addtoblacklist.feats do
     globalFeatures.addtoblacklist.feats[i].hidden = false
 end
 
-globalFeatures.removefromblacklist = menu.add_player_feature("Remove from Both Blacklist", "action", 0, function(feat, pid)
+globalFeatures.removefromblacklist = menu.add_player_feature("Remove from Blacklist", "action", 0, function(feat, pid)
     RemoveScidByPid(pid)
     player.unset_player_as_modder(pid, mod_flag_4)
 end)
@@ -4176,14 +4130,6 @@ function blacklist_check(pid)
     end
 end
 LoadBlacklist()
-
- 
--- blacklist_shit()
-
---TODO: Blacklist Main function
-
---TODO: Logging shit
-
 
 --TODO: Chat Logger
 function chat(name, text)
@@ -6317,6 +6263,8 @@ Passive_trackerOUT = event.add_event_listener("player_leave", function(e)
     Players[pid].bountyvalue = nil
     Players[pid].isvgod = false
     Players[pid].isgod = false
+    Players[pid].isint = false
+    Players[pid].isvis = false
     SessionPlayers[pid].scid = 4294967295
     SessionPlayers[pid].Name = "nil"
     return
@@ -6510,6 +6458,38 @@ local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatur
     return HANDLER_POP
 end)
 
+
+local netbail_kick = menu.add_feature("Session Bail except Host", "toggle", globalFeatures.kick, function(feat)
+    if feat.on then
+
+        for i = 0, 32 do
+            local fnd = player.is_player_friend(i)
+            if i ~= player.player_id() or i ~= fnd then
+                if i ~= network.network_is_host() then
+                    Debug_Out("Network Bail Kick Player: " .. SessionPlayers[i].Name)
+                    script.trigger_script_event(-81613951, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(-1292453789, i,
+                        {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(1623637790, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(-1905128202, i,
+                        {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(1160415507, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(-2120750352, i,
+                        {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(0xE6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                end
+
+            end
+
+        if setting["ScriptEvent_delay"] ~= 0 then
+            system.yield(setting["ScriptEvent_delay"])
+        end
+    end
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
+end)
+
 local testkick = menu.add_feature("Test Kick", "toggle", globalFeatures.kick, function(feat)
     if feat.on then
 
@@ -6536,7 +6516,7 @@ end)
 
 local hostnotify = false
 function hostkickall(pid)
-    Debug_Out("Host Kick Player: " .. pid .. " : ".. SessionPlayers[pid].Name)
+   -- Debug_Out("Host Kick Player: " .. pid .. " : ".. SessionPlayers[pid].Name)
     network.network_session_kick_player(pid)
 end
 
@@ -8122,75 +8102,73 @@ function TakeHost(pid)
 
 end
 
-ScriptLocals["Moist_Playerbar_thread"] = function(feat)
-notifysent = {}
-OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moistopt, function(feat)
-    setting["OSD.Player_bar"] = true
-    if feat.on then
-        ui.draw_rect(0.001, 0.001, 2.5, 0.075, 0, 0, 0, 195)
-        local pos = v2()
-        pos.x = 0.0001
-        pos.y = 0.000001
-        
-        for pid = 0, 32 do
-        local i = pid
-        local name, scid = SessionPlayers[pid].Name, SessionPlayers[pid].Scid
-        if scid ~= 4294967295 and name ~= nil then
-       local PlayerName = SessionPlayers[pid].Name
-            ui.set_text_color(255, 255, 255, 255)
 
+    notifysent = {}
+    OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moistopt, function(feat)
+        setting["OSD.Player_bar"] = true
+        if feat.on then
+            ui.draw_rect(0.001, 0.001, 2.5, 0.075, 0, 0, 0, 195)
+            local pos = v2()
+            pos.x = 0.0001
+            pos.y = 0.000001
+            local PCR, PCG, PCB, PCA = 255, 255, 255, 255
+            for pid = 0, 32 do
+                local i = pid
+                local name, scid = SessionPlayers[pid].Name, SessionPlayers[pid].Scid
+                if scid ~= 4294967295 and name ~= nil then
+                    local PlayerName = SessionPlayers[pid].Name
 
-                if player.is_player_god(i) and player.is_player_vehicle_god(i) then
-                    ui.set_text_color(255, 0, 255, 255)
+                    PCR, PCG, PCB, PCA = 255, 255, 255, 255
 
-    
-               elseif player.is_player_god(i) and not player.is_player_vehicle_god(i) then
-                    ui.set_text_color(255, 0, 0, 255)
-
-
-                elseif player.is_player_vehicle_god(i) and not player.is_player_god(i) then
-                    ui.set_text_color(255, 170, 0, 255)
-
-                    elseif (player.get_player_health(i) > 100) and not (player.get_player_max_health(i) > 0) then
-                          if not notifysent[i+1] then
-                        notifysent[i+1] = true
-                       moist_notify("Confirmed Modder Detected:\n", PlayerName)
-                          else
-                   notifysent[i+1] = false
-                          end
+                    if player.is_player_god(i) and player.is_player_vehicle_god(i) and Players[pid].isint then
+                        PCR, PCG, PCB, PCA = 255, 0, 255, 190
                     end
-                      if passive_players[i + 1] then
-                      ui.set_text_color(100, 100, 100, 190)
-                      end
+                    if player.is_player_vehicle_god(i) and not player.is_player_god(i) and Players[pid].isint then
+                        PCR, PCG, PCB, PCA = 255, 170, 0, 190
+                    end
+                    if player.is_player_god(i) and not player.is_player_vehicle_god(i) and Players[pid].isint then
+                            PCR, PCG, PCB, PCA = 255, 0, 0, 190
+                    end
+                    if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) and Players[pid].isint then
+                        PCR, PCG, PCB, PCA = 0, 255, 0, 190
+                    end
 
-                      
-                      
-                                  			if pos.x > 0.95 then
-                                  				pos.y = .015
-                                  				pos.x = 0.0001
-                                  			else
-                                  			end
-                                  			ui.set_text_scale(0.18)
-                                  			ui.set_text_font(0)
+                    if passive_players[i + 1] then
+                        PCA = 150
+                    end
 
-                                  			ui.set_text_centre(false)
-                                  			ui.set_text_outline(true)
+                    if pos.x > 0.95 then
+                        pos.y = .015
+                        pos.x = 0.0001
+                    end
+                    ui.set_text_color(PCR, PCG, PCB, PCA)
 
-                                  			ui.draw_text(" " .. PlayerName .. " ", pos)
+                    if pos.x > 0.95 then
+                        pos.y = .015
+                        pos.x = 0.0001
+                    else
+                    end
+                    ui.set_text_scale(0.18)
+                    ui.set_text_font(0)
 
-                                  			pos.x = pos.x + 0.065
-                                  		end
-                                  	end
-        
-        return HANDLER_CONTINUE
-    end
+                    ui.set_text_centre(false)
+                    ui.set_text_outline(true)
 
-    setting["OSD.Player_bar"] = false
-    return HANDLER_POP
-end)
-OSD.Player_bar.on = setting["OSD.Player_bar"]
+                    ui.draw_text(" " .. PlayerName .. " ", pos)
 
-end        
+                    pos.x = pos.x + 0.065
+                end
+            end
+
+            return HANDLER_CONTINUE
+        end
+
+        setting["OSD.Player_bar"] = false
+        return HANDLER_POP
+    end)
+    OSD.Player_bar.on = setting["OSD.Player_bar"]
+
+
 
 --TODO: -------- Moist Tools
 
@@ -12523,7 +12501,7 @@ end), type = "toggle",  callback = function()
 end}
 features["SEC-kick"].feat.on = false
 
-features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "toggle", featureVars.k.id, function(feat)
+features["Apt_Inv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "toggle", featureVars.k.id, function(feat)
     if feat.on then
     
 		par5 = kick_param_data[math.random(1, #kick_param_data)]
@@ -12539,9 +12517,9 @@ features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "t
     return HANDLER_POP
 end), type = "toggle", callback = function()
 end}
-features["AptInv_Spam"].feat.on = false
+features["Apt_Inv_Spam"].feat.on = false
 
-features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt 115Invites", "action", featureVars.k.id, function(feat)
+features["AptInv_Spam"] = {feat = menu.add_feature("Disable Players Game & Give God", "action", featureVars.f.id, function(feat)
     if feat.on then
     
 		par5 = kick_param_data[math.random(1, #kick_param_data)]
@@ -12554,9 +12532,8 @@ features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt 115Invites",
     return HANDLER_CONTINUE
     end
     return HANDLER_POP
-end), type = "toggle", callback = function()
+end), type = "action", callback = function()
 end}
-features["AptInv_Spam"].feat.on = false
 
 features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites v2", "toggle", featureVars.k.id, function(feat)
     if feat.on then
@@ -12654,10 +12631,11 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                 if f.hidden then
                     f.hidden = false
                 end
+                
                 local name = player.get_player_name(pid)
                 local toname = ""
                 local isYou = lpid == pid
-                local tags = {}
+                local tags, tagz = {}, {}
                 if Online then
                     if isYou then
                         tags[#tags + 1] = "Y"
@@ -12683,61 +12661,28 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                             Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
                         end
                     end
-                    if player.is_player_playing(pid) and player.is_player_god(pid) and not player.is_player_vehicle_god(pid) then
-                        tags[#tags + 1] = "G"
-                    
-                        if not Players[pid].isint and player.is_player_god(pid) then
-                            if
-                                not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or
-                                    entity.is_entity_visible(pped)
-                             then
-                                toname = tostring(toname .. "~h~~r~[G]")
-                            elseif
-                                not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] < 20) and not Players[pid].isint
-                             then
-                                toname = tostring(toname)
+                        if player.is_player_playing(pid) and player.is_player_god(pid) then
+                            tags[#tags + 1] = "G"
+                        end
+                        if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 25) then
+
+                            if Players[pid].isint ~= true then
+                                tagz[#tagz + 1] = "~h~~r~[G]"
                             end
                         end
-                    end
-                        if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) and not player.is_player_god(pid) then
-                            tags[#tags + 1] = "V"
-                            if not logsent then
+                            if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
+                                tags[#tags + 1] = "V"
+                            end
+                            if player.is_player_vehicle_god(pid) and logsent ~= true then
                                 Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
                                 logsent = true
                             end
-                            if not Players[pid].isint and player.is_player_vehicle_god(pid) then
-                                if
-                                    not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or
-                                        entity.is_entity_visible(pped)
-                                 then
-                                    toname = tostring(toname .. "~h~~o~[V]")
-                                elseif
-                                    not entity.is_entity_visible(pped) and tracking.playerped_speed1[pid + 1] < 20 and
-                                        not Players[pid].isint
-                                 then
-                                    toname = tostring(toname)
+                            if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 25) then
+
+                                if Players[pid].isint ~= true then
+                                    tagz[#tagz + 1] = "~h~~o~[V]"
                                 end
                             end
-                        end
-                    
-                    if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) and player.is_player_god(pid) then
-                        tags[#tags + 1] = "GV"
-                        if not logsent then
-                            Debug_Out(string.format("Player: " .. name .. " [Player & Vehicle Godmode]"))
-                            logsent = true
-                        end
-                        if not Players[pid].isint and player.is_player_vehicle_god(pid) and player.is_player_vehicle_god(pid) then
-                            if
-                                not entity.is_entity_visible(pped) and (tracking.playerped_speed1[pid + 1] >= 21) or
-                                    entity.is_entity_visible(pped)
-                             then
-                                toname = tostring(toname .. "~h~~q~[GV]")
-                            elseif not entity.is_entity_visible(pped) and tracking.playerped_speed1[pid + 1] < 20 and not Players[pid].isint then
-                                toname = tostring(toname)
-                            end
-                        end
-                    end
-
                     if Players[pid].isint ~= true then
                         if player.is_player_spectating(pid) and player.is_player_playing(pid) then
                             tags[#tags + 1] = ".SPEC."
@@ -12747,6 +12692,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                     if not player.is_player_modder(pid, -1) then
                         if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
                             tags[#tags + 1] = "O"
+                            tagz[#tagz + 1] = "~h~~g~[O]"
                             toname = tostring(toname .. "~h~~g~[O]")
                             if Players[pid].OTRBlipID == nil then
                                 Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
@@ -12767,12 +12713,14 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                     if not player.is_player_modder(pid, -1) then
                         if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
                             tags[#tags + 1] = "U"
-                            toname = tostring(toname .. "~h~~q~[U]")
+                            tagz[#tagz + 1] = "~h~~q~[U]"
+                           -- toname = tostring(toname .. "~h~~q~[U]")
                         end
                     end
                     if Players[pid].bounty then
                             tags[#tags + 1] = "[B:" .. Players[pid].bountyvalue .."]"
-                            toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
+                            tagz[#tagz + 1] = "~h~~p~[B: " .. Players[pid].bountyvalue .. "]"
+                           -- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
                     end
                     if player.is_player_modder(pid, -1) then
                         tags[#tags + 1] = "M"
@@ -12798,7 +12746,19 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 
                     end
                 end
-                SessionPlayers[pid].Name = name .. " " .. toname
+                if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
+                    SessionPlayers[pid].Name = name .. " " .. toname
+                    system.wait(30)
+                    if #tagz > 0 then
+                    SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
+                    end
+            else
+                SessionPlayers[pid].Name = name 
+                system.wait(30)
+                if #tagz > 0 then
+                SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
+                end
+            end
 
                 if #tags > 0 then
                     name = name .. " [" .. table.concat(tags) .. "]"
@@ -12828,7 +12788,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
         system.yield(setting["playerlist_loop"])
         return HANDLER_CONTINUE
     end
-    for i = 0, 31 do
+    for i = 0, 32 do
      playerFeatures[i].feat.hidden = false
     end
     return HANDLER_POP
@@ -12837,11 +12797,27 @@ loopFeat.hidden = false
 loopFeat.threaded = false
 loopFeat.on = true
 
-threads[#threads + 1] = menu.create_thread(ScriptLocals.Moist_Playerbar_thread, feat)
- 
+
 Debug_Out("MoistScript Playerlist Loop executed")
 end
 ScriptLocals["playerlist"]()
+
+function OnlineResetCheck()
+for pid = 0, 32 do
+    if player.is_player_valid(pid) then
+        if God_thread[pid] == nil then
+            God_Check_pid(pid)
+        end
+        if God_thread1[pid] == nil then
+            God_Check1_pid(pid)
+        end
+        if interior_thread[pid] == nil then
+        interiorcheckpid(pid)
+        end
+    end
+end
+end
+OnlineResetCheck()
 
 function Moist_Version()
     version_check = setting["MoistScript"]
