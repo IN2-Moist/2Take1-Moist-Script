@@ -12665,10 +12665,8 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                             tags[#tags + 1] = "G"
                         end
                         if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 25) then
-
-                            if Players[pid].isint ~= true then
                                 tagz[#tagz + 1] = "~h~~r~[G]"
-                            end
+
                         end
                             if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
                                 tags[#tags + 1] = "V"
@@ -12678,10 +12676,8 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                                 logsent = true
                             end
                             if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 25) then
-
-                                if Players[pid].isint ~= true then
                                     tagz[#tagz + 1] = "~h~~o~[V]"
-                                end
+                        
                             end
                     if Players[pid].isint ~= true then
                         if player.is_player_spectating(pid) and player.is_player_playing(pid) then
@@ -12748,13 +12744,13 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                 end
                 if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
                     SessionPlayers[pid].Name = name .. " " .. toname
-                    system.wait(30)
+                    system.wait(100)
                     if #tagz > 0 then
                     SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
                     end
             else
                 SessionPlayers[pid].Name = name 
-                system.wait(30)
+                system.wait(100)
                 if #tagz > 0 then
                 SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
                 end
