@@ -54,7 +54,7 @@ function interiors_load()
 end
 interiors_load()
 
-local version_check, MoistVersion = nil,  "2.0.3.3b"
+local version_check, MoistVersion = nil,  "2.0.3.4"
 
 --[[
 Credits & Thanks to Kektram for help with OTR Code and code Advice
@@ -134,7 +134,7 @@ local save_ini = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.i
 
 local toggle_setting, setting  = {}, {}
 toggle_setting[#toggle_setting+1] = "MoistScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.3.3b"
+setting[toggle_setting[#toggle_setting]] = "2.0.3.4"
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "OSD.Player_bar"
@@ -214,8 +214,6 @@ setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "playerscriptinfo"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSDDebug2"
-setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "OTR_Blips"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "playerlist_loop"
 setting[toggle_setting[#toggle_setting]] = 50
@@ -539,7 +537,7 @@ function dec2ip(decip)
 end
 
 function notify_above_map(msg)
-    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 175)
+    ui.notify_above_map(tostring("~l~~y~" ..msg),  "~r~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -549,24 +547,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.3b\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.4\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~y~~h~Ω MoistsScript 2.0.3.3b\n~w~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .."~h~" .. msg2, "~y~~h~Ω MoistsScript 2.0.3.4\n~w~~h~Moist Edition", color)
     end
 
 end
@@ -2174,7 +2172,7 @@ playerFeat4 = {}
 Active_menu = nil
 
 --local Menu Features
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.3.3b", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.3.4", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
 --TODO: Feature Parents
@@ -2218,7 +2216,7 @@ globalFeatures.self_statsetup = menu.add_feature("Player Stat Setup", "parent", 
     valu = math.ceil(curval)
     value_set = tonumber(valu)
 
-    mental_statset.value_i = value_set
+    mental_statset.value = value_set
 end).id
 
 globalFeatures.quick_stats = menu.add_feature("Quick Stat Setups", "parent", globalFeatures.self_quickstat, function(feat)
@@ -2274,9 +2272,6 @@ end)
 
 globalFeatures.moist_hotkeys = menu.add_feature("Hotkeys", "parent", globalFeatures.moistopt).id
 
-globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
-globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
-logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 --TODO: Save Settings Hotkey	
 SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFeatures.moist_hotkeys, function(feat)
         if not feat.on then
@@ -2302,37 +2297,41 @@ SaveOptions_Hotkey.on = true
 
 globalFeatures.moist_perf = menu.add_feature("Performance Options","parent",globalFeatures.moistopt).id
 
+
 playerlistloop = menu.add_feature("Player List Loop Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     setting["playerlist_loop"] = feat.value_i
+	print(feat.value_i)
 end)
-playerlistloop.max_i = 500
-playerlistloop.min_i = 0
-playerlistloop.mod_i = 10
-playerlistloop.value_i = setting["playerlist_loop"]
+playerlistloop.max = 500
+playerlistloop.min = 0
+playerlistloop.mod = 10
+playerlistloop.value = setting["playerlist_loop"]
+
+
 
 loopfeatdelay = menu.add_feature("Other FeatureLoops Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     setting["loop_feat_delay"] = feat.value_i
 end)
-loopfeatdelay.max_i = 1000
-loopfeatdelay.min_i = 0
-loopfeatdelay.mod_i = 100
-loopfeatdelay.value_i = setting["loop_feat_delay"]
+loopfeatdelay.max = 1000
+loopfeatdelay.min = 0
+loopfeatdelay.mod = 100
+loopfeatdelay.value = setting["loop_feat_delay"]
 
 ScriptEvent_delay = menu.add_feature("Scriptevent Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     setting["ScriptEvent_delay"] = feat.value_i
 end)
-ScriptEvent_delay.max_i = 1000
-ScriptEvent_delay.min_i = 0
-ScriptEvent_delay.mod_i = 50
-ScriptEvent_delay.value_i = setting["ScriptEvent_delay"]
+ScriptEvent_delay.max = 1000
+ScriptEvent_delay.min = 0
+ScriptEvent_delay.mod = 50
+ScriptEvent_delay.value = setting["ScriptEvent_delay"]
 
 hotkeyloop_delay = menu.add_feature("Hotkey loop Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     setting["hotkey_loop_delay"] = feat.value_i
 end)
-hotkeyloop_delay.max_i = 10
-hotkeyloop_delay.min_i = 0
-hotkeyloop_delay.mod_i = 2
-hotkeyloop_delay.value_i = setting["loop_feat_delay"]
+hotkeyloop_delay.max = 10
+hotkeyloop_delay.min = 0
+hotkeyloop_delay.mod = 2
+hotkeyloop_delay.value = setting["loop_feat_delay"]
 
 ToBeNotify =  menu.add_feature("Script Notify Me", "toggle", globalFeatures.moistopt, function(feat)
         if not feat.on then
@@ -2357,9 +2356,21 @@ ply_seat = menu.add_feature("Set your seat (default front)", "action_value_i", g
 	ped.set_ped_into_vehicle(pped, veh, feat.value_i)
 	end
 end)
-ply_seat.max_i = 14
-ply_seat.min_i = -1
-ply_seat.value_i = -1
+ply_seat.max = 14
+ply_seat.min = -1
+ply_seat.value = -1
+	
+Active_pickupdel = menu.add_feature("Del pickups", "toggle", globalFeatures.moistopt, function(feat)
+if feat.on then    
+allpickups = object.get_all_pickups()
+for i = 1, #allpickups do
+    
+    network.request_control_of_entity(allpickups[i])
+    entity.delete_entity(allpickups[i])  
+end
+return HANDLER_CONTINUE
+end
+end)
 
 local health, infoA, infoB
 Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
@@ -2382,6 +2393,44 @@ Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle",
     return HANDLER_POP
 end)
 Active_scriptmenu.on = setting["playerscriptinfo"]
+
+event_test1 = menu.add_feature("Frames", "toggle", globalFeatures.moist_tools.id, function(feat)
+	local ft, fc, th, tm, ts, rt, rs
+    if feat.on then
+
+    th = time.get_clock_hours()
+    tm = time.get_clock_minutes()
+    ts = time.get_clock_seconds()
+    if tm < 10 then
+    tm = 0 ..tm
+    end
+    rt = utils.time()
+    rs = utils.time_ms()
+    local GameTime = string.format("\nGametime " ..th ..":"..tm ..":" ..ts .. "\n" .. rt .." : " ..rs)
+    
+   	ui.draw_rect(0.001, 0.990, 0.8, 0.120, 0, 0, 0, 180)
+
+        local pos = v2()
+
+
+        pos.x = 0.001
+        pos.y = .920
+
+        ui.set_text_scale(0.30)
+        ui.set_text_font(0)
+        ui.set_text_color(255, 255, 255, 255)
+        ui.set_text_centre(false)
+        ui.set_text_outline(1)
+        ui.draw_text(GameTime, pos)
+      
+        return HANDLER_CONTINUE
+    end
+
+    return HANDLER_POP
+
+end)
+
+
 
 --TODO: ---------------------orbital experiment
 
@@ -2452,8 +2501,8 @@ soundtest = menu.add_feature("Orbital Anon pid", "action_value_i", globalFeature
 
 
 end)
-soundtest.max_i = 32
-soundtest.min_i = 0
+soundtest.max = 32
+soundtest.min = 0
 
 soundtest = menu.add_feature("Orbital blame pid", "action_value_i", globalFeatures.moist_test.id, function(feat)
 
@@ -2518,8 +2567,8 @@ soundtest = menu.add_feature("Orbital blame pid", "action_value_i", globalFeatur
         audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "DLC_CHRISTMAS2017/XM_ION_CANNON", true, 0, false)
 
 end)
-soundtest.max_i = 32
-soundtest.min_i = 0
+soundtest.max = 32
+soundtest.min = 0
 
 soundtest = menu.add_feature("orbital blame me pid:", "action_value_i", globalFeatures.moist_test.id, function(feat)
 
@@ -2564,8 +2613,10 @@ soundtest = menu.add_feature("orbital blame me pid:", "action_value_i", globalFe
         audio.play_sound_from_entity(-1, "DLC_XM_Explosions_Orbital_Cannon", pped, "DLC_CHRISTMAS2017/XM_ION_CANNON", true)
 
 end)
-soundtest.max_i = 32
-soundtest.min_i = 0
+soundtest.max = 32
+soundtest.min = 0
+
+
 
 InteriorTest = menu.add_feature("is interior test", "toggle", globalFeatures.moist_tools.id, function(feat)
 	if feat.on then
@@ -2612,21 +2663,31 @@ moist_tools_hotkey = menu.add_feature("Moist Test Shit Hotkey", "toggle", global
 end)
 moist_tools_hotkey.on = true 
 
+globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
+globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
+logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
+
+AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
+    setting["AutoHost"] = true
+    if feat.on then
+        if SessionHost ~= me then
+        if SessionHost ~= player.is_player_friend(SessionHost) then
+            HostForce.on = true
+        end
+        end
+        HostForce.on = false
+        return HANDLER_CONTINUE
+    end   
+    HostForce.on = false
+    setting["AutoHost"] = false
+    return HANDLER_POP
+
+end)
+AutoHost.on = setting["AutoHost"]
+
 --TODO: Modder Flag logs
 
-Auto_OTR_Blips = menu.add_feature("Auto Add OTR Player Blips", "toggle", globalFeatures.moistopt, function(feat)
-    if feat.on then
-
-        setting["OTR_Blips"] = true
-        system.wait(200)
-        return HANDLER_CONTINUE
-    end
-    setting["OTR_Blips"] = false
-    return HANDLER_POP
-end)
-Auto_OTR_Blips.on = setting["OTR_Blips"]
-
-Auto_Off_RAC = menu.add_feature("Auto Remove RAC ModderMarking", "toggle", globalFeatures.moistopt)
+Auto_Off_RAC = menu.add_feature("Disable RAC Detection Experimental", "toggle", globalFeatures.moistopt)
 Auto_Off_RAC.on = False
     
 function RAC_OFF(pid)
@@ -2706,7 +2767,7 @@ God_Check1_pid_thread = function(context)
         local pped = player.get_player_ped(context.pid)
         if ped.is_ped_shooting(pped) and player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
             if NotifyGod.on and not Players[context.pid].isgod then
-                ui.notify_above_map("~h~~b~".. SessionPlayers[context.pid].Name .."~h~~r~God Check fail\n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
+                ui.notify_above_map("~h~~b~".. SessionPlayers[context.pid].Name .."~h~~r~God Check fail\n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", 119)
                 Players[context.pid].isgod = true
             end
         end
@@ -2735,7 +2796,7 @@ God_Check_pid_thread = function(context)
                             if NotifyGod.on and not Players[context.pid].isgod then
                                 Entity = "Player God mode"
                                 Players[context.pid].isgod = true
-                                ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
+                                ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", 119)
                             end
                         end
                     end
@@ -2752,7 +2813,7 @@ God_Check_pid_thread = function(context)
                                     if NotifyGod.on and not Players[context.pid].isvgod then
                                         Entity = "Player Vehicle God mode"
                                         Players[context.pid].isvgod = true
-                                        ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.3b\n~p~~h~Moist Edition", 119)
+                                        ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.4\n~p~~h~Moist Edition", 119)
                                     end
                                 end
                             end
@@ -2823,7 +2884,7 @@ function modderflag(pid)
 end
 
 --TODO: Player Feature Parents
-playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.3.3b", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.3.4", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Player Tools", "parent", playerfeatVars.parent).id
 local vehicle_Tools = menu.add_player_feature("Vehicle Tools", "parent", playerfeatVars.parent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
@@ -2872,9 +2933,9 @@ for i = 1, #russian_spam do
         ChatSpamOn = false
         return HANDLER_POP
     end)
-    spammRU.var[i].max_i = 1000
-    spammRU.var[i].min_i = 0
-    spammRU.var[i].value_i = setting["spam_wait"]
+    spammRU.var[i].max = 1000
+    spammRU.var[i].min = 0
+    spammRU.var[i].value = setting["spam_wait"]
 
 end
 
@@ -2905,9 +2966,9 @@ for i = 1, #spam_preset do
         ChatSpamOn = false
         return HANDLER_POP
     end)
-    spamm.var[i].max_i = 1000
-    spamm.var[i].min_i = 0
-    spamm.var[i].value_i = setting["spam_wait"]
+    spamm.var[i].max = 1000
+    spamm.var[i].min = 0
+    spamm.var[i].value = setting["spam_wait"]
 
 end
 
@@ -2944,9 +3005,9 @@ for i = 1, #spam_presets do
         ChatSpamOn = false
         return HANDLER_POP
     end)
-    spamm.var[i].max_i = 1000
-    spamm.var[i].min_i = 0
-    spamm.var[i].value_i = setting["spam_wait"]
+    spamm.var[i].max = 1000
+    spamm.var[i].min = 0
+    spamm.var[i].value = setting["spam_wait"]
 
     spamm.var[i] = menu.add_feature("Delete Chat Spam", "action", pfeat.id, function(feat)
 		spam_presets[i][1] = nil
@@ -3035,9 +3096,9 @@ spam_delay = menu.add_feature("Set Delay in ms", "action_value_i", globalFeature
         setting["spam_wait"] = feat.value_i
 
 end)
-spam_delay.max_i = 1000
-spam_delay.min_i = 0
-spam_delay.value_i = setting["spam_wait"]
+spam_delay.max = 1000
+spam_delay.min = 0
+spam_delay.value = setting["spam_wait"]
 
 menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, function(feat)
 
@@ -3078,9 +3139,9 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
         ChatSpamOn = false
         return HANDLER_POP
 end)
-    spamm.var[i].max_i = 1000
-    spamm.var[i].min_i = 0
-    spamm.var[i].value_i = setting["spam_wait"]
+    spamm.var[i].max = 1000
+    spamm.var[i].min = 0
+    spamm.var[i].value = setting["spam_wait"]
 
     spamm.var[i] = menu.add_feature("Delete Chat Spam", "action", pfeat.id, function(feat)
 		spam_presets[i][1] = nil
@@ -3252,13 +3313,14 @@ function Recent_Player(pid, spid)
             utils.to_clipboard(scid)
         end)
 
-        local scid, name = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
+        local scid, name, token = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
 
         menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
 
             AddScid(scid, name)
             LoadBlacklist()
-
+            AddTokenID(token, name)
+            Load_Blacklist()
         end)
     end
 
@@ -3306,9 +3368,9 @@ globalFeatures.nottyp = menu.add_feature("Set Notify Variant", "autoaction_value
         moist_notify("Test Variant Set:\n", feat.value_i)
         return HANDLER_POP
 end)
-globalFeatures.nottyp.max_i = 6
-globalFeatures.nottyp.min_i = 1
-globalFeatures.nottyp.value_i = setting["NotifyVarDefault"]
+globalFeatures.nottyp.max = 6
+globalFeatures.nottyp.min = 1
+globalFeatures.nottyp.value = setting["NotifyVarDefault"]
 
 globalFeatures.notify = menu.add_feature("Set Default Notify Color", "autoaction_value_i", globalFeatures.notifyParent, function(feat)
     setting["NotifyColorDefault"] = feat.value_i
@@ -3317,9 +3379,9 @@ globalFeatures.notify = menu.add_feature("Set Default Notify Color", "autoaction
     moist_notify("Test Color:\n", feat.value_i)
     return HANDLER_POP
 end)
-globalFeatures.notify.max_i = 215
-globalFeatures.notify.min_i = 000
-globalFeatures.notify.value_i = setting["NotifyColorDefault"]
+globalFeatures.notify.max = 215
+globalFeatures.notify.min = 000
+globalFeatures.notify.value = setting["NotifyColorDefault"]
 
 --TODO: Online Features
 
@@ -3695,7 +3757,7 @@ script_log_pid = menu.add_player_feature("Log player script events", "toggle", P
       end
       script_check_pid(pid)
       scriptlog_pid.on = not scriptlog_pid.on
-      scriptlog_pid.value_i = pid
+      scriptlog_pid.value = pid
     
         system.yield(100)
 
@@ -3721,9 +3783,9 @@ scriptlog_pid = menu.add_feature("Log player script events", "value_i", logging.
 
 end)
 scriptlog_pid.on = false
-scriptlog_pid.max_i = 32
-scriptlog_pid.min_i = 0
-scriptlog_pid.value_i = 0
+scriptlog_pid.max = 32
+scriptlog_pid.min = 0
+scriptlog_pid.value = 0
 
 local hookID, hookID6
 
@@ -3986,16 +4048,17 @@ function KickPid(pid)
     if pid == player.player_id() then
         return
     end
-    local name = player.get_player_name(pid)
+    SessionPlayers.Name = player.get_player_name(pid)
+    system.wait(10)
     if network.network_is_host() then
         network.network_session_kick_player(pid)
-        Debug_Out(string.format("Black List: Host kicked " .. pid .. " (" .. name .. ")"))
-        print("Black List: Host kicked " .. pid .. " (" .. name .. ").")
+        Debug_Out(string.format("Black List: Host kicked " .. pid .. " (" .. SessionPlayers.Name  .. ")"))
+        print("Black List: Host kicked " .. pid .. " (" .. SessionPlayers.Name .. ").")
     else
         script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
         script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-    Debug_Out(string.format("Black List: Non-Host kicked " .. pid .. " (" .. name .. ")"))
-    print("Non-Host kicked " .. pid .. " (" .. name .. ").")
+    Debug_Out(string.format("Black List: Non-Host kicked " .. pid .. " (" .. SessionPlayers.Name  .. ")"))
+    print("Non-Host kicked " .. pid .. " (" .. SessionPlayers.Name  .. ").")
 
 
     end
@@ -4007,9 +4070,10 @@ function MarkPidAsModder(pid)
     if pid == player.player_id() then
         return
     end
-    local name = player.get_player_name(pid)
+    SessionPlayers.Name = player.get_player_name(pid)
+    system.wait(10)
     player.set_player_as_modder(pid, mod_flag_4)
-    Debug_Out(string.format("Black List: Marked " .. pid .. " (" .. name .. ") as modder"))
+    Debug_Out(string.format("Black List: Marked " .. pid .. " (" .. SessionPlayers.Name  .. ") as modder"))
 end
 
 menu.add_feature("Reload blacklist", "action", globalFeatures.parentID, function()
@@ -4114,8 +4178,9 @@ function blacklist_check(pid)
 
     local scid = GetSCID(pid)
     if ValidScid(scid) and scids[scid] then
-        local name = player.get_player_name(pid)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.3.3b\nBlack List", 024)
+        SessionPlayers.Name = player.get_player_name(pid)
+        system.wait(10)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.3.4\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -4516,11 +4581,11 @@ end)
 global_func.lag_out.on = setting["lag_out"]
 
 global_func.traffic_dist_multi = menu.add_feature("set modifier value", "autoaction_value_i", globalFeatures.moistopt, function(feat)
-    global_func.traffic_dist.mod_i = feat.value_i
+    global_func.traffic_dist.mod = feat.value_i
     return HANDLER_POP
 end)
-global_func.traffic_dist_multi.max_i = 100
-global_func.traffic_dist_multi.min_i = 1
+global_func.traffic_dist_multi.max = 100
+global_func.traffic_dist_multi.min = 1
 
 
 --TODO: World Features
@@ -4534,9 +4599,9 @@ global_func.traffic_dist = menu.add_feature("Ambient Vehicle Range", "value_i", 
         return HANDLER_POP
 end)
 global_func.traffic_dist.on = false
-global_func.traffic_dist.max_i = 1000
-global_func.traffic_dist.min_i = 0
-global_func.traffic_dist.mod_i = 1
+global_func.traffic_dist.max = 1000
+global_func.traffic_dist.min = 0
+global_func.traffic_dist.mod = 1
 
 global_func.no_traffic = menu.add_feature("No World Traffic", "toggle", globalFeatures.moistopt, function(feat)
 
@@ -4639,10 +4704,10 @@ Blame_Me.on = false
 Strike_projSpeed = menu.add_feature("Strike Projectiles Speed: ", "autoaction_value_i", globalFeatures.self_ped_combat_POI, function(feat)
     StrikeSpeed = tonumber(feat.value_i ..".".."00")
 end)
-Strike_projSpeed.max_i = 100000
-Strike_projSpeed.min_i = 100
-Strike_projSpeed.value_i = 1000
-Strike_projSpeed.mod_i = 25
+Strike_projSpeed.max = 100000
+Strike_projSpeed.min = 100
+Strike_projSpeed.value = 1000
+Strike_projSpeed.mod = 25
     
 
 Waypoint_Air_Strike = menu.add_feature("WeaponStrike (Better for Hills)", "action_value_i", globalFeatures.self_ped_combat_POI, function(feat)
@@ -4706,9 +4771,9 @@ Waypoint_Air_Strike = menu.add_feature("WeaponStrike (Better for Hills)", "actio
     OSD_Debug.on = false
 
 end)
-Waypoint_Air_Strike.max_i = #StrikeGive
-Waypoint_Air_Strike.min_i = 1
-Waypoint_Air_Strike.value_i = 1
+Waypoint_Air_Strike.max = #StrikeGive
+Waypoint_Air_Strike.min = 1
+Waypoint_Air_Strike.value = 1
 
 Waypoint_Air_Strike = menu.add_feature("Weapon Strike (Lower StartPOS)", "action_value_i", globalFeatures.self_ped_combat_POI, function(feat)
     local coord, Coord, offset, Pos, pos, num = v3(), v3(), v3(), v3(), v2(), 0
@@ -4758,9 +4823,9 @@ Waypoint_Air_Strike = menu.add_feature("Weapon Strike (Lower StartPOS)", "action
       system.wait(50)
       OSD_Debug.on = false
 end)
-Waypoint_Air_Strike.max_i = #StrikeGive
-Waypoint_Air_Strike.min_i = 1
-Waypoint_Air_Strike.value_i = 1
+Waypoint_Air_Strike.max = #StrikeGive
+Waypoint_Air_Strike.min = 1
+Waypoint_Air_Strike.value = 1
 
 
 Waypoint_Air_Strike = menu.add_feature("Weapon Strike (inverted)", "action_value_i", globalFeatures.self_ped_combat_POI, function(feat)
@@ -4813,9 +4878,9 @@ Waypoint_Air_Strike = menu.add_feature("Weapon Strike (inverted)", "action_value
     OSD_Debug.on = false
 
 end)
-Waypoint_Air_Strike.max_i = #StrikeGive
-Waypoint_Air_Strike.min_i = 1
-Waypoint_Air_Strike.value_i = 1
+Waypoint_Air_Strike.max = #StrikeGive
+Waypoint_Air_Strike.min = 1
+Waypoint_Air_Strike.value = 1
 
 Grenade_Strike = menu.add_feature("grenadelauncher Waypoint", "action", globalFeatures.self_ped_combat, function(feat)
     local coord, Coord, offset, Pos, pos, num = v3(), v3(), v3(1.00,0.50,2.5), v3(), v2(), 0
@@ -4847,10 +4912,10 @@ dam_multi = menu.add_feature("unfair aim Damage", "autoaction_value_i", globalFe
     damage = tonumber(feat.value_i)
    -- print(damage)
 end)
-dam_multi.max_i = 10000
-dam_multi.min_i = 0
-dam_multi.value_i = 200
-dam_multi.mod_i = 2
+dam_multi.max = 10000
+dam_multi.min = 0
+dam_multi.value = 200
+dam_multi.mod = 2
 
 local notify_sent = false
 local aimhash, aimd, pped
@@ -4892,9 +4957,9 @@ local unfair_aimbot = menu.add_feature("unfair aim/Ped Head shot", "value_i", gl
     return HANDLER_CONTINUE
 
 end)
-unfair_aimbot.max_i = #ssb_wep
-unfair_aimbot.min_i = 1
-unfair_aimbot.value_i = 1
+unfair_aimbot.max = #ssb_wep
+unfair_aimbot.min = 1
+unfair_aimbot.value = 1
 
 local pos, ImpactPos = v3(), v3()
 weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
@@ -4962,8 +5027,8 @@ impact_strike = menu.add_feature("Air strike last Weapon impact POS", "value_i",
     return HANDLER_POP
 
 end)
-impact_strike.max_i = #ssb_wep
-impact_strike.min_i = 1
+impact_strike.max = #ssb_wep
+impact_strike.min = 1
 impact_strike.on = false
 
 impact_strike2 = menu.add_feature("2nd wep impact POS", "value_i", globalFeatures.self_ped_combat, function(feat)
@@ -4991,8 +5056,8 @@ impact_strike2 = menu.add_feature("2nd wep impact POS", "value_i", globalFeature
     weapon_impact_pos.on = false
     return HANDLER_POP
 end)
-impact_strike2.max_i = #ssb_wep
-impact_strike2.min_i = 1
+impact_strike2.max = #ssb_wep
+impact_strike2.min = 1
 impact_strike2.on = false
 
 impact_strike = menu.add_feature("Air strike Array 2 last impact POS", "value_i", globalFeatures.self_ped_combat, function(feat)
@@ -5040,8 +5105,8 @@ impact_strike = menu.add_feature("Air strike Array 2 last impact POS", "value_i"
     weapon_impact_pos.on = false
     return HANDLER_POP
 end)
-impact_strike.max_i = #StrikeGive
-impact_strike.min_i = 1
+impact_strike.max = #StrikeGive
+impact_strike.min = 1
 impact_strike.on = false
 
 impact_strike2 = menu.add_feature("Weapon Array 2 2nd Impact POS", "value_i", globalFeatures.self_ped_combat, function(feat)
@@ -5070,8 +5135,8 @@ impact_strike2 = menu.add_feature("Weapon Array 2 2nd Impact POS", "value_i", gl
     weapon_impact_pos.on = false
     return HANDLER_POP
 end)
-impact_strike2.max_i = #StrikeGive
-impact_strike2.min_i = 1
+impact_strike2.max = #StrikeGive
+impact_strike2.min = 1
 impact_strike2.on = false
 
 aim_strike = menu.add_feature("Air strike aim entity (D pad R)", "toggle", globalFeatures.self_ped_combat, function(feat)
@@ -5134,9 +5199,9 @@ Ragdoll_set = menu.add_feature("Set Ragdoll Type", "action_value_i", Ragdoll_Con
 
         ui.notify_above_map("Ragdoll Type Set to: " .. ragdolltyp[feat.value_i][2].."\n("..ragdolltyp[feat.value_i][1]..")", "Moists Ragdoll Control", 140)
 end)
-Ragdoll_set.max_i = #ragdolltyp
-Ragdoll_set.min_i = 1
-Ragdoll_set.value_i = 1
+Ragdoll_set.max = #ragdolltyp
+Ragdoll_set.min = 1
+Ragdoll_set.value = 1
 
 
 
@@ -5633,10 +5698,10 @@ local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalF
        return HANDLER_POP
 end)
 Counter_key.on = setting["counter_Hotkey"]
-Counter_key.max_i = 10000
-Counter_key.min_i = 1
-Counter_key.value_i = 1550
-Counter_key.mod_i = 75
+Counter_key.max = 10000
+Counter_key.min = 1
+Counter_key.value = 1550
+Counter_key.mod = 75
 
 
 
@@ -5649,9 +5714,9 @@ global_func.BailExit = menu.add_feature("Bail/Exit Vehicle", "action_value_i", g
 
 return HANDLER_POP
 end)
-global_func.BailExit.max_i = #eject
-global_func.BailExit.min_i = 1
-global_func.BailExit.value_i = 6
+global_func.BailExit.max = #eject
+global_func.BailExit.min = 1
+global_func.BailExit.value = 6
 
 global_func.Veh_no_col = menu.add_feature("Vehicle has no collision", "toggle", globalFeatures.self_veh, function(feat)
 if not feat.on then
@@ -5939,8 +6004,8 @@ local parachute_setstat1 = menu.add_feature("Set Parachute Current Pack", "actio
     local stat_result = stats.stat_get_int(stat_hash, 1)
     moist_notify("Current Pack:\n", stat_result)
 end)
-parachute_setstat1.max_i = 100
-parachute_setstat1.min_i = 0
+parachute_setstat1.max = 100
+parachute_setstat1.min = 0
 
 local parachute_setstat2 = menu.add_feature("Set Parachute Current Tint", "action_value_i", globalFeatures.self_statsetup, function(feat)
     local stat = Get_Last_MP("PARACHUTE_CURRENT_TINT")
@@ -5953,8 +6018,8 @@ local parachute_setstat2 = menu.add_feature("Set Parachute Current Tint", "actio
     local stat_result = stats.stat_get_int(stat_hash, 1)
     moist_notify("Current Pack:\n", stat_result)
 end)
-parachute_setstat2.max_i = 80
-parachute_setstat2.min_i = 0
+parachute_setstat2.max = 80
+parachute_setstat2.min = 0
 
 
 --TODO: Force Mental State
@@ -5970,9 +6035,9 @@ mental_statset = menu.add_feature("Set Mental State", "action_value_i", globalFe
   
 
 end)
-mental_statset.max_i = 100
-mental_statset.min_i = 0
-mental_statset.value_i = 0
+mental_statset.max = 100
+mental_statset.min = 0
+mental_statset.value = 0
 
 local thermal_set = menu.add_feature("Switch Helmet Visor State", "action", globalFeatures.self_statsetup, function(feat)
 
@@ -6555,9 +6620,9 @@ local hostkickpid = menu.add_feature("Host Kick player ID", "value_i", globalFea
 
     return HANDLER_POP
 end)
-hostkickpid.max_i = 32
-hostkickpid.min_i = 0
-hostkickpid.value_i = 0
+hostkickpid.max = 32
+hostkickpid.min = 0
+hostkickpid.value = 0
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
     if feat.on then
@@ -6625,9 +6690,9 @@ waveintmodifiers = menu.add_feature("Persistant Wave Intensity", "value_i", glob
     end
     return HANDLER_POP
 end)
-waveintmodifiers.max_i = 500000
-waveintmodifiers.min_i = -200
-waveintmodifiers.mod_i = 1
+waveintmodifiers.max = 500000
+waveintmodifiers.min = -200
+waveintmodifiers.mod = 1
 
 waveintmodifiers = menu.add_feature("Change Wave Intensity", "action_value_i", globalFeatures.Wave, function(feat)
 
@@ -6635,12 +6700,12 @@ waveintmodifiers = menu.add_feature("Change Wave Intensity", "action_value_i", g
         water.set_waves_intensity(x)
         Moist_WaveMod()
 end)
-waveintmodifiers.max_i = 500000
-waveintmodifiers.min_i = -200
-waveintmodifiers.mod_i = 1
+waveintmodifiers.max = 500000
+waveintmodifiers.min = -200
+waveintmodifiers.mod = 1
 
 menu.add_feature("Change step Size", "autoaction_i",  globalFeatures.Wave, function(feat)
-    waveintmodifiers.mod_i = f.value_i
+    waveintmodifiers.mod = f.value_i
 end)
 
 local wavemodifiers = menu.add_feature("Reset Intensity", "action", globalFeatures.Wave, function(feat)
@@ -7043,16 +7108,16 @@ local heart_beat2 = menu.add_feature("Random Exp", "value_i", globalFeatures.tro
         end
 
 end)
-heart_beat2.max_i = 74
-heart_beat2.min_i = 0
-heart_beat2.value_i = 0
+heart_beat2.max = 74
+heart_beat2.min = 0
+heart_beat2.value = 0
 
 local hb_delay = menu.add_feature("Exp delay", "value_i", globalFeatures.troll, function(feat)
     delay_beat = tonumber(feat.value_i)
 end)
-hb_delay.max_i = 1000
-hb_delay.min_i = 0
-hb_delay.value_i = 0
+hb_delay.max = 1000
+hb_delay.min = 0
+hb_delay.value = 0
 
 local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
 
@@ -7222,9 +7287,9 @@ local sndrape_1 = menu.add_feature("allBomb Armed", "value_i", globalFeatures.tr
     end
     return HANDLER_POP
 end)
-sndrape_1.max_i = 1000
-sndrape_1.min_i = 0
-sndrape_1.mod_i = 5
+sndrape_1.max = 1000
+sndrape_1.min = 0
+sndrape_1.mod = 5
 
 local sndrape_2 = menu.add_feature("all Bomb Disarmed", "value_i", globalFeatures.troll, function(feat)
     if feat.on then
@@ -7247,9 +7312,9 @@ local sndrape_2 = menu.add_feature("all Bomb Disarmed", "value_i", globalFeature
     end
     return HANDLER_POP
 end)
-sndrape_2.max_i = 1000
-sndrape_2.min_i = 0
-sndrape_2.mod_i = 5
+sndrape_2.max = 1000
+sndrape_2.min = 0
+sndrape_2.mod = 5
 
 end
 session_soundRape()
@@ -7921,8 +7986,8 @@ end
     end
     return HANDLER_CONTINUE
 end)
-hud_comp.max_i = 255
-hud_comp.min_i = 0
+hud_comp.max = 255
+hud_comp.min = 0
 
 local entity_control
 
@@ -8803,9 +8868,9 @@ rgb_rand = menu.add_feature("rand rgb 3 on (delay)", "value_i", globalFeatures.m
     end
 end)
 rgb_rand.on = false
-rgb_rand.max_i = 500
-rgb_rand.min_i = 1
-rgb_rand.value_i = 5
+rgb_rand.max = 500
+rgb_rand.min = 1
+rgb_rand.value = 5
 
 rgb_rand1 = menu.add_feature("rand rgb 4 on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
     if feat.on then
@@ -8831,9 +8896,9 @@ rgb_rand1 = menu.add_feature("rand rgb 4 on (delay)", "value_i", globalFeatures.
     end
 end)
 rgb_rand1.on = false
-rgb_rand1.max_i = 500
-rgb_rand1.min_i = 1
-rgb_rand1.value_i = 15
+rgb_rand1.max = 500
+rgb_rand1.min = 1
+rgb_rand1.value = 15
 
 
 marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt, function(feat)
@@ -9692,8 +9757,8 @@ features["Mark_Control"] = {feat = menu.add_feature("Marker ID  to Control", "va
     end
 end), type = "toggle"}
 features["Mark_Control"].feat.on = false
-features["Mark_Control"].feat.max_i = 5
-features["Mark_Control"].feat.min_i = 1
+features["Mark_Control"].feat.max = 5
+features["Mark_Control"].feat.min = 1
 
 features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "action", featureVars.h.id, function(feat)
     changeRGBA.on = false
@@ -9718,9 +9783,9 @@ features["MarkSize"] = {feat = menu.add_feature("Marker Size Muliplier", "action
         markID.s[actM] = size_marker
     end
 end), type = "action_value_i"}
-features["MarkSize"].feat.max_i = 30000
-features["MarkSize"].feat.min_i = 1
-features["MarkSize"].feat.value_i = 2
+features["MarkSize"].feat.max = 30000
+features["MarkSize"].feat.min = 1
+features["MarkSize"].feat.value = 2
 
 features["MarkZoff"] = {feat = menu.add_feature("Marker Z Offset Multiplier", "action_value_i", featureVars.ch.id, function(feat)
     if features["cprecision"].feat.on then
@@ -9731,9 +9796,9 @@ features["MarkZoff"] = {feat = menu.add_feature("Marker Z Offset Multiplier", "a
         markID.z[actM] = offsetz_marker
     end
 end), type = "action_value_i"}
-features["MarkZoff"].feat.max_i = 30000
-features["MarkZoff"].feat.min_i = -30000
-features["MarkZoff"].feat.value_i = 1
+features["MarkZoff"].feat.max = 30000
+features["MarkZoff"].feat.min = -30000
+features["MarkZoff"].feat.value = 1
 
 features["BOB_Marker"] = {feat = menu.add_feature("Bob Marker Up & Down", "toggle", featureVars.ch.id, function(feat)
     BobUPnDown = true
@@ -9767,9 +9832,9 @@ features["Blipcol"] = {feat =  menu.add_feature("Update Current Blip Colour", "a
 
         
 end), type = "autoaction_value_i"}
-features["Blipcol"].feat.max_i = 85
-features["Blipcol"].feat.min_i = 1
-features["Blipcol"].feat.value_i = 1
+features["Blipcol"].feat.max = 85
+features["Blipcol"].feat.min = 1
+features["Blipcol"].feat.value = 1
 
 features["Blip2col"] = {feat =  menu.add_feature("Add Coloured Blip", "action_value_i", featureVars.blip.id, function(feat)
            local pped = PlyPed(pid)
@@ -9779,9 +9844,9 @@ features["Blip2col"] = {feat =  menu.add_feature("Add Coloured Blip", "action_va
                ui.set_blip_colour(BlipIDs[#BlipIDs], feat.value_i)
         
 end), type = "action_value_i"}
-features["Blip2col"].feat.max_i = 85
-features["Blip2col"].feat.min_i = 1
-features["Blip2col"].feat.value_i = 1
+features["Blip2col"].feat.max = 85
+features["Blip2col"].feat.min = 1
+features["Blip2col"].feat.value = 1
 
 features["Blip"] = {feat =  menu.add_feature("Add Radar Blip", "action", featureVars.blip.id, function(feat)
 
@@ -9805,9 +9870,9 @@ features["Blipv2"] = {feat =  menu.add_feature("Radial Radar Blip", "action_valu
     playerFeatures[pid].features["RadBlipUpdate"].feat.on = true
     return HANDLER_POP
 end), type = "action"}
-features["Blipv2"].feat.max_i = 1000
-features["Blipv2"].feat.min_i = 1
-features["Blipv2"].feat.value_i = 25
+features["Blipv2"].feat.max = 1000
+features["Blipv2"].feat.min = 1
+features["Blipv2"].feat.value = 25
 
 features["Blip_v2"] = {feat =  menu.add_feature("Radial Radar Blip v2", "action_value_i", featureVars.blip.id, function(feat)
     
@@ -9818,9 +9883,9 @@ features["Blip_v2"] = {feat =  menu.add_feature("Radial Radar Blip v2", "action_
     playerFeatures[pid].features["RadBlipUpdate"].feat.on = true
     return HANDLER_POP
 end), type = "action"}
-features["Blip_v2"].feat.max_i = 1000
-features["Blip_v2"].feat.min_i = 1
-features["Blip_v2"].feat.value_i = 25
+features["Blip_v2"].feat.max = 1000
+features["Blip_v2"].feat.min = 1
+features["Blip_v2"].feat.value = 25
 
 features["Blip_v3"] = {feat =  menu.add_feature("Radial Blip v3 Vehicle", "action_value_i", featureVars.blip.id, function(feat)
     
@@ -9832,10 +9897,10 @@ features["Blip_v3"] = {feat =  menu.add_feature("Radial Blip v3 Vehicle", "actio
 
     return HANDLER_POP
 end), type = "action"}
-features["Blip_v3"].feat.max_i = 10000
-features["Blip_v3"].feat.min_i = 1
-features["Blip_v3"].feat.value_i = 3500
-features["Blip_v3"].feat.mod_i = 50
+features["Blip_v3"].feat.max = 10000
+features["Blip_v3"].feat.min = 1
+features["Blip_v3"].feat.value = 3500
+features["Blip_v3"].feat.mod = 50
 
 features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour", "action_value_i", featureVars.blip.id, function(feat)
                 if blip ~= nil then
@@ -9845,18 +9910,18 @@ features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour", "
                 end
         
 end), type = "action_value_i"}
-features["Blipv2col"].feat.max_i = 120
-features["Blipv2col"].feat.min_i = 1
-features["Blipv2col"].feat.value_i = 1
+features["Blipv2col"].feat.max = 120
+features["Blipv2col"].feat.min = 1
+features["Blipv2col"].feat.value = 1
 
 features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour v2", "autoaction_value_i", featureVars.blip.id, function(feat)
     if blip ~= nil then
                ui.set_blip_colour(blip, feat.value_i)
     end
 end), type = "autoaction_value_i"}
-features["Blipv2col"].feat.max_i = 85
-features["Blipv2col"].feat.min_i = 1
-features["Blipv2col"].feat.value_i = 1
+features["Blipv2col"].feat.max = 85
+features["Blipv2col"].feat.min = 1
+features["Blipv2col"].feat.value = 1
 
 
 features["RadBlipUpdate"] = {feat = menu.add_feature("Update Blip v2 Pos", "toggle", featureVars.blip.id, function(feat)
@@ -9906,9 +9971,9 @@ features["marker_active1"] = {feat =  menu.add_feature("Marker 1 Type:", "value_
             return HANDLER_CONTINUE
         end
 end), type = "value_i"}
-features["marker_active1"].feat.max_i = 44
-features["marker_active1"].feat.min_i = 0
-features["marker_active1"].feat.value_i = 1
+features["marker_active1"].feat.max = 44
+features["marker_active1"].feat.min = 0
+features["marker_active1"].feat.value = 1
 features["marker_active1"].feat.on = false
 
 
@@ -9929,9 +9994,9 @@ features["marker_active2"] = {feat =  menu.add_feature("Marker 2 Type:", "value_
             return HANDLER_CONTINUE
         end
 end), type = "value_i"}
-features["marker_active2"].feat.max_i = 44
-features["marker_active2"].feat.min_i = 0
-features["marker_active2"].feat.value_i = 43
+features["marker_active2"].feat.max = 44
+features["marker_active2"].feat.min = 0
+features["marker_active2"].feat.value = 43
 features["marker_active2"].feat.on = false
 
 
@@ -9953,9 +10018,9 @@ features["marker_active3"] = {feat =  menu.add_feature("Marker 3 Type:", "value_
             return HANDLER_CONTINUE
         end
 end), type = "value_i"}
-features["marker_active3"].feat.max_i = 44
-features["marker_active3"].feat.min_i = 0
-features["marker_active3"].feat.value_i = 0
+features["marker_active3"].feat.max = 44
+features["marker_active3"].feat.min = 0
+features["marker_active3"].feat.value = 0
 features["marker_active3"].feat.on = false
 
 
@@ -9976,9 +10041,9 @@ features["marker_active4"] = {feat =  menu.add_feature("Marker 4 Type:", "value_
             return HANDLER_CONTINUE
         end
 end), type = "value_i"}
-features["marker_active4"].feat.max_i = 44
-features["marker_active4"].feat.min_i = 0
-features["marker_active4"].feat.value_i = 29
+features["marker_active4"].feat.max = 44
+features["marker_active4"].feat.min = 0
+features["marker_active4"].feat.value = 29
 features["marker_active4"].feat.on = false
 
 
@@ -9999,9 +10064,9 @@ features["marker_active5"] = {feat =  menu.add_feature("Marker 5 (Drawn on Entit
             return HANDLER_CONTINUE
         end
 end), type = "value_i"}
-features["marker_active5"].feat.max_i = 44
-features["marker_active5"].feat.min_i = 0
-features["marker_active5"].feat.value_i = 28
+features["marker_active5"].feat.max = 44
+features["marker_active5"].feat.min = 0
+features["marker_active5"].feat.value = 28
 features["marker_active5"].feat.on = false
 
 --TODO: CEO Money
@@ -10048,10 +10113,10 @@ features["ceo_money_a02"] = {feat = menu.add_feature("CEO 30k v1", "value_i", fe
 end), type = "toggle", callback = function()
 end}
 features["ceo_money_a02"].feat.on = false
-features["ceo_money_a02"].feat.max_i = 200000
-features["ceo_money_a02"].feat.min_i = 30000
-features["ceo_money_a02"].feat.value_i = 30000
-features["ceo_money_a02"].feat.mod_i = 1000
+features["ceo_money_a02"].feat.max = 200000
+features["ceo_money_a02"].feat.min = 30000
+features["ceo_money_a02"].feat.value = 30000
+features["ceo_money_a02"].feat.mod = 1000
 features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.ceo.id, function(feat)
     while feat.on do
         print("Money Trigger loop")
@@ -10667,10 +10732,10 @@ features["RotatingLights"] = {feat = menu.add_feature("Rotating Lights", "value_
         end
 end), type = "toggle", callback = function()
 end}
-features["RotatingLights"].feat.min_i = 1
-features["RotatingLights"].feat.max_i = 10
-features["RotatingLights"].feat.mod_i = 1
-features["RotatingLights"].feat.value_i = 1
+features["RotatingLights"].feat.min = 1
+features["RotatingLights"].feat.max = 10
+features["RotatingLights"].feat.mod = 1
+features["RotatingLights"].feat.value = 1
 
 features["RotatingLights2"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
 
@@ -10690,10 +10755,10 @@ features["RotatingLights2"] = {feat = menu.add_feature("Rotating Lights", "value
         end
 end), type = "toggle", callback = function()
 end}
-features["RotatingLights2"].feat.min_i = 1
-features["RotatingLights2"].feat.max_i = 20
-features["RotatingLights2"].feat.mod_i = 1
-features["RotatingLights2"].feat.value_i = 6
+features["RotatingLights2"].feat.min = 1
+features["RotatingLights2"].feat.max = 20
+features["RotatingLights2"].feat.mod = 1
+features["RotatingLights2"].feat.value = 6
 
 
 menu.add_feature("Attach with Physics? (PhysicsGlitch) 0=OFF|1=ON", "action", featureVars.at.id, nil)
@@ -10714,9 +10779,9 @@ features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo Physics? 0|
     entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, phys, false, 0, true)
 
 end),  type = "action"}
-features["Broken_ufo"].feat.max_i = 1
-features["Broken_ufo"].feat.min_i = 0
-features["Broken_ufo"].feat.value_i = 1
+features["Broken_ufo"].feat.max = 1
+features["Broken_ufo"].feat.min = 0
+features["Broken_ufo"].feat.value = 1
 
 features["Attacch_building"] = {feat = menu.add_feature("Attach ArenaWar Building", "action_value_i", featureVars.at.id, function(feat)
 
@@ -10733,9 +10798,9 @@ features["Attacch_building"] = {feat = menu.add_feature("Attach ArenaWar Buildin
     entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, phys, false, 0, true)
 
 end),  type = "action"}
-features["Attacch_building"].feat.max_i = 1
-features["Attacch_building"].feat.min_i = 0
-features["Attacch_building"].feat.value_i = 1
+features["Attacch_building"].feat.max = 1
+features["Attacch_building"].feat.min = 0
+features["Attacch_building"].feat.value = 1
 
 features["BeachFire"] = {feat = menu.add_feature("Attach Beach Fires", "action_value_i", featureVars.at.id, function(feat)
 
@@ -10758,9 +10823,9 @@ features["BeachFire"] = {feat = menu.add_feature("Attach Beach Fires", "action_v
 
     return HANDLER_POP
 end), type = "action"}
-features["BeachFire"].feat.max_i = 1
-features["BeachFire"].feat.min_i = 0
-features["BeachFire"].feat.value_i = 1
+features["BeachFire"].feat.max = 1
+features["BeachFire"].feat.min = 0
+features["BeachFire"].feat.value = 1
 
 features["attach_room"] = {feat = menu.add_feature("Room Attachment", "action", featureVars.at.id, function(feat)
 
@@ -11005,9 +11070,9 @@ features["RamJet2"] = {feat = menu.add_feature("Lester RamJet Attack Player", "a
         return HANDLER_POP
 end), type = "action"}
 features["RamJet2"].feat.threaded = false
-features["RamJet2"].feat.max_i = -10
-features["RamJet2"].feat.min_i = -200
-features["RamJet2"].feat.value_i = -20
+features["RamJet2"].feat.max = -10
+features["RamJet2"].feat.min = -200
+features["RamJet2"].feat.value = -20
 
 features["RamJet3"] = {feat = menu.add_feature("Lester RamJet Impact Player", "action_value_i",featureVars.gr.id, function(feat)
         
@@ -11068,9 +11133,9 @@ features["RamJet3"] = {feat = menu.add_feature("Lester RamJet Impact Player", "a
         return HANDLER_POP
 end), type = "action"}
 features["RamJet3"].feat.threaded = false
-features["RamJet3"].feat.max_i = -10
-features["RamJet3"].feat.min_i = -200
-features["RamJet3"].feat.value_i = -20
+features["RamJet3"].feat.max = -10
+features["RamJet3"].feat.min = -200
+features["RamJet3"].feat.value = -20
 
 features["Ramjet_Attach"] = {feat = menu.add_feature("Attach all RamJets offset", "value_i", featureVars.gr.id, function(feat)
     if feat.on then
@@ -11111,9 +11176,9 @@ features["Ramjet_Attach"] = {feat = menu.add_feature("Attach all RamJets offset"
 end),  type = "toggle", callback = function()
 end}
 features["Ramjet_Attach"].feat.on = false
-features["Ramjet_Attach"].feat.max_i = 50
-features["Ramjet_Attach"].feat.min_i = -50
-features["Ramjet_Attach"].feat.value_i = -1
+features["Ramjet_Attach"].feat.max = 50
+features["Ramjet_Attach"].feat.min = -50
+features["Ramjet_Attach"].feat.value = -1
 
 features["RamJet_cleanup"] = {feat = menu.add_feature("Run Delayed Ramjet Cleanup", "toggle", featureVars.gr.id, function(feat)
     if feat.on then
@@ -11253,9 +11318,9 @@ features["sendlesmonster"] = {feat = menu.add_feature("Arenawar Monster Lester",
 			streaming.set_model_as_no_longer_needed(vehhash)
 	end), type = "action_value_i"}
 features["sendlesmonster"].feat.threaded = false
-features["sendlesmonster"].feat.max_i = 2
-features["sendlesmonster"].feat.min_i = 0
-features["sendlesmonster"].feat.value_i = 0
+features["sendlesmonster"].feat.max = 2
+features["sendlesmonster"].feat.min = 0
+features["sendlesmonster"].feat.value = 0
 
 
 features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
@@ -11347,8 +11412,8 @@ end),  type = "toggle", callback = function()
 
 end}
 features["Give_Airstrike"].feat.on = false
-features["Give_Airstrike"].feat.max_i = #StrikeGive
-features["Give_Airstrike"].feat.min_i = 1
+features["Give_Airstrike"].feat.max = #StrikeGive
+features["Give_Airstrike"].feat.min = 1
 
 features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.tr.id, function(feat)
     if world_dumped then
@@ -11539,10 +11604,10 @@ features["Firework_ply"] = {feat = menu.add_feature("Fireworks Around Player Del
         end
 
 end), type = "toggle"}
-features["Firework_ply"].feat.max_i = 2000
-features["Firework_ply"].feat.min_i = 0
-features["Firework_ply"].feat.value_i = 100
-features["Firework_ply"].feat.mod_i = 10
+features["Firework_ply"].feat.max = 2000
+features["Firework_ply"].feat.min = 0
+features["Firework_ply"].feat.value = 100
+features["Firework_ply"].feat.mod = 10
 
 features["explodeply"] = {feat = menu.add_feature("Explosions Around Player", "value_i", featureVars.g.id, function(feat)
 
@@ -11565,9 +11630,9 @@ features["explodeply"] = {feat = menu.add_feature("Explosions Around Player", "v
         end
 
 end), type = "toggle"}
-features["explodeply"].feat.max_i = 74
-features["explodeply"].feat.min_i = -1
-features["explodeply"].feat.value_i = 0
+features["explodeply"].feat.max = 74
+features["explodeply"].feat.min = -1
+features["explodeply"].feat.value = 0
 
 features["explode_ply"] = {feat = menu.add_feature("Explosions Around Player", "action_value_i", featureVars.g.id, function(feat)
 
@@ -11587,9 +11652,9 @@ features["explode_ply"] = {feat = menu.add_feature("Explosions Around Player", "
             fire.add_explosion(pos, feat.value_i, true, false, 0, blame)
 
 end), type = "toggle"}
-features["explode_ply"].feat.max_i = 74
-features["explode_ply"].feat.min_i = -1
-features["explode_ply"].feat.value_i = 0
+features["explode_ply"].feat.max = 74
+features["explode_ply"].feat.min = -1
+features["explode_ply"].feat.value = 0
 
 features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
 
@@ -11823,9 +11888,9 @@ features["Ped_hate"] = {feat = menu.add_feature("PedsHate & AttackPlayer Weap:",
 
 end), type = "action_value_i", callback = function()
 end}
-features["Ped_hate"].feat.max_i = #ped_wep
-features["Ped_hate"].feat.min_i = 1
-features["Ped_hate"].feat.value_i = 10
+features["Ped_hate"].feat.max = #ped_wep
+features["Ped_hate"].feat.min = 1
+features["Ped_hate"].feat.value = 10
   
 features["Peds_eject"] = {feat = menu.add_feature("Task NearbyPeds Bail/Exit Veh", "action_value_i", featureVars.tr.id, function(feat)
 
@@ -11835,9 +11900,9 @@ features["Peds_eject"] = {feat = menu.add_feature("Task NearbyPeds Bail/Exit Veh
 
 end), type = "action_value_i", callback = function()
 end}
-features["Peds_eject"].feat.max_i = #eject
-features["Peds_eject"].feat.min_i = 1
-features["Peds_eject"].feat.value_i = 6
+features["Peds_eject"].feat.max = #eject
+features["Peds_eject"].feat.min = 1
+features["Peds_eject"].feat.value = 6
 
 features["Send_HunterLester"] = {feat = menu.add_feature("Send Lester Hunt them in savage", "action", featureVars.lgr.id, function(feat)
 
@@ -11915,9 +11980,9 @@ features["Send_HunterLester1"] = {feat = menu.add_feature("Lester Thruster Hunte
         moist_notify("Thruster Lester Hunter", "\nSent from Maze Tower to Target")
 
 end), type = "action"}
-features["Send_HunterLester1"].feat.max_i = 2
-features["Send_HunterLester1"].feat.min_i = 1
-features["Send_HunterLester1"].feat.value_i = 1
+features["Send_HunterLester1"].feat.max = 2
+features["Send_HunterLester1"].feat.min = 1
+features["Send_HunterLester1"].feat.value = 1
 
 features["hunter_taskloop"] = {feat = menu.add_feature("Retask Lester on Death", "toggle", featureVars.lgr.id, function(feat)
     if feat.on then
@@ -11997,9 +12062,9 @@ features["alkonost_lag"] = {feat = menu.add_feature("Alkonost Lag Area", "action
     return HANDLER_POP
 end),  type = "action_value_i", callback = function()
 end}
-features["alkonost_lag"].feat.min_i = 1
-features["alkonost_lag"].feat.max_i = 100
-features["alkonost_lag"].feat.value_i = 15
+features["alkonost_lag"].feat.min = 1
+features["alkonost_lag"].feat.max = 100
+features["alkonost_lag"].feat.value = 15
 
 features["alkonost_lagattach"] = {feat = menu.add_feature("Attach Alkonost's to player", "toggle", featureVars.lag.id, function(feat)
     if feat.on then
@@ -12049,9 +12114,9 @@ features["kosatka_lag"] = {feat = menu.add_feature("kosatka Lag Area", "action_v
     return HANDLER_POP
 end),  type = "action_value_i", callback = function()
 end}
-features["kosatka_lag"].feat.min_i = 1
-features["kosatka_lag"].feat.max_i = 100
-features["kosatka_lag"].feat.value_i = 15
+features["kosatka_lag"].feat.min = 1
+features["kosatka_lag"].feat.max = 100
+features["kosatka_lag"].feat.value = 15
 
 features["kosatka_lagattach"] = {feat = menu.add_feature("Attach Kosatka's to player", "toggle", featureVars.lag.id, function(feat)
     if feat.on then
@@ -12183,8 +12248,8 @@ features["SE_CRASH_DATA1"] = {
     end),
     type = "toggle", callback = function()
 end}
-features["SE_CRASH_DATA1"].feat.max_i = 100
-features["SE_CRASH_DATA1"].feat.min_i = 1
+features["SE_CRASH_DATA1"].feat.max = 100
+features["SE_CRASH_DATA1"].feat.min = 1
 features["SE_CRASH_DATA1"].feat.on = false
 
 features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle", featureVars.ses.id, function(feat)
@@ -12398,10 +12463,10 @@ features["Kick3_Type3"] = {feat = menu.add_feature("Kick from data3 index: ", "v
 		return HANDLER_POP
 end),  type = "toggle", callback = function()
 end}
-features["Kick3_Type3"].feat.max_i = #data3
-features["Kick3_Type3"].feat.min_i = 1
-features["Kick3_Type3"].feat.value_i = 1
-features["Kick3_Type3"].feat.mod_i = 1
+features["Kick3_Type3"].feat.max = #data3
+features["Kick3_Type3"].feat.min = 1
+features["Kick3_Type3"].feat.value = 1
+features["Kick3_Type3"].feat.mod = 1
 features["Kick3_Type3"].feat.on = false
 
 features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
@@ -12680,29 +12745,28 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                         end
                     end
 
-                                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
-                                            tags[#tags + 1] = "O"
-                                            tagz[#tagz + 1] = "~h~~g~[O]"
-                                            toname = tostring(toname .. "~h~~g~[O]")
-                                            if Players[pid].OTRBlipID == nil then
-                                                if setting["OTR_Blips"] then
-                                                    Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
-                                                    ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                                                else
-                                            end
-                                        end
+                    if not isYou then
+                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
+                            tags[#tags + 1] = "O"
+                            tagz[#tagz + 1] = "~h~~g~[O]"
+                            toname = tostring(toname .. "~h~~g~[O]")
+                            if Players[pid].OTRBlipID == nil then
+                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
+                            end
+                        end
 
-                                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
-                                            if setting["OTR_Blips"] then
-                                            if Players[pid].OTRBlipID ~= nil then
-                                                ui.remove_blip(Players[pid].OTRBlipID)
-                                                Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
-                                                ui.remove_blip(Players[pid].OTRBlipID)
-                                                Players[pid].OTRBlipID = nil
-                                            end
-                                        else
-                                        end
-                                    end
+                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
+                            if Players[pid].OTRBlipID ~= nil then
+                             ui.remove_blip(Players[pid].OTRBlipID)
+                             Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+                             ui.remove_blip(Players[pid].OTRBlipID)
+                             Players[pid].OTRBlipID = nil
+                            end
+                        end
+                    end
+                
+                    if not player.is_player_modder(pid, -1) then
                         if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
                             tags[#tags + 1] = "U"
                             tagz[#tagz + 1] = "~h~~q~[U]"
