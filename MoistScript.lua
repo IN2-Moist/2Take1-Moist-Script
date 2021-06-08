@@ -3313,14 +3313,12 @@ function Recent_Player(pid, spid)
             utils.to_clipboard(scid)
         end)
 
-        local scid, name, token = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
+        local scid, name = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
 
         menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
 
             AddScid(scid, name)
             LoadBlacklist()
-            AddTokenID(token, name)
-            Load_Blacklist()
         end)
     end
 
