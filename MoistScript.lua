@@ -12722,12 +12722,12 @@ ScriptLocals["playerlist"]()
 
 function OnlineResetCheck()
 	for pid = 0, 32 do
-	if pid ~= player.player_id() then
+	-- if pid ~= player.player_id() then
 		God_Check_pid(pid)
         God_Check1_pid(pid)
         interiorcheckpid(pid)
-		else
-	end
+	-- 	else
+	-- end
 	
 	end
 end

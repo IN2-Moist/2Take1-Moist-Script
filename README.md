@@ -1,12 +1,12 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.4: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.3.5: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
 Thanks to haekkzer for his help and advice over time i was a tester for the menu
 
 Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
-script would  not exist! **
+script would  not exist!
 
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
@@ -17,29 +17,45 @@ script would  not exist! **
 
 These must be inside the Folder : **scripts**
 
-- MoistScript.lua (Main Script)
+### **\AppData\Roaming\PopstarDevs\2Take1Menu\scripts**
+
+- **MoistScript.lua** (Main Script)
+
 
 Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 
-```
+### **\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg**
+
+- interiors.lua
+- Moist_KickParam.data
 - Moist_Kicks.data
 - Moist_Kicks2.data
-- Moist_kicks3.data
-```
+- Moist_Kicks3.data
+- vehicle-hashes.lua
 
 **Extras :**
+These must be inside the Folder : **scripts**
 
-- autoexec.lua
+### **\AppData\Roaming\PopstarDevs\2Take1Menu\scripts**
 
-(Basic Autoload for my script)
+- **autoexec.lua** (Basic Autoload for my script)
 
 
-For Better Compatibility with **2take1script**:
-
+**So Folder Structure for Script to Work as Intendended:** Should look like below
 ```
-1. Remove autoexec.lua & settings.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\interiors.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_KickParam.data
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks.data
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks2.data
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks3.data
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\vehicle-hashes.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\autoexec.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistScript.lua
+```
+
+```**For Better Compatibility with 2take1script:**```
+1. Remove autoexec.lua
 2. execute MoistScript.lua first then 2take1script
-```
 
 Seems to work so far without errors
 
@@ -54,23 +70,29 @@ The files and folders required are as they should be and should be extracted fro
 `List Of Players by name in the session with the below functions inside`
 Player Names have tags:
 
--IN2Moist-[Y]      =  Y = You
+(**`*p`** = Also used on the Player Bar Feature)
 
--IN2Moist-[F]      =  F = Social Club Friend
+-IN2Moist-[Y]                    =  Y = You
 
--IN2Moist-[V]      =  V = Vehicle God Mode
+-IN2Moist-[F]                    =  F = Social Club Friend
 
--IN2Moist-[G]      =  G = Player God Mode
+-IN2Moist-[G]                    =  G = Player God Mode **`*p`**
 
--IN2Moist-[.SPEC.] = .SPEC. Custom Tag by myself just indicating the Player Spectating outside or not in a dectected interior being in a vehicle inside say Arena Workshop triggers this if you spectate with mod
+-IN2Moist-[V]                    =  V = Vehicle God Mode **`*p`**
 
--IN2Moist-[M]      = M = Player is Marked by 2Take1 as a Modder for some Reason Check online Player Info Window for more Details!
+-IN2Moist-[U]                    =  U = Undead OTR (player health 0/0 or <=328/0) **`*p`**
 
--IN2Moist-[O]      = O = Player is Currently using OTR Could be either Lester OTR CEO Ghost Organisation or a menu modded OTR if this has been on for more than 5mins pretty sure this is Modded!
+-IN2Moist-[**B:** `somevalue`]   =  B = Bounty: Value of Bounty **`*p`**
 
--IN2Moist-[H]      = H = Player is Currently The Session Host
+-IN2Moist-[.SPEC.]               = .SPEC. = Spectating
 
--IN2Moist-[S]      = S = Script Host of the session (Player Currently Hosting the Freemode.c Script fior the session)
+-IN2Moist-[M]                    = M = Player is Marked as a Modder! See online Player Info Window for more Details!
+
+-IN2Moist-[O]                    = O = Player is OTR Could be either Lester OTR CEO Ghost Organisation or Modded **`*p`**
+
+-IN2Moist-[H]                    = H = Player is Currently The Session Host **`*p`**
+
+-IN2Moist-[S]                    = S = Script Host (Freemode.c) **`*p`**
 
 
 ##### Online Features
