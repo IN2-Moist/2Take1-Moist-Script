@@ -54,8 +54,6 @@ function interiors_load()
 end
 interiors_load()
 
-local version_check, MoistVersion = nil,  "2.0.3.5"
-
 --[[
 Credits & Thanks to Kektram for help with OTR Code and code Advice
 Thanks to haekkzer for his help and advice over time i was a tester for the menu
@@ -133,7 +131,7 @@ dupe_param()
 local save_ini = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini")
 
 local toggle_setting, setting  = {}, {}
-toggle_setting[#toggle_setting+1] = "MoistScript"
+toggle_setting[#toggle_setting+1] = "MoistScript 2.0.3.5"
 setting[toggle_setting[#toggle_setting]] = "2.0.3.5"
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = false
@@ -169,17 +167,11 @@ toggle_setting[#toggle_setting+1] = "no_peds"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "no_traffic"
 setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "net_log"
-setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "chat_log"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "Chat_Command"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "chat_debug"
-setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "script_check_logger"
-setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "NetEventHook"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "Blacklist_ON"
 setting[toggle_setting[#toggle_setting]] = false
@@ -197,14 +189,12 @@ toggle_setting[#toggle_setting+1] = "RPG_HOTFIRE"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "counter_Hotkey"
 setting[toggle_setting[#toggle_setting]] = false
-toggle_setting[#toggle_setting+1] = "AutoHost"
-setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "spam_wait"
 setting[toggle_setting[#toggle_setting]] = 0
 toggle_setting[#toggle_setting+1] = "GodCheck"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "GodCheckNotif"
-setting[toggle_setting[#toggle_setting]] = false
+setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "force_pPara"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "force_pBPH"
@@ -216,14 +206,15 @@ setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "OSDDebug2"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "playerlist_loop"
-setting[toggle_setting[#toggle_setting]] = 20
+setting[toggle_setting[#toggle_setting]] = 50
 toggle_setting[#toggle_setting+1] = "loop_feat_delay"
-setting[toggle_setting[#toggle_setting]] = 25
+setting[toggle_setting[#toggle_setting]] = 100
 toggle_setting[#toggle_setting+1] = "hotkey_loop_delay"
-setting[toggle_setting[#toggle_setting]] = 2
+setting[toggle_setting[#toggle_setting]] = 10
 toggle_setting[#toggle_setting+1] = "ScriptEvent_delay"
 setting[toggle_setting[#toggle_setting]] = 100
-
+toggle_setting[#toggle_setting+1] = "RagDollHotKey"
+setting[toggle_setting[#toggle_setting]] = false
 
 function saveSettings()
 
@@ -255,7 +246,10 @@ end
 for line in io.lines(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini") do
     local line = string.gsub(line, toggle_setting[toggle] .. "=", "")
 
-    if toggle == 1 and setting["MoistScript"] ~= line then
+    if toggle == 1 and setting["MoistScript 2.0.3.5"] ~= line then
+    ui.notify_above_map("Removing old settings & Saving New", "Settings Version OutDated!", 162)
+    OverWriteSettingFile()
+    saveSettings()
     end
     if line == "true" then
         setting[toggle_setting[toggle]] = true
@@ -405,7 +399,8 @@ end
 
 function interiorcheckpid(pid)
     interior_thread[pid] = {}
-    local player_id = pid
+    player_id = pid
+    pid = player_id 
     interior_thread[pid] = menu.create_thread(interiorcheck_thread, { pid = player_id } )
     local i = #feat + 1
     feat[i] = menu.add_feature("Delete interior Check Thread: ".. pid, "action", God_Threads_Created.id, delete_God_thread)
@@ -415,11 +410,11 @@ end
 interiorcheck_thread = function(context)
 
 	while true do
-    if player.is_player_valid(context.pid) then
-    local pped = player.get_player_ped(context.pid)
-    if player.is_player_god(context.pid) and interior.get_interior_from_entity(pped) ~= 0 then
+    if player.is_player_valid(context.pid) ~= false then
+    pped = player.get_player_ped(context.pid)
+    if interior.get_interior_from_entity(pped) == 0 then
         local apartmen
-        if interior.get_interior_from_entity(pped) == 0 and player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
+        if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
             for i = 1, #interiors do
                 apartmen = Get_Dist3D(context.pid, interiors[i][2])
                 if apartmen < 200 then
@@ -436,20 +431,21 @@ interiorcheck_thread = function(context)
                 if pos.z >= gz then
                     Players[context.pid].isint = false
                 end
-                system.yield(100)
+                system.yield(10)
             end
-            else
-            if interior.get_interior_from_entity(pped) ~= 0 then
-                Players[context.pid].isint = true
 
             end
+    elseif player.is_player_god(context.pid) and interior.get_interior_from_entity(pped) ~= 0 then
+        Players[context.pid].isint = false
+    elseif interior.get_interior_from_entity(pped) ~= 0 then
+    Players[context.pid].isint = true
     end
-    end
+    
     end
         system.wait(20)
-    return HANDLER_CONTINUE
         
     end
+    return HANDLER_CONTINUE
 end
 
 -- Player IP
@@ -553,30 +549,29 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" ..msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" .. msg1 .. "~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" ..msg1 .."~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" .. msg1 .. "~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" ..msg1 .."~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" .. msg1 .. "~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .."~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .. "~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" ..msg1 .."~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" .. msg1 .. "~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .."~h~" .. msg2, "~y~~h~Ω MoistsScript 2.0.3.5\n~w~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .. "~h~" .. msg2, "~y~~h~Ω MoistsScript 2.0.3.5\n~w~~h~Moist Edition", color)
     end
 
 end
 
 --TODO: Preset Data Arrays
-
 local presets, escort_ped, veh_list, ped_wep, missions, BountyPresets, ssb_wep, StrikeGive, eject, heiststat_setup, decorators, int_flags
 local spam_presets, spamm, spammRU = {}, {}, {}
 spamm.var, spammRU.var = {}, {}
@@ -594,1423 +589,106 @@ ssb_wep = {"WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_REMOTESNIPER","WEAP
 StrikeGive = {"WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_KHANJALI_CANNON_HEAVY","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_PLAYER_LAZER","VEHICLE_WEAPON_AKULA_BARRAGE","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","WEAPON_AIR_DEFENCE_GUN","WEAPON_GRENADELAUNCHER_SMOKE","WEAPON_FIREWORK","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_DELUXO_MISSILE","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER","WEAPON_STICKYBOMB","WEAPON_PROXMINE",}
 heiststat_setup = {{"H3_COMPLETEDPOSIX", -1},{"H3OPT_APPROACH", 1},{"H3_HARD_APPROACH", 3},{"H3OPT_TARGET", 3},{"H3OPT_POI", 1023},{"H3OPT_ACCESSPOINTS", 2047},{"H3OPT_BITSET1", -1},{"H3OPT_CREWWEAP", 1},{"H3OPT_CREWDRIVER", 1},{"H3OPT_CREWHACKER", 5},{"H3OPT_WEAPS", 1},{"H3OPT_VEHS", 3},{"H3OPT_DISRUPTSHIP", 3},{"H3OPT_BODYARMORLVL", 3},{"H3OPT_KEYLEVELS", 2},{"H3OPT_MASKS", math.ceil(math.random(0, 12))},{"H3OPT_BITSET0", -1},}
 AmmoType = {{"FullMetalJacket", 1586900444},{"FullMetalJacket", 4126262806},{"FullMetalJacket", 234717365},{"FullMetalJacket", 758230489},{"FullMetalJacket", 3162174467},{"Tracer", 3101486635},{"Tracer", 1226421483},{"Tracer", 1569785553},{"Tracer", 1184011213},{"HollowPoint" , 670318226},{"HollowPoint" , 3458447638},{"HollowPoint" , 2089185906},{"Explosive", 2916183225},{"Explosive", 3985664341},{"Incendiary", 2878251257},{"Incendiary", 1461941360},{"Incendiary", 2465278413},{"Incendiary", 3685537684},{"Incendiary", 3962074599},{"Incendiary", 796697766},{"ArmourPiercing", 784861712},{"ArmourPiercing", 2797387177},{"ArmourPiercing", 423744068},{"ArmourPiercing", 423744068},{"ArmourPiercing",  1923327840}}
-
-decorators = {{"AttributeDamage", 3},
-{"AttributeDamage", 3},
-{"BBCarrier", 3},
-{"BeforeCorona_0", 2},
-{"BlockFriendGrab", 3},
-{"Bought_Drugs", 2},
-{"Carwash_Vehicle_Decorator", 3},
-{"CokeInPossession", 1},
-{"ContrabandDeliveryType", 3},
-{"ContrabandOwner", 3},
-{"CreatedByPegasus", 2},
-{"Creator_Trailer", 3},
-{"CrowdControlSetUp", 3},
-{"Darts_name", 3},
-{"EnableVehLuxeActs", 3},
-{"ExportVehicle", 3},
-{"FMDeliverableID", 3},
-{"GBCVehicle", 3},
-{"GBMissionFire", 3},
-{"GangBackup", 3},
-{"GetawayVehicleValid", 3},
-{"Getaway_Winched", 3},
-{"Heist_Veh_ID", 3},
-{"HeliTaxi", 3},
-{"HeroinInPossession", 1},
-{"IgnoredByQuickSave", 3},
-{"LUXE_VEH_INSTANCE_ID", 3},
-{"MC_ChasePedID", 3},
-{"MC_EntityID", 3},
-{"MC_Team0_VehDeliveredRules", 3},
-{"MC_Team1_VehDeliveredRules", 3},
-{"MC_Team2_VehDeliveredRules", 3},
-{"MC_Team3_VehDeliveredRules", 3},
-{"MPBitset", 3},
-{"MapGauntlet", 3},
-{"MatchId", 3},
-{"MethInPossession", 1},
-{"MissionType", 3},
-{"Not_Allow_As_Saved_Veh", 3},
-{"PV_Slot", 3},
-{"PYV_Owner", 3},
-{"PYV_Vehicle", 3},
-{"PYV_WarpFrom", 3},
-{"PYV_Yacht", 3},
-{"Player_Avenger", 3},
-{"Player_Boss", 3},
-{"Player_Goon", 3},
-{"Player_Hacker_Truck", 3},
-{"Player_Truck", 3},
-{"Player_Vehicle", 3},
-{"Previous_Boss", 3},
-{"Previous_Owner", 3},
-{"RampageCarExploded", 3},
-{"RandomID", 3},
-{"RespawnVeh", 3},
-{"Skill_Blocker", 2},
-{"Sprayed_Vehicle_Decorator", 2},
-{"Sprayed_Vehicle_Decorator", 3},
-{"Sprayed_Vehicle_Timer_Dec", 5},
-{"Sprayed_Vehicle_Timer_Dec", 5},
-{"TargetPlayerForTeam", 3},
-{"TeamId", 3},
-{"UsingForTimeTrial", 3},
-{"Veh_Modded_By_Player", 3},
-{"Vehicle_Reward", 3},
-{"Vehicle_Reward_Teams", 3},
-{"WeedInPossession", 1},
-{"XP_Blocker", 2},
-{"bombdec1", 3},
-{"bombdec", 3},
-{"bombowner", 3},
-{"cashondeadbody", 3},
-{"doe_elk", 3},
-{"hunt_chal_weapon", 3},
-{"hunt_kill_time", 3},
-{"hunt_nocall", 3},
-{"hunt_score", 3},
-{"hunt_undetected", 3},
-{"hunt_weapon", 3},
-{"noPlateScan", 2},
-{"prisonBreakBoss", 2},
-}
-decoratorType = {}
-decoratorType[1] = "DECOR_TYPE_FLOAT"
-decoratorType[2] = "DECOR_TYPE_BOOL"
-decoratorType[3] = "DECOR_TYPE_INT"
-decoratorType[4] = "DECOR_TYPE_UNK"
-decoratorType[5] = "DECOR_TYPE_TIME"
-
-Decorators = {
-"AttributeDamage",
-"BBCarrier",
-"BlockFriendGrab",
-"bombdec",
-"bombdec1",
-"bombowner",
-"Carwash_Vehicle_Decorator",
-"cashondeadbody",
-"ContrabandDeliveryType",
-"ContrabandOwner",
-"CreatedByPegasus",
-"Creator_Trailer",
-"Darts_name",
-"doe_elk",
-"EnableVehLuxeActs",
-"ExportVehicle",
-"FMDeliverableID",
-"GBCVehicle",
-"GBMissionFire",
-"Getaway_Winched",
-"GetawayVehicleValid",
-"Heist_Veh_ID",
-"HeliTaxi",
-"hunt_chal_weapon",
-"hunt_kill_time",
-"hunt_nocall",
-"hunt_score",
-"hunt_undetected",
-"hunt_weapon",
-"IgnoredByQuickSave",
-"LUXE_VEH_INSTANCE_ID",
-"MapGauntlet",
-"MatchId",
-"MC_ChasePedID",
-"MC_EntityID",
-"MissionType",
-"MPBitset",
-"Not_Allow_As_Saved_Veh",
-"Player_Avenger",
-"Player_Boss",
-"Player_Goon",
-"Player_Hacker_Truck",
-"Player_Truck",
-"Player_Vehicle",
-"Previous_Boss",
-"Previous_Owner",
-"PV_Slot",
-"PYV_Owner",
-"PYV_Vehicle",
-"PYV_WarpFrom",
-"PYV_Yacht",
-"RampageCarExploded",
-"RandomID",
-"RespawnVeh",
-"Skill_Blocker",
-"Sprayed_Vehicle_Decorator",
-"Sprayed_Vehicle_Timer_Dec",
-"TeamId",
-"UsingForTimeTrial",
-"Veh_Modded_By_Player",
-"XP_Blocker",
-"Player_Vehicle",
-"PV_Slot",
-"Previous_Owner",
-"Sprayed_Vehicle_Decorator",
-"Sprayed_Vehicle_Timer_Dec",
-"Vehicle_Reward",
-"Vehicle_Reward_Teams",
-"Skill_Blocker",
-"TargetPlayerForTeam",
-"XP_Blocker",
-"CrowdControlSetUp",
-"Bought_Drugs",
-"HeroinInPossession",
-"CokeInPossession",
-"WeedInPossession",
-"MethInPossession",
-"bombdec",
-"bombdec1",
-"bombowner",
-"noPlateScan",
-"prisonBreakBoss",
-"cashondeadbody",
-"MissionType",
-"MatchId",
-"TeamId",
-"Not_Allow_As_Saved_Veh",
-"Veh_Modded_By_Player",
-"MPBitset",
-"MC_EntityID",
-"MC_ChasePedID",
-"MC_Team0_VehDeliveredRules",
-"MC_Team1_VehDeliveredRules",
-"MC_Team2_VehDeliveredRules",
-"MC_Team3_VehDeliveredRules",
-"AttributeDamage",
-"GangBackup",
-"CreatedByPegasus",
-"BeforeCorona_0",
-}
-
+decorators = {{"RespawnVeh", 3}, {"GBMissionFire", 3}, {"MPBitset", 3}, {"RandomID", 3}, {"noPlateScan", 2}, {"CreatedByPegasus", 2}, {"IgnoredByQuickSave", 3}, {"Player_Vehicle", 3}, {"PV_Slot", 3}, {"Veh_Modded_By_Player", 3}, {"PYV_Yacht", 3}, {"Player_Truck", 3}, {"Player_Avenger", 3}, {"Player_Hacker_Truck", 3}, {"Previous_Owner", 3}, {"Not_Allow_As_Saved_Veh", 3}, {"cashondeadbody", 3}, {"BBCarrier", 3}, {"FMDeliverableID", 3}, {"GBCVehicle", 3}, {"GangBackup", 3},
+              {"BlockFriendGrab", 3}, {"Bought_Drugs", 2}, {"AttributeDamage", 3}, {"CokeInPossession", 1}, {"ContrabandDeliveryType", 3}, {"ContrabandOwner", 3}, {"Creator_Trailer", 3}, {"CrowdControlSetUp", 3}, {"Darts_name", 3}, {"EnableVehLuxeActs", 3}, {"ExportVehicle", 3}, {"GetawayVehicleValid", 3}, {"Getaway_Winched", 3}, {"Heist_Veh_ID", 3}, {"HeliTaxi", 3}, {"HeroinInPossession", 1}, {"LUXE_VEH_INSTANCE_ID", 3}, {"MC_ChasePedID", 3}, {"MC_EntityID", 3},
+              {"MC_Team0_VehDeliveredRules", 3}, {"MC_Team1_VehDeliveredRules", 3}, {"MC_Team2_VehDeliveredRules", 3}, {"MC_Team3_VehDeliveredRules", 3}, {"MapGauntlet", 3}, {"MatchId", 3}, {"MethInPossession", 1}, {"MissionType", 3}, {"PYV_Owner", 3}, {"PYV_Vehicle", 3}, {"PYV_WarpFrom", 3}, {"Player_Boss", 3}, {"Player_Goon", 3}, {"Previous_Boss", 3}, {"RampageCarExploded", 3}, {"Skill_Blocker", 2}, {"Sprayed_Vehicle_Decorator", 2}, {"Sprayed_Vehicle_Timer_Dec", 5},
+              {"Carwash_Vehicle_Decorator", 3}, {"TargetPlayerForTeam", 3}, {"TeamId", 3}, {"TeamId", 1}, {"UsingForTimeTrial", 3}, {"Vehicle_Reward", 3}, {"Vehicle_Reward_Teams", 3}, {"WeedInPossession", 1}, {"XP_Blocker", 2}, {"bombdec1", 3}, {"bombdec", 3}, {"bombowner", 3}, {"doe_elk", 3}, {"hunt_chal_weapon", 3}, {"hunt_kill_time", 3}, {"hunt_nocall", 3}, {"hunt_score", 3}, {"hunt_undetected", 3}, {"hunt_weapon", 3}, {"prisonBreakBoss", 2}, {"BeforeCorona_0", 2}}
+decoratorType = {"DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
 int_flags = {65536, 131072, 262144, 524288, 1048576, 2097152, 4194304}
-boneid = {
-	57597,
-	24818,
-	24817,
-	24816,
-	23553,
-	11816,
-	38180,
-	40269,
-	51826,
-	57005,
-	28252,
-	52301,
-	10706,
-	36864,
-	17916,
-	53251,
-	11816,
-	24532,
-	39317,
-	45509,
-	58271,
-	18905,
-	61163,
-	14201,
-	64729,
-	63931,
-	65068,
-	31086,
-	12844
-}
-ped_hashes = {
-{"a_c_panther", 3877461608},
-{"a_f_y_beach_02", 3105934379},
-{"a_f_y_bevhills_05", 2464671085},
-{"a_f_y_clubcust_01", 1744231373},
-{"a_f_y_clubcust_02", 357447289},
-{"a_f_y_clubcust_03", 10751269},
-{"a_f_y_clubcust_04", 786557344},
-{"a_f_y_gencaspat_01", 2434503858},
-{"a_f_y_smartcaspat_01", 279228114},
-{"a_m_m_mlcrisis_01", 1561088805},
-{"a_m_o_beach_02", 3243462130},
-{"a_m_y_beach_04", 3105523388},
-{"a_m_y_clubcust_01", 2813792322},
-{"a_m_y_clubcust_02", 3324988722},
-{"a_m_y_clubcust_03", 3572886207},
-{"a_m_y_clubcust_04", 3793814805},
-{"a_m_y_gencaspat_01", 2600762591},
-{"a_m_y_smartcaspat_01", 553826858},
-{"cs_jimmydisanto2", 1836024091},
-{"cs_lestercrest_2", 191074589},
-{"cs_lestercrest_3", 496317824},
-{"cs_patricia_02", 788179139},
-{"cs_taocheng2", 650034742},
-{"cs_taostranslator2", 3017289007},
-{"csb_agatha", 756308504},
-{"csb_alan", 1925887591},
-{"csb_ary", 3059505486},
-{"csb_avery", 1427949869},
-{"csb_avon", 406009421},
-{"csb_bogdan", 1594283837},
-{"csb_brucie2", 3361779221},
-{"csb_bryony", 2006035933},
-{"csb_celeb_01", 592225333},
-{"csb_dix", 3957337349},
-{"csb_djblamadon", 1835399538},
-{"csb_englishdave", 3533210174},
-{"csb_englishdave_02", 3713623407},
-{"csb_georginacheng", 345107131},
-{"csb_gustavo", 2331262242},
-{"csb_helmsmanpavel", 2675868152},
-{"csb_huang", 1064198787},
-{"csb_isldj_00", 2053038501},
-{"csb_isldj_01", 887084708},
-{"csb_isldj_02", 1712601360},
-{"csb_isldj_03", 2440761309},
-{"csb_isldj_04", 2998686303},
-{"csb_jio", 2727058989},
-{"csb_juanstrickler", 3612049721},
-{"csb_miguelmadrazo", 3685838978},
-{"csb_mjo", 2700978005},
-{"csb_mrs_r", 2642001958},
-{"csb_sol", 1324952405},
-{"csb_sss", 3772505184},
-{"csb_talcc", 3392144504},
-{"csb_talmm", 3785408493},
-{"csb_thornton", 4086880849},
-{"csb_tomcasino", 3488666811},
-{"csb_tonyprince", 1566545691},
-{"csb_vincent", 520636071},
-{"csb_vincent_2", 2782957088},
-{"csb_wendy", 1437043119},
-{"g_f_importexport_01", 2225189146},
-{"g_m_importexport_01", 3164785898},
-{"g_m_m_cartelguards_01", 2127932792},
-{"g_m_m_cartelguards_02", 1821116645},
-{"g_m_m_casrn_01", 1020431539},
-{"ig_agatha", 1855569864},
-{"ig_ary", 3473698871},
-{"ig_avery", 3088269167},
-{"ig_avon", 4242698434},
-{"ig_brucie2", 3893268832},
-{"ig_celeb_01", 3676106820},
-{"ig_dix", 4207997581},
-{"ig_djblamadon", 4219210853},
-{"ig_djblamrupert", 914073350},
-{"ig_djblamryanh", 400495475},
-{"ig_djblamryans", 3057799231},
-{"ig_djdixmanager", 4221366718},
-{"ig_djgeneric_01", 2580849741},
-{"ig_djsolfotios", 1241432569},
-{"ig_djsoljakob", 2486302027},
-{"ig_djsolmanager", 2123514453},
-{"ig_djsolmike", 795497466},
-{"ig_djsolrobt", 1194880004},
-{"ig_djtalaurelia", 2972453492},
-{"ig_djtalignazio", 2787461577},
-{"ig_englishdave", 205318924},
-{"ig_englishdave_02", 905946442},
-{"ig_georginacheng", 4014713647},
-{"ig_gustavo", 3045437975},
-{"ig_helmsmanpavel", 3619807921},
-{"ig_huang", 3218252083},
-{"ig_isldj_00", 3802345064},
-{"ig_isldj_01", 1866942414},
-{"ig_isldj_02", 1562223483},
-{"ig_isldj_03", 322310057},
-{"ig_isldj_04", 2154719772},
-{"ig_isldj_04_d_01", 2979249514},
-{"ig_isldj_04_d_02", 4260779566},
-{"ig_isldj_04_e_01", 590182749},
-{"ig_jackie", 2040422902},
-{"ig_jimmyboston_02", 1135976220},
-{"ig_jimmydisanto2", 2217591510},
-{"ig_jio", 1937203007},
-{"ig_juanstrickler", 507392637},
-{"ig_kaylee", 2810251555},
-{"ig_kerrymcintosh_02", 3628252818},
-{"ig_lacey_jones_02", 3426139884},
-{"ig_lazlow_2", 2231650028},
-{"ig_lestercrest_2", 1849883942},
-{"ig_lestercrest_3", 2013139108},
-{"ig_malc", 4055673113},
-{"ig_miguelmadrazo", 2781707480},
-{"ig_mjo", 761115490},
-{"ig_oldrichguy", 1006915658},
-{"ig_patricia_02", 3272690865},
-{"ig_pilot", 2253313678},
-{"ig_sacha", 1476581877},
-{"ig_sol", 3786117468},
-{"ig_sss", 991486725},
-{"ig_talcc", 3828621987},
-{"ig_talmm", 1182156569},
-{"ig_taocheng2", 1506159504},
-{"ig_taostranslator2", 3828553631},
-{"ig_thornton", 2482949079},
-{"ig_tomcasino", 55858852},
-{"ig_tonyprince", 761829301},
-{"ig_tylerdix_02", 1511543927},
-{"ig_vincent", 736659122},
-{"ig_vincent_2", 197443027},
-{"ig_wendy", 1850188817},
-{"mp_f_bennymech_01", 2139205821},
-{"mp_f_cardesign_01", 606876839},
-{"mp_f_chbar_01", 3287737221},
-{"mp_f_cocaine_01", 1264941816},
-{"mp_f_counterfeit_01", 3079205365},
-{"mp_f_execpa_01", 1126998116},
-{"mp_f_forgery_01", 2014985464},
-{"mp_f_helistaff_01", 431423238},
-{"mp_f_meth_01", 3534913217},
-{"mp_f_weed_01", 2992993187},
-{"mp_m_avongoon", 2618542997},
-{"mp_m_bogdangoon", 1297520375},
-{"mp_m_cocaine_01", 1456705429},
-{"mp_m_counterfeit_01", 2555758964},
-{"mp_m_execpa_01", 1048844220},
-{"mp_m_forgery_01", 1631482011},
-{"mp_m_meth_01", 3988008767},
-{"mp_m_securoguard_01", 3660355662},
-{"mp_m_waremech_01", 4154933561},
-{"mp_m_weapexp_01", 921328393},
-{"mp_m_weapwork_01", 1099321454},
-{"mp_m_weed_01", 2441008217},
-{"s_f_y_beachbarstaff_01", 3269663242},
-{"s_f_y_casino_01", 3163733717},
-{"s_f_y_clubbar_01", 3240507723},
-{"s_f_y_clubbar_02", 1438999163},
-{"s_m_m_bouncer_02", 1376128402},
-{"s_m_m_drugprocess_01", 1547070595},
-{"s_m_m_fieldworker_01", 2423573072},
-{"s_m_m_highsec_03", 518696223},
-{"s_m_m_highsec_04", 1442749254},
-{"s_m_y_casino_01", 337826907},
-{"s_m_y_clubbar_01", 1299424319},
-{"s_m_y_waretech_01", 1221043248},
-{"s_m_y_westsec_01", 2719478597},
-{"s_m_y_westsec_02", 3200789669},
-{"s_m_y_xmech_02_mp", 1762949645},
-{"u_f_m_casinocash_01", 3138220789},
-{"u_f_m_casinoshop_01", 338154536},
-{"u_f_m_debbie_01", 223828550},
-{"u_f_m_miranda_02", 3954904244},
-{"u_f_o_carol", 1415150394},
-{"u_f_o_eileen", 2630685688},
-{"u_f_y_beth", 2503965067},
-{"u_f_y_danceburl_01", 222643882},
-{"u_f_y_dancelthr_01", 130590395},
-{"u_f_y_dancerave_01", 2900533745},
-{"u_f_y_lauren", 967594628},
-{"u_f_y_poppymich_02", 1823868411},
-{"u_f_y_taylor", 450271392},
-{"u_m_m_blane", 2543361176},
-{"u_m_m_curtis", 4161104501},
-{"u_m_m_vince", 2526968950},
-{"u_m_o_dean", 4188740747},
-{"u_m_y_caleb", 4150317356},
-{"u_m_y_corpse_01", 2495782975},
-{"u_m_y_croupthief_01", 2145640135},
-{"u_m_y_danceburl_01", 1443057394},
-{"u_m_y_dancelthr_01", 4202382694},
-{"u_m_y_dancerave_01", 2145639711},
-{"u_m_y_gabriel", 1278330017},
-{"u_m_y_juggernaut_01", 2431602996},
-{"u_m_y_smugmech_01", 3446096293},
-{"u_m_y_ushi", 4218162071},
-{"a_c_boar", 3462393972},
-{"a_c_cat_01", 1462895032},
-{"a_c_chickenhawk", 2864127842},
-{"a_c_chimp", 2825402133},
-{"a_c_chop", 351016938},
-{"a_c_cormorant", 1457690978},
-{"a_c_cow", 4244282910},
-{"a_c_coyote", 1682622302},
-{"a_c_crow", 402729631},
-{"a_c_deer", 3630914197},
-{"a_c_dolphin", 2344268885},
-{"a_c_fish", 802685111},
-{"a_c_hen", 1794449327},
-{"a_c_humpback", 1193010354},
-{"a_c_husky", 1318032802},
-{"a_c_killerwhale", 2374682809},
-{"a_c_mtlion", 307287994},
-{"a_c_pig", 2971380566},
-{"a_c_pigeon", 111281960},
-{"a_c_poodle", 1125994524},
-{"a_c_pug", 1832265812},
-{"a_c_rabbit_01", 3753204865},
-{"a_c_rat", 3283429734},
-{"a_c_retriever", 882848737},
-{"a_c_rhesus", 3268439891},
-{"a_c_rottweiler", 2506301981},
-{"a_c_seagull", 3549666813},
-{"a_c_sharkhammer", 1015224100},
-{"a_c_sharktiger", 113504370},
-{"a_c_shepherd", 1126154828},
-{"a_c_stingray", 2705875277},
-{"a_c_westy", 2910340283},
-{"a_f_m_beach_01", 808859815},
-{"a_f_m_bevhills_01", 3188223741},
-{"a_f_m_bevhills_02", 2688103263},
-{"a_f_m_bodybuild_01", 1004114196},
-{"a_f_m_business_02", 532905404},
-{"a_f_m_downtown_01", 1699403886},
-{"a_f_m_eastsa_01", 2638072698},
-{"a_f_m_eastsa_02", 1674107025},
-{"a_f_m_fatbla_01", 4206136267},
-{"a_f_m_fatcult_01", 3050275044},
-{"a_f_m_fatwhite_01", 951767867},
-{"a_f_m_ktown_01", 1388848350},
-{"a_f_m_ktown_02", 1090617681},
-{"a_f_m_prolhost_01", 379310561},
-{"a_f_m_salton_01", 3725461865},
-{"a_f_m_skidrow_01", 2962707003},
-{"a_f_m_soucent_01", 1951946145},
-{"a_f_m_soucent_02", 4079145784},
-{"a_f_m_soucentmc_01", 3454621138},
-{"a_f_m_tourist_01", 1347814329},
-{"a_f_m_tramp_01", 1224306523},
-{"a_f_m_trampbeac_01", 2359345766},
-{"a_f_o_genstreet_01", 1640504453},
-{"a_f_o_indian_01", 3134700416},
-{"a_f_o_ktown_01", 1204772502},
-{"a_f_o_salton_01", 3439295882},
-{"a_f_o_soucent_01", 1039800368},
-{"a_f_o_soucent_02", 2775443222},
-{"a_f_y_beach_01", 3349113128},
-{"a_f_y_bevhills_01", 1146800212},
-{"a_f_y_bevhills_02", 1546450936},
-{"a_f_y_bevhills_03", 549978415},
-{"a_f_y_bevhills_04", 920595805},
-{"a_f_y_business_01", 664399832},
-{"a_f_y_business_02", 826475330},
-{"a_f_y_business_03", 2928082356},
-{"a_f_y_business_04", 3083210802},
-{"a_f_y_eastsa_01", 4121954205},
-{"a_f_y_eastsa_02", 70821038},
-{"a_f_y_eastsa_03", 1371553700},
-{"a_f_y_epsilon_01", 1755064960},
-{"a_f_y_femaleagent", 1348537411},
-{"a_f_y_fitness_01", 1165780219},
-{"a_f_y_fitness_02", 331645324},
-{"a_f_y_genhot_01", 793439294},
-{"a_f_y_golfer_01", 2111372120},
-{"a_f_y_hiker_01", 813893651},
-{"a_f_y_hippie_01", 343259175},
-{"a_f_y_hipster_01", 2185745201},
-{"a_f_y_hipster_02", 2549481101},
-{"a_f_y_hipster_03", 2780469782},
-{"a_f_y_hipster_04", 429425116},
-{"a_f_y_indian_01", 153984193},
-{"a_f_y_juggalo_01", 3675473203},
-{"a_f_y_runner_01", 3343476521},
-{"a_f_y_rurmeth_01", 1064866854},
-{"a_f_y_scdressy_01", 3680420864},
-{"a_f_y_skater_01", 1767892582},
-{"a_f_y_soucent_01", 744758650},
-{"a_f_y_soucent_02", 1519319503},
-{"a_f_y_soucent_03", 2276611093},
-{"a_f_y_tennis_01", 1426880966},
-{"a_f_y_topless_01", 2633130371},
-{"a_f_y_tourist_01", 1446741360},
-{"a_f_y_tourist_02", 2435054400},
-{"a_f_y_vinewood_01", 435429221},
-{"a_f_y_vinewood_02", 3669401835},
-{"a_f_y_vinewood_03", 933092024},
-{"a_f_y_vinewood_04", 4209271110},
-{"a_f_y_yoga_01", 3290105390},
-{"a_m_m_acult_01", 1413662315},
-{"a_m_m_afriamer_01", 3513928062},
-{"a_m_m_beach_01", 1077785853},
-{"a_m_m_beach_02", 2021631368},
-{"a_m_m_bevhills_01", 1423699487},
-{"a_m_m_bevhills_02", 1068876755},
-{"a_m_m_business_01", 2120901815},
-{"a_m_m_eastsa_01", 4188468543},
-{"a_m_m_eastsa_02", 131961260},
-{"a_m_m_farmer_01", 2488675799},
-{"a_m_m_fatlatin_01", 1641152947},
-{"a_m_m_genfat_01", 115168927},
-{"a_m_m_genfat_02", 330231874},
-{"a_m_m_golfer_01", 2850754114},
-{"a_m_m_hasjew_01", 1809430156},
-{"a_m_m_hillbilly_01", 1822107721},
-{"a_m_m_hillbilly_02", 2064532783},
-{"a_m_m_indian_01", 3721046572},
-{"a_m_m_ktown_01", 3512565361},
-{"a_m_m_malibu_01", 803106487},
-{"a_m_m_mexcntry_01", 3716251309},
-{"a_m_m_mexlabor_01", 2992445106},
-{"a_m_m_og_boss_01", 1746653202},
-{"a_m_m_paparazzi_01", 3972697109},
-{"a_m_m_polynesian_01", 2849617566},
-{"a_m_m_prolhost_01", 2534589327},
-{"a_m_m_rurmeth_01", 1001210244},
-{"a_m_m_salton_01", 1328415626},
-{"a_m_m_salton_02", 1626646295},
-{"a_m_m_salton_03", 2995538501},
-{"a_m_m_salton_04", 2521108919},
-{"a_m_m_skater_01", 3654768780},
-{"a_m_m_skidrow_01", 32417469},
-{"a_m_m_socenlat_01", 193817059},
-{"a_m_m_soucent_01", 1750583735},
-{"a_m_m_soucent_02", 2674735073},
-{"a_m_m_soucent_03", 2346291386},
-{"a_m_m_soucent_04", 3271294718},
-{"a_m_m_stlat_02", 3265820418},
-{"a_m_m_tennis_01", 1416254276},
-{"a_m_m_tourist_01", 3365863812},
-{"a_m_m_tramp_01", 516505552},
-{"a_m_m_trampbeac_01", 1404403376},
-{"a_m_m_tranvest_01", 3773208948},
-{"a_m_m_tranvest_02", 4144940484},
-{"a_m_o_acult_01", 1430544400},
-{"a_m_o_acult_02", 1268862154},
-{"a_m_o_beach_01", 2217202584},
-{"a_m_o_genstreet_01", 2908022696},
-{"a_m_o_ktown_01", 355916122},
-{"a_m_o_salton_01", 539004493},
-{"a_m_o_soucent_01", 718836251},
-{"a_m_o_soucent_02", 1082572151},
-{"a_m_o_soucent_03", 238213328},
-{"a_m_o_tramp_01", 390939205},
-{"a_m_y_acult_01", 3043264555},
-{"a_m_y_acult_02", 2162532142},
-{"a_m_y_beach_01", 3523131524},
-{"a_m_y_beach_02", 600300561},
-{"a_m_y_beach_03", 3886638041},
-{"a_m_y_beachvesp_01", 2114544056},
-{"a_m_y_beachvesp_02", 3394697810},
-{"a_m_y_bevhills_01", 1982350912},
-{"a_m_y_bevhills_02", 1720428295},
-{"a_m_y_breakdance_01", 933205398},
-{"a_m_y_busicas_01", 2597531625},
-{"a_m_y_business_01", 3382649284},
-{"a_m_y_business_02", 3014915558},
-{"a_m_y_business_03", 2705543429},
-{"a_m_y_cyclist_01", 4257633223},
-{"a_m_y_dhill_01", 4282288299},
-{"a_m_y_downtown_01", 766375082},
-{"a_m_y_eastsa_01", 2756120947},
-{"a_m_y_eastsa_02", 377976310},
-{"a_m_y_epsilon_01", 2010389054},
-{"a_m_y_epsilon_02", 2860711835},
-{"a_m_y_gay_01", 3519864886},
-{"a_m_y_gay_02", 2775713665},
-{"a_m_y_genstreet_01", 2557996913},
-{"a_m_y_genstreet_02", 891398354},
-{"a_m_y_golfer_01", 3609190705},
-{"a_m_y_hasjew_01", 3782053633},
-{"a_m_y_hiker_01", 1358380044},
-{"a_m_y_hippy_01", 2097407511},
-{"a_m_y_hipster_01", 587703123},
-{"a_m_y_hipster_02", 349505262},
-{"a_m_y_hipster_03", 1312913862},
-{"a_m_y_indian_01", 706935758},
-{"a_m_y_jetski_01", 767028979},
-{"a_m_y_juggalo_01", 2445950508},
-{"a_m_y_ktown_01", 452351020},
-{"a_m_y_ktown_02", 696250687},
-{"a_m_y_latino_01", 321657486},
-{"a_m_y_methhead_01", 1768677545},
-{"a_m_y_mexthug_01", 810804565},
-{"a_m_y_motox_01", 1694362237},
-{"a_m_y_motox_02", 2007797722},
-{"a_m_y_musclbeac_01", 1264920838},
-{"a_m_y_musclbeac_02", 3374523516},
-{"a_m_y_polynesian_01", 2206530719},
-{"a_m_y_roadcyc_01", 4116817094},
-{"a_m_y_runner_01", 623927022},
-{"a_m_y_runner_02", 2218630415},
-{"a_m_y_salton_01", 3613420592},
-{"a_m_y_skater_01", 3250873975},
-{"a_m_y_skater_02", 2952446692},
-{"a_m_y_soucent_01", 3877027275},
-{"a_m_y_soucent_02", 2896414922},
-{"a_m_y_soucent_03", 3287349092},
-{"a_m_y_soucent_04", 2318861297},
-{"a_m_y_stbla_01", 3482496489},
-{"a_m_y_stbla_02", 2563194959},
-{"a_m_y_stlat_01", 2255803900},
-{"a_m_y_stwhi_01", 605602864},
-{"a_m_y_stwhi_02", 919005580},
-{"a_m_y_sunbathe_01", 3072929548},
-{"a_m_y_surfer_01", 3938633710},
-{"a_m_y_vindouche_01", 3247667175},
-{"a_m_y_vinewood_01", 1264851357},
-{"a_m_y_vinewood_02", 1561705728},
-{"a_m_y_vinewood_03", 534725268},
-{"a_m_y_vinewood_04", 835315305},
-{"a_m_y_yoga_01", 2869588309},
-{"cs_amandatownley", 2515474659},
-{"cs_andreas", 3881194279},
-{"cs_ashley", 650367097},
-{"cs_bankman", 2539657518},
-{"cs_barry", 1767447799},
-{"cs_beverly", 3027157846},
-{"cs_brad", 4024807398},
-{"cs_bradcadaver", 1915268960},
-{"cs_carbuyer", 2362341647},
-{"cs_casey", 3935738944},
-{"cs_chengsr", 819699067},
-{"cs_chrisformage", 3253960934},
-{"cs_clay", 3687553076},
-{"cs_dale", 216536661},
-{"cs_davenorton", 2240226444},
-{"cs_debra", 3973074921},
-{"cs_denise", 1870669624},
-{"cs_devin", 788622594},
-{"cs_dom", 1198698306},
-{"cs_dreyfuss", 1012965715},
-{"cs_drfriedlander", 2745392175},
-{"cs_fabien", 1191403201},
-{"cs_fbisuit_01", 1482427218},
-{"cs_floyd", 103106535},
-{"cs_guadalope", 261428209},
-{"cs_gurk", 3272931111},
-{"cs_hunter", 1531218220},
-{"cs_janet", 808778210},
-{"cs_jewelass", 1145088004},
-{"cs_jimmyboston", 60192701},
-{"cs_jimmydisanto", 3100414644},
-{"cs_joeminuteman", 4036845097},
-{"cs_johnnyklebitz", 4203395201},
-{"cs_josef", 1167549130},
-{"cs_josh", 1158606749},
-{"cs_karen_daniels", 1269774364},
-{"cs_lamardavis", 1162230285},
-{"cs_lazlow", 949295643},
-{"cs_lestercrest", 3046438339},
-{"cs_lifeinvad_01", 1918178165},
-{"cs_magenta", 1477887514},
-{"cs_manuel", 4222842058},
-{"cs_marnie", 1464721716},
-{"cs_martinmadrazo", 1129928304},
-{"cs_maryann", 161007533},
-{"cs_michelle", 1890499016},
-{"cs_milton", 3077190415},
-{"cs_molly", 1167167044},
-{"cs_movpremf_01", 1270514905},
-{"cs_movpremmale", 2372398717},
-{"cs_mrk", 3284966005},
-{"cs_mrs_thornhill", 1334976110},
-{"cs_mrsphillips", 3422397391},
-{"cs_natalia", 1325314544},
-{"cs_nervousron", 2023152276},
-{"cs_nigel", 3779566603},
-{"cs_old_man1a", 518814684},
-{"cs_old_man2", 2566514544},
-{"cs_omega", 2339419141},
-{"cs_orleans", 2905870170},
-{"cs_paper", 1798879480},
-{"cs_patricia", 3750433537},
-{"cs_priest", 1299047806},
-{"cs_prolsec_02", 512955554},
-{"cs_russiandrunk", 1179785778},
-{"cs_siemonyetarian", 3230888450},
-{"cs_solomon", 4140949582},
-{"cs_stevehains", 2766184958},
-{"cs_stretch", 2302502917},
-{"cs_tanisha", 1123963760},
-{"cs_taocheng", 2288257085},
-{"cs_taostranslator", 1397974313},
-{"cs_tenniscoach", 1545995274},
-{"cs_terry", 978452933},
-{"cs_tom", 1776856003},
-{"cs_tomepsilon", 2349847778},
-{"cs_tracydisanto", 101298480},
-{"cs_wade", 3529955798},
-{"cs_zimbor", 3937184496},
-{"csb_abigail", 2306246977},
-{"csb_agent", 3614493108},
-{"csb_anita", 117698822},
-{"csb_anton", 2781317046},
-{"csb_ballasog", 2884567044},
-{"csb_bride", 2193587873},
-{"csb_burgerdrug", 2363277399},
-{"csb_car3guy1", 71501447},
-{"csb_car3guy2", 327394568},
-{"csb_chef", 2739391114},
-{"csb_chef2", 2925257274},
-{"csb_chin_goon", 2831296918},
-{"csb_cletus", 3404326357},
-{"csb_cop", 2595446627},
-{"csb_customer", 2756669323},
-{"csb_denise_friend", 3045926185},
-{"csb_fos_rep", 466359675},
-{"csb_g", 2727244247},
-{"csb_groom", 2058033618},
-{"csb_grove_str_dlr", 3898166818},
-{"csb_hao", 3969814300},
-{"csb_hugh", 1863555924},
-{"csb_imran", 3812756443},
-{"csb_jackhowitzer", 1153203121},
-{"csb_janitor", 3254803008},
-{"csb_maude", 3166991819},
-{"csb_money", 2560490906},
-{"csb_mp_agent14", 1841036427},
-{"csb_mweather", 1631478380},
-{"csb_ortega", 3235579087},
-{"csb_oscar", 4095687067},
-{"csb_paige", 1528799427},
-{"csb_popov", 1635617250},
-{"csb_porndudes", 793443893},
-{"csb_prologuedriver", 4027271643},
-{"csb_prolsec", 2141384740},
-{"csb_ramp_gang", 3263172030},
-{"csb_ramp_hic", 2240582840},
-{"csb_ramp_hipster", 569740212},
-{"csb_ramp_marine", 1634506681},
-{"csb_ramp_mex", 4132362192},
-{"csb_rashcosvki", 411081129},
-{"csb_reporter", 776079908},
-{"csb_roccopelosi", 2858686092},
-{"csb_screen_writer", 2346790124},
-{"csb_stripper_01", 2934601397},
-{"csb_stripper_02", 2168724337},
-{"csb_tonya", 1665391897},
-{"csb_trafficwarden", 3727243251},
-{"csb_undercover", 4017642090},
-{"csb_vagspeak", 1224690857},
-{"g_f_importexport_01", 2225189146},
-{"g_f_y_ballas_01", 361513884},
-{"g_f_y_families_01", 1309468115},
-{"g_f_y_lost_01", 4250220510},
-{"g_f_y_vagos_01", 1520708641},
-{"g_m_importexport_01", 3164785898},
-{"g_m_m_armboss_01", 4058522530},
-{"g_m_m_armgoon_01", 4255728232},
-{"g_m_m_armlieut_01", 3882958867},
-{"g_m_m_chemwork_01", 4128603535},
-{"g_m_m_chiboss_01", 3118269184},
-{"g_m_m_chicold_01", 275618457},
-{"g_m_m_chigoon_01", 2119136831},
-{"g_m_m_chigoon_02", 4285659174},
-{"g_m_m_korboss_01", 891945583},
-{"g_m_m_mexboss_01", 1466037421},
-{"g_m_m_mexboss_02", 1226102803},
-{"g_m_y_armgoon_02", 3310258058},
-{"g_m_y_azteca_01", 1752208920},
-{"g_m_y_ballaeast_01", 4096714883},
-{"g_m_y_ballaorig_01", 588969535},
-{"g_m_y_ballasout_01", 599294057},
-{"g_m_y_famca_01", 3896218551},
-{"g_m_y_famdnf_01", 3681718840},
-{"g_m_y_famfor_01", 2217749257},
-{"g_m_y_korean_01", 611648169},
-{"g_m_y_korean_02", 2414729609},
-{"g_m_y_korlieut_01", 2093736314},
-{"g_m_y_lost_01", 1330042375},
-{"g_m_y_lost_02", 1032073858},
-{"g_m_y_lost_03", 850468060},
-{"g_m_y_mexgang_01", 3185399110},
-{"g_m_y_mexgoon_01", 653210662},
-{"g_m_y_mexgoon_02", 832784782},
-{"g_m_y_mexgoon_03", 2521633500},
-{"g_m_y_pologoon_01", 1329576454},
-{"g_m_y_pologoon_02", 2733138262},
-{"g_m_y_salvaboss_01", 2422005962},
-{"g_m_y_salvagoon_01", 663522487},
-{"g_m_y_salvagoon_02", 846439045},
-{"g_m_y_salvagoon_03", 62440720},
-{"g_m_y_strpunk_01", 4246489531},
-{"g_m_y_strpunk_02", 228715206},
-{"hc_driver", 994527967},
-{"hc_gunman", 193469166},
-{"hc_hacker", 2579169528},
-{"ig_abigail", 1074457665},
-{"ig_agent", 610988552},
-{"ig_amandatownley", 1830688247},
-{"ig_andreas", 1206185632},
-{"ig_ashley", 2129936603},
-{"ig_avon", 4242698434},
-{"ig_ballasog", 2802535058},
-{"ig_bankman", 2426248831},
-{"ig_barry", 797459875},
-{"ig_benny", 3300333010},
-{"ig_bestmen", 1464257942},
-{"ig_beverly", 3181518428},
-{"ig_brad", 3183167778},
-{"ig_bride", 1633872967},
-{"ig_car3guy1", 2230970679},
-{"ig_car3guy2", 1975732938},
-{"ig_casey", 3774489940},
-{"ig_chef", 1240128502},
-{"ig_chef2", 2240322243},
-{"ig_chengsr", 2867128955},
-{"ig_chrisformage", 678319271},
-{"ig_clay", 1825562762},
-{"ig_claypain", 2634057640},
-{"ig_cletus", 3865252245},
-{"ig_dale", 1182012905},
-{"ig_davenorton", 365775923},
-{"ig_denise", 2181772221},
-{"ig_devin", 1952555184},
-{"ig_dom", 2620240008},
-{"ig_dreyfuss", 3666413874},
-{"ig_drfriedlander", 3422293493},
-{"ig_fabien", 3499148112},
-{"ig_fbisuit_01", 988062523},
-{"ig_floyd", 2981205682},
-{"ig_g", 2216405299},
-{"ig_groom", 4274948997},
-{"ig_hao", 1704428387},
-{"ig_hunter", 3457361118},
-{"ig_janet", 225287241},
-{"ig_jay_norris", 2050158196},
-{"ig_jewelass", 257763003},
-{"ig_jimmyboston", 3986688045},
-{"ig_jimmydisanto", 1459905209},
-{"ig_joeminuteman", 3189787803},
-{"ig_johnnyklebitz", 2278195374},
-{"ig_josef", 3776618420},
-{"ig_josh", 2040438510},
-{"ig_karen_daniels", 3948009817},
-{"ig_kerrymcintosh", 1530648845},
-{"ig_lamardavis", 1706635382},
-{"ig_lazlow", 3756278757},
-{"ig_lestercrest_2", 1849883942},
-{"ig_lestercrest", 1302784073},
-{"ig_lifeinvad_01", 1401530684},
-{"ig_lifeinvad_02", 666718676},
-{"ig_magenta", 4242313482},
-{"ig_malc", 4055673113},
-{"ig_manuel", 4248931856},
-{"ig_marnie", 411185872},
-{"ig_maryann", 2741999622},
-{"ig_maude", 1005070462},
-{"ig_michelle", 3214308084},
-{"ig_milton", 3408943538},
-{"ig_molly", 2936266209},
-{"ig_money", 939183526},
-{"ig_mp_agent14", 4227433577},
-{"ig_mrk", 3990661997},
-{"ig_mrs_thornhill", 503621995},
-{"ig_mrsphillips", 946007720},
-{"ig_natalia", 3726105915},
-{"ig_nervousron", 3170921201},
-{"ig_nigel", 3367442045},
-{"ig_old_man1a", 1906124788},
-{"ig_old_man2", 4011150407},
-{"ig_omega", 1625728984},
-{"ig_oneil", 768005095},
-{"ig_orleans", 1641334641},
-{"ig_ortega", 648372919},
-{"ig_paige", 357551935},
-{"ig_paper", 2577072326},
-{"ig_patricia", 3312325004},
-{"ig_popov", 645279998},
-{"ig_priest", 1681385341},
-{"ig_prolsec_02", 666086773},
-{"ig_ramp_gang", 3845001836},
-{"ig_ramp_hic", 1165307954},
-{"ig_ramp_hipster", 3740245870},
-{"ig_ramp_mex", 3870061732},
-{"ig_rashcosvki", 940330470},
-{"ig_roccopelosi", 3585757951},
-{"ig_russiandrunk", 1024089777},
-{"ig_screen_writer", 4293277303},
-{"ig_siemonyetarian", 1283141381},
-{"ig_solomon", 2260598310},
-{"ig_stevehains", 941695432},
-{"ig_stretch", 915948376},
-{"ig_talina", 3885222120},
-{"ig_tanisha", 226559113},
-{"ig_taocheng", 3697041061},
-{"ig_taostranslator", 2089096292},
-{"ig_tenniscoach", 2721800023},
-{"ig_terry", 1728056212},
-{"ig_tomepsilon", 3447159466},
-{"ig_tonya", 3402126148},
-{"ig_tracydisanto", 3728026165},
-{"ig_trafficwarden", 1461287021},
-{"ig_tylerdix", 1382414087},
-{"ig_vagspeak", 4194109068},
-{"ig_wade", 2459507570},
-{"ig_zimbor", 188012277},
-{"mp_f_boatstaff_01", 848542158},
-{"mp_f_cardesign_01", 606876839},
-{"mp_f_chbar_01", 3287737221},
-{"mp_f_cocaine_01", 1264941816},
-{"mp_f_counterfeit_01", 3079205365},
-{"mp_f_deadhooker", 1943971979},
-{"mp_f_execpa_01", 1126998116},
-{"mp_f_execpa_02", 1500695792},
-{"mp_f_forgery_01", 2014985464},
-{"mp_f_freemode_01", 2627665880},
-{"mp_f_helistaff_01", 431423238},
-{"mp_f_meth_01", 3534913217},
-{"mp_f_misty_01", 3509125021},
-{"mp_f_stripperlite", 695248020},
-{"mp_f_weed_01", 2992993187},
-{"mp_g_m_pros_01", 1822283721},
-{"mp_m_avongoon", 2618542997},
-{"mp_m_boatstaff_01", 3361671816},
-{"mp_m_bogdangoon", 1297520375},
-{"mp_m_claude_01", 3237179831},
-{"mp_m_cocaine_01", 1456705429},
-{"mp_m_counterfeit_01", 2555758964},
-{"mp_m_exarmy_01", 1161072059},
-{"mp_m_execpa_01", 1048844220},
-{"mp_m_famdd_01", 866411749},
-{"mp_m_fibsec_01", 1558115333},
-{"mp_m_forgery_01", 1631482011},
-{"mp_m_freemode_01", 1885233650},
-{"mp_m_g_vagfun_01", 3299219389},
-{"mp_m_marston_01", 943915367},
-{"mp_m_meth_01", 3988008767},
-{"mp_m_niko_01", 4007317449},
-{"mp_m_securoguard_01", 3660355662},
-{"mp_m_shopkeep_01", 416176080},
-{"mp_m_waremech_01", 4154933561},
-{"mp_m_weapexp_01", 921328393},
-{"mp_m_weapwork_01", 1099321454},
-{"mp_m_weed_01", 2441008217},
-{"mp_s_m_armoured_01", 3455013896},
-{"player_one", 2602752943},
-{"player_two", 2608926626},
-{"player_zero", 225514697},
-{"s_f_m_fembarber", 373000027},
-{"s_f_m_maid_01", 3767780806},
-{"s_f_m_shop_high", 2923947184},
-{"s_f_m_sweatshop_01", 824925120},
-{"s_f_y_airhostess_01", 1567728751},
-{"s_f_y_bartender_01", 2014052797},
-{"s_f_y_baywatch_01", 1250841910},
-{"s_f_y_cop_01", 368603149},
-{"s_f_y_factory_01", 1777626099},
-{"s_f_y_hooker_01", 42647445},
-{"s_f_y_hooker_02", 348382215},
-{"s_f_y_hooker_03", 51789996},
-{"s_f_y_migrant_01", 3579522037},
-{"s_f_y_movprem_01", 587253782},
-{"s_f_y_ranger_01", 2680682039},
-{"s_f_y_scrubs_01", 2874755766},
-{"s_f_y_sheriff_01", 1096929346},
-{"s_f_y_shop_low", 2842568196},
-{"s_f_y_shop_mid", 1055701597},
-{"s_f_y_stripper_01", 1381498905},
-{"s_f_y_stripper_02", 1846523796},
-{"s_f_y_stripperlite", 1544875514},
-{"s_f_y_sweatshop_01", 2231547570},
-{"s_m_m_ammucountry", 233415434},
-{"s_m_m_armoured_01", 2512875213},
-{"s_m_m_armoured_02", 1669696074},
-{"s_m_m_autoshop_01", 68070371},
-{"s_m_m_autoshop_02", 4033578141},
-{"s_m_m_bouncer_01", 2681481517},
-{"s_m_m_ccrew_01", 3387290987},
-{"s_m_m_chemsec_01", 788443093},
-{"s_m_m_ciasec_01", 1650288984},
-{"s_m_m_cntrybar_01", 436345731},
-{"s_m_m_dockwork_01", 349680864},
-{"s_m_m_doctor_01", 3564307372},
-{"s_m_m_fiboffice_01", 3988550982},
-{"s_m_m_fiboffice_02", 653289389},
-{"s_m_m_fibsec_01", 2072724299},
-{"s_m_m_gaffer_01", 2841034142},
-{"s_m_m_gardener_01", 1240094341},
-{"s_m_m_gentransport", 411102470},
-{"s_m_m_hairdress_01", 1099825042},
-{"s_m_m_highsec_01", 4049719826},
-{"s_m_m_highsec_02", 691061163},
-{"s_m_m_janitor", 2842417644},
-{"s_m_m_lathandy_01", 2659242702},
-{"s_m_m_lifeinvad_01", 3724572669},
-{"s_m_m_linecook", 3684436375},
-{"s_m_m_lsmetro_01", 1985653476},
-{"s_m_m_mariachi_01", 2124742566},
-{"s_m_m_marine_01", 4074414829},
-{"s_m_m_marine_02", 4028996995},
-{"s_m_m_migrant_01", 3977045190},
-{"s_m_m_movalien_01", 1684083350},
-{"s_m_m_movprem_01", 3630066984},
-{"s_m_m_movspace_01", 3887273010},
-{"s_m_m_paramedic_01", 3008586398},
-{"s_m_m_pilot_01", 3881519900},
-{"s_m_m_pilot_02", 4131252449},
-{"s_m_m_postal_01", 1650036788},
-{"s_m_m_postal_02", 1936142927},
-{"s_m_m_prisguard_01", 1456041926},
-{"s_m_m_scientist_01", 1092080539},
-{"s_m_m_security_01", 3613962792},
-{"s_m_m_snowcop_01", 451459928},
-{"s_m_m_strperf_01", 2035992488},
-{"s_m_m_strpreach_01", 469792763},
-{"s_m_m_strvend_01", 3465614249},
-{"s_m_m_trucker_01", 1498487404},
-{"s_m_m_ups_01", 2680389410},
-{"s_m_m_ups_02", 3502104854},
-{"s_m_o_busker_01", 2912874939},
-{"s_m_y_airworker", 1644266841},
-{"s_m_y_ammucity_01", 2651349821},
-{"s_m_y_armymech_01", 1657546978},
-{"s_m_y_autopsy_01", 2988916046},
-{"s_m_y_barman_01", 3852538118},
-{"s_m_y_baywatch_01", 189425762},
-{"s_m_y_blackops_01", 3019107892},
-{"s_m_y_blackops_02", 2047212121},
-{"s_m_y_blackops_03", 1349953339},
-{"s_m_y_busboy_01", 3640249671},
-{"s_m_y_chef_01", 261586155},
-{"s_m_y_clown_01", 71929310},
-{"s_m_y_construct_01", 3621428889},
-{"s_m_y_construct_02", 3321821918},
-{"s_m_y_cop_01", 1581098148},
-{"s_m_y_dealer_01", 3835149295},
-{"s_m_y_devinsec_01", 2606068340},
-{"s_m_y_dockwork_01", 2255894993},
-{"s_m_y_doorman_01", 579932932},
-{"s_m_y_dwservice_01", 1976765073},
-{"s_m_y_dwservice_02", 4119890438},
-{"s_m_y_factory_01", 1097048408},
-{"s_m_y_fireman_01", 3065114024},
-{"s_m_y_garbage", 4000686095},
-{"s_m_y_grip_01", 815693290},
-{"s_m_y_hwaycop_01", 1939545845},
-{"s_m_y_marine_01", 1702441027},
-{"s_m_y_marine_02", 1490458366},
-{"s_m_y_marine_03", 1925237458},
-{"s_m_y_mime", 1021093698},
-{"s_m_y_pestcont_01", 1209091352},
-{"s_m_y_pilot_01", 2872052743},
-{"s_m_y_prismuscl_01", 1596003233},
-{"s_m_y_prisoner_01", 2981862233},
-{"s_m_y_ranger_01", 4017173934},
-{"s_m_y_robber_01", 3227390873},
-{"s_m_y_sheriff_01", 2974087609},
-{"s_m_y_shop_mask", 1846684678},
-{"s_m_y_strvend_01", 2457805603},
-{"s_m_y_swat_01", 2374966032},
-{"s_m_y_uscg_01", 3389018345},
-{"s_m_y_valet_01", 999748158},
-{"s_m_y_waiter_01", 2907468364},
-{"s_m_y_winclean_01", 1426951581},
-{"s_m_y_xmech_01", 1142162924},
-{"s_m_y_xmech_02_mp", 1762949645},
-{"s_m_y_xmech_02", 3189832196},
-{"u_f_m_corpse_01", 773063444},
-{"u_f_m_drowned_01", 3623056905},
-{"u_f_m_miranda", 1095737979},
-{"u_f_m_promourn_01", 2718472679},
-{"u_f_o_moviestar", 894928436},
-{"u_f_o_prolhost_01", 3306347811},
-{"u_f_y_bikerchic", 4198014287},
-{"u_f_y_comjane", 3064628686},
-{"u_f_y_corpse_01", 2624589981},
-{"u_f_y_corpse_02", 228356856},
-{"u_f_y_hotposh_01", 2526768638},
-{"u_f_y_jewelass_01", 4040474158},
-{"u_f_y_mistress", 1573528872},
-{"u_f_y_poppymich", 602513566},
-{"u_f_y_princess", 3538133636},
-{"u_f_y_spyactress", 1535236204},
-{"u_m_m_aldinapoli", 4042020578},
-{"u_m_m_bankman", 3272005365},
-{"u_m_m_bikehire_01", 1984382277},
-{"u_m_m_doa_01", 1646160893},
-{"u_m_m_edtoh", 712602007},
-{"u_m_m_fibarchitect", 874722259},
-{"u_m_m_filmdirector", 728636342},
-{"u_m_m_glenstank_01", 1169888870},
-{"u_m_m_griff_01", 3293887675},
-{"u_m_m_jesus_01", 3459037009},
-{"u_m_m_jewelsec_01", 2899099062},
-{"u_m_m_jewelthief", 3872144604},
-{"u_m_m_markfost", 479578891},
-{"u_m_m_partytarget", 2180468199},
-{"u_m_m_prolsec_01", 1888624839},
-{"u_m_m_promourn_01", 3465937675},
-{"u_m_m_rivalpap", 1624626906},
-{"u_m_m_spyactor", 2886641112},
-{"u_m_m_streetart_01", 1813637474},
-{"u_m_m_willyfist", 2423691919},
-{"u_m_o_filmnoir", 732742363},
-{"u_m_o_finguru_01", 1189322339},
-{"u_m_o_taphillbilly", 2585681490},
-{"u_m_o_tramp_01", 1787764635},
-{"u_m_y_abner", 4037813798},
-{"u_m_y_antonb", 3479321132},
-{"u_m_y_babyd", 3658575486},
-{"u_m_y_baygor", 1380197501},
-{"u_m_y_burgerdrug_01", 2340239206},
-{"u_m_y_chip", 610290475},
-{"u_m_y_corpse_01", 2495782975},
-{"u_m_y_cyclist_01", 755956971},
-{"u_m_y_fibmugger_01", 2243544680},
-{"u_m_y_guido_01", 3333724719},
-{"u_m_y_gunvend_01", 3005388626},
-{"u_m_y_hippie_01", 4030826507},
-{"u_m_y_imporage", 880829941},
-{"u_m_y_juggernaut_01", 2431602996},
-{"u_m_y_justin", 2109968527},
-{"u_m_y_mani", 3367706194},
-{"u_m_y_militarybum", 1191548746},
-{"u_m_y_paparazzi", 1346941736},
-{"u_m_y_party_01", 921110016},
-{"u_m_y_pogo_01", 3696858125},
-{"u_m_y_prisoner_01", 2073775040},
-{"u_m_y_proldriver_01", 2237544099},
-{"u_m_y_rsranger_01", 1011059922},
-{"u_m_y_sbike", 1794381917},
-{"u_m_y_staggrm_01", 2442448387},
-{"u_m_y_tattoo_01", 2494442380},
-{"u_m_y_zombie_01", 2890614022},
-}
-
-SoundAnnoy = {
-{"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"TIME_LAPSE_MASTER", "0"},
-{"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Timer_10s", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"TIMER_STOP", "HUD_MINI_GAME_SOUNDSET"},
-{"5s_To_Event_Start_Countdown", "GTAO_FM_Events_Soundset"},
-{"10s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-{"5s", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-{"5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET"},
-{"3_2_1_NON_RACE", "HUD_MINI_GAME_SOUNDSET"},
-{"3_2_1", "HUD_MINI_GAME_SOUNDSET"},
-{"WIND", "EXTREME_01_SOUNDSET"},
-{"HOUSE_FIRE", "JOSH_03_SOUNDSET"},
-{"Hot_Tub_Loop", "GTAO_Yacht_SoundSet"},
-{"Arming_Countdown", "GTAO_Speed_Convoy_Soundset"},
-{"Bomb_Disarmed", "GTAO_Speed_Convoy_Soundset"},
-{"Boss_Blipped", "GTAO_Magnate_Hunt_Boss_SoundSet"},
-{"Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset"},
-{"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet"},
-{"ARM_WRESTLING_WHOOSH_MASTER", "0"},
-{"ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", "ASSASSINATION_MULTI"},
-{"ATM_WINDOW", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"BASE_JUMP_PASSED", "HUD_AWARDS"},
-{"Bed", "WastedSounds"},
-{"Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Blade_Appear", "APT_BvS_Soundset"},
-{"BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS"},
-{"Breaker_01", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"Breaker_02", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"Bus_Schedule_Pickup", "DLC_PRISON_BREAK_HEIST_SOUNDS"},
-{"CABLE_SNAPS", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-{"CAM_PAN_DARTS", "HUD_MINI_GAME_SOUNDSET"},
-{"Camera_Shoot", "Phone_Soundset_Franklin"},
-{"CANCEL", "HUD_FREEMODE_SOUNDSET"},
-{"CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS"},
-{"CHALLENGE_UNLOCKED", "HUD_AWARDS"},
-{"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
-{"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"},
-{"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"},
-{"Checkpoint_Hit", "GTAO_FM_Events_Soundset"},
-{"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"},
-{"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"},
-{"CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET"},
-{"Checkpoint_Teammate", "GTAO_Shepherd_Sounds"},
-{"CHECKPOINT_UNDER_THE_BRIDGE", "HUD_MINI_GAME_SOUNDSET"},
-{"Click", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE"},
-{"Click_Fail", "WEB_NAVIGATION_SOUNDS_PHONE"},
-{"Click_Special", "WEB_NAVIGATION_SOUNDS_PHONE"},
-{"CLOSED", "MP_PROPERTIES_ELEVATOR_DOORS"},
-{"CONFIRM_BEEP", "HUD_MINI_GAME_SOUNDSET"},
-{"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Continue_Accepted", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Continue_Appears", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Crash", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset"},
-{"Criminal_Damage_Kill_Player", "GTAO_FM_Events_Soundset"},
-{"Criminal_Damage_Low_Value", "GTAO_FM_Events_Soundset"},
-{"Cycle_Item", "DLC_Dmod_Prop_Editor_Sounds"},
-{"DELETE", "HUD_DEATHMATCH_SOUNDSET"},
-{"Delete_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Deliver_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"DiggerRevOneShot", "BulldozerDefault"},
-{"Door_Open", "DOCKS_HEIST_FINALE_2B_SOUNDS"},
-{"Drill_Pin_Break", "DLC_HEIST_FLEECA_SOUNDSET"},
-{"Dropped", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"EDIT", "HUD_DEATHMATCH_SOUNDSET"},
-{"Start_Squelch", "CB_RADIO_SFX"},
-{"End_Squelch", "CB_RADIO_SFX"},
-{"Enemy_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
-{"Enemy_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Enemy_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Enter_1st", "GTAO_FM_Events_Soundset"},
-{"Enter_Area", "DLC_Lowrider_Relay_Race_Sounds"},
-{"Enter_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
-{"ERROR", "HUD_AMMO_SHOP_SOUNDSET"},
-{"Event_Message_Purple", "GTAO_FM_Events_Soundset"},
-{"Event_Start_Text", "GTAO_FM_Events_Soundset"},
-{"EXIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Exit_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Failure", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Falling_Crates", "EXILE_1"},
-{"Faster_Bar_Full", "RESPAWN_ONLINE_SOUNDSET"},
-{"Faster_Click", "RESPAWN_ONLINE_SOUNDSET"},
-{"FestiveGift", "Feed_Message_Sounds"},
-{"FIRST_PLACE", "HUD_MINI_GAME_SOUNDSET"},
-{"FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS"},
-{"FLYING_STREAM_END_INSTANT", "FAMILY_5_SOUNDS"},
-{"FocusIn", "HintCamSounds"},
-{"FocusOut", "HintCamSounds"},
-{"Friend_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
-{"GO", "HUD_MINI_GAME_SOUNDSET"},
-{"Goal", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"GOLF_BIRDIE", "HUD_AWARDS"},
-{"GOLF_EAGLE", "HUD_AWARDS"},
-{"GOLF_HUD_HOLE_IN_ONE_MASTER", "0"},
-{"GOLF_HUD_SCORECARD_MASTER", "0"},
-{"GOLF_NEW_RECORD", "HUD_AWARDS"},
-{"Goon_Paid_Small", "GTAO_Boss_Goons_FM_Soundset"},
-{"Grab_Parachute", "BASEJUMPS_SOUNDS"},
-{"Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"BBQ_EXPLODE", "JOSH_03_SOUNDSET"},
-{"HACKING_CLICK", "0"},
-{"HACKING_CLICK_BAD", "0"},
-{"HACKING_CLICK_GOOD", "0"},
-{"HACKING_MOVE_CURSOR", "0"},
-{"Hang_Up", "Phone_SoundSet_Michael"},
-{"HIGHLIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Highlight_Accept", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Highlight_Cancel", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Highlight_Error", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Highlight_Move", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"HIGHLIGHT_NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Hit", "RESPAWN_ONLINE_SOUNDSET"},
-{"Hit_1", "LONG_PLAYER_SWITCH_SOUNDS"},
-{"Hit_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"Hit_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"HORDE_COOL_DOWN_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"HUD_FREEMODE_CANCEL_MASTER", "0"},
-{"Kill_List_Counter", "GTAO_FM_Events_Soundset"},
-{"LEADERBOARD", "HUD_MINI_GAME_SOUNDSET"},
-{"Lights_On", "GTAO_MUGSHOT_ROOM_SOUNDS"},
-{"LIMIT", "DLC_APT_YACHT_DOOR_SOUNDS"},
-{"Load_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
-{"LOCAL_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"LOCAL_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"LOOSE_MATCH", "HUD_MINI_GAME_SOUNDSET"},
-{"Lose_1st", "GTAO_FM_Events_Soundset"},
-{"LOSER", "HUD_AWARDS"},
-{"Map_Roll_Down", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Map_Roll_Up", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"MARKER_ERASE", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"MARTIN1_DISTANT_TRAIN_HORNS_MASTER", "0"},
-{"MEDAL_BRONZE", "HUD_AWARDS"},
-{"MEDAL_GOLD", "HUD_AWARDS"},
-{"MEDAL_SILVER", "HUD_AWARDS"},
-{"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"},
-{"Menu_Accept", "Phone_SoundSet_Default"},
-{"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_Flash", "WastedSounds"},
-{"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_Impact", "WastedSounds"},
-{"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"NAV", "HUD_AMMO_SHOP_SOUNDSET"},
-{"Nav_Arrow_Ahead", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Nav_Arrow_Behind", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Nav_Arrow_Left", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Nav_Arrow_Right", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"NAV_LEFT_RIGHT", "HUD_FREEMODE_SOUNDSET"},
-{"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"},
-{"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"},
-{"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Object_Collect_Player", "GTAO_FM_Events_Soundset"},
-{"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"},
-{"Off_High", "MP_RADIO_SFX"},
-{"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"ON", "NOIR_FILTER_SOUNDS"},
-{"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"},
-{"OOB_Cancel", "GTAO_FM_Events_Soundset"},
-{"OOB_Start", "GTAO_FM_Events_Soundset"},
-{"OPEN_WINDOW", "LESTER1A_SOUNDS"},
-{"OPENED", "MP_PROPERTIES_ELEVATOR_DOORS"},
-{"OTHER_TEXT", "HUD_AWARDS"},
-{"Out_Of_Area", "DLC_Lowrider_Relay_Race_Sounds"},
-{"Out_Of_Bounds_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Paper_Shuffle", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Parcel_Vehicle_Lost", "GTAO_FM_Events_Soundset"},
-{"Payment_Non_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
-{"Payment_Player", "DLC_HEISTS_GENERIC_SOUNDS"},
-{"Pen_Tick", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"PERSON_SCROLL", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"PERSON_SELECT", "HEIST_BULLETIN_BOARD_SOUNDSET"},
-{"Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET"},
-{"PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Pin_Bad", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"PIN_BUTTON", "ATM_SOUNDS"},
-{"Pin_Centred", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"Pin_Good", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
-{"PIPES_LAND", "CONSTRUCTION_ACCIDENT_1_SOUNDS"},
-{"Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Player_Collect", "DLC_PILOT_MP_HUD_SOUNDS"},
-{"Player_Enter_Line", "GTAO_FM_Cross_The_Line_Soundset"},
-{"Player_Exit_Line", "GTAO_FM_Cross_The_Line_Soundset"},
-{"Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Pre_Screen_Stinger", "DLC_HEISTS_FAILED_SCREEN_SOUNDS"},
-{"PS2A_MONEY_LOST", "PALETO_SCORE_2A_BANK_SS"},
-{"PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET"},
-{"Put_Away", "Phone_SoundSet_Michael"},
-{"QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"QUIT_WHOOSH", "HUD_MINI_GAME_SOUNDSET"},
-{"RACE_PLACED", "HUD_AWARDS"},
-{"RAMP_DOWN", "TRUCK_RAMP_DOWN"},
-{"RAMP_UP", "TRUCK_RAMP_DOWN"},
-{"RANK_UP", "HUD_AWARDS"},
-{"REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"REMOTE_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
-{"Reset_Prop_Position", "DLC_Dmod_Prop_Editor_Sounds"},
-{"RESTART", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"},
-{"ROPE_CUT", "ROPE_CUT_SOUNDSET"},
-{"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"},
-{"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"},
-{"SCOPE_UI_MASTER", "0"},
-{"ScreenFlash", "WastedSounds"},
-{"SCREEN_SWIPE", "CELEBRATION_SWIPE"},
-{"SELECT", "HUD_FREEMODE_SOUNDSET"},
-{"Select_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"},
-{"Shard_Disappear", "GTAO_FM_Events_Soundset"},
-{"SHOOTING_RANGE_ROUND_OVER", "HUD_AWARDS"},
-{"Short_Transition_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"Short_Transition_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
-{"SKIP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Start", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"STUN_COLLECT", "MINUTE_MAN_01_SOUNDSET"},
-{"Success", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"Swap_Sides", "DLC_HALLOWEEN_FVJ_Sounds"},
-{"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
-{"Tattooing_Oneshot", "TATTOOIST_SOUNDS"},
-{"Tattooing_Oneshot_Remove", "TATTOOIST_SOUNDS"},
-{"Team_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"},
-{"TENNIS_MATCH_POINT", "HUD_AWARDS"},
-{"TENNIS_POINT_WON", "HUD_AWARDS"},
-{"TextHit", "WastedSounds"},
-{"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"Turn", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
-{"UNDER_THE_BRIDGE", "HUD_AWARDS"},
-{"WAYPOINT_SET", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
-{"WEAPON_ATTACHMENT_EQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_ATTACHMENT_UNEQUIP", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"},
-{"WEAPON_SELECT_ARMOR", "HUD_AMMO_SHOP_SOUNDSET"},
-{"Whistle", "DLC_TG_Running_Back_Sounds"},
-{"Whoosh_1s_L_to_R", "MP_LOBBY_SOUNDS"},
-{"Whoosh_1s_R_to_L", "MP_LOBBY_SOUNDS"},
-{"WIN", "HUD_AWARDS"},
-{"Zone_Enemy_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Zone_Neutral", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Zone_Team_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
-{"Zoom_In", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Zoom_Left", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-{"Zoom_Right", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
-}
+boneid = {57597, 24818, 24817, 24816, 23553, 11816, 38180, 40269, 51826, 57005, 28252, 52301, 10706, 36864, 17916, 53251, 11816, 24532, 39317, 45509, 58271, 18905, 61163, 14201, 64729, 63931, 65068, 31086, 12844}
+ped_hashes = {{"a_c_panther", 3877461608}, {"a_f_y_beach_02", 3105934379}, {"a_f_y_bevhills_05", 2464671085}, {"a_f_y_clubcust_01", 1744231373}, {"a_f_y_clubcust_02", 357447289}, {"a_f_y_clubcust_03", 10751269}, {"a_f_y_clubcust_04", 786557344}, {"a_f_y_gencaspat_01", 2434503858}, {"a_f_y_smartcaspat_01", 279228114}, {"a_m_m_mlcrisis_01", 1561088805}, {"a_m_o_beach_02", 3243462130}, {"a_m_y_beach_04", 3105523388}, {"a_m_y_clubcust_01", 2813792322},
+              {"a_m_y_clubcust_02", 3324988722}, {"a_m_y_clubcust_03", 3572886207}, {"a_m_y_clubcust_04", 3793814805}, {"a_m_y_gencaspat_01", 2600762591}, {"a_m_y_smartcaspat_01", 553826858}, {"cs_jimmydisanto2", 1836024091}, {"cs_lestercrest_2", 191074589}, {"cs_lestercrest_3", 496317824}, {"cs_patricia_02", 788179139}, {"cs_taocheng2", 650034742}, {"cs_taostranslator2", 3017289007}, {"csb_agatha", 756308504}, {"csb_alan", 1925887591}, {"csb_ary", 3059505486},
+              {"csb_avery", 1427949869}, {"csb_avon", 406009421}, {"csb_bogdan", 1594283837}, {"csb_brucie2", 3361779221}, {"csb_bryony", 2006035933}, {"csb_celeb_01", 592225333}, {"csb_dix", 3957337349}, {"csb_djblamadon", 1835399538}, {"csb_englishdave", 3533210174}, {"csb_englishdave_02", 3713623407}, {"csb_georginacheng", 345107131}, {"csb_gustavo", 2331262242}, {"csb_helmsmanpavel", 2675868152}, {"csb_huang", 1064198787}, {"csb_isldj_00", 2053038501},
+              {"csb_isldj_01", 887084708}, {"csb_isldj_02", 1712601360}, {"csb_isldj_03", 2440761309}, {"csb_isldj_04", 2998686303}, {"csb_jio", 2727058989}, {"csb_juanstrickler", 3612049721}, {"csb_miguelmadrazo", 3685838978}, {"csb_mjo", 2700978005}, {"csb_mrs_r", 2642001958}, {"csb_sol", 1324952405}, {"csb_sss", 3772505184}, {"csb_talcc", 3392144504}, {"csb_talmm", 3785408493}, {"csb_thornton", 4086880849}, {"csb_tomcasino", 3488666811}, {"csb_tonyprince", 1566545691},
+              {"csb_vincent", 520636071}, {"csb_vincent_2", 2782957088}, {"csb_wendy", 1437043119}, {"g_f_importexport_01", 2225189146}, {"g_m_importexport_01", 3164785898}, {"g_m_m_cartelguards_01", 2127932792}, {"g_m_m_cartelguards_02", 1821116645}, {"g_m_m_casrn_01", 1020431539}, {"ig_agatha", 1855569864}, {"ig_ary", 3473698871}, {"ig_avery", 3088269167}, {"ig_avon", 4242698434}, {"ig_brucie2", 3893268832}, {"ig_celeb_01", 3676106820}, {"ig_dix", 4207997581},
+              {"ig_djblamadon", 4219210853}, {"ig_djblamrupert", 914073350}, {"ig_djblamryanh", 400495475}, {"ig_djblamryans", 3057799231}, {"ig_djdixmanager", 4221366718}, {"ig_djgeneric_01", 2580849741}, {"ig_djsolfotios", 1241432569}, {"ig_djsoljakob", 2486302027}, {"ig_djsolmanager", 2123514453}, {"ig_djsolmike", 795497466}, {"ig_djsolrobt", 1194880004}, {"ig_djtalaurelia", 2972453492}, {"ig_djtalignazio", 2787461577}, {"ig_englishdave", 205318924},
+              {"ig_englishdave_02", 905946442}, {"ig_georginacheng", 4014713647}, {"ig_gustavo", 3045437975}, {"ig_helmsmanpavel", 3619807921}, {"ig_huang", 3218252083}, {"ig_isldj_00", 3802345064}, {"ig_isldj_01", 1866942414}, {"ig_isldj_02", 1562223483}, {"ig_isldj_03", 322310057}, {"ig_isldj_04", 2154719772}, {"ig_isldj_04_d_01", 2979249514}, {"ig_isldj_04_d_02", 4260779566}, {"ig_isldj_04_e_01", 590182749}, {"ig_jackie", 2040422902}, {"ig_jimmyboston_02", 1135976220},
+              {"ig_jimmydisanto2", 2217591510}, {"ig_jio", 1937203007}, {"ig_juanstrickler", 507392637}, {"ig_kaylee", 2810251555}, {"ig_kerrymcintosh_02", 3628252818}, {"ig_lacey_jones_02", 3426139884}, {"ig_lazlow_2", 2231650028}, {"ig_lestercrest_2", 1849883942}, {"ig_lestercrest_3", 2013139108}, {"ig_malc", 4055673113}, {"ig_miguelmadrazo", 2781707480}, {"ig_mjo", 761115490}, {"ig_oldrichguy", 1006915658}, {"ig_patricia_02", 3272690865}, {"ig_pilot", 2253313678},
+              {"ig_sacha", 1476581877}, {"ig_sol", 3786117468}, {"ig_sss", 991486725}, {"ig_talcc", 3828621987}, {"ig_talmm", 1182156569}, {"ig_taocheng2", 1506159504}, {"ig_taostranslator2", 3828553631}, {"ig_thornton", 2482949079}, {"ig_tomcasino", 55858852}, {"ig_tonyprince", 761829301}, {"ig_tylerdix_02", 1511543927}, {"ig_vincent", 736659122}, {"ig_vincent_2", 197443027}, {"ig_wendy", 1850188817}, {"mp_f_bennymech_01", 2139205821}, {"mp_f_cardesign_01", 606876839},
+              {"mp_f_chbar_01", 3287737221}, {"mp_f_cocaine_01", 1264941816}, {"mp_f_counterfeit_01", 3079205365}, {"mp_f_execpa_01", 1126998116}, {"mp_f_forgery_01", 2014985464}, {"mp_f_helistaff_01", 431423238}, {"mp_f_meth_01", 3534913217}, {"mp_f_weed_01", 2992993187}, {"mp_m_avongoon", 2618542997}, {"mp_m_bogdangoon", 1297520375}, {"mp_m_cocaine_01", 1456705429}, {"mp_m_counterfeit_01", 2555758964}, {"mp_m_execpa_01", 1048844220}, {"mp_m_forgery_01", 1631482011},
+              {"mp_m_meth_01", 3988008767}, {"mp_m_securoguard_01", 3660355662}, {"mp_m_waremech_01", 4154933561}, {"mp_m_weapexp_01", 921328393}, {"mp_m_weapwork_01", 1099321454}, {"mp_m_weed_01", 2441008217}, {"s_f_y_beachbarstaff_01", 3269663242}, {"s_f_y_casino_01", 3163733717}, {"s_f_y_clubbar_01", 3240507723}, {"s_f_y_clubbar_02", 1438999163}, {"s_m_m_bouncer_02", 1376128402}, {"s_m_m_drugprocess_01", 1547070595}, {"s_m_m_fieldworker_01", 2423573072},
+              {"s_m_m_highsec_03", 518696223}, {"s_m_m_highsec_04", 1442749254}, {"s_m_y_casino_01", 337826907}, {"s_m_y_clubbar_01", 1299424319}, {"s_m_y_waretech_01", 1221043248}, {"s_m_y_westsec_01", 2719478597}, {"s_m_y_westsec_02", 3200789669}, {"s_m_y_xmech_02_mp", 1762949645}, {"u_f_m_casinocash_01", 3138220789}, {"u_f_m_casinoshop_01", 338154536}, {"u_f_m_debbie_01", 223828550}, {"u_f_m_miranda_02", 3954904244}, {"u_f_o_carol", 1415150394},
+              {"u_f_o_eileen", 2630685688}, {"u_f_y_beth", 2503965067}, {"u_f_y_danceburl_01", 222643882}, {"u_f_y_dancelthr_01", 130590395}, {"u_f_y_dancerave_01", 2900533745}, {"u_f_y_lauren", 967594628}, {"u_f_y_poppymich_02", 1823868411}, {"u_f_y_taylor", 450271392}, {"u_m_m_blane", 2543361176}, {"u_m_m_curtis", 4161104501}, {"u_m_m_vince", 2526968950}, {"u_m_o_dean", 4188740747}, {"u_m_y_caleb", 4150317356}, {"u_m_y_corpse_01", 2495782975},
+              {"u_m_y_croupthief_01", 2145640135}, {"u_m_y_danceburl_01", 1443057394}, {"u_m_y_dancelthr_01", 4202382694}, {"u_m_y_dancerave_01", 2145639711}, {"u_m_y_gabriel", 1278330017}, {"u_m_y_juggernaut_01", 2431602996}, {"u_m_y_smugmech_01", 3446096293}, {"u_m_y_ushi", 4218162071}, {"a_c_boar", 3462393972}, {"a_c_cat_01", 1462895032}, {"a_c_chickenhawk", 2864127842}, {"a_c_chimp", 2825402133}, {"a_c_chop", 351016938}, {"a_c_cormorant", 1457690978},
+              {"a_c_cow", 4244282910}, {"a_c_coyote", 1682622302}, {"a_c_crow", 402729631}, {"a_c_deer", 3630914197}, {"a_c_dolphin", 2344268885}, {"a_c_fish", 802685111}, {"a_c_hen", 1794449327}, {"a_c_humpback", 1193010354}, {"a_c_husky", 1318032802}, {"a_c_killerwhale", 2374682809}, {"a_c_mtlion", 307287994}, {"a_c_pig", 2971380566}, {"a_c_pigeon", 111281960}, {"a_c_poodle", 1125994524}, {"a_c_pug", 1832265812}, {"a_c_rabbit_01", 3753204865}, {"a_c_rat", 3283429734},
+              {"a_c_retriever", 882848737}, {"a_c_rhesus", 3268439891}, {"a_c_rottweiler", 2506301981}, {"a_c_seagull", 3549666813}, {"a_c_sharkhammer", 1015224100}, {"a_c_sharktiger", 113504370}, {"a_c_shepherd", 1126154828}, {"a_c_stingray", 2705875277}, {"a_c_westy", 2910340283}, {"a_f_m_beach_01", 808859815}, {"a_f_m_bevhills_01", 3188223741}, {"a_f_m_bevhills_02", 2688103263}, {"a_f_m_bodybuild_01", 1004114196}, {"a_f_m_business_02", 532905404},
+              {"a_f_m_downtown_01", 1699403886}, {"a_f_m_eastsa_01", 2638072698}, {"a_f_m_eastsa_02", 1674107025}, {"a_f_m_fatbla_01", 4206136267}, {"a_f_m_fatcult_01", 3050275044}, {"a_f_m_fatwhite_01", 951767867}, {"a_f_m_ktown_01", 1388848350}, {"a_f_m_ktown_02", 1090617681}, {"a_f_m_prolhost_01", 379310561}, {"a_f_m_salton_01", 3725461865}, {"a_f_m_skidrow_01", 2962707003}, {"a_f_m_soucent_01", 1951946145}, {"a_f_m_soucent_02", 4079145784},
+              {"a_f_m_soucentmc_01", 3454621138}, {"a_f_m_tourist_01", 1347814329}, {"a_f_m_tramp_01", 1224306523}, {"a_f_m_trampbeac_01", 2359345766}, {"a_f_o_genstreet_01", 1640504453}, {"a_f_o_indian_01", 3134700416}, {"a_f_o_ktown_01", 1204772502}, {"a_f_o_salton_01", 3439295882}, {"a_f_o_soucent_01", 1039800368}, {"a_f_o_soucent_02", 2775443222}, {"a_f_y_beach_01", 3349113128}, {"a_f_y_bevhills_01", 1146800212}, {"a_f_y_bevhills_02", 1546450936},
+              {"a_f_y_bevhills_03", 549978415}, {"a_f_y_bevhills_04", 920595805}, {"a_f_y_business_01", 664399832}, {"a_f_y_business_02", 826475330}, {"a_f_y_business_03", 2928082356}, {"a_f_y_business_04", 3083210802}, {"a_f_y_eastsa_01", 4121954205}, {"a_f_y_eastsa_02", 70821038}, {"a_f_y_eastsa_03", 1371553700}, {"a_f_y_epsilon_01", 1755064960}, {"a_f_y_femaleagent", 1348537411}, {"a_f_y_fitness_01", 1165780219}, {"a_f_y_fitness_02", 331645324},
+              {"a_f_y_genhot_01", 793439294}, {"a_f_y_golfer_01", 2111372120}, {"a_f_y_hiker_01", 813893651}, {"a_f_y_hippie_01", 343259175}, {"a_f_y_hipster_01", 2185745201}, {"a_f_y_hipster_02", 2549481101}, {"a_f_y_hipster_03", 2780469782}, {"a_f_y_hipster_04", 429425116}, {"a_f_y_indian_01", 153984193}, {"a_f_y_juggalo_01", 3675473203}, {"a_f_y_runner_01", 3343476521}, {"a_f_y_rurmeth_01", 1064866854}, {"a_f_y_scdressy_01", 3680420864}, {"a_f_y_skater_01", 1767892582},
+              {"a_f_y_soucent_01", 744758650}, {"a_f_y_soucent_02", 1519319503}, {"a_f_y_soucent_03", 2276611093}, {"a_f_y_tennis_01", 1426880966}, {"a_f_y_topless_01", 2633130371}, {"a_f_y_tourist_01", 1446741360}, {"a_f_y_tourist_02", 2435054400}, {"a_f_y_vinewood_01", 435429221}, {"a_f_y_vinewood_02", 3669401835}, {"a_f_y_vinewood_03", 933092024}, {"a_f_y_vinewood_04", 4209271110}, {"a_f_y_yoga_01", 3290105390}, {"a_m_m_acult_01", 1413662315},
+              {"a_m_m_afriamer_01", 3513928062}, {"a_m_m_beach_01", 1077785853}, {"a_m_m_beach_02", 2021631368}, {"a_m_m_bevhills_01", 1423699487}, {"a_m_m_bevhills_02", 1068876755}, {"a_m_m_business_01", 2120901815}, {"a_m_m_eastsa_01", 4188468543}, {"a_m_m_eastsa_02", 131961260}, {"a_m_m_farmer_01", 2488675799}, {"a_m_m_fatlatin_01", 1641152947}, {"a_m_m_genfat_01", 115168927}, {"a_m_m_genfat_02", 330231874}, {"a_m_m_golfer_01", 2850754114}, {"a_m_m_hasjew_01", 1809430156},
+              {"a_m_m_hillbilly_01", 1822107721}, {"a_m_m_hillbilly_02", 2064532783}, {"a_m_m_indian_01", 3721046572}, {"a_m_m_ktown_01", 3512565361}, {"a_m_m_malibu_01", 803106487}, {"a_m_m_mexcntry_01", 3716251309}, {"a_m_m_mexlabor_01", 2992445106}, {"a_m_m_og_boss_01", 1746653202}, {"a_m_m_paparazzi_01", 3972697109}, {"a_m_m_polynesian_01", 2849617566}, {"a_m_m_prolhost_01", 2534589327}, {"a_m_m_rurmeth_01", 1001210244}, {"a_m_m_salton_01", 1328415626},
+              {"a_m_m_salton_02", 1626646295}, {"a_m_m_salton_03", 2995538501}, {"a_m_m_salton_04", 2521108919}, {"a_m_m_skater_01", 3654768780}, {"a_m_m_skidrow_01", 32417469}, {"a_m_m_socenlat_01", 193817059}, {"a_m_m_soucent_01", 1750583735}, {"a_m_m_soucent_02", 2674735073}, {"a_m_m_soucent_03", 2346291386}, {"a_m_m_soucent_04", 3271294718}, {"a_m_m_stlat_02", 3265820418}, {"a_m_m_tennis_01", 1416254276}, {"a_m_m_tourist_01", 3365863812}, {"a_m_m_tramp_01", 516505552},
+              {"a_m_m_trampbeac_01", 1404403376}, {"a_m_m_tranvest_01", 3773208948}, {"a_m_m_tranvest_02", 4144940484}, {"a_m_o_acult_01", 1430544400}, {"a_m_o_acult_02", 1268862154}, {"a_m_o_beach_01", 2217202584}, {"a_m_o_genstreet_01", 2908022696}, {"a_m_o_ktown_01", 355916122}, {"a_m_o_salton_01", 539004493}, {"a_m_o_soucent_01", 718836251}, {"a_m_o_soucent_02", 1082572151}, {"a_m_o_soucent_03", 238213328}, {"a_m_o_tramp_01", 390939205}, {"a_m_y_acult_01", 3043264555},
+              {"a_m_y_acult_02", 2162532142}, {"a_m_y_beach_01", 3523131524}, {"a_m_y_beach_02", 600300561}, {"a_m_y_beach_03", 3886638041}, {"a_m_y_beachvesp_01", 2114544056}, {"a_m_y_beachvesp_02", 3394697810}, {"a_m_y_bevhills_01", 1982350912}, {"a_m_y_bevhills_02", 1720428295}, {"a_m_y_breakdance_01", 933205398}, {"a_m_y_busicas_01", 2597531625}, {"a_m_y_business_01", 3382649284}, {"a_m_y_business_02", 3014915558}, {"a_m_y_business_03", 2705543429},
+              {"a_m_y_cyclist_01", 4257633223}, {"a_m_y_dhill_01", 4282288299}, {"a_m_y_downtown_01", 766375082}, {"a_m_y_eastsa_01", 2756120947}, {"a_m_y_eastsa_02", 377976310}, {"a_m_y_epsilon_01", 2010389054}, {"a_m_y_epsilon_02", 2860711835}, {"a_m_y_gay_01", 3519864886}, {"a_m_y_gay_02", 2775713665}, {"a_m_y_genstreet_01", 2557996913}, {"a_m_y_genstreet_02", 891398354}, {"a_m_y_golfer_01", 3609190705}, {"a_m_y_hasjew_01", 3782053633}, {"a_m_y_hiker_01", 1358380044},
+              {"a_m_y_hippy_01", 2097407511}, {"a_m_y_hipster_01", 587703123}, {"a_m_y_hipster_02", 349505262}, {"a_m_y_hipster_03", 1312913862}, {"a_m_y_indian_01", 706935758}, {"a_m_y_jetski_01", 767028979}, {"a_m_y_juggalo_01", 2445950508}, {"a_m_y_ktown_01", 452351020}, {"a_m_y_ktown_02", 696250687}, {"a_m_y_latino_01", 321657486}, {"a_m_y_methhead_01", 1768677545}, {"a_m_y_mexthug_01", 810804565}, {"a_m_y_motox_01", 1694362237}, {"a_m_y_motox_02", 2007797722},
+              {"a_m_y_musclbeac_01", 1264920838}, {"a_m_y_musclbeac_02", 3374523516}, {"a_m_y_polynesian_01", 2206530719}, {"a_m_y_roadcyc_01", 4116817094}, {"a_m_y_runner_01", 623927022}, {"a_m_y_runner_02", 2218630415}, {"a_m_y_salton_01", 3613420592}, {"a_m_y_skater_01", 3250873975}, {"a_m_y_skater_02", 2952446692}, {"a_m_y_soucent_01", 3877027275}, {"a_m_y_soucent_02", 2896414922}, {"a_m_y_soucent_03", 3287349092}, {"a_m_y_soucent_04", 2318861297},
+              {"a_m_y_stbla_01", 3482496489}, {"a_m_y_stbla_02", 2563194959}, {"a_m_y_stlat_01", 2255803900}, {"a_m_y_stwhi_01", 605602864}, {"a_m_y_stwhi_02", 919005580}, {"a_m_y_sunbathe_01", 3072929548}, {"a_m_y_surfer_01", 3938633710}, {"a_m_y_vindouche_01", 3247667175}, {"a_m_y_vinewood_01", 1264851357}, {"a_m_y_vinewood_02", 1561705728}, {"a_m_y_vinewood_03", 534725268}, {"a_m_y_vinewood_04", 835315305}, {"a_m_y_yoga_01", 2869588309}, {"cs_amandatownley", 2515474659},
+              {"cs_andreas", 3881194279}, {"cs_ashley", 650367097}, {"cs_bankman", 2539657518}, {"cs_barry", 1767447799}, {"cs_beverly", 3027157846}, {"cs_brad", 4024807398}, {"cs_bradcadaver", 1915268960}, {"cs_carbuyer", 2362341647}, {"cs_casey", 3935738944}, {"cs_chengsr", 819699067}, {"cs_chrisformage", 3253960934}, {"cs_clay", 3687553076}, {"cs_dale", 216536661}, {"cs_davenorton", 2240226444}, {"cs_debra", 3973074921}, {"cs_denise", 1870669624}, {"cs_devin", 788622594},
+              {"cs_dom", 1198698306}, {"cs_dreyfuss", 1012965715}, {"cs_drfriedlander", 2745392175}, {"cs_fabien", 1191403201}, {"cs_fbisuit_01", 1482427218}, {"cs_floyd", 103106535}, {"cs_guadalope", 261428209}, {"cs_gurk", 3272931111}, {"cs_hunter", 1531218220}, {"cs_janet", 808778210}, {"cs_jewelass", 1145088004}, {"cs_jimmyboston", 60192701}, {"cs_jimmydisanto", 3100414644}, {"cs_joeminuteman", 4036845097}, {"cs_johnnyklebitz", 4203395201}, {"cs_josef", 1167549130},
+              {"cs_josh", 1158606749}, {"cs_karen_daniels", 1269774364}, {"cs_lamardavis", 1162230285}, {"cs_lazlow", 949295643}, {"cs_lestercrest", 3046438339}, {"cs_lifeinvad_01", 1918178165}, {"cs_magenta", 1477887514}, {"cs_manuel", 4222842058}, {"cs_marnie", 1464721716}, {"cs_martinmadrazo", 1129928304}, {"cs_maryann", 161007533}, {"cs_michelle", 1890499016}, {"cs_milton", 3077190415}, {"cs_molly", 1167167044}, {"cs_movpremf_01", 1270514905},
+              {"cs_movpremmale", 2372398717}, {"cs_mrk", 3284966005}, {"cs_mrs_thornhill", 1334976110}, {"cs_mrsphillips", 3422397391}, {"cs_natalia", 1325314544}, {"cs_nervousron", 2023152276}, {"cs_nigel", 3779566603}, {"cs_old_man1a", 518814684}, {"cs_old_man2", 2566514544}, {"cs_omega", 2339419141}, {"cs_orleans", 2905870170}, {"cs_paper", 1798879480}, {"cs_patricia", 3750433537}, {"cs_priest", 1299047806}, {"cs_prolsec_02", 512955554}, {"cs_russiandrunk", 1179785778},
+              {"cs_siemonyetarian", 3230888450}, {"cs_solomon", 4140949582}, {"cs_stevehains", 2766184958}, {"cs_stretch", 2302502917}, {"cs_tanisha", 1123963760}, {"cs_taocheng", 2288257085}, {"cs_taostranslator", 1397974313}, {"cs_tenniscoach", 1545995274}, {"cs_terry", 978452933}, {"cs_tom", 1776856003}, {"cs_tomepsilon", 2349847778}, {"cs_tracydisanto", 101298480}, {"cs_wade", 3529955798}, {"cs_zimbor", 3937184496}, {"csb_abigail", 2306246977}, {"csb_agent", 3614493108},
+              {"csb_anita", 117698822}, {"csb_anton", 2781317046}, {"csb_ballasog", 2884567044}, {"csb_bride", 2193587873}, {"csb_burgerdrug", 2363277399}, {"csb_car3guy1", 71501447}, {"csb_car3guy2", 327394568}, {"csb_chef", 2739391114}, {"csb_chef2", 2925257274}, {"csb_chin_goon", 2831296918}, {"csb_cletus", 3404326357}, {"csb_cop", 2595446627}, {"csb_customer", 2756669323}, {"csb_denise_friend", 3045926185}, {"csb_fos_rep", 466359675}, {"csb_g", 2727244247},
+              {"csb_groom", 2058033618}, {"csb_grove_str_dlr", 3898166818}, {"csb_hao", 3969814300}, {"csb_hugh", 1863555924}, {"csb_imran", 3812756443}, {"csb_jackhowitzer", 1153203121}, {"csb_janitor", 3254803008}, {"csb_maude", 3166991819}, {"csb_money", 2560490906}, {"csb_mp_agent14", 1841036427}, {"csb_mweather", 1631478380}, {"csb_ortega", 3235579087}, {"csb_oscar", 4095687067}, {"csb_paige", 1528799427}, {"csb_popov", 1635617250}, {"csb_porndudes", 793443893},
+              {"csb_prologuedriver", 4027271643}, {"csb_prolsec", 2141384740}, {"csb_ramp_gang", 3263172030}, {"csb_ramp_hic", 2240582840}, {"csb_ramp_hipster", 569740212}, {"csb_ramp_marine", 1634506681}, {"csb_ramp_mex", 4132362192}, {"csb_rashcosvki", 411081129}, {"csb_reporter", 776079908}, {"csb_roccopelosi", 2858686092}, {"csb_screen_writer", 2346790124}, {"csb_stripper_01", 2934601397}, {"csb_stripper_02", 2168724337}, {"csb_tonya", 1665391897},
+              {"csb_trafficwarden", 3727243251}, {"csb_undercover", 4017642090}, {"csb_vagspeak", 1224690857}, {"g_f_importexport_01", 2225189146}, {"g_f_y_ballas_01", 361513884}, {"g_f_y_families_01", 1309468115}, {"g_f_y_lost_01", 4250220510}, {"g_f_y_vagos_01", 1520708641}, {"g_m_importexport_01", 3164785898}, {"g_m_m_armboss_01", 4058522530}, {"g_m_m_armgoon_01", 4255728232}, {"g_m_m_armlieut_01", 3882958867}, {"g_m_m_chemwork_01", 4128603535},
+              {"g_m_m_chiboss_01", 3118269184}, {"g_m_m_chicold_01", 275618457}, {"g_m_m_chigoon_01", 2119136831}, {"g_m_m_chigoon_02", 4285659174}, {"g_m_m_korboss_01", 891945583}, {"g_m_m_mexboss_01", 1466037421}, {"g_m_m_mexboss_02", 1226102803}, {"g_m_y_armgoon_02", 3310258058}, {"g_m_y_azteca_01", 1752208920}, {"g_m_y_ballaeast_01", 4096714883}, {"g_m_y_ballaorig_01", 588969535}, {"g_m_y_ballasout_01", 599294057}, {"g_m_y_famca_01", 3896218551},
+              {"g_m_y_famdnf_01", 3681718840}, {"g_m_y_famfor_01", 2217749257}, {"g_m_y_korean_01", 611648169}, {"g_m_y_korean_02", 2414729609}, {"g_m_y_korlieut_01", 2093736314}, {"g_m_y_lost_01", 1330042375}, {"g_m_y_lost_02", 1032073858}, {"g_m_y_lost_03", 850468060}, {"g_m_y_mexgang_01", 3185399110}, {"g_m_y_mexgoon_01", 653210662}, {"g_m_y_mexgoon_02", 832784782}, {"g_m_y_mexgoon_03", 2521633500}, {"g_m_y_pologoon_01", 1329576454}, {"g_m_y_pologoon_02", 2733138262},
+              {"g_m_y_salvaboss_01", 2422005962}, {"g_m_y_salvagoon_01", 663522487}, {"g_m_y_salvagoon_02", 846439045}, {"g_m_y_salvagoon_03", 62440720}, {"g_m_y_strpunk_01", 4246489531}, {"g_m_y_strpunk_02", 228715206}, {"hc_driver", 994527967}, {"hc_gunman", 193469166}, {"hc_hacker", 2579169528}, {"ig_abigail", 1074457665}, {"ig_agent", 610988552}, {"ig_amandatownley", 1830688247}, {"ig_andreas", 1206185632}, {"ig_ashley", 2129936603}, {"ig_avon", 4242698434},
+              {"ig_ballasog", 2802535058}, {"ig_bankman", 2426248831}, {"ig_barry", 797459875}, {"ig_benny", 3300333010}, {"ig_bestmen", 1464257942}, {"ig_beverly", 3181518428}, {"ig_brad", 3183167778}, {"ig_bride", 1633872967}, {"ig_car3guy1", 2230970679}, {"ig_car3guy2", 1975732938}, {"ig_casey", 3774489940}, {"ig_chef", 1240128502}, {"ig_chef2", 2240322243}, {"ig_chengsr", 2867128955}, {"ig_chrisformage", 678319271}, {"ig_clay", 1825562762}, {"ig_claypain", 2634057640},
+              {"ig_cletus", 3865252245}, {"ig_dale", 1182012905}, {"ig_davenorton", 365775923}, {"ig_denise", 2181772221}, {"ig_devin", 1952555184}, {"ig_dom", 2620240008}, {"ig_dreyfuss", 3666413874}, {"ig_drfriedlander", 3422293493}, {"ig_fabien", 3499148112}, {"ig_fbisuit_01", 988062523}, {"ig_floyd", 2981205682}, {"ig_g", 2216405299}, {"ig_groom", 4274948997}, {"ig_hao", 1704428387}, {"ig_hunter", 3457361118}, {"ig_janet", 225287241}, {"ig_jay_norris", 2050158196},
+              {"ig_jewelass", 257763003}, {"ig_jimmyboston", 3986688045}, {"ig_jimmydisanto", 1459905209}, {"ig_joeminuteman", 3189787803}, {"ig_johnnyklebitz", 2278195374}, {"ig_josef", 3776618420}, {"ig_josh", 2040438510}, {"ig_karen_daniels", 3948009817}, {"ig_kerrymcintosh", 1530648845}, {"ig_lamardavis", 1706635382}, {"ig_lazlow", 3756278757}, {"ig_lestercrest_2", 1849883942}, {"ig_lestercrest", 1302784073}, {"ig_lifeinvad_01", 1401530684},
+              {"ig_lifeinvad_02", 666718676}, {"ig_magenta", 4242313482}, {"ig_malc", 4055673113}, {"ig_manuel", 4248931856}, {"ig_marnie", 411185872}, {"ig_maryann", 2741999622}, {"ig_maude", 1005070462}, {"ig_michelle", 3214308084}, {"ig_milton", 3408943538}, {"ig_molly", 2936266209}, {"ig_money", 939183526}, {"ig_mp_agent14", 4227433577}, {"ig_mrk", 3990661997}, {"ig_mrs_thornhill", 503621995}, {"ig_mrsphillips", 946007720}, {"ig_natalia", 3726105915},
+              {"ig_nervousron", 3170921201}, {"ig_nigel", 3367442045}, {"ig_old_man1a", 1906124788}, {"ig_old_man2", 4011150407}, {"ig_omega", 1625728984}, {"ig_oneil", 768005095}, {"ig_orleans", 1641334641}, {"ig_ortega", 648372919}, {"ig_paige", 357551935}, {"ig_paper", 2577072326}, {"ig_patricia", 3312325004}, {"ig_popov", 645279998}, {"ig_priest", 1681385341}, {"ig_prolsec_02", 666086773}, {"ig_ramp_gang", 3845001836}, {"ig_ramp_hic", 1165307954},
+              {"ig_ramp_hipster", 3740245870}, {"ig_ramp_mex", 3870061732}, {"ig_rashcosvki", 940330470}, {"ig_roccopelosi", 3585757951}, {"ig_russiandrunk", 1024089777}, {"ig_screen_writer", 4293277303}, {"ig_siemonyetarian", 1283141381}, {"ig_solomon", 2260598310}, {"ig_stevehains", 941695432}, {"ig_stretch", 915948376}, {"ig_talina", 3885222120}, {"ig_tanisha", 226559113}, {"ig_taocheng", 3697041061}, {"ig_taostranslator", 2089096292}, {"ig_tenniscoach", 2721800023},
+              {"ig_terry", 1728056212}, {"ig_tomepsilon", 3447159466}, {"ig_tonya", 3402126148}, {"ig_tracydisanto", 3728026165}, {"ig_trafficwarden", 1461287021}, {"ig_tylerdix", 1382414087}, {"ig_vagspeak", 4194109068}, {"ig_wade", 2459507570}, {"ig_zimbor", 188012277}, {"mp_f_boatstaff_01", 848542158}, {"mp_f_cardesign_01", 606876839}, {"mp_f_chbar_01", 3287737221}, {"mp_f_cocaine_01", 1264941816}, {"mp_f_counterfeit_01", 3079205365}, {"mp_f_deadhooker", 1943971979},
+              {"mp_f_execpa_01", 1126998116}, {"mp_f_execpa_02", 1500695792}, {"mp_f_forgery_01", 2014985464}, {"mp_f_freemode_01", 2627665880}, {"mp_f_helistaff_01", 431423238}, {"mp_f_meth_01", 3534913217}, {"mp_f_misty_01", 3509125021}, {"mp_f_stripperlite", 695248020}, {"mp_f_weed_01", 2992993187}, {"mp_g_m_pros_01", 1822283721}, {"mp_m_avongoon", 2618542997}, {"mp_m_boatstaff_01", 3361671816}, {"mp_m_bogdangoon", 1297520375}, {"mp_m_claude_01", 3237179831},
+              {"mp_m_cocaine_01", 1456705429}, {"mp_m_counterfeit_01", 2555758964}, {"mp_m_exarmy_01", 1161072059}, {"mp_m_execpa_01", 1048844220}, {"mp_m_famdd_01", 866411749}, {"mp_m_fibsec_01", 1558115333}, {"mp_m_forgery_01", 1631482011}, {"mp_m_freemode_01", 1885233650}, {"mp_m_g_vagfun_01", 3299219389}, {"mp_m_marston_01", 943915367}, {"mp_m_meth_01", 3988008767}, {"mp_m_niko_01", 4007317449}, {"mp_m_securoguard_01", 3660355662}, {"mp_m_shopkeep_01", 416176080},
+              {"mp_m_waremech_01", 4154933561}, {"mp_m_weapexp_01", 921328393}, {"mp_m_weapwork_01", 1099321454}, {"mp_m_weed_01", 2441008217}, {"mp_s_m_armoured_01", 3455013896}, {"player_one", 2602752943}, {"player_two", 2608926626}, {"player_zero", 225514697}, {"s_f_m_fembarber", 373000027}, {"s_f_m_maid_01", 3767780806}, {"s_f_m_shop_high", 2923947184}, {"s_f_m_sweatshop_01", 824925120}, {"s_f_y_airhostess_01", 1567728751}, {"s_f_y_bartender_01", 2014052797},
+              {"s_f_y_baywatch_01", 1250841910}, {"s_f_y_cop_01", 368603149}, {"s_f_y_factory_01", 1777626099}, {"s_f_y_hooker_01", 42647445}, {"s_f_y_hooker_02", 348382215}, {"s_f_y_hooker_03", 51789996}, {"s_f_y_migrant_01", 3579522037}, {"s_f_y_movprem_01", 587253782}, {"s_f_y_ranger_01", 2680682039}, {"s_f_y_scrubs_01", 2874755766}, {"s_f_y_sheriff_01", 1096929346}, {"s_f_y_shop_low", 2842568196}, {"s_f_y_shop_mid", 1055701597}, {"s_f_y_stripper_01", 1381498905},
+              {"s_f_y_stripper_02", 1846523796}, {"s_f_y_stripperlite", 1544875514}, {"s_f_y_sweatshop_01", 2231547570}, {"s_m_m_ammucountry", 233415434}, {"s_m_m_armoured_01", 2512875213}, {"s_m_m_armoured_02", 1669696074}, {"s_m_m_autoshop_01", 68070371}, {"s_m_m_autoshop_02", 4033578141}, {"s_m_m_bouncer_01", 2681481517}, {"s_m_m_ccrew_01", 3387290987}, {"s_m_m_chemsec_01", 788443093}, {"s_m_m_ciasec_01", 1650288984}, {"s_m_m_cntrybar_01", 436345731},
+              {"s_m_m_dockwork_01", 349680864}, {"s_m_m_doctor_01", 3564307372}, {"s_m_m_fiboffice_01", 3988550982}, {"s_m_m_fiboffice_02", 653289389}, {"s_m_m_fibsec_01", 2072724299}, {"s_m_m_gaffer_01", 2841034142}, {"s_m_m_gardener_01", 1240094341}, {"s_m_m_gentransport", 411102470}, {"s_m_m_hairdress_01", 1099825042}, {"s_m_m_highsec_01", 4049719826}, {"s_m_m_highsec_02", 691061163}, {"s_m_m_janitor", 2842417644}, {"s_m_m_lathandy_01", 2659242702},
+              {"s_m_m_lifeinvad_01", 3724572669}, {"s_m_m_linecook", 3684436375}, {"s_m_m_lsmetro_01", 1985653476}, {"s_m_m_mariachi_01", 2124742566}, {"s_m_m_marine_01", 4074414829}, {"s_m_m_marine_02", 4028996995}, {"s_m_m_migrant_01", 3977045190}, {"s_m_m_movalien_01", 1684083350}, {"s_m_m_movprem_01", 3630066984}, {"s_m_m_movspace_01", 3887273010}, {"s_m_m_paramedic_01", 3008586398}, {"s_m_m_pilot_01", 3881519900}, {"s_m_m_pilot_02", 4131252449},
+              {"s_m_m_postal_01", 1650036788}, {"s_m_m_postal_02", 1936142927}, {"s_m_m_prisguard_01", 1456041926}, {"s_m_m_scientist_01", 1092080539}, {"s_m_m_security_01", 3613962792}, {"s_m_m_snowcop_01", 451459928}, {"s_m_m_strperf_01", 2035992488}, {"s_m_m_strpreach_01", 469792763}, {"s_m_m_strvend_01", 3465614249}, {"s_m_m_trucker_01", 1498487404}, {"s_m_m_ups_01", 2680389410}, {"s_m_m_ups_02", 3502104854}, {"s_m_o_busker_01", 2912874939},
+              {"s_m_y_airworker", 1644266841}, {"s_m_y_ammucity_01", 2651349821}, {"s_m_y_armymech_01", 1657546978}, {"s_m_y_autopsy_01", 2988916046}, {"s_m_y_barman_01", 3852538118}, {"s_m_y_baywatch_01", 189425762}, {"s_m_y_blackops_01", 3019107892}, {"s_m_y_blackops_02", 2047212121}, {"s_m_y_blackops_03", 1349953339}, {"s_m_y_busboy_01", 3640249671}, {"s_m_y_chef_01", 261586155}, {"s_m_y_clown_01", 71929310}, {"s_m_y_construct_01", 3621428889},
+              {"s_m_y_construct_02", 3321821918}, {"s_m_y_cop_01", 1581098148}, {"s_m_y_dealer_01", 3835149295}, {"s_m_y_devinsec_01", 2606068340}, {"s_m_y_dockwork_01", 2255894993}, {"s_m_y_doorman_01", 579932932}, {"s_m_y_dwservice_01", 1976765073}, {"s_m_y_dwservice_02", 4119890438}, {"s_m_y_factory_01", 1097048408}, {"s_m_y_fireman_01", 3065114024}, {"s_m_y_garbage", 4000686095}, {"s_m_y_grip_01", 815693290}, {"s_m_y_hwaycop_01", 1939545845},
+              {"s_m_y_marine_01", 1702441027}, {"s_m_y_marine_02", 1490458366}, {"s_m_y_marine_03", 1925237458}, {"s_m_y_mime", 1021093698}, {"s_m_y_pestcont_01", 1209091352}, {"s_m_y_pilot_01", 2872052743}, {"s_m_y_prismuscl_01", 1596003233}, {"s_m_y_prisoner_01", 2981862233}, {"s_m_y_ranger_01", 4017173934}, {"s_m_y_robber_01", 3227390873}, {"s_m_y_sheriff_01", 2974087609}, {"s_m_y_shop_mask", 1846684678}, {"s_m_y_strvend_01", 2457805603}, {"s_m_y_swat_01", 2374966032},
+              {"s_m_y_uscg_01", 3389018345}, {"s_m_y_valet_01", 999748158}, {"s_m_y_waiter_01", 2907468364}, {"s_m_y_winclean_01", 1426951581}, {"s_m_y_xmech_01", 1142162924}, {"s_m_y_xmech_02_mp", 1762949645}, {"s_m_y_xmech_02", 3189832196}, {"u_f_m_corpse_01", 773063444}, {"u_f_m_drowned_01", 3623056905}, {"u_f_m_miranda", 1095737979}, {"u_f_m_promourn_01", 2718472679}, {"u_f_o_moviestar", 894928436}, {"u_f_o_prolhost_01", 3306347811}, {"u_f_y_bikerchic", 4198014287},
+              {"u_f_y_comjane", 3064628686}, {"u_f_y_corpse_01", 2624589981}, {"u_f_y_corpse_02", 228356856}, {"u_f_y_hotposh_01", 2526768638}, {"u_f_y_jewelass_01", 4040474158}, {"u_f_y_mistress", 1573528872}, {"u_f_y_poppymich", 602513566}, {"u_f_y_princess", 3538133636}, {"u_f_y_spyactress", 1535236204}, {"u_m_m_aldinapoli", 4042020578}, {"u_m_m_bankman", 3272005365}, {"u_m_m_bikehire_01", 1984382277}, {"u_m_m_doa_01", 1646160893}, {"u_m_m_edtoh", 712602007},
+              {"u_m_m_fibarchitect", 874722259}, {"u_m_m_filmdirector", 728636342}, {"u_m_m_glenstank_01", 1169888870}, {"u_m_m_griff_01", 3293887675}, {"u_m_m_jesus_01", 3459037009}, {"u_m_m_jewelsec_01", 2899099062}, {"u_m_m_jewelthief", 3872144604}, {"u_m_m_markfost", 479578891}, {"u_m_m_partytarget", 2180468199}, {"u_m_m_prolsec_01", 1888624839}, {"u_m_m_promourn_01", 3465937675}, {"u_m_m_rivalpap", 1624626906}, {"u_m_m_spyactor", 2886641112},
+              {"u_m_m_streetart_01", 1813637474}, {"u_m_m_willyfist", 2423691919}, {"u_m_o_filmnoir", 732742363}, {"u_m_o_finguru_01", 1189322339}, {"u_m_o_taphillbilly", 2585681490}, {"u_m_o_tramp_01", 1787764635}, {"u_m_y_abner", 4037813798}, {"u_m_y_antonb", 3479321132}, {"u_m_y_babyd", 3658575486}, {"u_m_y_baygor", 1380197501}, {"u_m_y_burgerdrug_01", 2340239206}, {"u_m_y_chip", 610290475}, {"u_m_y_corpse_01", 2495782975}, {"u_m_y_cyclist_01", 755956971},
+              {"u_m_y_fibmugger_01", 2243544680}, {"u_m_y_guido_01", 3333724719}, {"u_m_y_gunvend_01", 3005388626}, {"u_m_y_hippie_01", 4030826507}, {"u_m_y_imporage", 880829941}, {"u_m_y_juggernaut_01", 2431602996}, {"u_m_y_justin", 2109968527}, {"u_m_y_mani", 3367706194}, {"u_m_y_militarybum", 1191548746}, {"u_m_y_paparazzi", 1346941736}, {"u_m_y_party_01", 921110016}, {"u_m_y_pogo_01", 3696858125}, {"u_m_y_prisoner_01", 2073775040}, {"u_m_y_proldriver_01", 2237544099},
+              {"u_m_y_rsranger_01", 1011059922}, {"u_m_y_sbike", 1794381917}, {"u_m_y_staggrm_01", 2442448387}, {"u_m_y_tattoo_01", 2494442380}, {"u_m_y_zombie_01", 2890614022}}
+SoundAnnoy = {{"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"TIME_LAPSE_MASTER", "0"}, {"TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Timer_10s", "DLC_HALLOWEEN_FVJ_Sounds"}, {"TIMER_STOP", "HUD_MINI_GAME_SOUNDSET"}, {"5s_To_Event_Start_Countdown", "GTAO_FM_Events_Soundset"}, {"10s", "MP_MISSION_COUNTDOWN_SOUNDSET"}, {"5s", "MP_MISSION_COUNTDOWN_SOUNDSET"}, {"5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET"},
+              {"3_2_1_NON_RACE", "HUD_MINI_GAME_SOUNDSET"}, {"3_2_1", "HUD_MINI_GAME_SOUNDSET"}, {"WIND", "EXTREME_01_SOUNDSET"}, {"HOUSE_FIRE", "JOSH_03_SOUNDSET"}, {"Hot_Tub_Loop", "GTAO_Yacht_SoundSet"}, {"Arming_Countdown", "GTAO_Speed_Convoy_Soundset"}, {"Bomb_Disarmed", "GTAO_Speed_Convoy_Soundset"}, {"Boss_Blipped", "GTAO_Magnate_Hunt_Boss_SoundSet"}, {"Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset"}, {"1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET"},
+              {"Apt_Style_Purchase", "DLC_APT_Apartment_SoundSet"}, {"ARM_WRESTLING_WHOOSH_MASTER", "0"}, {"ASSASSINATIONS_HOTEL_TIMER_COUNTDOWN", "ASSASSINATION_MULTI"}, {"ATM_WINDOW", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"BASE_JUMP_PASSED", "HUD_AWARDS"}, {"Bed", "WastedSounds"}, {"Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"Blade_Appear", "APT_BvS_Soundset"}, {"BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS"},
+              {"Breaker_01", "DLC_HALLOWEEN_FVJ_Sounds"}, {"Breaker_02", "DLC_HALLOWEEN_FVJ_Sounds"}, {"Bus_Schedule_Pickup", "DLC_PRISON_BREAK_HEIST_SOUNDS"}, {"CABLE_SNAPS", "CONSTRUCTION_ACCIDENT_1_SOUNDS"}, {"CAM_PAN_DARTS", "HUD_MINI_GAME_SOUNDSET"}, {"Camera_Shoot", "Phone_Soundset_Franklin"}, {"CANCEL", "HUD_FREEMODE_SOUNDSET"}, {"CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS"}, {"CHALLENGE_UNLOCKED", "HUD_AWARDS"}, {"CHECKPOINT_AHEAD", "HUD_MINI_GAME_SOUNDSET"},
+              {"CHECKPOINT_BEHIND", "HUD_MINI_GAME_SOUNDSET"}, {"Checkpoint_Cash_Hit", "GTAO_FM_Events_Soundset"}, {"Checkpoint_Hit", "GTAO_FM_Events_Soundset"}, {"CHECKPOINT_MISSED", "HUD_MINI_GAME_SOUNDSET"}, {"CHECKPOINT_NORMAL", "HUD_MINI_GAME_SOUNDSET"}, {"CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET"}, {"Checkpoint_Teammate", "GTAO_Shepherd_Sounds"}, {"CHECKPOINT_UNDER_THE_BRIDGE", "HUD_MINI_GAME_SOUNDSET"}, {"Click", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+              {"CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE"}, {"Click_Fail", "WEB_NAVIGATION_SOUNDS_PHONE"}, {"Click_Special", "WEB_NAVIGATION_SOUNDS_PHONE"}, {"CLOSED", "MP_PROPERTIES_ELEVATOR_DOORS"}, {"CONFIRM_BEEP", "HUD_MINI_GAME_SOUNDSET"}, {"CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Continue_Accepted", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Continue_Appears", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Crash", "DLC_HEIST_HACKING_SNAKE_SOUNDS"},
+              {"Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset"}, {"Criminal_Damage_Kill_Player", "GTAO_FM_Events_Soundset"}, {"Criminal_Damage_Low_Value", "GTAO_FM_Events_Soundset"}, {"Cycle_Item", "DLC_Dmod_Prop_Editor_Sounds"}, {"DELETE", "HUD_DEATHMATCH_SOUNDSET"}, {"Delete_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"}, {"Deliver_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"}, {"DiggerRevOneShot", "BulldozerDefault"}, {"Door_Open", "DOCKS_HEIST_FINALE_2B_SOUNDS"},
+              {"Drill_Pin_Break", "DLC_HEIST_FLEECA_SOUNDSET"}, {"Dropped", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"}, {"EDIT", "HUD_DEATHMATCH_SOUNDSET"}, {"Start_Squelch", "CB_RADIO_SFX"}, {"End_Squelch", "CB_RADIO_SFX"}, {"Enemy_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"}, {"Enemy_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"}, {"Enemy_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"}, {"Enter_1st", "GTAO_FM_Events_Soundset"},
+              {"Enter_Area", "DLC_Lowrider_Relay_Race_Sounds"}, {"Enter_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"}, {"ERROR", "HUD_AMMO_SHOP_SOUNDSET"}, {"Event_Message_Purple", "GTAO_FM_Events_Soundset"}, {"Event_Start_Text", "GTAO_FM_Events_Soundset"}, {"EXIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Exit_Capture_Zone", "DLC_Apartments_Drop_Zone_Sounds"}, {"Failure", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"Falling_Crates", "EXILE_1"},
+              {"Faster_Bar_Full", "RESPAWN_ONLINE_SOUNDSET"}, {"Faster_Click", "RESPAWN_ONLINE_SOUNDSET"}, {"FestiveGift", "Feed_Message_Sounds"}, {"FIRST_PLACE", "HUD_MINI_GAME_SOUNDSET"}, {"FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS"}, {"FLYING_STREAM_END_INSTANT", "FAMILY_5_SOUNDS"}, {"FocusIn", "HintCamSounds"}, {"FocusOut", "HintCamSounds"}, {"Friend_Deliver", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"}, {"Friend_Pick_Up", "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"},
+              {"GO", "HUD_MINI_GAME_SOUNDSET"}, {"Goal", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"GOLF_BIRDIE", "HUD_AWARDS"}, {"GOLF_EAGLE", "HUD_AWARDS"}, {"GOLF_HUD_HOLE_IN_ONE_MASTER", "0"}, {"GOLF_HUD_SCORECARD_MASTER", "0"}, {"GOLF_NEW_RECORD", "HUD_AWARDS"}, {"Goon_Paid_Small", "GTAO_Boss_Goons_FM_Soundset"}, {"Grab_Parachute", "BASEJUMPS_SOUNDS"}, {"Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"}, {"Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"},
+              {"BBQ_EXPLODE", "JOSH_03_SOUNDSET"}, {"HACKING_CLICK", "0"}, {"HACKING_CLICK_BAD", "0"}, {"HACKING_CLICK_GOOD", "0"}, {"HACKING_MOVE_CURSOR", "0"}, {"Hang_Up", "Phone_SoundSet_Michael"}, {"HIGHLIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Highlight_Accept", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Highlight_Cancel", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Highlight_Error", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Highlight_Move", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+              {"HIGHLIGHT_NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Hit", "RESPAWN_ONLINE_SOUNDSET"}, {"Hit_1", "LONG_PLAYER_SWITCH_SOUNDS"}, {"Hit_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"}, {"Hit_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"}, {"HORDE_COOL_DOWN_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"HUD_FREEMODE_CANCEL_MASTER", "0"}, {"Kill_List_Counter", "GTAO_FM_Events_Soundset"}, {"LEADERBOARD", "HUD_MINI_GAME_SOUNDSET"}, {"Lights_On", "GTAO_MUGSHOT_ROOM_SOUNDS"},
+              {"LIMIT", "DLC_APT_YACHT_DOOR_SOUNDS"}, {"Load_Scene", "DLC_Dmod_Prop_Editor_Sounds"}, {"LOCAL_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"LOCAL_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"LOOSE_MATCH", "HUD_MINI_GAME_SOUNDSET"}, {"Lose_1st", "GTAO_FM_Events_Soundset"}, {"LOSER", "HUD_AWARDS"}, {"Map_Roll_Down", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Map_Roll_Up", "DLC_HEIST_PLANNING_BOARD_SOUNDS"},
+              {"MARKER_ERASE", "HEIST_BULLETIN_BOARD_SOUNDSET"}, {"MARTIN1_DISTANT_TRAIN_HORNS_MASTER", "0"}, {"MEDAL_BRONZE", "HUD_AWARDS"}, {"MEDAL_GOLD", "HUD_AWARDS"}, {"MEDAL_SILVER", "HUD_AWARDS"}, {"MEDAL_UP", "HUD_MINI_GAME_SOUNDSET"}, {"Menu_Accept", "Phone_SoundSet_Default"}, {"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+              {"MP_Flash", "WastedSounds"}, {"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"MP_Impact", "WastedSounds"}, {"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"NAV", "HUD_AMMO_SHOP_SOUNDSET"}, {"Nav_Arrow_Ahead", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"Nav_Arrow_Behind", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"},
+              {"Nav_Arrow_Left", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"Nav_Arrow_Right", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"NAV_LEFT_RIGHT", "HUD_FREEMODE_SOUNDSET"}, {"NAV_UP_DOWN", "HUD_FREEMODE_SOUNDSET"}, {"Near_Miss_Counter_Reset", "GTAO_FM_Events_Soundset"}, {"NO", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Object_Collect_Player", "GTAO_FM_Events_Soundset"}, {"Object_Dropped_Remote", "GTAO_FM_Events_Soundset"}, {"Off_High", "MP_RADIO_SFX"},
+              {"OK", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"ON", "NOIR_FILTER_SOUNDS"}, {"On_Call_Player_Join", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"Oneshot_Final", "MP_MISSION_COUNTDOWN_SOUNDSET"}, {"OOB_Cancel", "GTAO_FM_Events_Soundset"}, {"OOB_Start", "GTAO_FM_Events_Soundset"}, {"OPEN_WINDOW", "LESTER1A_SOUNDS"}, {"OPENED", "MP_PROPERTIES_ELEVATOR_DOORS"}, {"OTHER_TEXT", "HUD_AWARDS"}, {"Out_Of_Area", "DLC_Lowrider_Relay_Race_Sounds"},
+              {"Out_Of_Bounds_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"Paper_Shuffle", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Parcel_Vehicle_Lost", "GTAO_FM_Events_Soundset"}, {"Payment_Non_Player", "DLC_HEISTS_GENERIC_SOUNDS"}, {"Payment_Player", "DLC_HEISTS_GENERIC_SOUNDS"}, {"Pen_Tick", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"PERSON_SCROLL", "HEIST_BULLETIN_BOARD_SOUNDSET"}, {"PERSON_SELECT", "HEIST_BULLETIN_BOARD_SOUNDSET"},
+              {"Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET"}, {"PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Pin_Bad", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"}, {"PIN_BUTTON", "ATM_SOUNDS"}, {"Pin_Centred", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"}, {"Pin_Good", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS"}, {"PIPES_LAND", "CONSTRUCTION_ACCIDENT_1_SOUNDS"}, {"Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds"}, {"Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds"},
+              {"Player_Collect", "DLC_PILOT_MP_HUD_SOUNDS"}, {"Player_Enter_Line", "GTAO_FM_Cross_The_Line_Soundset"}, {"Player_Exit_Line", "GTAO_FM_Cross_The_Line_Soundset"}, {"Power_Down", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"Pre_Screen_Stinger", "DLC_HEISTS_FAILED_SCREEN_SOUNDS"}, {"PS2A_MONEY_LOST", "PALETO_SCORE_2A_BANK_SS"}, {"PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET"}, {"Put_Away", "Phone_SoundSet_Michael"}, {"QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+              {"QUIT_WHOOSH", "HUD_MINI_GAME_SOUNDSET"}, {"RACE_PLACED", "HUD_AWARDS"}, {"RAMP_DOWN", "TRUCK_RAMP_DOWN"}, {"RAMP_UP", "TRUCK_RAMP_DOWN"}, {"RANK_UP", "HUD_AWARDS"}, {"REMOTE_PLYR_CASH_COUNTER_COMPLETE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"REMOTE_PLYR_CASH_COUNTER_INCREASE", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}, {"Reset_Prop_Position", "DLC_Dmod_Prop_Editor_Sounds"}, {"RESTART", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"RETRY", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+              {"ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CUSTOM_SOUNDSET"}, {"ROPE_CUT", "ROPE_CUT_SOUNDSET"}, {"ROUND_ENDING_STINGER_CUSTOM", "CELEBRATION_SOUNDSET"}, {"Save_Scene", "DLC_Dmod_Prop_Editor_Sounds"}, {"SCOPE_UI_MASTER", "0"}, {"ScreenFlash", "WastedSounds"}, {"SCREEN_SWIPE", "CELEBRATION_SWIPE"}, {"SELECT", "HUD_FREEMODE_SOUNDSET"}, {"Select_Placed_Prop", "DLC_Dmod_Prop_Editor_Sounds"}, {"Shard_Disappear", "GTAO_FM_Events_Soundset"},
+              {"SHOOTING_RANGE_ROUND_OVER", "HUD_AWARDS"}, {"Short_Transition_In", "PLAYER_SWITCH_CUSTOM_SOUNDSET"}, {"Short_Transition_Out", "PLAYER_SWITCH_CUSTOM_SOUNDSET"}, {"SKIP", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Start", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"STUN_COLLECT", "MINUTE_MAN_01_SOUNDSET"}, {"Success", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"Swap_Sides", "DLC_HALLOWEEN_FVJ_Sounds"}, {"SWING_SHUT", "GTAO_APT_DOOR_DOWNSTAIRS_GLASS_SOUNDS"},
+              {"Tattooing_Oneshot", "TATTOOIST_SOUNDS"}, {"Tattooing_Oneshot_Remove", "TATTOOIST_SOUNDS"}, {"Team_Capture_Start", "GTAO_Magnate_Yacht_Attack_Soundset"}, {"TENNIS_MATCH_POINT", "HUD_AWARDS"}, {"TENNIS_POINT_WON", "HUD_AWARDS"}, {"TextHit", "WastedSounds"}, {"TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET"}, {"Turn", "DLC_HEIST_HACKING_SNAKE_SOUNDS"}, {"UNDER_THE_BRIDGE", "HUD_AWARDS"}, {"WAYPOINT_SET", "HUD_FRONTEND_DEFAULT_SOUNDSET"},
+              {"WEAPON_ATTACHMENT_EQUIP", "HUD_AMMO_SHOP_SOUNDSET"}, {"WEAPON_ATTACHMENT_UNEQUIP", "HUD_AMMO_SHOP_SOUNDSET"}, {"WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET"}, {"WEAPON_SELECT_ARMOR", "HUD_AMMO_SHOP_SOUNDSET"}, {"Whistle", "DLC_TG_Running_Back_Sounds"}, {"Whoosh_1s_L_to_R", "MP_LOBBY_SOUNDS"}, {"Whoosh_1s_R_to_L", "MP_LOBBY_SOUNDS"}, {"WIN", "HUD_AWARDS"}, {"Zone_Enemy_Capture", "DLC_Apartments_Drop_Zone_Sounds"},
+              {"Zone_Neutral", "DLC_Apartments_Drop_Zone_Sounds"}, {"Zone_Team_Capture", "DLC_Apartments_Drop_Zone_Sounds"}, {"Zoom_In", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Zoom_Left", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}, {"Zoom_Right", "DLC_HEIST_PLANNING_BOARD_SOUNDS"}}
 
 --TODO: Modder Flagging
 function modflag_set()
@@ -2052,274 +730,8 @@ function modflag_set()
         mod_flag_5 = player.add_modder_flag("Player is a CUNT!")
     end
 end
+
 modflag_set()
-
---Event Data Arrays
---TODO: ---------------------------NET EVENT LOGGER THREAD------------------------------------
-
-ScriptLocals["netevent"] = function(feat)
-local NetEvents = {}
-NetEvents[0] = "OBJECT_ID_FREED_EVENT"
-NetEvents[1] = "OBJECT_ID_REQUEST_EVENT"
-NetEvents[2] = "ARRAY_DATA_VERIFY_EVENT"
-NetEvents[3] = "SCRIPT_ARRAY_DATA_VERIFY_EVENT"
-NetEvents[4] = "REQUEST_CONTROL_EVENT"
-NetEvents[5] = "GIVE_CONTROL_EVENT"
-NetEvents[6] = "WEAPON_DAMAGE_EVENT"
-NetEvents[7] = "REQUEST_PICKUP_EVENT"
-NetEvents[8] = "REQUEST_MAP_PICKUP_EVENT"
-NetEvents[9] = "GAME_CLOCK_EVENT"
-NetEvents[10] = "GAME_WEATHER_EVENT"
-NetEvents[11] = "RESPAWN_PLAYER_PED_EVENT"
-NetEvents[12] = "GIVE_WEAPON_EVENT"
-NetEvents[13] = "REMOVE_WEAPON_EVENT"
-NetEvents[14] = "REMOVE_ALL_WEAPONS_EVENT"
-NetEvents[15] = "VEHICLE_COMPONENT_CONTROL_EVENT"
-NetEvents[16] = "FIRE_EVENT"
-NetEvents[17] = "EXPLOSION_EVENT"
-NetEvents[18] = "START_PROJECTILE_EVENT"
-NetEvents[19] = "UPDATE_PROJECTILE_TARGET_EVENT"
-NetEvents[21] = "BREAK_PROJECTILE_TARGET_LOCK_EVENT"
-NetEvents[20] = "REMOVE_PROJECTILE_ENTITY_EVENT"
-NetEvents[22] = "ALTER_WANTED_LEVEL_EVENT"
-NetEvents[23] = "CHANGE_RADIO_STATION_EVENT"
-NetEvents[24] = "RAGDOLL_REQUEST_EVENT"
-NetEvents[25] = "PLAYER_TAUNT_EVENT"
-NetEvents[26] = "PLAYER_CARD_STAT_EVENT"
-NetEvents[27] = "DOOR_BREAK_EVENT"
-NetEvents[28] = "SCRIPTED_GAME_EVENT"
-NetEvents[29] = "REMOTE_SCRIPT_INFO_EVENT"
-NetEvents[30] = "REMOTE_SCRIPT_LEAVE_EVENT"
-NetEvents[31] = "MARK_AS_NO_LONGER_NEEDED_EVENT"
-NetEvents[32] = "CONVERT_TO_SCRIPT_ENTITY_EVENT"
-NetEvents[33] = "SCRIPT_WORLD_STATE_EVENT"
-NetEvents[40] = "INCIDENT_ENTITY_EVENT"
-NetEvents[34] = "CLEAR_AREA_EVENT"
-NetEvents[35] = "CLEAR_RECTANGLE_AREA_EVENT"
-NetEvents[36] = "NETWORK_REQUEST_SYNCED_SCENE_EVENT"
-NetEvents[37] = "NETWORK_START_SYNCED_SCENE_EVENT"
-NetEvents[39] = "NETWORK_UPDATE_SYNCED_SCENE_EVENT"
-NetEvents[38] = "NETWORK_STOP_SYNCED_SCENE_EVENT"
-NetEvents[41] = "GIVE_PED_SCRIPTED_TASK_EVENT"
-NetEvents[42] = "GIVE_PED_SEQUENCE_TASK_EVENT"
-NetEvents[43] = "NETWORK_CLEAR_PED_TASKS_EVENT"
-NetEvents[44] = "NETWORK_START_PED_ARREST_EVENT"
-NetEvents[45] = "NETWORK_START_PED_UNCUFF_EVENT"
-NetEvents[46] = "NETWORK_SOUND_CAR_HORN_EVENT"
-NetEvents[47] = "NETWORK_ENTITY_AREA_STATUS_EVENT"
-NetEvents[48] = "NETWORK_GARAGE_OCCUPIED_STATUS_EVENT"
-NetEvents[49] = "PED_CONVERSATION_LINE_EVENT"
-NetEvents[50] = "SCRIPT_ENTITY_STATE_CHANGE_EVENT"
-NetEvents[51] = "NETWORK_PLAY_SOUND_EVENT"
-NetEvents[52] = "NETWORK_STOP_SOUND_EVENT"
-NetEvents[53] = "NETWORK_PLAY_AIRDEFENSE_FIRE_EVENT"
-NetEvents[54] = "NETWORK_BANK_REQUEST_EVENT"
-NetEvents[55] = "NETWORK_AUDIO_BARK_EVENT"
-NetEvents[56] = "REQUEST_DOOR_EVENT"
-NetEvents[58] = "NETWORK_TRAIN_REQUEST_EVENT"
-NetEvents[57] = "NETWORK_TRAIN_REPORT_EVENT"
-NetEvents[59] = "NETWORK_INCREMENT_STAT_EVENT"
-NetEvents[60] = "MODIFY_VEHICLE_LOCK_WORD_STATE_DATA"
-NetEvents[61] = "MODIFY_PTFX_WORD_STATE_DATA_SCRIPTED_EVOLVE_EVENT"
-NetEvents[62] = "REQUEST_PHONE_EXPLOSION_EVENT"
-NetEvents[63] = "REQUEST_DETACHMENT_EVENT"
-NetEvents[64] = "KICK_VOTES_EVENT"
-NetEvents[65] = "GIVE_PICKUP_REWARDS_EVENT"
-NetEvents[66] = "NETWORK_CRC_HASH_CHECK_EVENT"
-NetEvents[67] = "BLOW_UP_VEHICLE_EVENT"
-NetEvents[68] = "NETWORK_SPECIAL_FIRE_EQUIPPED_WEAPON"
-NetEvents[69] = "NETWORK_RESPONDED_TO_THREAT_EVENT"
-NetEvents[70] = "NETWORK_SHOUT_TARGET_POSITION"
-NetEvents[71] = "VOICE_DRIVEN_MOUTH_MOVEMENT_FINISHED_EVENT"
-NetEvents[72] = "PICKUP_DESTROYED_EVENT"
-NetEvents[73] = "UPDATE_PLAYER_SCARS_EVENT"
-NetEvents[74] = "NETWORK_CHECK_EXE_SIZE_EVENT"
-NetEvents[75] = "NETWORK_PTFX_EVENT"
-NetEvents[76] = "NETWORK_PED_SEEN_DEAD_PED_EVENT"
-NetEvents[77] = "REMOVE_STICKY_BOMB_EVENT"
-NetEvents[78] = "NETWORK_CHECK_CODE_CRCS_EVENT"
-NetEvents[79] = "INFORM_SILENCED_GUNSHOT_EVENT"
-NetEvents[80] = "PED_PLAY_PAIN_EVENT"
-NetEvents[81] = "CACHE_PLAYER_HEAD_BLEND_DATA_EVENT"
-NetEvents[82] = "REMOVE_PED_FROM_PEDGROUP_EVENT"
-NetEvents[83] = "REPORT_MYSELF_EVENT"
-NetEvents[84] = "REPORT_CASH_SPAWN_EVENT"
-NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
-NetEvents[86] = "BLOCK_WEAPON_SELECTION"
-NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
-
-
---Event Hook shit
-
-
-ScriptLocals["netevent_start"] = false
-ScriptLocals["hookID4"] = 0
-function log_net1()
-    if not ScriptLocals.netevent_start then
-    ScriptLocals.netevent_start = true
-        ScriptLocals.hookID4 = hook.register_net_event_hook(neteventHook4)
-        return HANDLER_POP
-    end
-
-    if ScriptLocals.hookID6 ~= 0 then
-        hook.remove_net_event_hook(ScriptLocals.hookID4)
-        ScriptLocals.hookID4 = 0
-    end
-end
-
-
-
-function neteventHook4(source, target, id)
-	local player_source = player.get_player_name(source)
-	local player_target = player.get_player_name(target)
-    
-				if  id ==  6 then
-					print(string.format(NetEvents[id] .. "Source: " .. player_source .. " Target: " ..player_target))
-else
-return false
-end
-end
-
-log_net1()
-
-end
-
-
-function neteventthread()
-threads[#threads + 1] = menu.create_thread(ScriptLocals.netevent, feat)
-return threads[#threads]
-end
-
-ScriptLocals["netevents"] = function(feat)
-local NetEvents = {}
-NetEvents[0] = "OBJECT_ID_FREED_EVENT"
-NetEvents[1] = "OBJECT_ID_REQUEST_EVENT"
-NetEvents[2] = "ARRAY_DATA_VERIFY_EVENT"
-NetEvents[3] = "SCRIPT_ARRAY_DATA_VERIFY_EVENT"
-NetEvents[4] = "REQUEST_CONTROL_EVENT"
-NetEvents[5] = "GIVE_CONTROL_EVENT"
-NetEvents[6] = "WEAPON_DAMAGE_EVENT"
-NetEvents[7] = "REQUEST_PICKUP_EVENT"
-NetEvents[8] = "REQUEST_MAP_PICKUP_EVENT"
-NetEvents[9] = "GAME_CLOCK_EVENT"
-NetEvents[10] = "GAME_WEATHER_EVENT"
-NetEvents[11] = "RESPAWN_PLAYER_PED_EVENT"
-NetEvents[12] = "GIVE_WEAPON_EVENT"
-NetEvents[13] = "REMOVE_WEAPON_EVENT"
-NetEvents[14] = "REMOVE_ALL_WEAPONS_EVENT"
-NetEvents[15] = "VEHICLE_COMPONENT_CONTROL_EVENT"
-NetEvents[16] = "FIRE_EVENT"
-NetEvents[17] = "EXPLOSION_EVENT"
-NetEvents[18] = "START_PROJECTILE_EVENT"
-NetEvents[19] = "UPDATE_PROJECTILE_TARGET_EVENT"
-NetEvents[21] = "BREAK_PROJECTILE_TARGET_LOCK_EVENT"
-NetEvents[20] = "REMOVE_PROJECTILE_ENTITY_EVENT"
-NetEvents[22] = "ALTER_WANTED_LEVEL_EVENT"
-NetEvents[23] = "CHANGE_RADIO_STATION_EVENT"
-NetEvents[24] = "RAGDOLL_REQUEST_EVENT"
-NetEvents[25] = "PLAYER_TAUNT_EVENT"
-NetEvents[26] = "PLAYER_CARD_STAT_EVENT"
-NetEvents[27] = "DOOR_BREAK_EVENT"
-NetEvents[28] = "SCRIPTED_GAME_EVENT"
-NetEvents[29] = "REMOTE_SCRIPT_INFO_EVENT"
-NetEvents[30] = "REMOTE_SCRIPT_LEAVE_EVENT"
-NetEvents[31] = "MARK_AS_NO_LONGER_NEEDED_EVENT"
-NetEvents[32] = "CONVERT_TO_SCRIPT_ENTITY_EVENT"
-NetEvents[33] = "SCRIPT_WORLD_STATE_EVENT"
-NetEvents[40] = "INCIDENT_ENTITY_EVENT"
-NetEvents[34] = "CLEAR_AREA_EVENT"
-NetEvents[35] = "CLEAR_RECTANGLE_AREA_EVENT"
-NetEvents[36] = "NETWORK_REQUEST_SYNCED_SCENE_EVENT"
-NetEvents[37] = "NETWORK_START_SYNCED_SCENE_EVENT"
-NetEvents[39] = "NETWORK_UPDATE_SYNCED_SCENE_EVENT"
-NetEvents[38] = "NETWORK_STOP_SYNCED_SCENE_EVENT"
-NetEvents[41] = "GIVE_PED_SCRIPTED_TASK_EVENT"
-NetEvents[42] = "GIVE_PED_SEQUENCE_TASK_EVENT"
-NetEvents[43] = "NETWORK_CLEAR_PED_TASKS_EVENT"
-NetEvents[44] = "NETWORK_START_PED_ARREST_EVENT"
-NetEvents[45] = "NETWORK_START_PED_UNCUFF_EVENT"
-NetEvents[46] = "NETWORK_SOUND_CAR_HORN_EVENT"
-NetEvents[47] = "NETWORK_ENTITY_AREA_STATUS_EVENT"
-NetEvents[48] = "NETWORK_GARAGE_OCCUPIED_STATUS_EVENT"
-NetEvents[49] = "PED_CONVERSATION_LINE_EVENT"
-NetEvents[50] = "SCRIPT_ENTITY_STATE_CHANGE_EVENT"
-NetEvents[51] = "NETWORK_PLAY_SOUND_EVENT"
-NetEvents[52] = "NETWORK_STOP_SOUND_EVENT"
-NetEvents[53] = "NETWORK_PLAY_AIRDEFENSE_FIRE_EVENT"
-NetEvents[54] = "NETWORK_BANK_REQUEST_EVENT"
-NetEvents[55] = "NETWORK_AUDIO_BARK_EVENT"
-NetEvents[56] = "REQUEST_DOOR_EVENT"
-NetEvents[58] = "NETWORK_TRAIN_REQUEST_EVENT"
-NetEvents[57] = "NETWORK_TRAIN_REPORT_EVENT"
-NetEvents[59] = "NETWORK_INCREMENT_STAT_EVENT"
-NetEvents[60] = "MODIFY_VEHICLE_LOCK_WORD_STATE_DATA"
-NetEvents[61] = "MODIFY_PTFX_WORD_STATE_DATA_SCRIPTED_EVOLVE_EVENT"
-NetEvents[62] = "REQUEST_PHONE_EXPLOSION_EVENT"
-NetEvents[63] = "REQUEST_DETACHMENT_EVENT"
-NetEvents[64] = "KICK_VOTES_EVENT"
-NetEvents[65] = "GIVE_PICKUP_REWARDS_EVENT"
-NetEvents[66] = "NETWORK_CRC_HASH_CHECK_EVENT"
-NetEvents[67] = "BLOW_UP_VEHICLE_EVENT"
-NetEvents[68] = "NETWORK_SPECIAL_FIRE_EQUIPPED_WEAPON"
-NetEvents[69] = "NETWORK_RESPONDED_TO_THREAT_EVENT"
-NetEvents[70] = "NETWORK_SHOUT_TARGET_POSITION"
-NetEvents[71] = "VOICE_DRIVEN_MOUTH_MOVEMENT_FINISHED_EVENT"
-NetEvents[72] = "PICKUP_DESTROYED_EVENT"
-NetEvents[73] = "UPDATE_PLAYER_SCARS_EVENT"
-NetEvents[74] = "NETWORK_CHECK_EXE_SIZE_EVENT"
-NetEvents[75] = "NETWORK_PTFX_EVENT"
-NetEvents[76] = "NETWORK_PED_SEEN_DEAD_PED_EVENT"
-NetEvents[77] = "REMOVE_STICKY_BOMB_EVENT"
-NetEvents[78] = "NETWORK_CHECK_CODE_CRCS_EVENT"
-NetEvents[79] = "INFORM_SILENCED_GUNSHOT_EVENT"
-NetEvents[80] = "PED_PLAY_PAIN_EVENT"
-NetEvents[81] = "CACHE_PLAYER_HEAD_BLEND_DATA_EVENT"
-NetEvents[82] = "REMOVE_PED_FROM_PEDGROUP_EVENT"
-NetEvents[83] = "REPORT_MYSELF_EVENT"
-NetEvents[84] = "REPORT_CASH_SPAWN_EVENT"
-NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
-NetEvents[86] = "BLOCK_WEAPON_SELECTION"
-NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
-
-
---Event Hook shit
-
-
-ScriptLocals["netlog_start"] = false
-ScriptLocals["hookID6"] = 0
-function log_net()
-    if not ScriptLocals.netlog_start then
-    ScriptLocals.netlog_start = true
-        ScriptLocals.hookID6 = hook.register_net_event_hook(log_neteventHook)
-        return HANDLER_POP
-    end
-
-    if ScriptLocals.hookID6 ~= 0 then
-        hook.remove_net_event_hook(ScriptLocals.hookID6)
-        ScriptLocals.hookID6 = 0
-    end
-end
-
-
-log_neteventHook = function(source, target, id)
-    local player_source, player_target
-    player_source = player.get_player_name(source)
-    player_target = player.get_player_name(target)
-    
-    netlog_out(NetEvents[id])
-    netlog_out(NetEvents[id] .." | " .. source .. " | " .. player_source.. " | " .. target .. " | " .. player_target .." | ")
-
-    return false
-end
-log_net()
-
-end
-
-
-function netloggerthread()
-threads[#threads + 1] = menu.create_thread(ScriptLocals.netevents, feat)
-return threads[#threads]
-end
 
 
 --TODO: --------------Setup Player ARRAY------------
@@ -2382,7 +794,7 @@ end)
 
 Recent = menu.add_feature("Recent Players", "parent", globalFeatures.Online_Session).id
 God_Threads_Created = menu.add_feature("PlayerCheck threads", "parent", globalFeatures.Online_Session)
-God_Threads_Created.hidden = true
+God_Threads_Created.hidden = false
 
 globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.Online_Session).id
 globalFeatures.protex = menu.add_feature("Online Protection", "parent", globalFeatures.Online_Session).id
@@ -2458,6 +870,7 @@ globalFeatures.Preset_RUS = menu.add_feature("Russian Spam", "parent", globalFea
 globalFeatures.Spam_Options = menu.add_feature("Spam Options", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Script_loader = menu.add_feature("Other Scripts", "parent", globalFeatures.parent).id
 globalFeatures.moist_test = menu.add_feature("Function Testing","parent",globalFeatures.parent)
+globalFeatures.moist_test.hidden = true
 --options
 globalFeatures.moistopt = menu.add_feature("Options", "parent", globalFeatures.parent).id
 
@@ -2493,7 +906,7 @@ SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFea
 end)
 SaveOptions_Hotkey.on = true
 
-notifyclear_hotkey = menu.add_feature("clear notify Hotkey LCTRL+C+N", "toggle", globalFeatures.moist_hotkeys, function(feat)
+notifyclear_hotkey = menu.add_feature("clear Spammed notifications Hotkey", "toggle", globalFeatures.moist_hotkeys, function(feat)
         if not feat.on then
             return HANDLER_POP
         end
@@ -2549,7 +962,7 @@ ScriptEvent_delay.value = setting["ScriptEvent_delay"]
 hotkeyloop_delay = menu.add_feature("Hotkey loop Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     setting["hotkey_loop_delay"] = feat.value
 end)
-hotkeyloop_delay.max = 5
+hotkeyloop_delay.max = 25
 hotkeyloop_delay.min = 0
 hotkeyloop_delay.mod = 1
 hotkeyloop_delay.value = setting["loop_feat_delay"]
@@ -2580,13 +993,25 @@ end)
 ply_seat.max = 14
 ply_seat.min = -1
 ply_seat.value = -1
+	
+Active_pickupdel = menu.add_feature("Del pickups", "toggle", globalFeatures.moistopt, function(feat)
+if feat.on then    
+allpickups = object.get_all_pickups()
+for i = 1, #allpickups do
+    
+    network.request_control_of_entity(allpickups[i])
+    entity.delete_entity(allpickups[i])  
+end
+return HANDLER_CONTINUE
+end
+end)
 
 local health, infoA, infoB
 text1, text2, text3, text4 = "", "", "", ""
 Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
     setting["playerscriptinfo"] = true
     if feat.on then
-        local pid = Active_menu
+        local pid, intchk = Active_menu, ""
         if Active_menu ~= nil then
 
             dist = Get_Distance3D(pid)
@@ -2595,9 +1020,16 @@ Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle",
             end
             local info = tostring(infoB .. "\nDistance:\t\t " .. dist)
             update_osd_text2(health, infoA, info)
-            text4 = "Interior Check: " .. tostring(Players[pid].isint)
+            if Players[pid].isint == false then
+            intchk = "~h~~g~False"
+            end
+            if Players[pid].isint == true then
+            intchk = "~h~~r~True"
+            end
+            text4 = "~h~~b~Interior Check:~w~ " .. intchk
+            end
+
             
-        end
         system.yield(setting["loop_feat_delay"])
         return HANDLER_CONTINUE
     end
@@ -2641,6 +1073,8 @@ event_test1 = menu.add_feature("Frames", "toggle", globalFeatures.moist_tools.id
     return HANDLER_POP
 
 end)
+
+
 
 InteriorTest = menu.add_feature("is interior test", "toggle", globalFeatures.moist_tools.id, function(feat)
 	if feat.on then
@@ -2690,6 +1124,24 @@ moist_tools_hotkey.on = true
 globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", globalFeatures.moistopt).id
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
 logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
+
+AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
+    setting["AutoHost"] = true
+    if feat.on then
+        if SessionHost ~= me then
+        if SessionHost ~= player.is_player_friend(SessionHost) then
+            HostForce.on = true
+        end
+        end
+        HostForce.on = false
+        return HANDLER_CONTINUE
+    end   
+    HostForce.on = false
+    setting["AutoHost"] = false
+    return HANDLER_POP
+
+end)
+AutoHost.on = setting["AutoHost"]
 
 --TODO: Modder Flag logs
 
@@ -2773,8 +1225,8 @@ end
 
 God_Check1_pid_thread = function(context)
 	while true do
-    if player.is_player_valid(context.pid) and  context.pid ~= player.player_id() then
-	system.wait(20)
+    if player.is_player_valid(context.pid) ~= false and  context.pid ~= player.player_id() then
+
 	if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
 	system.wait(10)
         local pped = player.get_player_ped(context.pid)
@@ -2787,14 +1239,14 @@ God_Check1_pid_thread = function(context)
     end
     end
 		system.wait(10)
-          return HANDLER_CONTINUE
     end
+          return HANDLER_CONTINUE
 end
 
 God_Check_pid_thread = function(context)
 
 	while true do
-    if player.is_player_valid(context.pid) and context.pid ~= player.player_id()then
+    if player.is_player_valid(context.pid) ~= false and context.pid ~= player.player_id()then
     local pped, plyveh
     if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
 	system.wait(20)
@@ -2838,9 +1290,10 @@ God_Check_pid_thread = function(context)
     end
     end
 	system.wait(10)
-      return HANDLER_CONTINUE
     end
+      return HANDLER_CONTINUE
 end
+
 
 --TODO: *************MODDER FLAG LOGS
 function modderflag(pid)
@@ -2890,6 +1343,39 @@ playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", playerfe
 playerfeatVars.Preset_sms = menu.add_player_feature("SMS Spam Presets", "parent", playerfeatVars.spam_sms).id
 playerfeatVars.Preset_RUS = menu.add_player_feature("Russian Spam Presets", "parent", playerfeatVars.Preset_sms).id
 
+function peddecor()
+for i = 1, #decorators do
+    local decor = tostring(decorators[i][1])
+
+    local DecorFt = menu.add_player_feature(i ..": " .. decor, "parent", Player_Tools).id
+       menu.add_player_feature("Check for Decorator", "action", DecorFt, function(feat, pid)
+                local decor, Type, exists, decorval
+                local pped = player.get_player_ped(pid)
+                if pped ~= nil or pped ~= 0 then
+                decor = tostring(decorators[i][1])
+                Type = decorators[i][2]
+                decorator.decor_register(decor, Type)
+                exists = decorator.decor_exists_on(pped, decor)
+                decorval = decorator.decor_get_int(pped, decor)
+                moist_notify(decor .." Exists on Vehicle\n", "INT Value is: " .. decorval)
+                end
+        end)
+            menu.add_player_feature("Add Decorator to Ped", "action", DecorFt, function(feat, pid)
+                  local decor, Type, exists, decorval
+                local pped = player.get_player_ped(pid)
+                if pped ~= nil or pped ~= 0 then
+                decor = tostring(decorators[i][1])
+                Type = decorators[i][2]
+                    nplyhash = network.network_hash_from_player(pid)
+                    network.request_control_of_entity(pped)
+                    decorator.decor_register(decor, Type)
+                    decorator.decor_set_int(pped, decor, nplyhash)
+                end
+        end)
+
+
+end
+end
 
 --TODO: Chat Spam
 
@@ -3255,7 +1741,6 @@ Recent_Players = {{name = {}, count = {}, rid = {}, nid = {}, htoken = {}},}
     
 Join_Event_Check = event.add_event_listener("player_join", function(e)
     playerRDB(e.player)
-
     return
 
 end)
@@ -3315,7 +1800,6 @@ function Recent_Player(pid, spid)
 
             AddScid(scid, name)
             LoadBlacklist()
-
         end)
     end
 
@@ -3413,11 +1897,9 @@ local ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, fun
     ip = GetIP(pid)
     utils.to_clipboard(dec2ip(ip))
 end)
-
 local mod_off = menu.add_player_feature("ToggleOFF  Modder Mark", "toggle", playerfeatVars.parent, function(feat, pid)
     while feat.on do
-        if player.is_player_modder(pid, -1) == true
-        then
+        if player.is_player_modder(pid, -1) == true then
             player.unset_player_as_modder(pid, -1)
 
         end
@@ -3427,215 +1909,209 @@ local mod_off = menu.add_player_feature("ToggleOFF  Modder Mark", "toggle", play
     return HANDLER_POP
 end)
 
+
 --TODO: Orbital Room Protection
 menu.add_feature("Teleport to block location?", "action", globalFeatures.orbital, function(feat)
 
-        local pos = v3()
-        pos.x = 339.379
-        pos.y = 4836.629
-        pos.z = -58.999
-        heading = 136.27784729004
-        entity.set_entity_coords_no_offset(PlyPed(player.player_id()), pos)
-        entity.set_entity_heading(PlyPed(player.player_id()), heading)
-        return HANDLER_POP
+    local pos = v3()
+    pos.x = 339.379
+    pos.y = 4836.629
+    pos.z = -58.999
+    heading = 136.27784729004
+    entity.set_entity_coords_no_offset(PlyPed(player.player_id()), pos)
+    entity.set_entity_heading(PlyPed(player.player_id()), heading)
+    return HANDLER_POP
 end)
 
 
 --block orbital doorway with wall
 local orbital_blastdoor = menu.add_feature("New Orbital Block Blast Door", "action", globalFeatures.orbital, function(feat)
 
-        local pos, rot = v3(), v3()
-        local hash = gameplay.get_hash_key("xm_prop_base_blast_door_02_l")
-        pos.x = 337.73406982422
-        pos.y = 4833.0112304688
-        pos.z = -60.003131866455
-        rot.x = 5.0000038146973
-        rot.y = -5.0000038146973
-        rot.z = 164.99998474121
+    local pos, rot = v3(), v3()
+    local hash = gameplay.get_hash_key("xm_prop_base_blast_door_02_l")
+    pos.x = 337.73406982422
+    pos.y = 4833.0112304688
+    pos.z = -60.003131866455
+    rot.x = 5.0000038146973
+    rot.y = -5.0000038146973
+    rot.z = 164.99998474121
 
-        spawned_cunts[#spawned_cunts+1] = object.create_object(hash, pos, true, true)
-        entity.freeze_entity(spawned_cunts[#spawned_cunts], true)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, true)
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, true)
+    entity.freeze_entity(spawned_cunts[#spawned_cunts], true)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, true)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 end)
+
         
 
 local block_orbital = menu.add_feature("Moving Wall Orbital Block", "action", globalFeatures.orbital, function(feat)
 
-        local pos, rot = v3(), v3()
-        pos.x = 342.69586181641
-        pos.y = 4832.3774414062
-        pos.z = -61.000000
-        rot.x = 0.0
-        rot.y = 0.0
-        rot.z = 60.000003814697
+    local pos, rot = v3(), v3()
+    pos.x = 342.69586181641
+    pos.y = 4832.3774414062
+    pos.z = -61.000000
+    rot.x = 0.0
+    rot.y = 0.0
+    rot.z = 60.000003814697
 
-        spawned_cunts[#spawned_cunts+1] = object.create_object(472547144, pos, true, false)
-        
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(472547144, pos, true, false)
 
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
 
+    pos.x = 343.01234960938
+    pos.y = 4833.3774414062
+    pos.z = -58.619457244873
+    pos.x = 350.26750854492
+    pos.y = 4828.8745117188
+    pos.z = -58.487403869629
+    rot.x = -25.000011444092
+    rot.y = -0.0
+    rot.z = 150.0
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos, true, false)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
-        pos.x = 343.01234960938
-        pos.y = 4833.3774414062
-        pos.z = -58.619457244873
-        pos.x = 350.26750854492
-        pos.y = 4828.8745117188
-        pos.z = -58.487403869629
-        rot.x = -25.000011444092
-        rot.y = -0.0
-        rot.z = 150.0
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
+    pos.x = 347.04141235352
+    pos.y = 4830.7163085938
+    pos.z = -58.487403869629
+    rot.x = -25.000011444092
+    rot.y = -0.0
+    rot.z = 150.0
 
-        pos.x = 347.04141235352
-        pos.y = 4830.7163085938
-        pos.z = -58.487403869629
-        rot.x = -25.000011444092
-        rot.y = -0.0
-        rot.z = 150.0
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos, true, false)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
+    pos.x = 343.0749206543
+    pos.y = 4832.9965820312
+    pos.z = -58.487403869629
+    rot.x = -25.000011444092
+    rot.y = -0.0
+    rot.z = 150.0
 
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
-        pos.x = 343.0749206543
-        pos.y = 4832.9965820312
-        pos.z = -58.487403869629
-        rot.x = -25.000011444092
-        rot.y = -0.0
-        rot.z = 150.0
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos, true, false)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
+    pos.x = 339.48446655273
+    pos.y = 4835.1568554686
+    pos.z = -58.487403869629
+    rot.x = -25.000011444092
+    rot.y = -0.0
+    rot.z = 150.0
 
-        pos.x = 339.48446655273
-        pos.y = 4835.1568554686
-        pos.z = -58.487403869629
-        rot.x = -25.000011444092
-        rot.y = -0.0
-        rot.z = 150.0
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos, true, false)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
+    pos.x = 335.99624633789
+    pos.y = 4837.0795898438
+    pos.z = -58.487403869629
+    rot.x = -25.000011444092
+    rot.y = -0.0
+    rot.z = 150.000
 
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos, true, false)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
 
-        pos.x = 335.99624633789
-        pos.y = 4837.0795898438
-        pos.z = -58.487403869629
-        rot.x = -25.000011444092
-        rot.y =-0.0
-        rot.z = 150.000
-
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982 , pos, true, false)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, 1)
-
-        return HANDLER_POP
+    return HANDLER_POP
 end)
+
 
 local blockplaces03 = menu.add_feature("Block Orbital Entrance with Wall", "action", globalFeatures.orbital, function(feat)
 
-        local pos, rot, pos1, rot1 = v3(), v3(), v3(), v3()
-        pos.x = 335.719
-        pos.y = 4834.571
-        pos.z = -60.206
-        rot.x = 0.000
-        rot.y = -0.000
-        rot.z = 125.000
-        pos1.x = 335.71899414062
-        pos1.y = 4834.5708007812
-        pos1.z = -60.206390380859
-        rot1.x = 0.0
-        rot1.y = -0.0
-        rot1.z = 125.0
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(561365155, pos1, true, false)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot1)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        return HANDLER_POP
+    local pos, rot, pos1, rot1 = v3(), v3(), v3(), v3()
+    pos.x = 335.719
+    pos.y = 4834.571
+    pos.z = -60.206
+    rot.x = 0.000
+    rot.y = -0.000
+    rot.z = 125.000
+    pos1.x = 335.71899414062
+    pos1.y = 4834.5708007812
+    pos1.z = -60.206390380859
+    rot1.x = 0.0
+    rot1.y = -0.0
+    rot1.z = 125.0
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(561365155, pos1, true, false)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot1)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    return HANDLER_POP
 end)
---Inactive Orbital Screens over blocked doorway
 
+--Inactive Orbital Screens over blocked doorway
 
 orbscreens = menu.add_feature("Orbital Inactive Screens over Block", "action", globalFeatures.orbital, function(feat)
 
-        local pos1, pos2, pos3, pos4, pos5, rot1, rot2, rot3, rot4, rot5 = v3(), v3(), v3(), v3(), v3(), v3(), v3(), v3(), v3(), v3()
-   
-        pos1.x = 336.016083
-        pos1.y = 4834.12988
-        pos1.z = -58.0754662
-        rot1.x = -25.160162
-        rot1.y = 2.82980454e-06
-        rot1.z = 122.541527
-        pos2.x = 336.016083
-        pos2.y = 4834.12988
-        pos2.z = -58.9853134
-        rot2.x = -25.160162
-        rot2.y = 2.82980454e-06
-        rot2.z = 122.541527
-        pos3.x = 336.016083
-        pos3.y = 4834.12988
-        pos3.z = -59.5252228
-        rot3.x = -25.160162
-        rot3.y = 2.82980454e-06
-        rot3.z = 122.541527
-        pos4.x = 336.016083
-        pos4.y = 4834.12988
-        pos4.z = -57.5355568
-        rot4.x = -25.160162
-        rot4.y = 2.82980454e-06
-        rot4.z = 122.541527
-        pos5.x = 336.28463745117
-        pos5.y = 4833.7241210938
-        pos5.z = -80.422435760498
-        rot5.x = 25.0
-        rot5.y = 5.0000004768372
-        rot5.z = -94.999992370605
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(3544215092, pos5, true, false)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    local pos1, pos2, pos3, pos4, pos5, rot1, rot2, rot3, rot4, rot5 = v3(), v3(), v3(), v3(), v3(), v3(), v3(), v3(), v3(), v3()
 
+    pos1.x = 336.016083
+    pos1.y = 4834.12988
+    pos1.z = -58.0754662
+    rot1.x = -25.160162
+    rot1.y = 2.82980454e-06
+    rot1.z = 122.541527
+    pos2.x = 336.016083
+    pos2.y = 4834.12988
+    pos2.z = -58.9853134
+    rot2.x = -25.160162
+    rot2.y = 2.82980454e-06
+    rot2.z = 122.541527
+    pos3.x = 336.016083
+    pos3.y = 4834.12988
+    pos3.z = -59.5252228
+    rot3.x = -25.160162
+    rot3.y = 2.82980454e-06
+    rot3.z = 122.541527
+    pos4.x = 336.016083
+    pos4.y = 4834.12988
+    pos4.z = -57.5355568
+    rot4.x = -25.160162
+    rot4.y = 2.82980454e-06
+    rot4.z = 122.541527
+    pos5.x = 336.28463745117
+    pos5.y = 4833.7241210938
+    pos5.z = -80.422435760498
+    rot5.x = 25.0
+    rot5.y = 5.0000004768372
+    rot5.z = -94.999992370605
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(3544215092, pos5, true, false)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot5)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos1, true, false)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot5)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos1, true, false)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot1)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos2, true, false)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot2)
 
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(-1399826314, pos3, true, true)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot3)
 
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos4, true, false)
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
 
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot1)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos2, true, false)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot2)
-
-
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(-1399826314, pos3, true, true)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot3)
-
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(2895140982, pos4, true, false)
-        entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
-
-
-
-        entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot4)
-        BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-        return HANDLER_POP
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot4)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    return HANDLER_POP
 end)
+
 
 menu.add_feature("Teleport to Casino God Mode Glitch location?", "action", globalFeatures.glitch, function(feat)
     local pos = v3()
@@ -3650,94 +2126,87 @@ end)
 
 casinoglitch = menu.add_feature("Block Casino God Mode Glitch area", "action", globalFeatures.glitch, function(feat)
     local pos, rot = v3(), v3()
-     pos.x = 980.99298095703
-     pos.y = 67.855430603027
-     pos.z = 117.94748687744
-     rot.x = 25.000011444092
-     rot.y = 90.0
-     rot.z = 0.0
-    
-     spawned_cunts[#spawned_cunts + 1] = object.create_object(2765198545, pos, true, false)
-     BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
-     network.request_control_of_entity(spawned_cunts[#spawned_cunts])
-    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
-     entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
-     --entity.set_entity_heading(spawned_cunts[#spawned_cunts], -1.1678575901897e-006)
+    pos.x = 980.99298095703
+    pos.y = 67.855430603027
+    pos.z = 117.94748687744
+    rot.x = 25.000011444092
+    rot.y = 90.0
+    rot.z = 0.0
 
-     
-     
-     
-        return HANDLER_POP
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(2765198545, pos, true, false)
+    BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(spawned_cunts[#spawned_cunts])
+    network.request_control_of_entity(spawned_cunts[#spawned_cunts])
+    entity.set_entity_as_mission_entity(spawned_cunts[#spawned_cunts], true, false)
+    entity.set_entity_rotation(spawned_cunts[#spawned_cunts], rot)
+    -- entity.set_entity_heading(spawned_cunts[#spawned_cunts], -1.1678575901897e-006)
+
+    return HANDLER_POP
 end)
 
 
 local delete_cunt = menu.add_feature("Delete Spawned Cunts", "action", globalFeatures.cleanup, function(feat)
 
-        for i = 1, #spawned_cunts do
-            network.request_control_of_entity(spawned_cunts[i])
-            entity.delete_entity(spawned_cunts[i])
-        end
-        for i = 1, #spawned_cunt do
-            network.request_control_of_entity(spawned_cunt[i])
-            entity.delete_entity(spawned_cunt[i])
-        end
+    for i = 1, #spawned_cunts do
+        network.request_control_of_entity(spawned_cunts[i])
+        entity.delete_entity(spawned_cunts[i])
+    end
+    for i = 1, #spawned_cunt do
+        network.request_control_of_entity(spawned_cunt[i])
+        entity.delete_entity(spawned_cunt[i])
+    end
 
 end)
 
+
 --TODO: Logging output
 
-local hookID, hookID6
-
+local hookID, hookID6, hook_id
 
 --TODO: ScriptHook Check
-script_check  = function(feat)
+script_check = function(feat)
     if feat.on then
-        hook_id	= hook.register_script_event_hook(script_event_hook)
+        hook_id = hook.register_script_event_hook(script_event_hook)
         return HANDLER_POP
     end
 
     if hook_id ~= 0 then
         hook.remove_script_event_hook(hook_id)
-        hook_id	= 0
+        hook_id = 0
     end
 end
 
-
-
 script_event_hook = function(source, target, params, count)
 
-local player_source = player.get_player_name(source)
-local scid = player.get_player_scid(source)
-local player_target = player.get_player_name(target)
-Date_Time = Cur_Date_Time()
-scriptlog_out("\n\n[" ..Date_Time .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]")
-local t, c, p
-local cnt = 0
-for k, v in pairs(params) do
-	if k == 1 then
+    local player_source = player.get_player_name(source)
+    local scid = player.get_player_scid(source)
+    local player_target = player.get_player_name(target)
+    Date_Time = Cur_Date_Time()
+    scriptlog_out("\n\n[" .. Date_Time .. "\n[" .. player_source .. "[" .. scid .. "]] Target:[" .. player_target .. "]")
+    local t, c, p
+    local cnt = 0
+    for k, v in pairs(params) do
+        if k == 1 then
 
-		t = string.format("%x", v)
-		c = tostring("0x"..t)
-		p = string.format(v .."	" .. c)
-		if scriptevent_log.on then
-			hashlogger("\n" .. c)
-		end
-	else
-		p = v
-	end
+            t = string.format("%x", v)
+            c = tostring("0x" .. t)
+            p = string.format(v .. "	" .. c)
+            if scriptevent_log.on then
+                hashlogger("\n" .. c)
+            end
+        else
+            p = v
+        end
 
-	scriptlog_out("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p )
-	print(string.format(("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p )))
-	cnt = cnt + 1
+        scriptlog_out("\n[P: " .. cnt .. "]	= " .. "[" .. k .. "]		" .. p)
+        print(string.format(("\n[P: " .. cnt .. "]	= " .. "[" .. k .. "]		" .. p)))
+        cnt = cnt + 1
+    end
+
+    -- system.wait(3000)
+    return false
+
 end
 
--- system.wait(3000)
-return false
-
-
-end
-
---TODO: netlog
 
 function scriptlog_out(text)
     local RootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
@@ -3756,14 +2225,6 @@ function hashlogger(text)
     io.write(text)
     io.close(file)
 end
-
-
---TODO: ScriptHook Check Player
---TODO: Modder Detection Protection shit
-
--- -- **BLACK LIST SHIT**
-
-
 
 local joining_players_logger = event.add_event_listener("player_join", function(e)
 
@@ -3784,14 +2245,14 @@ local joining_players_logger = event.add_event_listener("player_join", function(
     ip = GetIP(pid)
     sip = dec2ip(ip)
 
+    joined_data(name .. ":" .. schx .. "|" .. pid .. "|" .. scid .. "|" .. token .. "|" .. tokhex .. "|" .. prior .. "|" .. ip .. "|" .. sip .. "\n")
+    joined_csv(name .. ',' .. schx .. ',' .. pid .. ',' .. scid .. ',' .. token .. ',' .. tokhex .. ',' .. prior .. ',' .. ip .. ',' .. sip)
 
-    joined_data(name .. ":" .. schx .. "|" .. pid .. "|" .. scid .. "|" .. token .. "|"  ..tokhex .. "|" .. prior .. "|"  .. ip ..  "|" .. sip .. "\n")
-    joined_csv(name ..',' .. schx .. ',' .. pid .. ',' .. scid .. ',' .. token .. ','.. tokhex .. ',' .. prior .. ',' .. ip ..  ',' .. sip)
-    
     playerDB(pid, player.get_player_ip(pid))
     blacklist_check(pid)
-    return 
+    return
 end)
+
 
 
 function joined_data(text)
@@ -3824,26 +2285,27 @@ end
 
 function playerDB(pid, ip)
     if player.is_player_valid(pid) then
-  
-    local scid, name, token, file1, file2, tokeen
-    scid = GetSCID(pid)
-    name = player.get_player_name(pid)
-    token = tostring(player.get_player_host_token(pid))
-    
-    file1 = io.open(rootPath .. "\\lualogs\\PlayerDB.md", "a")
-    io.output(file1)
-       tokeen = tostring(token:sub(1, 8))
-    
-    io.write("\n" .. tokeen .. "|" .. name .. ", " .. scid .. "|" .. name .. ", " ..ip)
-    io.close()
-    
-    file2 = io.open(rootPath .. "\\lualogs\\IP_LIST.txt", "a")
-    io.output(file2)
-    io.write(ip .."\n")
-    io.close()
+
+        local scid, name, token, file1, file2, tokeen
+        scid = GetSCID(pid)
+        name = player.get_player_name(pid)
+        token = tostring(player.get_player_host_token(pid))
+
+        file1 = io.open(rootPath .. "\\lualogs\\PlayerDB.md", "a")
+        io.output(file1)
+        tokeen = tostring(token:sub(1, 8))
+
+        io.write("\n" .. tokeen .. "|" .. name .. ", " .. scid .. "|" .. name .. ", " .. ip)
+        io.close()
+
+        file2 = io.open(rootPath .. "\\lualogs\\IP_LIST.txt", "a")
+        io.output(file2)
+        io.write(ip .. "\n")
+        io.close()
     end
 
 end
+
 
 --TODO: Blacklist
 function ValidScid(scid)
@@ -3870,7 +2332,7 @@ function RemoveScid(scid)
             end
         end
         scidN = scidN - 1
-        Debug_Out(string.format("Removed " .. scid .." : " ..name .. " from blacklist."))
+        Debug_Out(string.format("Removed " .. scid .. " : " .. name .. " from blacklist."))
         print("Removed " .. scid .. " from blacklist.")
     end
 end
@@ -3901,7 +2363,7 @@ function AddScid(scid, name)
     io.write(scid .. "|" .. name .. "\n")
     io.close()
     scidN = scidN + 1
-    menu.add_feature(scidN ..": " .. scid .. " (" .. name .. ")", "action", RemoveBlacklistFeature.id, RemoveScidByFeature).data = scid
+    menu.add_feature(scidN .. ": " .. scid .. " (" .. name .. ")", "action", RemoveBlacklistFeature.id, RemoveScidByFeature).data = scid
     Debug_Out(string.format("Added " .. scid .. " (" .. name .. ")" .. "to blacklist"))
     print("Added " .. scid .. " (" .. name .. ") to blacklist.")
     LoadBlacklist()
@@ -3916,6 +2378,7 @@ function AddScidByPid(pid)
         AddScid(scid, player.get_player_name(pid))
     end
 end
+
 
 function LoadBlacklist()
     scids = {}
@@ -3933,8 +2396,7 @@ function LoadBlacklist()
             local scid = tonumber(scid) or tonumber(scid, 16)
             if scid then
                 scids[scid] = name
-                menu.add_feature(scidN ..": " .. scid .. " (" .. name .. ")", "action", RemoveBlacklistFeature.id, RemoveScidByFeature).data =
-                    scid
+                menu.add_feature(scidN .. ": " .. scid .. " (" .. name .. ")", "action", RemoveBlacklistFeature.id, RemoveScidByFeature).data = scid
                 scidN = scidN + 1
             end
         end
@@ -3951,19 +2413,19 @@ function KickPid(pid)
     system.wait(10)
     if network.network_is_host() then
         network.network_session_kick_player(pid)
-        Debug_Out(string.format("Black List: Host kicked " .. pid .. " (" .. SessionPlayers.Name  .. ")"))
+        Debug_Out(string.format("Black List: Host kicked " .. pid .. " (" .. SessionPlayers.Name .. ")"))
         print("Black List: Host kicked " .. pid .. " (" .. SessionPlayers.Name .. ").")
     else
         script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
         script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-    Debug_Out(string.format("Black List: Non-Host kicked " .. pid .. " (" .. SessionPlayers.Name  .. ")"))
-    print("Non-Host kicked " .. pid .. " (" .. SessionPlayers.Name  .. ").")
-
+        Debug_Out(string.format("Black List: Non-Host kicked " .. pid .. " (" .. SessionPlayers.Name .. ")"))
+        print("Non-Host kicked " .. pid .. " (" .. SessionPlayers.Name .. ").")
 
     end
     network.network_session_kick_player(pid)
 
 end
+
 
 function MarkPidAsModder(pid)
     if pid == player.player_id() then
@@ -4006,7 +2468,6 @@ EnabledBlacklistFeature = menu.add_feature("Enable blacklist", "toggle", globalF
 end)
 EnabledBlacklistFeature.on = setting["Blacklist_ON"]
 
-
 MarkAsModderFeature = menu.add_feature("Mark As Modder", "toggle", globalFeatures.parentID, function(feat)
     if not feat.on then
         setting["Blacklist_Mark"] = false
@@ -4041,6 +2502,7 @@ menu.add_feature("Manually add scid", "action", globalFeatures.parentID, functio
     ui.notify_above_map("Added " .. s .. " to blacklist.", "Blacklist", 140)
 end)
 
+
 RemoveBlacklistFeature = menu.add_feature("Remove blacklist", "parent", globalFeatures.parentID)
 
 globalFeatures.addtoblacklist = menu.add_player_feature("Add Player to blacklist", "action", 0, function(feat, pid)
@@ -4053,17 +2515,18 @@ globalFeatures.addtoblacklist = menu.add_player_feature("Add Player to blacklist
         if KickFeature.on then
             KickPid(pid)
         end
-        end
+    end
 end)
-for i =1, #globalFeatures.addtoblacklist.feats do
+for i = 1, #globalFeatures.addtoblacklist.feats do
     globalFeatures.addtoblacklist.feats[i].hidden = false
 end
+
 
 globalFeatures.removefromblacklist = menu.add_player_feature("Remove from Blacklist", "action", 0, function(feat, pid)
     RemoveScidByPid(pid)
     player.unset_player_as_modder(pid, mod_flag_4)
 end)
-for i =1, #globalFeatures.removefromblacklist.feats do
+for i = 1, #globalFeatures.removefromblacklist.feats do
     globalFeatures.removefromblacklist.feats[i].hidden = false
 end
 
@@ -4079,7 +2542,7 @@ function blacklist_check(pid)
     if ValidScid(scid) and scids[scid] then
         SessionPlayers.Name = player.get_player_name(pid)
         system.wait(10)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" ..name .."\n" ..scid), "~h~Ω MoistsScript 2.0.3.5\nBlack List", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" .. name .. "\n" .. scid), "~h~Ω MoistsScript 2.0.3.5\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -4088,89 +2551,101 @@ function blacklist_check(pid)
         end
     end
 end
+
 LoadBlacklist()
 
 --TODO: Chat Logger
 function chat(name, text)
-    if not  chat_log.on then return end
-        local d = os.date()
-        local t = string.match(d, "%d%d:%d%d:%d%d")
-        local dt = os.date("%d/%m/%y%y")
-        local file = io.open(rootPath .. "\\lualogs\\chat.md", "a")
-        io.output(file)
-        io.write("\n" .. dt .. " | " .. t .. " | " .. name .. " | " ..text)
-        io.close()
+    if not chat_log.on then
+        return
+    end
+    local d = os.date()
+    local t = string.match(d, "%d%d:%d%d:%d%d")
+    local dt = os.date("%d/%m/%y%y")
+    local file = io.open(rootPath .. "\\lualogs\\chat.md", "a")
+    io.output(file)
+    io.write("\n" .. dt .. " | " .. t .. " | " .. name .. " | " .. text)
+    io.close()
 end
-  
+
 
 function Console_chat(name, text)
-    if not setting["chat_debug"] then return end
-        local d = os.date()
-        local t = string.match(d, "%d%d:%d%d:%d%d")
-        print(t .." [ ".. name .." ] " .. text)
+    if not setting["chat_debug"] then
+        return
+    end
+    local d = os.date()
+    local t = string.match(d, "%d%d:%d%d:%d%d")
+    print(t .. " [ " .. name .. " ] " .. text)
 end
+
 
 local ChatEventID = event.add_event_listener("chat", function(e)
     local sender
-    --if PlyPed(e.player) == 0 then return end
+    -- if PlyPed(e.player) == 0 then return end
     if not player.is_player_valid(e.player) then
         sender = "UNKNOWN JOINING"
-        elseif  player.is_player_valid(e.player) then
+    elseif player.is_player_valid(e.player) then
         sender = player.get_player_name(e.player)
     end
-        if not ChatSpamOn then
+    if not ChatSpamOn then
         chat(sender, e.body)
         Console_chat(sender, e.body)
         Chat_Command(e.player, e.body)
-        elseif ChatSpamOn then
+    elseif ChatSpamOn then
         if e.player ~= me then
-        chat(sender, e.body)
-        Console_chat(sender, e.body)
-        Chat_Command(e.player, e.body)
+            chat(sender, e.body)
+            Console_chat(sender, e.body)
+            Chat_Command(e.player, e.body)
         end
-        end
-        
+    end
+
 end)
+
 
 local comm, playername
 function Chat_Command(playerid, text)
     local chat_clear = 0
-    
-    if not ChatCommand.on then return end
-    if not player.is_player_friend(playerid) then return end
-    comm = text:sub(1,5)
-    Name = text:sub(7,25)
+
+    if not ChatCommand.on then
+        return
+    end
+    if not player.is_player_friend(playerid) then
+        return
+    end
+    comm = text:sub(1, 5)
+    Name = text:sub(7, 25)
     playername = string.lower(Name)
 
-        if comm == "@kick" then
-            repeat
-                 chat_clear = (chat_clear + 1)
-                 network.send_chat_message(string.format(chat_clear), false)
-                until (chat_clear == 30)
+    if comm == "@kick" then
+        repeat
+            chat_clear = (chat_clear + 1)
+            network.send_chat_message(string.format(chat_clear), false)
+        until (chat_clear == 30)
 
-     for i = 0, 32 do
+        for i = 0, 32 do
 
             if i ~= player.player_id() then
-               Name = tostring(player.get_player_name(i))
+                Name = tostring(player.get_player_name(i))
                 name = string.lower(string.format(Name))
                 if name == playername then
                     if not player.is_player_host(me) then
-                    player.send_player_sms(playerid, "I'm Not Currently Host Let Me see if i can remove him")
-                    send_SE_Kick(i)
+                        player.send_player_sms(playerid, "I'm Not Currently Host Let Me see if i can remove him")
+                        send_SE_Kick(i)
                     end
-                    if  player.is_player_host(me) then
-                     player.send_player_sms(playerid, "Sending Host Kick Now!")
-                 network.network_session_kick_player(i)
-          end
+                    if player.is_player_host(me) then
+                        player.send_player_sms(playerid, "Sending Host Kick Now!")
+                        network.network_session_kick_player(i)
+                    end
+
+                end
+
+            end
 
         end
-        
+        return HANDLER_POP
     end
-          
 end
-    return HANDLER_POP
-        end
-        end
+
         
 event.add_event_listener("exit", function()
     event.remove_event_listener("chat", ChatEventID)
@@ -4228,50 +2703,6 @@ chat_console = menu.add_feature("Ouput Game Chat to Debug Console", "toggle", lo
 end)
 chat_console.on = setting["chat_debug"]
 
--- net_log = menu.add_feature("Log Netevents to File", "toggle", logging.id, log_net)
--- net_log.on = setting["net_log"]
-netlog_start = false
-netlog_thread = 0
-net_log = menu.add_feature("Log Netevents to File", "toggle", logging.id, function(feat)
-    if feat.on then
-    if not netlog_start then
-   netlog_thread = netloggerthread()
-    netlog_start = true
-    return HANDLER_POP
-    end
-    system.yield(setting["loop_feat_delay"])
-    return HANDLER_CONTINUE
-    end
-    if netlog_start then
-    log_net()
-   menu.delete_thread(netlog_thread)
-   netlog_start = false
-    end
-     return HANDLER_POP
-end)
-net_log.on = setting["net_log"]
-
-netevent_start = false
-netevent_thread = 0
-net_event = menu.add_feature("Netevent Test", "toggle", logging.id, function(feat)
-    if feat.on then
-    if not netevent_start then
-   netevent_thread = neteventthread()
-    netevent_start = true
-    return HANDLER_POP
-    end
-    system.yield(setting["loop_feat_delay"])
-    return HANDLER_CONTINUE
-    end
-    if netevent_start then
-    log_net1()
-   menu.delete_thread(netevent_thread)
-   netevent_start = false
-    end
-     return HANDLER_POP
-end)
-net_event.on = setting["net_log"]
-
 checkscript = menu.add_feature("Hook Script Events & Log to File", "toggle", logging.id, script_check)
 checkscript.on = setting["script_check_logger"]
 
@@ -4282,60 +2713,62 @@ scriptevent_log.on = false
 function griefing()
 
 menu.add_player_feature("Attach Big dildo on every bone", "action", playerfeatVars.parent, function(feat, pid)
-        moist_notify("WARNING! OVER USE:\n", "WILL CRASH GTA")
-        pped = PlyPed(pid)
+    moist_notify("WARNING! OVER USE:\n", "WILL CRASH GTA")
+    pped = PlyPed(pid)
 
-        local pos = v3()
-        local hash = gameplay.get_hash_key("v_res_d_dildo_f")
-         streaming.request_model(hash)
-        while (not streaming.has_model_loaded(hash)) do
-            system.wait(10)
-        end
-        for i = 1, #boneid do
+    local pos = v3()
+    local hash = gameplay.get_hash_key("v_res_d_dildo_f")
+    streaming.request_model(hash)
+    while (not streaming.has_model_loaded(hash)) do
+        system.wait(10)
+    end
+    for i = 1, #boneid do
         bone_idx = ped.get_ped_bone_index(pped, boneid[i])
         spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, false)
         entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
-        end
-        moist_notify("ensure to Delete:\n", "Spawned Cunts in Cleanup")
+    end
+    moist_notify("ensure to Delete:\n", "Spawned Cunts in Cleanup")
 end)
 
-menu.add_player_feature("Attach dildo on every bone", "action", playerfeatVars.parent, function(feat, pid)
-           moist_notify("WARNING! OVER USE:\n", "WILL CRASH GTA")
-        pped = PlyPed(pid)
 
-        local pos = v3()
-        for i = 1, #boneid do
+menu.add_player_feature("Attach dildo on every bone", "action", playerfeatVars.parent, function(feat, pid)
+    moist_notify("WARNING! OVER USE:\n", "WILL CRASH GTA")
+    pped = PlyPed(pid)
+
+    local pos = v3()
+    for i = 1, #boneid do
         bone_idx = ped.get_ped_bone_index(pped, boneid[i])
         spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
         entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
-        end
-        
-        moist_notify("ensure to Delete:\n", "Spawned Cunts in Cleanup")
+    end
 
+    moist_notify("ensure to Delete:\n", "Spawned Cunts in Cleanup")
 
 end)
+
 
 menu.add_player_feature("Attach dildo in Skeleton root", "action", playerfeatVars.parent, function(feat, pid)
 
-        pped = PlyPed(pid)
+    pped = PlyPed(pid)
 
-        local pos = v3()
+    local pos = v3()
 
-        spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
-        entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, 0, pos, pos, true, true, false, 0, false)
+    spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
+    entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, 0, pos, pos, true, true, false, 0, false)
 end)
+
 
 menu.add_player_feature("Script Host Crash Kick", "action", 0, function(feat, pid)
 
-        local pos = v3()
-        pos = player.get_player_coords(pid)
-        pos.x = math.floor(pos.x)
-        pos.y = math.floor(pos.y)
-        pos.z = math.floor(pos.z)
-        -- script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 2147483647, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
-        script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 1000, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
+    local pos = v3()
+    pos = player.get_player_coords(pid)
+    pos.x = math.floor(pos.x)
+    pos.y = math.floor(pos.y)
+    pos.z = math.floor(pos.z)
+    script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 1000, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
 
 end)
+
 
 menu.add_player_feature("CEO BAN", "action", playerfeatVars.parent, function(feat, pid)
 
@@ -4351,36 +2784,18 @@ menu.add_player_feature("CEO TERMINATE", "action", playerfeatVars.parent, functi
     script.trigger_script_event(0x9DB77399, pid, {0, 1, 6, 0})
 end)
 
-menu.add_player_feature("New Player Kick", "action", playerfeatVars.parent, function(feat, pid)
-      local pos = v3()
-        pos = player.get_player_coords(pid)
-        pos.x = math.floor(pos.x)
-        pos.y = math.floor(pos.y)
-        pos.z = math.floor(pos.z)
-        
-    script.trigger_script_event(0x827B244F, pid, {0, 1, 5})
-    script.trigger_script_event(0x827B244F, pid, {0, 1, 5, 0})
-    script.trigger_script_event(0x827B244F, pid, {1, 1, 6})
-    script.trigger_script_event(0x827B244F, pid, {0, 1, 6, 0})
-        
-    script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z })
-    script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
-    script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
-    script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.z, pos.z, pos.z, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y})
-    
-end)
-
 for i = 1, #missions do
     local y = #missions - 1
-    menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
+    menu.add_player_feature("Force to Mission" .. missions[i], "action", playerfeatVars.fm, function(feat, pid)
 
-            script.trigger_script_event(0xdf7de926, pid,{y})
-            script.trigger_script_event(1115000764, pid,{y})
-            script.trigger_script_event(-545396442, pid,{y})
+        script.trigger_script_event(0xdf7de926, pid, {y})
+        script.trigger_script_event(1115000764, pid, {y})
+        script.trigger_script_event(-545396442, pid, {y})
 
     end)
 
 end
+
 
 function AddBounty(pid, value, anonymous)
     -- if not network.is_session_started() then return end
@@ -4398,12 +2813,11 @@ function AddBounty(pid, value, anonymous)
     end
 end
 
-
 menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, pid)
     if feat.on ~= AnonymousBounty then
         AnonymousBounty = feat.on
         local pf = menu.get_player_feature(feat.id)
-        for i=1,#pf.feats do
+        for i = 1, #pf.feats do
             if pf.feats[i].on ~= AnonymousBounty then
                 pf.feats[i].on = AnonymousBounty
             end
@@ -4412,8 +2826,9 @@ menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, p
     return HANDLER_POP
 end)
 
+
 menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
-    local r,s = input.get("Custom Bounty Value", "", 64, 3)
+    local r, s = input.get("Custom Bounty Value", "", 64, 3)
     if r == 1 then
         return HANDLER_CONTINUE
     end
@@ -4426,15 +2841,18 @@ menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
     value = math.max(0, value)
     value = math.min(10000, value)
     AddBounty(pid, value, AnonymousBounty)
-    notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+    moist_notify("$" .. value .. " Bounty Set on: " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s"), " Now Grief them for the cash")
 end)
+
 
 for i = 1, #BountyPresets do
     menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId, function(feat, pid)
         AddBounty(pid, BountyPresets[i], AnonymousBounty)
-        --notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
+        moist_notify("$" .. value .. " Bounty Set on: " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s"), " Now Grief them for the cash")
+
     end)
 end
+
 end
 griefing()
 --TODO: Features
@@ -5174,7 +3592,8 @@ ped.set_ped_to_ragdoll(pped, Number4, Number5, Ragdoll_Sel)
 end
 
 
-ragdoll_key = menu.add_feature("Ragdoll HotKey", "toggle", Ragdoll_Control.id, function(feat)
+ragdoll_key = menu.add_feature("Ragdoll HotKey LCTRL+X ", "toggle", Ragdoll_Control.id, function(feat)
+    setting["RagDollHotKey"] = true
     if feat.on then
 
         local key = MenuKey()
@@ -5185,11 +3604,13 @@ ragdoll_key = menu.add_feature("Ragdoll HotKey", "toggle", Ragdoll_Control.id, f
             ui.notify_above_map(string.format("Switching %s\n%s Ragdoll on your ped", rag_self.on and "ON" or "OFF", rag_self.on and "Setting" or "Ending"), "Moists Ragdoll Control", 140)
             system.wait(1200)
         end
-    end
-     system.yield(10)
     return HANDLER_CONTINUE
+    end
+     setting["RagDollHotKey"] = false
+     return HANDLER_POP
+
 end)
-ragdoll_key.on = true
+ragdoll_key.on = setting["RagDollHotKey"]
 
 
 
@@ -5627,7 +4048,7 @@ global_func.mk1boostrefill = menu.add_feature("VolticBoost Delayed Refill(MK1)",
                 if vehicle.is_vehicle_rocket_boost_active(Curveh) == false then
                     return HANDLER_CONTINUE
                 end
-                system.wait(2000)
+                system.wait(5000)
                 vehicle.set_vehicle_rocket_boost_percentage(Curveh, 100.00)
             end
              system.yield(setting["loop_feat_delay"])
@@ -5984,18 +4405,15 @@ local character_design = {"MESH_HEADBLEND","MESH_TEXBLEND","MESH_VARBLEND","HEAD
 local des_rec = {}
 
 char_design = menu.add_feature("Create Character Design Script", "action", script_recovery.id, function(feat)
-    
-    
-    
-    
-        local design_value = {"1.0", "0.0", "1.0", "1.0", "1.0", "1.0", "1.0", "0.050000000745058", "0.83787792921066", "0.0", "0.0"}
-        for  i = 1, #character_design do
-            local stat = Get_Last_MP(character_design[i])
-            local stat_hash = gameplay.get_hash_key(stat)
-           des_rec[i] = stats.stat_get_float(stat_hash, 0)
 
-         end
-        Create_stat_Script()
+    local design_value = {"1.0", "0.0", "1.0", "1.0", "1.0", "1.0", "1.0", "0.050000000745058", "0.83787792921066", "0.0", "0.0"}
+    for i = 1, #character_design do
+        local stat = Get_Last_MP(character_design[i])
+        local stat_hash = gameplay.get_hash_key(stat)
+        des_rec[i] = stats.stat_get_float(stat_hash, 0)
+
+    end
+    Create_stat_Script()
 
 end)
 
@@ -6016,12 +4434,12 @@ end
 function Create_stat_Script()
     local txt = Cur_Date_Time()
     write_stat('function Get_Last_MP(a)local b=a;local c=gameplay.get_hash_key("MPPLY_LAST_MP_CHAR")local d=stats.stat_get_int(c,1)return string.format("MP"..d.."_"..b)end;function Get_Hash(e)return gameplay.get_hash_key(e)end\n\n')
-    write_stat('menu.add_feature("statwriter Player Design'..txt ..'", "action", 0, function(feat)\n\n')
+    write_stat('menu.add_feature("statwriter Player Design' .. txt .. '", "action", 0, function(feat)\n\n')
     for i = 1, #character_design do
 
-        write_stat('local stat = Get_Hash(Get_Last_MP("'..character_design[i]..'"))\n')
+        write_stat('local stat = Get_Hash(Get_Last_MP("' .. character_design[i] .. '"))\n')
 
-        write_stat('stats.stat_set_float(stat, '..des_rec[i]..', '..'true)\n')
+        write_stat('stats.stat_set_float(stat, ' .. des_rec[i] .. ', ' .. 'true)\n')
     end
     write_stat('end)\n\n')
 
@@ -6038,56 +4456,56 @@ function Create_stat_RecoveryScript()
 
     end
     local txt = Cur_Date_Time()
-    write_recScript('menu.add_feature("Stat Recovery'..txt ..'", "action", 0, function(feat)\n\n')
+    write_recScript('menu.add_feature("Stat Recovery' .. txt .. '", "action", 0, function(feat)\n\n')
     for i = 1, #em_rec do
         local stat, statval = heiststat_setup[i][2], em_rec[i]
 
-        write_recScript('stats.stat_set_int('..stat..', '..statval..', '..'true)\n')
+        write_recScript('stats.stat_set_int(' .. stat .. ', ' .. statval .. ', ' .. 'true)\n')
     end
     write_recScript('end)\n\n')
     em_rec = {}
 
 end
 
+
 --TODO: local session Features
 
-otr_all =  menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
-     for pid = 0, 32 do
-            script.trigger_script_event(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+otr_all = menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
+    for pid = 0, 32 do
+        script.trigger_script_event(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
 
-     end
-end)
-     
-
-    
-nocops_all =  menu.add_feature("Give everyone Cop Bribe", "action", globalFeatures.lobby, function(feat)
-         for pid = 0, 32 do
-			script.trigger_script_event(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-			
-     end
+    end
 end)
 
- 
-blip_all =  menu.add_feature("Give everyone Enemy Blips", "action", globalFeatures.lobby, function(feat)
+
+nocops_all = menu.add_feature("Give everyone Cop Bribe", "action", globalFeatures.lobby, function(feat)
+    for pid = 0, 32 do
+        script.trigger_script_event(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+
+    end
+end)
+
+
+ blip_all = menu.add_feature("Give everyone Enemy Blips", "action", globalFeatures.lobby, function(feat)
     for i = 0, 32 do
         local scid = GetSCID(i)
         if scid ~= 4294967295 then
             local pped = PlyPed(i)
             local oldblip = ui.get_blip_from_entity(pped)
             ui.set_blip_colour(oldblip, 80)
-              BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
-               ui.set_blip_colour(BlipIDs[#BlipIDs], i)
+            BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(pped)
+            ui.set_blip_colour(BlipIDs[#BlipIDs], i)
         end
     end
 end)
+
             
 
 function blockpassiveall()
 
-
-    for i=0,32 do
-    fnd = player.is_player_friend(i)
-    if i ~= player.player_id() or i ~= fnd then
+    for i = 0, 32 do
+        fnd = player.is_player_friend(i)
+        if i ~= player.player_id() or i ~= fnd then
             script.trigger_script_event(0xC9CC4F80, i, {1, 1})
             script.trigger_script_event(3385610112, i, {1, 1})
 
@@ -6110,34 +4528,33 @@ local notallmod = menu.add_feature("UnMark all Players as Modder", "action", glo
 end)
 
 --TODO: Session Kicks
-
 local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
     if feat.on then
-
 
         for i = 0, 32 do
             if player.is_player_valid(i) then
                 local fnd = player.is_player_friend(i)
                 if i ~= player.player_id() or i ~= fnd then
-                script.trigger_script_event(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
-                script.trigger_script_event(-2120750352, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-                script.trigger_script_event(0xE6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-                script.trigger_script_event(-977515445, i, {-1, 500000, 849451549, -1, -1})
-                script.trigger_script_event(767605081, i, {-1, 500000, 849451549, -1, -1})
-                script.trigger_script_event(-1949011582, i, {-1139568479, -1, 1, 100099})
-                script.trigger_script_event(-2122716210, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-                script.trigger_script_event(-922075519, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-                script.trigger_script_event(-1975590661, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-            end
-            if setting["ScriptEvent_delay"] ~= 0 then
-                system.yield(setting["ScriptEvent_delay"])
-            end
+                    script.trigger_script_event(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
+                    script.trigger_script_event(-2120750352, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(0xE6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+                    script.trigger_script_event(-977515445, i, {-1, 500000, 849451549, -1, -1})
+                    script.trigger_script_event(767605081, i, {-1, 500000, 849451549, -1, -1})
+                    script.trigger_script_event(-1949011582, i, {-1139568479, -1, 1, 100099})
+                    script.trigger_script_event(-2122716210, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+                    script.trigger_script_event(-922075519, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+                    script.trigger_script_event(-1975590661, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+                end
+                if setting["ScriptEvent_delay"] ~= 0 then
+                    system.yield(setting["ScriptEvent_delay"])
+                end
             end
         end
         return HANDLER_CONTINUE
     end
     return HANDLER_POP
 end)
+
 
 local Kick2Session = menu.add_feature("Session Kick Data2 Type2", "toggle", globalFeatures.kick, function(feat)
     if feat.on then
@@ -6146,33 +4563,32 @@ local Kick2Session = menu.add_feature("Session Kick Data2 Type2", "toggle", glob
                 local fnd = player.is_player_friend(pid)
                 if pid ~= player.player_id() or pid ~= fnd then
 
-                local pos = v3()
-                pos = player.get_player_coords(pid)
-                pos.x = math.floor(pos.x)
-                pos.y = math.floor(pos.y)
-                pos.z = math.floor(pos.z)
-                par1 = math.random(104574922, 9999999999)
-                par2 = math.random(-99999999999999, -1)
-                par3 = math.random(461908681885, 99999999999999)
-                par4 = math.random(-999999999999, -1)
-                par5 = math.random(9999999999999, 46190868453454)
-                spc1 = math.random(1090682, 2590682)
-                spc2 = math.floor(math.random(100, 900))
-                spc3 = math.floor(math.random(400, 900))
-                spc4 = math.floor(math.random(100, 400))
-                spc5 = math.floor(math.random(10, 100))
+                    local pos = v3()
+                    pos = player.get_player_coords(pid)
+                    pos.x = math.floor(pos.x)
+                    pos.y = math.floor(pos.y)
+                    pos.z = math.floor(pos.z)
+                    par1 = math.random(104574922, 9999999999)
+                    par2 = math.random(-99999999999999, -1)
+                    par3 = math.random(461908681885, 99999999999999)
+                    par4 = math.random(-999999999999, -1)
+                    par5 = math.random(9999999999999, 46190868453454)
+                    spc1 = math.random(1090682, 2590682)
+                    spc2 = math.floor(math.random(100, 900))
+                    spc3 = math.floor(math.random(400, 900))
+                    spc4 = math.floor(math.random(100, 400))
+                    spc5 = math.floor(math.random(10, 100))
 
+                    for i = 1, #data2 do
+                        script.trigger_script_event(data2[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+                        script.trigger_script_event(data2[i], pid, {pid, pos.x, pos.y, pos.z, 0, 0, spc3, 0, script.get_global_i(spc1 + (pid * spc2) + spc5 + spc5), 1})
+                        script.trigger_script_event(data2[i], pid, {pid, pos.x, pos.y, pos.z, 0, 0, spc2, 0, script.get_global_i(spc1 + (pid * spc3) + spc4 + spc5), 1})
 
-                for i = 1, #data2 do
-                    script.trigger_script_event(data2[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
-                    script.trigger_script_event(data2[i], pid, {pid, pos.x, pos.y, pos.z, 0, 0, spc3, 0, script.get_global_i(spc1 + (pid * spc2) + spc5 + spc5), 1})
-                    script.trigger_script_event(data2[i], pid, {pid, pos.x, pos.y, pos.z, 0, 0, spc2, 0, script.get_global_i(spc1 + (pid * spc3) + spc4 + spc5), 1})
-
+                    end
                 end
-            end
-            if setting["ScriptEvent_delay"] ~= 0 then
-                system.yield(setting["ScriptEvent_delay"])
-            end
+                if setting["ScriptEvent_delay"] ~= 0 then
+                    system.yield(setting["ScriptEvent_delay"])
+                end
             end
         end
 
@@ -6192,15 +4608,16 @@ Set_PassiveTracker()
 
 Passive_trackerIN = event.add_event_listener("player_join", function(e)
     local pid = tonumber(e.player)
-    passive_players[pid +  1] = false
+    passive_players[pid + 1] = false
     return
 end)
+
 
 Passive_trackerOUT = event.add_event_listener("player_leave", function(e)
     local pid = tonumber(e.player)
     Modders_DB[pid + 1].flag = nil
     Modders_DB[pid + 1].ismod = false
-    passive_players[pid +  1] = false
+    passive_players[pid + 1] = false
     Players[pid].bounty = false
     Players[pid].bountyvalue = nil
     Players[pid].isvgod = false
@@ -6242,7 +4659,6 @@ sep1 = function(feat)
     end
 end
 
-
 bountyhook = menu.add_feature("SEP Bounty Value", "toggle", globalFeatures.moist_tools.id, sep1)
 bountyhook.on = true
 
@@ -6269,24 +4685,23 @@ sep2 = function(feat)
     end
 end
 
-
 testhook = menu.add_feature("SEP Bounty Value", "toggle", globalFeatures.moist_tools.id, sep2)
 testhook.on = true
-
 
 local passivehook_id = 0
 local passivehook_event = function(source, target, params, count)
 
     local player_source = player.get_player_name(source)
     if params[1] == 2098987581 then
-        passive_players[source+1] = true
+        passive_players[source + 1] = true
         return false
     elseif params[1] == 465570678 then
-        passive_players[source+1] = false
+        passive_players[source + 1] = false
         return false
     end
     return false
 end
+
 
 sep = function(feat)
     if passivehook_Alert.on then
@@ -6323,15 +4738,15 @@ local SEC_SESS = menu.add_feature("Script Event Crash Session", "toggle", global
             if player.is_player_valid(i) then
                 local fnd = player.is_player_friend(i)
                 if i ~= player.player_id() or i ~= fnd then
-                for i = 1, #SECrash do
-                    script.trigger_script_event(SECrash[i], pid, Params)
+                    for i = 1, #SECrash do
+                        script.trigger_script_event(SECrash[i], pid, Params)
+                    end
                 end
             end
-        end
-        
-        if setting["ScriptEvent_delay"] ~= 0 then
-            system.yield(setting["ScriptEvent_delay"])
-        end
+
+            if setting["ScriptEvent_delay"] ~= 0 then
+                system.yield(setting["ScriptEvent_delay"])
+            end
         end
         return HANDLER_CONTINUE
     end
@@ -6342,41 +4757,42 @@ end)
 
 local hostnow
 
-HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFeatures.kick,	function(feat)
+HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFeatures.kick, function(feat)
 
-        if feat.on then
-            -- HostForce_togglecheck.on = true
-            hostnow = player.get_host()
-            fnd = player.is_player_friend(hostnow)
-            if not network.network_is_host() then
-                if hostnow ~= player.player_id() or hostnow ~= fnd then
-                    player.unset_player_as_modder(hostnow, -1)
-                    script.trigger_script_event(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-                    script.trigger_script_event(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-                    system.yield(10)
-                    script.trigger_script_event(0xc5bc4c4b, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
-                    script.trigger_script_event(-2122716210, hostnow, {91645, -99683, 1788, 60877, 55085, 72028})
-                    script.trigger_script_event(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-                    script.trigger_script_event(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-                    script.trigger_script_event(-977515445, hostnow, {-1, 500000, 849451549, -1, -1})
-                    script.trigger_script_event(767605081, hostnow, {-1, 500000, 849451549, -1, -1})
-                    script.trigger_script_event(-1949011582, hostnow, {-1139568479, -1, 1, 100099})
-                    script.trigger_script_event(-2122716210, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-                    script.trigger_script_event(-922075519, hostnow, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-                    script.trigger_script_event(-1975590661, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-                end
+    if feat.on then
+        -- HostForce_togglecheck.on = true
+        hostnow = player.get_host()
+        fnd = player.is_player_friend(hostnow)
+        if not network.network_is_host() then
+            if hostnow ~= player.player_id() or hostnow ~= fnd then
+                player.unset_player_as_modder(hostnow, -1)
+                script.trigger_script_event(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+                script.trigger_script_event(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+                system.yield(10)
+                script.trigger_script_event(0xc5bc4c4b, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
+                script.trigger_script_event(-2122716210, hostnow, {91645, -99683, 1788, 60877, 55085, 72028})
+                script.trigger_script_event(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+                script.trigger_script_event(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
+                script.trigger_script_event(-977515445, hostnow, {-1, 500000, 849451549, -1, -1})
+                script.trigger_script_event(767605081, hostnow, {-1, 500000, 849451549, -1, -1})
+                script.trigger_script_event(-1949011582, hostnow, {-1139568479, -1, 1, 100099})
+                script.trigger_script_event(-2122716210, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+                script.trigger_script_event(-922075519, hostnow, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+                script.trigger_script_event(-1975590661, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
             end
-            if network.network_is_host() then
-                HostForce.on = false
-                return
-            end
-            if setting["ScriptEvent_delay"] ~= 0 then
-                system.yield(setting["ScriptEvent_delay"])
-            end
-            return HANDLER_CONTINUE
         end
-        return HANDLER_POP
+        if network.network_is_host() then
+            HostForce.on = false
+            return
+        end
+        if setting["ScriptEvent_delay"] ~= 0 then
+            system.yield(setting["ScriptEvent_delay"])
+        end
+        return HANDLER_CONTINUE
+    end
+    return HANDLER_POP
 end)
+
 HostForce.on = false
 
 local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
@@ -6395,36 +4811,10 @@ local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatur
                     script.trigger_script_event(-2120750352, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
                     script.trigger_script_event(0xe6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
 
-
                 end
             end
             if setting["ScriptEvent_delay"] ~= 0 then
                 system.yield(setting["ScriptEvent_delay"])
-            end
-        end
-        return HANDLER_CONTINUE
-    end
-    return HANDLER_POP
-end)
-
-
-local netbail_kick = menu.add_feature("Session Bail except Host", "toggle", globalFeatures.kick, function(feat)
-    if feat.on then
-
-        for i = 0, 32 do
-            if player.is_player_valid(i) then
-                local fnd = player.is_player_friend(i)
-                if i ~= player.player_id() or i ~= fnd then
-                    if i ~= network.network_is_host() then
-
-                        script.trigger_script_event(0xe6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-                    end
-
-                end
-
-                if setting["ScriptEvent_delay"] ~= 0 then
-                    system.yield(setting["ScriptEvent_delay"])
-                end
             end
         end
         return HANDLER_CONTINUE
@@ -6560,126 +4950,212 @@ end
 Moists_Wave_Mod()
 
 local World_Clean = function()
-local cleanup_done = true
+    local cleanup_done = true
 
-clear_World_ent = menu.add_feature("Fetched World Entities Move & Delete", "action", globalFeatures.entity_removal, function(feat)
-    if not cleanup_done == true then return end
-    cleanup_done = false
+    clear_World_ent = menu.add_feature("Fetched World Entities Move & Delete", "action", globalFeatures.entity_removal, function(feat)
+        if not cleanup_done == true then
+            return
+        end
+        cleanup_done = false
 
-    moist_notify("Trying to Removal All\nCunts in the World\n", " Cleanups Disabled until Done!")
-    get_everything()
-    system.wait(500)
-    clear_world()
-    moist_notify("Cunts Removed only Cunt Left: ", "~y~is you!~y~\nCleanups Enabled")
+        moist_notify("Trying to Removal All\nCunts in the World\n", " Cleanups Disabled until Done!")
+        get_everything()
+        system.wait(500)
+        clear_world()
+        moist_notify("Cunts Removed only Cunt Left: ", "~y~is you!~y~\nCleanups Enabled")
 
-end)
+    end)
 
-clear_peds = menu.add_feature("Fetch all Peds Move & Delete", "action", globalFeatures.entity_removal, function(feat)
-    if not cleanup_done == true then return end
-    cleanup_done = false
+    clear_peds = menu.add_feature("Fetch all Peds Move & Delete", "action", globalFeatures.entity_removal, function(feat)
+        if not cleanup_done == true then
+            return
+        end
+        cleanup_done = false
 
+        moist_notify("Ped Clearing Started\n", " Cleanups Disabled until Done!")
 
-    moist_notify("Ped Clearing Started\n",  " Cleanups Disabled until Done!")
+        get_allpeds()
+        system.wait(250)
+        move_delete_peds()
+        moist_notify("Only Peds left are Cunts\n", " Cleanups Enabled")
+    end)
 
+    fetch_obj = menu.add_feature("Fetch all objects Move & Delete", "action", globalFeatures.entity_removal, function(feat)
+        if not cleanup_done == true then
+            return
+        end
+        cleanup_done = false
 
+        moist_notify("Cunt Cleaning Started: \n", " Cleanups Disabled until Done!")
+        get_allobj()
+        system.wait(250)
+        move_delete_obj()
+        moist_notify("Cuntish Objects Removed\n", " Cleanups Enabled")
+    end)
 
-    get_allpeds()
-    system.wait(250)
-    move_delete_peds()
-    moist_notify("Only Peds left are Cunts\n", " Cleanups Enabled")
-end)
+    fetch_veh = menu.add_feature("Fetch all Vehicles Move & Delete", "action", globalFeatures.entity_removal, function(feat)
+        if not cleanup_done == true then
+            return
+        end
+        cleanup_done = false
+        moist_notify("Cunt Cleanup Started\n", " Cleanups Disabled until Done!")
+        get_allveh()
+        system.wait(250)
+        move_delete_veh()
+        moist_notify("Vehicles Cleared\n", " Cleanups Enabled")
+    end)
 
-fetch_obj = menu.add_feature("Fetch all objects Move & Delete", "action", globalFeatures.entity_removal, function(feat)
-    if not cleanup_done == true then return end
-    cleanup_done = false
+    fetch_veh = menu.add_feature("Fetch all Pickups Move & Delete", "action", globalFeatures.entity_removal, function(feat)
+        if not cleanup_done == true then
+            return
+        end
+        cleanup_done = false
+        moist_notify("Cunt Cleanup Started\n", " Cleanups Disabled until Done!")
+        get_all_pickups()
+        system.wait(250)
+        move_delete_pickups()
+        moist_notify("Vehicles Cleared\n", " Cleanups Enabled")
+    end)
 
-    moist_notify("Cunt Cleaning Started: \n", " Cleanups Disabled until Done!")
-    get_allobj()
-    system.wait(250)
-    move_delete_obj()
-    moist_notify("Cuntish Objects Removed\n",  " Cleanups Enabled")
-end)
+    function get_allpeds()
+        allpeds = ped.get_all_peds()
+    end
+    function get_allveh()
+        allveh = vehicle.get_all_vehicles()
+    end
+    function get_allobj()
+        allobj = object.get_all_objects()
+    end
+    function get_all_pickups()
+        allpickups = object.get_all_pickups()
+    end
 
-fetch_veh = menu.add_feature("Fetch all Vehicles Move & Delete", "action", globalFeatures.entity_removal, function(feat)
-    if not cleanup_done == true then return end
-    cleanup_done = false
-    moist_notify("Cunt Cleanup Started\n", " Cleanups Disabled until Done!")
-    get_allveh()
-    system.wait(250)
-    move_delete_veh()
-    moist_notify("Vehicles Cleared\n", " Cleanups Enabled")
-end)
+    function get_everything()
 
-fetch_veh = menu.add_feature("Fetch all Pickups Move & Delete", "action", globalFeatures.entity_removal, function(feat)
-    if not cleanup_done == true then return end
-    cleanup_done = false
-    moist_notify("Cunt Cleanup Started\n", " Cleanups Disabled until Done!")
-    get_all_pickups()
-    system.wait(250)
-    move_delete_pickups()
-    moist_notify("Vehicles Cleared\n", " Cleanups Enabled")
-end)
+        get_all_pickups()
+        get_allveh()
+        get_allobj()
+        get_allpeds()
+        object.get_all_pickups()
+    end
 
-function get_allpeds()
-    allpeds = ped.get_all_peds()
-end
-function get_allveh()
-    allveh = vehicle.get_all_vehicles()
-end
-function get_allobj()
-    allobj = object.get_all_objects()
-end
-function get_all_pickups()
-    allpickups = object.get_all_pickups()
-end
+    function clear_world()
+        local pos = v3()
+        pos.x = -5784.258301
+        pos.y = -8289.385742
+        pos.z = -136.411270
 
-function get_everything()
+        get_all_pickups()
+        get_allveh()
+        get_allobj()
+        get_allpeds()
+        object.get_all_pickups()
 
-    get_all_pickups()
-    get_allveh()
-    get_allobj()
-    get_allpeds()
-    object.get_all_pickups()
-end
-
-function clear_world()
-    local pos = v3()
-    pos.x = -5784.258301
-    pos.y = -8289.385742
-    pos.z = -136.411270
-
-    get_all_pickups()
-    get_allveh()
-    get_allobj()
-    get_allpeds()
-    object.get_all_pickups()
-
-    if not (#allpeds) == nil or 0 then
-        for i = 1, #allpeds do
-            if not ped.is_ped_a_player(allpeds[i]) then
-                network.request_control_of_entity(allpeds[i])
-                entity.set_entity_coords_no_offset(allpeds[i], pos)
-                entity.set_entity_as_no_longer_needed(allpeds[i])
-                entity.delete_entity(allpeds[i])
+        if not (#allpeds) == nil or 0 then
+            for i = 1, #allpeds do
+                if not ped.is_ped_a_player(allpeds[i]) then
+                    network.request_control_of_entity(allpeds[i])
+                    entity.set_entity_coords_no_offset(allpeds[i], pos)
+                    entity.set_entity_as_no_longer_needed(allpeds[i])
+                    entity.delete_entity(allpeds[i])
+                    system.wait(25)
+                end
+            end
+        end
+        allpeds = {}
+        if not (#allpickups) == nil or 0 then
+            for i = 1, #allpickups do
+                network.request_control_of_entity(allpickups[i])
+                entity.set_entity_coords_no_offset(allpickups[i], pos)
+                entity.set_entity_as_no_longer_needed(allpickups[i])
+                entity.delete_entity(allpickups[i])
+                system.wait(10)
+            end
+        end
+        allpickups = {}
+        if not (#allveh) == nil or 0 then
+            for i = 1, #allveh do
+                if entity.is_an_entity(allveh[i]) then
+                    if not decorator.decor_exists_on(allveh[i], "Player_Vehicle") then
+                        network.request_control_of_entity(allveh[i])
+                        entity.set_entity_coords_no_offset(allveh[i], pos)
+                        entity.set_entity_as_no_longer_needed(allveh[i])
+                        entity.delete_entity(allveh[i])
+                        system.wait(25)
+                    end
+                end
+            end
+        end
+        allveh = {}
+        if not (#allobj) == nil or 0 then
+            for i = 1, #allobj do
+                network.request_control_of_entity(allobj[i])
+                entity.set_entity_coords_no_offset(allobj[i], pos)
+                entity.set_entity_as_no_longer_needed(allobj[i])
+                entity.delete_entity(allobj[i])
                 system.wait(25)
             end
         end
+        allobj = {}
+        cleanup_done = true
+        return HANDLER_POP
     end
-    allpeds = {}
-    if not (#allpickups) == nil or 0 then
-        for i = 1, #allpickups do
-            network.request_control_of_entity(allpickups[i])
-            entity.set_entity_coords_no_offset(allpickups[i], pos)
-            entity.set_entity_as_no_longer_needed(allpickups[i])
-            entity.delete_entity(allpickups[i])
-            system.wait(10)
+
+    function move_delete_obj()
+
+        local pos = v3()
+        pos.x = -5784.258301
+        pos.y = -8289.385742
+        pos.z = -136.411270
+        for i = 1, #allobj do
+            if not #allobj == nil or 0 then
+                network.request_control_of_entity(allobj[i])
+                entity.set_entity_coords_no_offset(allobj[i], pos)
+                entity.set_entity_as_no_longer_needed(allobj[i])
+                entity.delete_entity(allobj[i])
+                system.wait(25)
+            end
         end
+        allobj = {}
+        cleanup_done = true
+        return HANDLER_POP
     end
-    allpickups = {}
-    if not (#allveh) == nil or 0 then
+
+    function move_delete_peds()
+
+        local pos = v3()
+        pos.x = -5784.258301
+        pos.y = -8289.385742
+        pos.z = -136.411270
+
+        for i = 1, #allpeds do
+            if not #allpeds == nil or 0 then
+                if not ped.is_ped_a_player(allpeds[i]) then
+                    network.request_control_of_entity(allpeds[i])
+                    entity.set_entity_coords_no_offset(allpeds[i], pos)
+                    entity.set_entity_as_no_longer_needed(allpeds[i])
+                    entity.delete_entity(allpeds[i])
+                    system.wait(25)
+                end
+            end
+
+        end
+        allpeds = {}
+        cleanup_done = true
+        return HANDLER_POP
+    end
+
+    function move_delete_veh()
+
+        local pos = v3()
+        pos.x = -5784.258301
+        pos.y = -8289.385742
+        pos.z = -136.411270
+
         for i = 1, #allveh do
             if entity.is_an_entity(allveh[i]) then
                 if not decorator.decor_exists_on(allveh[i], "Player_Vehicle") then
+
                     network.request_control_of_entity(allveh[i])
                     entity.set_entity_coords_no_offset(allveh[i], pos)
                     entity.set_entity_as_no_longer_needed(allveh[i])
@@ -6688,102 +5164,23 @@ function clear_world()
                 end
             end
         end
-    end
-    allveh = {}
-    if not (#allobj) == nil or 0 then
-        for i = 1, #allobj do
-            network.request_control_of_entity(allobj[i])
-            entity.set_entity_coords_no_offset(allobj[i], pos)
-            entity.set_entity_as_no_longer_needed(allobj[i])
-            entity.delete_entity(allobj[i])
-            system.wait(25)
-        end
-    end
-    allobj = {}
-    cleanup_done = true
-    return HANDLER_POP
-end
-
-function move_delete_obj()
-
-    local pos = v3()
-    pos.x = -5784.258301
-    pos.y = -8289.385742
-    pos.z = -136.411270
-    for i = 1, #allobj do
-        if not #allobj == nil or 0 then
-            network.request_control_of_entity(allobj[i])
-            entity.set_entity_coords_no_offset(allobj[i], pos)
-            entity.set_entity_as_no_longer_needed(allobj[i])
-            entity.delete_entity(allobj[i])
-            system.wait(25)
-        end
-    end
-     allobj = {}
-    cleanup_done = true
-    return HANDLER_POP
-end
-
-function move_delete_peds()
-
-    local pos = v3()
-    pos.x = -5784.258301
-    pos.y = -8289.385742
-    pos.z = -136.411270
-
-    for i = 1, #allpeds do
-        if not #allpeds == nil or 0 then
-            if not ped.is_ped_a_player(allpeds[i]) then
-                network.request_control_of_entity(allpeds[i])
-                entity.set_entity_coords_no_offset(allpeds[i], pos)
-                entity.set_entity_as_no_longer_needed(allpeds[i])
-                entity.delete_entity(allpeds[i])
-                system.wait(25)
-            end
-        end
-
-    end
-        allpeds = {}
-    cleanup_done = true
-    return HANDLER_POP
-end
-
-function move_delete_veh()
-
-    local pos = v3()
-    pos.x = -5784.258301
-    pos.y = -8289.385742
-    pos.z = -136.411270
-
-    for i = 1, #allveh do
-        if entity.is_an_entity(allveh[i]) then
-            if not decorator.decor_exists_on(allveh[i], "Player_Vehicle") then
-
-                network.request_control_of_entity(allveh[i])
-                entity.set_entity_coords_no_offset(allveh[i], pos)
-                entity.set_entity_as_no_longer_needed(allveh[i])
-                entity.delete_entity(allveh[i])
-                system.wait(25)
-            end
-        end
-    end
 
         allveh = {}
-    
-    cleanup_done = true
-    return HANDLER_POP
 
-end
+        cleanup_done = true
+        return HANDLER_POP
 
-function move_delete_pickups()
+    end
 
-    local pos = v3()
-    pos.x = -5784.258301
-    pos.y = -8289.385742
-    pos.z = -136.411270
+    function move_delete_pickups()
 
-    for i = 1, #allpickups do
-        if entity.is_an_entity(allpickups[i]) then
+        local pos = v3()
+        pos.x = -5784.258301
+        pos.y = -8289.385742
+        pos.z = -136.411270
+
+        for i = 1, #allpickups do
+            if entity.is_an_entity(allpickups[i]) then
                 network.request_control_of_entity(allpickups[i])
                 entity.set_entity_coords_no_offset(allpickups[i], pos)
                 entity.set_entity_as_no_longer_needed(allpickups[i])
@@ -6793,12 +5190,12 @@ function move_delete_pickups()
         end
     end
 
-        allpickups = {}
-    
+    allpickups = {}
+
     cleanup_done = true
     return HANDLER_POP
-
 end
+
 World_Clean()
 
 --TODO: --------------------------Session Troll------------------
@@ -6808,28 +5205,24 @@ local GroupHate
 function Peds_hateWorld(pid, weap)
     PedHaters, player_groups, player_peds = {}, {}, {}
 
-        player_groups[pid + 1]  = player.get_player_group(pid)	
-        player_peds[pid + 1] = PlyPed(pid)
-    
+    player_groups[pid + 1] = player.get_player_group(pid)
+    player_peds[pid + 1] = PlyPed(pid)
 
-   PedHaters = ped.get_all_peds()
-   
-   system.wait(100)
+    PedHaters = ped.get_all_peds()
 
- 
- GroupHate = ped.create_group()
- 
-  for y = 1, #player_groups do
-      
-            ped.set_relationship_between_groups(5, player_groups[y], GroupHate)
-            
-            
-            ped.set_relationship_between_groups(5, GroupHate, player_groups[y])
-  end
-  
-  
+    system.wait(100)
+
+    GroupHate = ped.create_group()
+
+    for y = 1, #player_groups do
+
+        ped.set_relationship_between_groups(5, player_groups[y], GroupHate)
+
+        ped.set_relationship_between_groups(5, GroupHate, player_groups[y])
+    end
+
     for i = 1, #PedHaters do
-          if not ped.is_ped_a_player(PedHaters[i]) then
+        if not ped.is_ped_a_player(PedHaters[i]) then
             network.request_control_of_entity(PedHaters[i])
             ped.set_ped_max_health(PedHaters[i], 7000)
             ped.set_ped_health(PedHaters[i], 7000)
@@ -6847,49 +5240,42 @@ function Peds_hateWorld(pid, weap)
             weapon.give_delayed_weapon_to_ped(PedHaters[i], ped_wep[weap][2], 0, 1)
             weapon.set_ped_ammo(PedHaters[i], ped_wep[weap][2], 1000000)
             if ped.is_ped_in_any_vehicle(PedHaters[i]) then
-            pedveh = ped.get_vehicle_ped_is_using(PedHaters[i])
-            system.wait(0)
-              ai.task_leave_vehicle(PedHaters[i], pedveh, 4160)
-              system.wait(500)
-            --  ped.clear_ped_tasks_immediately(PedHaters[i])
-              system.wait(250)
-              end
-          --  entity.set_entity_god_mode(PedHaters[i], true)
+                pedveh = ped.get_vehicle_ped_is_using(PedHaters[i])
+                system.wait(0)
+                ai.task_leave_vehicle(PedHaters[i], pedveh, 4160)
+                system.wait(500)
 
-                
-            ai.task_combat_ped(PedHaters[i], player_peds[pid + 1], 0, 16)
-            
-    
-            
+                system.wait(250)
             end
+
+            ai.task_combat_ped(PedHaters[i], player_peds[pid + 1], 0, 16)
+
+        end
     end
 end
-    
+
+
 function Ped_eject(pid, ejtyp)
     PedHaters, player_groups, player_peds = {}, {}, {}
 
-        player_groups[pid + 1]  = player.get_player_group(pid)	
-        player_peds[pid + 1] = PlyPed(pid)
-    
+    player_groups[pid + 1] = player.get_player_group(pid)
+    player_peds[pid + 1] = PlyPed(pid)
 
-   PedHaters =  ped.get_all_peds()
-   
-   system.wait(100)
+    PedHaters = ped.get_all_peds()
 
- 
- GroupHate = ped.create_group()
- 
-  for y = 1, #player_groups do
-      
-            ped.set_relationship_between_groups(5, player_groups[y], GroupHate)
-            
-            
-            ped.set_relationship_between_groups(5, GroupHate, player_groups[y])
-  end
-  
-  
+    system.wait(100)
+
+    GroupHate = ped.create_group()
+
+    for y = 1, #player_groups do
+
+        ped.set_relationship_between_groups(5, player_groups[y], GroupHate)
+
+        ped.set_relationship_between_groups(5, GroupHate, player_groups[y])
+    end
+
     for i = 1, #PedHaters do
-          if not ped.is_ped_a_player(PedHaters[i]) then
+        if not ped.is_ped_a_player(PedHaters[i]) then
             network.request_control_of_entity(PedHaters[i])
             ped.set_ped_max_health(PedHaters[i], 700)
             ped.set_ped_health(PedHaters[i], 700)
@@ -6906,21 +5292,13 @@ function Ped_eject(pid, ejtyp)
             weapon.give_delayed_weapon_to_ped(PedHaters[i], ped_wep[8][2], 0, 1)
             weapon.set_ped_ammo(PedHaters[i], ped_wep[8][2], 1000000)
             if ped.is_ped_in_any_vehicle(PedHaters[i]) then
-            pedveh = ped.get_vehicle_ped_is_using(PedHaters[i])
-            system.wait(0)
-              ai.task_leave_vehicle(PedHaters[i], pedveh, ejtyp)
-              system.wait(200)
-          --    ped.clear_ped_tasks_immediately(PedHaters[i])
-              system.wait(150)
-              end
-          --  entity.set_entity_god_mode(PedHaters[i], true)
-
-                
-         --   ai.task_combat_ped(PedHaters[i], player_peds[pid + 1], 0, 16)
-            
-    
-            
+                pedveh = ped.get_vehicle_ped_is_using(PedHaters[i])
+                system.wait(0)
+                ai.task_leave_vehicle(PedHaters[i], pedveh, ejtyp)
+                system.wait(200)
             end
+
+        end
     end
 end
 
@@ -6963,27 +5341,26 @@ end)
 hb_delay.max = 1000
 hb_delay.min = 0
 hb_delay.value = 0
-
 local bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
 
-
-            for pid = 0, 32 do
-                if not player.is_player_valid(pid) then return end
-            local pped = player.get_player_ped(pid)
-            if pped ~= 0 then
+    for pid = 0, 32 do
+        if not player.is_player_valid(pid) then
+            return
+        end
+        local pped = player.get_player_ped(pid)
+        if pped ~= 0 then
             decorator.decor_set_int(pped, "MPBitset", 1)
+        end
+
+        for j = 0, 32 do
+            if not player.is_player_valid(j) then
+                return
             end
-
-
-                for j = 0, 32 do
-                    if not player.is_player_valid(j) then return end
-                    script.trigger_script_event(0xf90cc891, j, {j, pid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-
-                end
-        
-
+            script.trigger_script_event(0xf90cc891, j, {j, pid, 1, 10000, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
 
         end
+
+    end
 end)
 
 local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.troll, function(feat)
@@ -7163,111 +5540,94 @@ sndrape_2.mod = 5
 
 end
 session_soundRape()
-
 menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function(feat)
 
-        for i = 0, 32 do
+    for i = 0, 32 do
 
-            pped = PlyPed(i)
-            if pped ~= 0 then
+        pped = PlyPed(i)
+        if pped ~= 0 then
 
+            local pos, offset, rot = v3(), v3(), v3()
 
-                local pos, offset, rot = v3(), v3(), v3()
+            offset.x = 1.0
+            offset.y = 0.1
+            offset.z = -0.1
 
-              
-                offset.x = 1.0
-                offset.y = 0.1
-                offset.z = -0.1
+            rot.x = 1.0
+            rot.y = 1.0
+            rot.z = 1.0
 
-          
-                rot.x = 1.0
-                rot.y = 1.0
-                rot.z = 1.0
+            local bid = ped.get_ped_bone_index(pped, 65068)
 
+            local hash = gameplay.get_hash_key("prop_dummy_light")
+            spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, false)
+            entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, false, false, false,
+                0, false)
 
-                local bid = ped.get_ped_bone_index(pped, 65068)
+            offset.x = 0.010
+            offset.y = 0.01
+            offset.z = 0.001
 
-                local hash = gameplay.get_hash_key("prop_dummy_light")
-                spawned_cunts[#spawned_cunts + 1]  = object.create_object(hash, pos, true, false)
-                entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, false, false, false, 0, false)
-              
-                offset.x = 0.010
-                offset.y = 0.01
-                offset.z = 0.001
+            rot.x = 1.0
+            rot.y = 1.0
+            rot.z = 1.0
+            local hash = gameplay.get_hash_key("prop_air_lights_02a")
+            spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, true)
+            entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, true, false, false, 0,
+                false)
 
-                rot.x = 1.0
-                rot.y = 1.0
-                rot.z = 1.0
-                local hash = gameplay.get_hash_key("prop_air_lights_02a")
-                spawned_cunts[#spawned_cunts + 1]  = object.create_object(hash, pos, true, true)
-                entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, true, false, false, 0, false)
-
-            end
         end
-        return HANDLER_POP
+    end
+    return HANDLER_POP
 end)
 
 menu.add_feature("Everyone is a Dick Head!", "action", globalFeatures.troll, function(feat)
-
-        for i = 0, 32 do
-
-            pped = PlyPed(i)
-            if pped ~= 0 then
-
-
-                local pos, rot, offset = v3(), v3(), v3()
-
-
-                offset.x = 0.08
-                offset.y = 0.0
-                offset.z = 0.0
-
-                rot.x = 40
-                rot.y = -83
-                rot.z = -134
-
-
-                local bid = ped.get_ped_bone_index(pped, 65068)
-
-                local hash = gameplay.get_hash_key("v_res_d_dildo_f")
-                spawned_cunts[#spawned_cunts + 1]  = object.create_object(hash, pos, true, false)
-                entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, true, false, false, 0, true)
-            end
+    for i = 0, 32 do
+        pped = PlyPed(i)
+        if pped ~= 0 then
+            local pos, rot, offset = v3(), v3(), v3()
+            offset.x = 0.08
+			offset.y = 0.0
+			offset.z = 0.0
+			rot.x = 40
+			rot.y = -83
+			rot.z = -134
+            local bid = ped.get_ped_bone_index(pped, 65068)
+            local hash = gameplay.get_hash_key("v_res_d_dildo_f")
+            spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, false)
+            entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, true, false, false, 0, true)
         end
-        return HANDLER_POP
+    end
+    return HANDLER_POP
 end)
-
 
 menu.add_feature("Give all Dildo Dicks", "action", globalFeatures.troll, function(feat)
 
-        for i = 0, 32 do
+    for i = 0, 32 do
 
-            pped = PlyPed(i)
-            if pped ~= 0 then
+        pped = PlyPed(i)
+        if pped ~= 0 then
 
-                 local pos, rot, offset = v3(), v3(), v3()
+            local pos, rot, offset = v3(), v3(), v3()
 
-                
-                offset.x = 0.0
-                offset.y = 0.0
-                offset.z = 0.0
+            offset.x = 0.0
+            offset.y = 0.0
+            offset.z = 0.0
 
-              
-                rot.x = 293.0
-                rot.y = 28.0
-                rot.z = 24.0
+            rot.x = 293.0
+            rot.y = 28.0
+            rot.z = 24.0
 
+            local bid = ped.get_ped_bone_index(pped, 23553)
 
-                local bid = ped.get_ped_bone_index(pped, 23553)
-
-                local hash = gameplay.get_hash_key("v_res_d_dildo_f")
-                spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, true)
-                entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, true, false, false, 0, true)
-            end
+            local hash = gameplay.get_hash_key("v_res_d_dildo_f")
+            spawned_cunts[#spawned_cunts + 1] = object.create_object(hash, pos, true, true)
+            entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bid, offset, rot, true, false, false, 0,
+                true)
         end
-        return HANDLER_POP
+    end
+    return HANDLER_POP
 end)
-
 
 local world_force = menu.add_feature("Apply force to world entities", "action", globalFeatures.lobby, function(feat)
     get_everything()
@@ -7508,12 +5868,16 @@ end
 
 --TODO: Spawn Cleanups
 
-local Blip_Cleanup = menu.add_feature("Delete Blips Added", "action", globalFeatures.cleanup, function(feat)
-
-        if #BlipIDs == 0 or nil then return end
-        for i = 1, #BlipIDs do
+local Blip_Cleanup = menu.add_feature("Delete All Blips Added", "action", globalFeatures.cleanup, function(feat)
+    if #BlipIDs == 0 or nil then return end
+    for i = 1, #BlipIDs do
         ui.remove_blip(BlipIDs[i])
+    end
+    for pid = 0, 32 do
+        if Players[pid].OTRBlipID ~= nil then
+            ui.remove_blip(Players[pid].OTRBlipID)
         end
+    end
 end)
 
 local alk_cleanup = menu.add_feature("Delete alkonost lag Spawns", "action", globalFeatures.cleanup, function(feat)
@@ -8012,16 +6376,20 @@ local PCR2, PCG2, PCB2, PCA2 = 0, 0, 0, 255
 playerpulse = menu.add_feature("Pulse PlayerBar Names", "value_i", globalFeatures.moistopt, function(feat)
     if feat.on then
     for pid = 0, 32 do
-    if player.is_player_valid(pid) then
+    if player.is_player_valid(pid) and pid ~= player.player_id() then
     pped = player.get_player_ped(pid)
-    if interior.get_interior_from_entity(pped) == 0 or Players[pid].isint ~= true then
-    system.wait(feat.value)
+    if Players[pid].isint then
+    goto next
+    elseif interior.get_interior_from_entity(pped) == 0 or Players[pid].isint == false then
+  --  system.wait(feat.value)
     Players[pid].pulse = true
     system.wait(feat.value)
     Players[pid].pulse = false
     system.wait(feat.value)
     end
+ --   system.wait(feat.value)
     end
+    ::next::
     end
     return HANDLER_CONTINUE
     end
@@ -8030,7 +6398,7 @@ end)
 playerpulse.on = true
 playerpulse.max = 800
 playerpulse.min = 1
-playerpulse.value = 75
+playerpulse.value = 95
 playerpulse.mod = 1
 
 notifysent = {}
@@ -8063,7 +6431,7 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                     end
                     if player.is_player_god(i) and player.is_player_vehicle_god(i) and Players[pid].isint == false then
                     if  Players[pid].pulse then
-                        PCR, PCG, PCB, PCA = 255, 0, 255, 100
+                        PCR, PCG, PCB, PCA = 255, 255, 255, 190
                     else
 
                     PCR, PCG, PCB, PCA = 255, 0, 255, 255
@@ -8078,7 +6446,7 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                                         end
                     if player.is_player_vehicle_god(i) and not player.is_player_god(i) and Players[pid].isint == false then
                                         if  Players[pid].pulse then
-                        PCR, PCG, PCB, PCA = 255, 170, 0, 100
+                        PCR, PCG, PCB, PCA = 255, 255, 255, 80
                     else
                     PCR, PCG, PCB, PCA = 255, 170, 0, 255
                     end
@@ -8092,21 +6460,21 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
                                         end
                     if player.is_player_god(i) and not player.is_player_vehicle_god(i) and Players[pid].isint == false then
                     if  Players[pid].pulse then
-                        PCR, PCG, PCB, PCA = 255, 0, 0, 100
+                        PCR, PCG, PCB, PCA = 255, 255, 255, 80
                     else
                     PCR, PCG, PCB, PCA = 255, 0, 0, 255
                     end
                                         end
                     if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) and Players[pid].isint == true then
-                                        if  Players[pid].pulse then
-                       PCR, PCG, PCB, PCA = 0, 255, 0, 50
+                    if  Players[pid].pulse then
+                       PCR, PCG, PCB, PCA = 0, 255, 0, 255
                     else
                     PCR, PCG, PCB, PCA = 0, 255, 0, 190
                     end
                                         end
                     if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) and Players[pid].isint == false then
-                         if  Players[pid].pulse then
-                    PCR, PCG, PCB, PCA = 0, 255, 0, 50 
+                    if  Players[pid].pulse then
+                    PCR, PCG, PCB, PCA = 0, 255, 0, 120 
                     else
                     PCR, PCG, PCB, PCA = 0, 255, 0, 255
                     end
@@ -8298,7 +6666,8 @@ end)
 
 --TODO: -------- Moist Tools
 
-local ScreenText, ScreenTextdebug = " ", " "
+local ScreenText, ScreenText2, ScreenTextdebug = " ", " ", ""
+
 
 function update_osd_text(text, append)
   if append then
@@ -8311,30 +6680,68 @@ function update_osd_text(text, append)
   end
 end
 
+
+function updateosd_text(text, append)
+  if append then
+    local Screen_Text = ScreenText .."\n"
+    Screen_Text = string.format(Screen_Text .." : " ..text)
+  end
+  if not append then
+    Screen_Text = " "
+   Screen_Text = text
+  end
+end
+
 function update_osd_text2(Text1, Text2, Text3)
     text1 = Text1
     text2 = Text2
     text3 = Text3
 end
 
+Screen_TeXt, Screen_Text = "", ""
+
 OSD_Debug = menu.add_feature("Debug OSD", "toggle", globalFeatures.moist_tools.id, function(feat)
 
     if feat.on then
-   	--ui.draw_rect(.5, 0.06, 0.150, 0.050, 0, 0, 0, 255)
+    ScreenText2 = ' ` ‟ '
+    ui.draw_rect(0.001, 0.090, 2.0, 0.075, 0, 0, 0, 125)
+  --	ui.draw_rect(.38, .006, 0.250, 0.100, 0, 0, 0, 100)
 
         local pos = v2()
 
 
-        pos.x = .50
+        pos.x = .5
         pos.y = 0.06
 
-        ui.set_text_scale(0.25)
-        ui.set_text_font(0)
-        ui.set_text_color(255, 255, 255, 255)
-        ui.set_text_centre(false)
+        ui.set_text_scale(0.40)
+        ui.set_text_font(2)
+        ui.set_text_color(255, 80, 80, 255)
+        ui.set_text_centre(true)
         ui.set_text_outline(1)
 
-        ui.draw_text(ScreenText, pos)
+        ui.draw_text(Screen_Text, pos)
+        
+        pos.x = .5
+        pos.y = 0.06
+
+        ui.set_text_scale(0.40)
+        ui.set_text_font(2)
+        ui.set_text_color(255, 80, 80, 255)
+        ui.set_text_centre(true)
+        ui.set_text_outline(1)
+
+       -- ui.draw_text(screentext, pos)
+        
+        -- pos.x = .7
+        -- pos.y = 0.06
+
+        -- ui.set_text_scale(0.40)
+        -- ui.set_text_font(2)
+        -- ui.set_text_color(255, 80, 80, 255)
+        -- ui.set_text_centre(true)
+        -- ui.set_text_outline(1)
+
+        -- ui.draw_text(ScreenText2, pos)        
  
         return HANDLER_CONTINUE
     end
@@ -8395,8 +6802,8 @@ local Scr_x, Scr_y = graphics.get_screen_width(), graphics.get_screen_height()
         ui.set_text_centre(false)
         ui.set_text_outline(1)
         
-        pos.x = 0.001
-        pos.y = .975
+        pos.x = 0.081
+        pos.y = .925
         ui.draw_text(text4, pos)
         
          return HANDLER_CONTINUE
@@ -9454,6 +7861,29 @@ function ped_groups()
 			ped.set_relationship_between_groups(0, groupIDs[a], groupIDs[b])
 			ped.set_relationship_between_groups(0, groupIDs[b], groupIDs[a])
 end
+
+OSD_Debugon = function()
+    if not OSD_Debug.on then
+   OSD_Debug.on = true
+   else
+   OSD_Debug.on = not OSD_Debug.on
+    system.yield(25000)
+    end
+end
+OSD_Debugon_on = false
+
+function OSDDebugTurnOn()
+if OSD_Debug.on == false then
+OSD_Debug.on = true
+system.yield(25000)
+OSD_Debug.on = false
+elseif OSD_Debug.on == true then
+system.yield(25000)
+OSD_Debug.on = false
+end
+end
+
+
 		
 
 --TODO: Player list
@@ -9479,8 +7909,35 @@ featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature.id, 
 end)
     
 featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
-featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id)
-featureVars.vd = menu.add_feature("Experimental Decorator Options", "parent", featureVars.v.id)
+featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id, function(feat)
+
+    OSD_Debug.on = false
+
+   
+end)
+featureVars.vd = menu.add_feature("Experimental Decor's", "parent", featureVars.v.id, function(feat)
+    OSD_Debug.on = true
+    
+    TeXt = "These Functions are Experimental use at your own risk"
+ 
+    local idx, idx2 = 0, 0
+    while OSD_Debug.on do
+    idx = idx + 1
+    Screen_TeXt = tostring(' ? ') .. TeXt:sub(1, idx) .. tostring(' ? ')
+    updateosd_text(Screen_TeXt, false)
+     idx2 = idx2 + 1
+     if idx > #TeXt then
+                idx = 0
+     end
+     system.wait(50)
+     if idx2 == 95 then
+     idx2 = 0
+     OSD_Debug.on = false
+     end
+            system.wait(35)
+    end
+    
+end)
 featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)
 
 featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function(feat)
@@ -9525,29 +7982,39 @@ featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
 features = {}
 --TODO: Vehicle Options
 
-
+local decorator_typetable = {"DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
 local DecorAddFeat, DecorFeat, Bool_Value, Bool_Bool = {}, {}, {"true","false"},  {true, false} 
 local function vehdecor()
 for i = 1, #decorators do
-    local DecorType = decoratorType[decorators[i][2]]
+    local decor_typetable = decorator_typetable
+    local DecorType, typenum = decoratorType[decorators[i][2]], decorators[i][2]
     local decor = tostring(decorators[i][1])
+    if DecorType == "DECOR_TYPE_FLOAT" then
+    decor_typetable = {"DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
+    elseif DecorType == "DECOR_TYPE_BOOL" then
+    decor_typetable = {"DECOR_TYPE_BOOL","DECOR_TYPE_FLOAT","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
+    elseif DecorType == "DECOR_TYPE_INT" or DecorType == "DECOR_TYPE_UNK" then
+    decor_typetable = {"DECOR_TYPE_INT","DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
+    elseif DecorType == "DECOR_TYPE_TIME" then
+    decor_typetable = {"DECOR_TYPE_TIME","DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK"}
+    end
     local y = #DecorFeat + 1
     local Decor_feat = DecorFeat[y]
     Decor_feat = menu.add_feature(i ..": " .. decor, "parent", featureVars.vd.id).id
-                menu.add_feature("Check for Decorator", "action", Decor_feat, function(feat)
+               local DecorCheckCustype = menu.add_feature("Check for Decorator", "action_value_str", Decor_feat, function(feat)
                 local decor, Type, exists, decorval
                 local plyveh = player.get_player_vehicle(pid)
                 if plyveh ~= nil or plyveh ~= 0 then
                 decor = tostring(decorators[i][1])
                 Type = decoratorType[decorators[i][2]]
                 exists = decorator.decor_exists_on(plyveh, decor)
-                if Type == "DECOR_TYPE_FLOAT" then
+                if exists == true and Type == "DECOR_TYPE_FLOAT" then
                 decorval = decorator.decor_get_float(plyveh, decor)
                  moist_notify(decor .." Exists on Vehicle\n", string.lower(Type) .." Value is: " .. decorval)
-                elseif Type == "DECOR_TYPE_BOOL" then
+                elseif exists == true and Type == "DECOR_TYPE_BOOL" then
                 decorval = tostring(decorator.decor_get_bool(plyveh, decor))
                  moist_notify(decor .." Exists on Vehicle\n", string.lower(Type) .." Value is: " .. decorval)
-                elseif Type == "DECOR_TYPE_INT" then
+                elseif exists == true and Type == "DECOR_TYPE_INT" then
                 local nethash, name
                 decorval = decorator.decor_get_int(plyveh, decor)
                  moist_notify(decor .." Exists on Vehicle\n", string.lower(Type) .." Value is: " .. decorval)
@@ -9559,14 +8026,15 @@ for i = 1, #decorators do
                  end
                  end
                  
-                elseif Type == "DECOR_TYPE_TIME" then
+                elseif exists == true and Type == "DECOR_TYPE_TIME" then
                 decorval = decorator.decor_get_int(plyveh, decor)
                  moist_notify(decor .." Exists on Vehicle\n", string.lower(Type) .." Value is: " .. decorval)
-                elseif Type == "DECOR_TYPE_UNK" then
+                elseif exists == true and Type == "DECOR_TYPE_UNK" then
                  moist_notify(decor .. "This Decorator is Type UNK! Function for this Type", "Does not exist in the api Yet!")
                 end
                 end
         end)
+        DecorCheckCustype:set_str_data(decor_typetable)
         
            -- if decorators[i][2] == 2 then
                local f = menu.add_feature("Set Decorator on Vehicle as: ", "action_value_str", Decor_feat, function(feat)
@@ -9642,6 +8110,53 @@ for i = 1, #decorators do
                 end
                 end
         end)
+             local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_value_str", Decor_feat, function(feat)
+                local decor, Type, exists, decorval, nplyhash, plyveh
+                plyveh = player.get_player_vehicle(pid)
+                if plyveh ~= nil or plyveh ~= 0 then
+                decor = tostring(decorators[i][1])
+                Type = decoratorType[feat.value + 1]
+                nplyhash = network.network_hash_from_player(pid)
+                
+                if Type == "DECOR_TYPE_FLOAT" then
+                
+                local r,s = input.get("Input Decorator Float Value", "", 96, 5)
+                if r == 1 then
+                    return HANDLER_CONTINUE
+                end
+                if r == 2 then
+                    return HANDLER_POP
+                end
+                
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 1)
+                    decorator.decor_set_float(plyveh, decor, s)
+                
+                
+
+                elseif Type == "DECOR_TYPE_INT" then
+                local r,s = input.get("Input Decorator INT Value", "", 96, 3)
+                if r == 1 then
+                    return HANDLER_CONTINUE
+                end
+                if r == 2 then
+                    return HANDLER_POP
+                end                
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 3)
+                    decorator.decor_set_float(plyveh, decor, s)
+                elseif Type == "DECOR_TYPE_TIME" then
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 5)
+                    decorator.decor_set_time(plyveh, decor, utils.time())
+                elseif Type == "DECOR_TYPE_UNK" then
+                 moist_notify(decor .. "This Decorator is Type UNK! Function for this Type", "Does not exist in the api Yet!")
+                else
+                moist_notify(decor .."Set on Vehicle\n", s or utils.time())
+                end
+                end
+        end)
+        add_decor_custype:set_str_data(decoratorType)
             end
           --  DecorAddBool:set_str_data({"true","false"})
 end
@@ -12978,11 +11493,11 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                         if player.is_player_playing(pid) and player.is_player_god(pid) then
                             tags[#tags + 1] = "G"
                         end
-                        if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 25) then
+                        if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
                                 tagz[#tagz + 1] = "~h~~r~[G]"
                                  Players[pid].pulse = not Players[pid].pulse
-                                 if not Players[pid].isgod then
-                                 ui.notify_above_map("~h~~b~God Mode Player: " .. "\n~y~" .. pid .. " :~r~ " .. SessionPlayers[pid].Name, "~l~~h~Ω MoistsScript 2.0.3.5\n~r~~h~Modder Detection", 119)
+                                 if not Players[pid].isgod and pid ~= player.player_id() then
+                                 ui.notify_above_map("~h~~b~God Mode Player: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, "~l~~h~Ω MoistsScript 2.0.3.5\n~r~~h~Modder Detection", 119)
                                  Players[pid].isgod = true
                                  end
 
@@ -12994,11 +11509,11 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                                 Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
                                 logsent = true
                             end
-                            if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 25) then
+                            if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
                                     tagz[#tagz + 1] = "~h~~o~[V]"
                                     Players[pid].pulse = not Players[pid].pulse
-                                if not Players[pid].isvgod then
-                                 ui.notify_above_map("~h~~b~God Mode Vehicle: " .. "\n~y~" .. pid .. " :~r~ " .. SessionPlayers[pid].Name, "~l~~h~Ω MoistsScript 2.0.3.5\n~r~~h~Modder Detection", 119)
+                                if not Players[pid].isvgod and pid ~= player.player_id() then
+                                 ui.notify_above_map("~h~~b~God Mode Vehicle: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, " ~l~~h~Ω MoistsScript 2.0.3.5\n~r~~h~Modder Detection", 119)
                                  Players[pid].isvgod = true
                                  end
                         
@@ -13007,6 +11522,9 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
                         if player.is_player_spectating(pid) and player.is_player_playing(pid) then
                             tags[#tags + 1] = ".SPEC."
                         end
+                    end
+                    if Players[pid].isint == true then
+                     Players[pid].pulse = false
                     end
 
                     if not isYou then
@@ -13134,16 +11652,4 @@ function OnlineResetCheck()
 	end
 end
 OnlineResetCheck()
-
-function Moist_Version()
-    version_check = setting["MoistScript"]
-        moist_notify("Saved Settings Version:\n", version_check)
-        if version_check ~= MoistVersion then
-        moist_notify("Settings Version MisMatch\n", "file overwritten Please Resave Settings")
-        moist_notify("When Settings Resaved\n", "Please Reset the Script's State in the Scripts Section")
-        OverWriteSettingFile()
-        end
-		Debug_Out("Settings Version: " ..version_check)
-end
-Moist_Version()
 
