@@ -1227,16 +1227,17 @@ function God_Check1_pid(pid)
     feat[i].data = {thread = God_thread1[pid]}
 end
 
+
 God_Check1_pid_thread = function(context)
 	while true do
     if player.is_player_valid(context.pid) ~= false and  context.pid ~= player.player_id() then
 
-	if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
+	if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) then
 	system.wait(10)
         local pped = player.get_player_ped(context.pid)
         if ped.is_ped_shooting(pped) and player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
             if NotifyGod.on and not Players[context.pid].isgod then
-                ui.notify_above_map("~h~~b~".. SessionPlayers[context.pid].Name .."~h~~r~God Check fail\n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", 119)
+                ui.notify_above_map("~h~~b~".. SessionPlayers[context.pid].Name .."~h~~r~ God Check fail \n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", 119)
                 Players[context.pid].isgod = true
             end
         end
@@ -1246,6 +1247,7 @@ God_Check1_pid_thread = function(context)
     end
           return HANDLER_CONTINUE
 end
+
 
 God_Check_pid_thread = function(context)
 
@@ -11656,3 +11658,4 @@ function OnlineResetCheck()
 	end
 end
 OnlineResetCheck()
+
