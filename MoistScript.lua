@@ -131,7 +131,7 @@ dupe_param()
 local save_ini = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini")
 
 local toggle_setting, setting  = {}, {}
-toggle_setting[#toggle_setting+1] = "MoistScript 2.0.3.5"
+toggle_setting[#toggle_setting+1] = "MoistScript"
 setting[toggle_setting[#toggle_setting]] = "2.0.3.5"
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = false
@@ -191,8 +191,6 @@ toggle_setting[#toggle_setting+1] = "counter_Hotkey"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "spam_wait"
 setting[toggle_setting[#toggle_setting]] = 0
-toggle_setting[#toggle_setting+1] = "GodCheck"
-setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "GodCheckNotif"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "force_pPara"
@@ -203,8 +201,6 @@ toggle_setting[#toggle_setting+1] = "Notify_Me"
 setting[toggle_setting[#toggle_setting]] = true
 toggle_setting[#toggle_setting+1] = "playerscriptinfo"
 setting[toggle_setting[#toggle_setting]] = true
-toggle_setting[#toggle_setting+1] = "OSDDebug2"
-setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "playerlist_loop"
 setting[toggle_setting[#toggle_setting]] = 50
 toggle_setting[#toggle_setting+1] = "loop_feat_delay"
@@ -221,7 +217,7 @@ function saveSettings()
     local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini", "w")
     io.output(file)
     for i, k in pairs(toggle_setting) do
-        io.write(k.."="..tostring(setting[k]).."\n")
+        io.write(k.."="..tostring(setting[k]) .."\n")
     end
     io.close()
 end
@@ -241,17 +237,25 @@ function OverWriteSettingFile()
     io.write("")
     io.close()
 end
-
+   
+function checkversion()
+for line in io.lines(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini") do
+    local line = string.gsub(line, toggle_setting[toggle] .. "=", "")
+     if toggle == 1 and setting["MoistScript"] ~= line  then
+      OverWriteSettingFile()
+      saveSettings()
+     end
+     end
+    ui.notify_above_map("Removing old settings & Saving New", "Settings Version OutDated!", 162)
+end
+checkversion()
+system.wait(1000)
 
 for line in io.lines(rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini") do
     local line = string.gsub(line, toggle_setting[toggle] .. "=", "")
-
-    if toggle == 1 and setting["MoistScript 2.0.3.5"] ~= line then
-    ui.notify_above_map("Removing old settings & Saving New", "Settings Version OutDated!", 162)
-    OverWriteSettingFile()
-    saveSettings()
-    end
-    if line == "true" then
+     if toggle == 1 and setting["MoistScript"] ~= line  then
+     end
+     if line == "true" then
         setting[toggle_setting[toggle]] = true
     elseif line == "false" then
         setting[toggle_setting[toggle]] = false
@@ -3482,7 +3486,7 @@ aim_strike.on = false
 --TODO: Ragdoll Control
 
 
-function MoistsRagdollControl()
+--function MoistsRagdollControl()
 
 Ragdoll_Sel = 0
 
@@ -3638,8 +3642,8 @@ rag_self = menu.add_feature("Lifeless Ragdoll(Hotkey Preset)", "toggle", Ragdoll
 end)
 rag_self.on = false
 
-end
-MoistsRagdollControl()
+-- end
+-- MoistsRagdollControl()
 
 
 -- TODO: player ped options
@@ -11652,4 +11656,3 @@ function OnlineResetCheck()
 	end
 end
 OnlineResetCheck()
-
