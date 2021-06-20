@@ -69,13 +69,13 @@ script would  not exist!
 local data, data2, data3, kick_param_data = {}, {}, {}, {}
 local configfile, scidFile, Player_DB, Spamtxt_Data, kickdata, kickdata2, kickdata3
 configfile = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.ini")
-scidFile = (rootPath .. "\\Blacklist\\scid.list")
-kickdata = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.data")
-kickdata2 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.data")
-kickdata3 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks3.data")
-kickparam = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_KickParam.data")
-Player_DB = (rootPath .. "\\scripts\\lualogs\\PlayerDB.md")
-Spamtxt_Data = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data")
+scidFile = (rootPath .. "\\Blacklist\\scid.ini")
+kickdata = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.ini")
+kickdata2 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.ini")
+kickdata3 = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks3.ini")
+kickparam = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moist_KickParam.ini")
+Player_DB = (rootPath .. "\\scripts\\lualogs\\PlayerDB.txt")
+Spamtxt_Data = (rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.ini")
 debugfile = (rootPath .. "\\lualogs\\Moists_debug.log")
 
 -- output Features
@@ -136,7 +136,7 @@ local save_ini = (rootPath .. "\\scripts\\MoistsLUA_cfg\\MoistsScript_settings.i
 
 local toggle_setting, setting  = {}, {}
 toggle_setting[#toggle_setting+1] = "MoistScript"
-setting[toggle_setting[#toggle_setting]] = "2.0.3.5"
+setting[toggle_setting[#toggle_setting]] = "2.0.3.6"
 toggle_setting[#toggle_setting+1] = "OSD.modvehspeed_osd"
 setting[toggle_setting[#toggle_setting]] = false
 toggle_setting[#toggle_setting+1] = "OSD.Player_bar"
@@ -572,7 +572,7 @@ function dec2ip(decip)
 end
 
 function notify_above_map(msg)
-    ui.notify_above_map(tostring("~l~~y~" .. msg), "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", 175)
+    ui.notify_above_map(tostring("~l~~y~" .. msg), "~r~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", 175)
 end
 
 function moist_notify(msg1, msg2)
@@ -582,24 +582,24 @@ function moist_notify(msg1, msg2)
     msg2 = msg2 or " ~h~~w~~ex_r*~"
 
     if notifytype == 1 then
-        ui.notify_above_map("~h~~r~" .. msg1 .. "~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~r~" .. msg1 .. "~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", color)
     end
     if notifytype == 2 then
-        ui.notify_above_map("~h~" .. msg1 .. "~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~" .. msg1 .. "~h~~l~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 3 then
-        ui.notify_above_map("~h~~y~" .. msg1 .. "~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~y~" .. msg1 .. "~w~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", color)
     end
     if notifytype == 4 then
-        ui.notify_above_map("~h~~b~" .. msg1 .. "~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~b~" .. msg1 .. "~y~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", color)
     end
 
     if notifytype == 5 then
-        ui.notify_above_map("~h~~g~" .. msg1 .. "~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.5\n~b~~h~Moist Edition", color)
+        ui.notify_above_map("~h~~g~" .. msg1 .. "~b~" .. msg2, "~r~~h~Ω MoistsScript 2.0.3.6\n~b~~h~Moist Edition", color)
     end
     if notifytype == 6 then
-        ui.notify_above_map(msg1 .. "~h~" .. msg2, "~y~~h~Ω MoistsScript 2.0.3.5\n~w~~h~Moist Edition", color)
+        ui.notify_above_map(msg1 .. "~h~" .. msg2, "~y~~h~Ω MoistsScript 2.0.3.6\n~w~~h~Moist Edition", color)
     end
 
 end
@@ -834,7 +834,7 @@ playerFeat4 = {}
 Active_menu = nil
 
 -- local Menu Features
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.3.5", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.3.6", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
 -- TODO: Feature Parents
@@ -1169,24 +1169,6 @@ globalFeatures.moistMkropt = menu.add_feature("Marker options", "parent", global
 globalFeatures.notifyParent = menu.add_feature("Notify Customisation", "parent", globalFeatures.moistopt).id
 logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt)
 
-AutoHost = menu.add_feature("Auto BailKick Host until me", "toggle", globalFeatures.moistopt, function(feat)
-    setting["AutoHost"] = true
-    if feat.on then
-        if SessionHost ~= me then
-            if SessionHost ~= player.is_player_friend(SessionHost) then
-                HostForce.on = true
-            end
-        end
-        HostForce.on = false
-        return HANDLER_CONTINUE
-    end
-    HostForce.on = false
-    setting["AutoHost"] = false
-    return HANDLER_POP
-
-end)
-AutoHost.on = setting["AutoHost"]
-
 -- TODO: Modder Flag logs
 
 Auto_Off_RAC = menu.add_feature("Disable RAC Detection Experimental", "toggle", globalFeatures.moistopt)
@@ -1281,16 +1263,16 @@ function God_Check1_pid(pid)
     }
 end
 
+
 God_Check1_pid_thread = function(context)
     while true do
+        local pped = player.get_player_ped(context.pid)
         if player.is_player_valid(context.pid) ~= false and context.pid ~= player.player_id() then
-
-            if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) then
-                system.wait(10)
-                local pped = player.get_player_ped(context.pid)
-                if ped.is_ped_shooting(pped) and player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
+            if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
+                if ped.is_ped_shooting(pped) then
+                    system.wait(10)
                     if NotifyGod.on and not Players[context.pid].isgod then
-                        ui.notify_above_map("~h~~b~" .. SessionPlayers[context.pid].Name .. "~h~~r~ God Check fail \n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", 119)
+                        ui.notify_above_map("~h~~b~" .. SessionPlayers[context.pid].Name .. "~h~~r~God Check fail\n~y~Shooting While God Mode", "~l~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", 119)
                         Players[context.pid].isgod = true
                     end
                 end
@@ -1324,7 +1306,7 @@ God_Check_pid_thread = function(context)
                                     if NotifyGod.on and not Players[context.pid].isgod then
                                         Entity = "Player God mode"
                                         Players[context.pid].isgod = true
-                                        ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", 119)
+                                        ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", 119)
                                     end
                                 end
                             end
@@ -1340,7 +1322,7 @@ God_Check_pid_thread = function(context)
                                             if NotifyGod.on and not Players[context.pid].isvgod then
                                                 Entity = "Player Vehicle God mode"
                                                 Players[context.pid].isvgod = true
-                                                ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.5\n~p~~h~Moist Edition", 119)
+                                                ui.notify_above_map("~h~~b~" .. Entity .. "\n~y~" .. context.pid .. " : " .. SessionPlayers[context.pid].Name, "~l~~h~Ω MoistsScript 2.0.3.6\n~p~~h~Moist Edition", 119)
                                             end
                                         end
                                     end
@@ -1395,7 +1377,7 @@ function modderflag(pid)
 end
 
 -- TODO: Player Feature Parents
-playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.3.5", "parent", 0).id
+playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.3.6", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Player Tools", "parent", playerfeatVars.parent).id
 local vehicle_Tools = menu.add_player_feature("Vehicle Tools", "parent", playerfeatVars.parent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", playerfeatVars.parent).id
@@ -1654,7 +1636,7 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
 
     text = tostring(s .. "\n")
     system.wait(1)
-    local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data", "a")
+    local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.ini", "a")
     system.wait(1)
     io.output(file)
 
@@ -1705,12 +1687,12 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
 end)
 
 spam_cus_long = menu.add_feature("Rewrite Preset file", "action", globalFeatures.Spam_Options, function(feat)
-    local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data", "w+")
+    local file = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.ini", "w+")
     system.wait(1)
     io.output(file)
     io.write("")
     io.close()
-    local File = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.data", "a")
+    local File = io.open(rootPath .. "\\scripts\\MoistsLUA_cfg\\Moists_Spamset.ini", "a")
     io.output(File)
     for i = 1, #spam_presets do
         if spam_presets[i][1] or spam_presets[i][2] ~= nil then
@@ -1897,7 +1879,7 @@ end)
 
 savepos = function(text)
 
-    local file = io.open(rootPath .. "\\lualogs\\saveposoutput.md", "a")
+    local file = io.open(rootPath .. "\\lualogs\\saveposoutput.txt", "a")
     io.output(file)
     io.write(text)
     io.close()
@@ -2316,7 +2298,7 @@ function joined_data(text)
     dtime = string.match(d, "%d%d:%d%d:%d%d")
     dt = os.date("%d/%m/%y")
     CurDateTime = (string.format(dt .. "|" .. dtime .. "|"))
-    file = io.open(rootPath .. "\\lualogs\\PlayerJoins.md", "a")
+    file = io.open(rootPath .. "\\lualogs\\PlayerJoins.txt", "a")
 
     io.output(file)
     io.write("\n" .. CurDateTime .. text)
@@ -2345,7 +2327,7 @@ function playerDB(pid, ip)
         name = player.get_player_name(pid)
         token = tostring(player.get_player_host_token(pid))
 
-        file1 = io.open(rootPath .. "\\lualogs\\PlayerDB.md", "a")
+        file1 = io.open(rootPath .. "\\lualogs\\PlayerDB.txt", "a")
         io.output(file1)
         tokeen = tostring(token:sub(1, 8))
 
@@ -2590,7 +2572,7 @@ function blacklist_check(pid)
     if ValidScid(scid) and scids[scid] then
         SessionPlayers.Name = player.get_player_name(pid)
         system.wait(10)
-        ui.notify_above_map(string.format("Black List Player Joining:\n" .. name .. "\n" .. scid), "~h~Ω MoistsScript 2.0.3.5\nBlack List", 024)
+        ui.notify_above_map(string.format("Black List Player Joining:\n" .. name .. "\n" .. scid), "~h~Ω MoistsScript 2.0.3.6\nBlack List", 024)
         if MarkAsModderFeature.on then
             MarkPidAsModder(pid)
         end
@@ -2610,7 +2592,7 @@ function chat(name, text)
     local d = os.date()
     local t = string.match(d, "%d%d:%d%d:%d%d")
     local dt = os.date("%d/%m/%y%y")
-    local file = io.open(rootPath .. "\\lualogs\\chat.md", "a")
+    local file = io.open(rootPath .. "\\lualogs\\chat.txt", "a")
     io.output(file)
     io.write("\n" .. dt .. " | " .. t .. " | " .. name .. " | " .. text)
     io.close()
@@ -7935,184 +7917,136 @@ ScriptLocals["playerlist"] = function()
 
         features = {}
         -- TODO: Vehicle Options
-
-        local decorator_typetable = {"DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_INT", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
-        local DecorAddFeat, DecorFeat, Bool_Value, Bool_Bool = {}, {}, {"true", "false"}, {true, false}
-        local function vehdecor()
-            for i = 1, #decorators do
-                local decor_typetable = decorator_typetable
-                local DecorType, typenum = decoratorType[decorators[i][2]], decorators[i][2]
-                local decor = tostring(decorators[i][1])
-                if DecorType == "DECOR_TYPE_FLOAT" then
-                    decor_typetable = {"DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_INT", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
-                elseif DecorType == "DECOR_TYPE_BOOL" then
-                    decor_typetable = {"DECOR_TYPE_BOOL", "DECOR_TYPE_FLOAT", "DECOR_TYPE_INT", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
-                elseif DecorType == "DECOR_TYPE_INT" or DecorType == "DECOR_TYPE_UNK" then
-                    decor_typetable = {"DECOR_TYPE_INT", "DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
-                elseif DecorType == "DECOR_TYPE_TIME" then
-                    decor_typetable = {"DECOR_TYPE_TIME", "DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_INT", "DECOR_TYPE_UNK"}
-                end
-                local y = #DecorFeat + 1
-                local Decor_feat = DecorFeat[y]
-                Decor_feat = menu.add_feature(i .. ": " .. decor, "parent", featureVars.vd.id).id
-                local DecorCheckCustype = menu.add_feature("Check for Decorator", "action_value_str", Decor_feat, function(feat)
-                    local decor, Type, exists, decorval
-                    local plyveh = player.get_player_vehicle(pid)
-                    if plyveh ~= nil or plyveh ~= 0 then
-                        decor = tostring(decorators[i][1])
-                        Type = decoratorType[decorators[i][2]]
-                        exists = decorator.decor_exists_on(plyveh, decor)
-                        if exists == true and Type == "DECOR_TYPE_FLOAT" then
-                            decorval = decorator.decor_get_float(plyveh, decor)
-                            moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
-                        elseif exists == true and Type == "DECOR_TYPE_BOOL" then
-                            decorval = tostring(decorator.decor_get_bool(plyveh, decor))
-                            moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
-                        elseif exists == true and Type == "DECOR_TYPE_INT" then
-                            local nethash, name
-                            decorval = decorator.decor_get_int(plyveh, decor)
-                            moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
-                            for pid = 0, 32 do
-                                nethash = network.network_hash_from_player(pid)
-                                if nethash == decorval then
-                                    name = player.get_player_name(pid)
-                                    moist_notify(decor .. " = Hash of Player: ", name)
-                                end
-                            end
-
-                        elseif exists == true and Type == "DECOR_TYPE_TIME" then
-                            decorval = decorator.decor_get_int(plyveh, decor)
-                            moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
-                        elseif exists == true and Type == "DECOR_TYPE_UNK" then
-                            moist_notify(decor .. "This Decorator is Type UNK! Function for this Type", "Does not exist in the api Yet!")
-                        end
-                    end
-                end)
-                DecorCheckCustype:set_str_data(decor_typetable)
-
-                -- if decorators[i][2] == 2 then
-                local f = menu.add_feature("Set Decorator on Vehicle as: ", "action_value_str", Decor_feat, function(feat)
-                    local decor, Type, exists, decorval, nplyhash, plyveh
-                    plyveh = player.get_player_vehicle(pid)
-                    if plyveh ~= nil or plyveh ~= 0 then
-                        decor = tostring(decorators[i][1])
-                        Type = decoratorType[decorators[i][2]]
-                        nplyhash = network.network_hash_from_player(pid)
-                        network.request_control_of_entity(plyveh)
-                        decorator.decor_register(decor, 2)
-                        network.request_control_of_entity(plyveh)
-                        decorator.decor_set_bool(plyveh, decor, Bool_Bool[feat.value + 1])
-                        decorval = tostring(decorator.decor_get_bool(plyveh, decor))
-                        moist_notify(decor .. " Exists on Vehicle\n", decorval)
-                    end
-                end)
-                f:set_str_data(Bool_Value)
-                --  end
-                menu.add_feature("Remove Decorator from Vehicle", "action", Decor_feat, function(feat)
-                    local plyveh, decor
-                    decor = decorators[i][1]
-                    plyveh = player.get_player_vehicle(pid)
-                    network.request_control_of_entity(plyveh)
-                    decorator.decor_remove(plyveh, decor)
-                    moist_notify(decor .. " Exists on Vehicle\n", "Now its Been Removed")
-                end)
-
-                if decorators[i][2] ~= 2 then
-                    menu.add_feature("Add Decorator to Vehicle", "action", Decor_feat, function(feat)
-                        local decor, Type, exists, decorval, nplyhash, plyveh
-                        plyveh = player.get_player_vehicle(pid)
-                        if plyveh ~= nil or plyveh ~= 0 then
-                            decor = tostring(decorators[i][1])
-                            Type = decoratorType[decorators[i][2]]
-                            nplyhash = network.network_hash_from_player(pid)
-
-                            if Type == "DECOR_TYPE_FLOAT" then
-
-                                local r, s = input.get("Input Decorator Float Value", "", 96, 5)
-                                if r == 1 then
-                                    return HANDLER_CONTINUE
-                                end
-                                if r == 2 then
-                                    return HANDLER_POP
-                                end
-
-                                network.request_control_of_entity(plyveh)
-                                decorator.decor_register(decor, 1)
-                                decorator.decor_set_float(plyveh, decor, s)
-
-                            elseif Type == "DECOR_TYPE_INT" then
-                                local r, s = input.get("Input Decorator INT Value", "", 96, 3)
-                                if r == 1 then
-                                    return HANDLER_CONTINUE
-                                end
-                                if r == 2 then
-                                    return HANDLER_POP
-                                end
-                                network.request_control_of_entity(plyveh)
-                                decorator.decor_register(decor, 3)
-                                decorator.decor_set_float(plyveh, decor, s)
-                            elseif Type == "DECOR_TYPE_TIME" then
-                                network.request_control_of_entity(plyveh)
-                                decorator.decor_register(decor, 5)
-                                decorator.decor_set_time(plyveh, decor, utils.time())
-                            elseif Type == "DECOR_TYPE_UNK" then
-                                moist_notify(decor .. "This Decorator is Type UNK! Function for this Type", "Does not exist in the api Yet!")
-                            else
-                                moist_notify(decor .. "Set on Vehicle\n", s or utils.time())
-                            end
-                        end
-                    end)
-                    local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_value_str", Decor_feat, function(feat)
-                        local decor, Type, exists, decorval, nplyhash, plyveh
-                        plyveh = player.get_player_vehicle(pid)
-                        if plyveh ~= nil or plyveh ~= 0 then
-                            decor = tostring(decorators[i][1])
-                            Type = decoratorType[feat.value + 1]
-                            nplyhash = network.network_hash_from_player(pid)
-
-                            if Type == "DECOR_TYPE_FLOAT" then
-
-                                local r, s = input.get("Input Decorator Float Value", "", 96, 5)
-                                if r == 1 then
-                                    return HANDLER_CONTINUE
-                                end
-                                if r == 2 then
-                                    return HANDLER_POP
-                                end
-
-                                network.request_control_of_entity(plyveh)
-                                decorator.decor_register(decor, 1)
-                                decorator.decor_set_float(plyveh, decor, s)
-
-                            elseif Type == "DECOR_TYPE_INT" then
-                                local r, s = input.get("Input Decorator INT Value", "", 96, 3)
-                                if r == 1 then
-                                    return HANDLER_CONTINUE
-                                end
-                                if r == 2 then
-                                    return HANDLER_POP
-                                end
-                                network.request_control_of_entity(plyveh)
-                                decorator.decor_register(decor, 3)
-                                decorator.decor_set_float(plyveh, decor, s)
-                            elseif Type == "DECOR_TYPE_TIME" then
-                                network.request_control_of_entity(plyveh)
-                                decorator.decor_register(decor, 5)
-                                decorator.decor_set_time(plyveh, decor, utils.time())
-                            elseif Type == "DECOR_TYPE_UNK" then
-                                moist_notify(decor .. "This Decorator is Type UNK! Function for this Type", "Does not exist in the api Yet!")
-                            else
-                                moist_notify(decor .. "Set on Vehicle\n", s or utils.time())
-                            end
-                        end
-                    end)
-                    add_decor_custype:set_str_data(decoratorType)
-                end
-                --  DecorAddBool:set_str_data({"true","false"})
-            end
+local decorator_typetable = {"DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_INT", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
+local DecorAddFeat, DecorFeat, Bool_Value, Bool_Bool = {}, {}, {"true", "false"}, {true, false}
+local function vehdecor()
+    for i = 1, #decorators do
+        local decor_typetable = decorator_typetable
+        local DecorType, typenum = decoratorType[decorators[i][2]], decorators[i][2]
+        local decor = tostring(decorators[i][1])
+        if DecorType == "DECOR_TYPE_FLOAT" then
+            decor_typetable = {"DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_INT", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
+        elseif DecorType == "DECOR_TYPE_BOOL" then
+            decor_typetable = {"DECOR_TYPE_BOOL", "DECOR_TYPE_FLOAT", "DECOR_TYPE_INT", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
+        elseif DecorType == "DECOR_TYPE_INT" or DecorType == "DECOR_TYPE_UNK" then
+            decor_typetable = {"DECOR_TYPE_INT", "DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_UNK", "DECOR_TYPE_TIME"}
+        elseif DecorType == "DECOR_TYPE_TIME" then
+            decor_typetable = {"DECOR_TYPE_TIME", "DECOR_TYPE_FLOAT", "DECOR_TYPE_BOOL", "DECOR_TYPE_INT", "DECOR_TYPE_UNK"}
         end
-        vehdecor()
+        local y = #DecorFeat + 1
+        local Decor_feat = DecorFeat[y]
+        Decor_feat = menu.add_feature(i .. ": " .. decor, "parent", featureVars.vd.id).id
+        local DecorCheckCustype = menu.add_feature("Check for Decorator", "action_value_str", Decor_feat, function(feat)
+            local decor, Type, exists, decorval
+            local plyveh = player.get_player_vehicle(pid)
+            if plyveh ~= nil or plyveh ~= 0 then
+                decor = tostring(decorators[i][1])
+                Type = decoratorType[decorators[i][2]]
+                exists = decorator.decor_exists_on(plyveh, decor)
+                if exists == true and Type == "DECOR_TYPE_FLOAT" then
+                    decorval = decorator.decor_get_float(plyveh, decor)
+                    moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
+                elseif exists == true and Type == "DECOR_TYPE_BOOL" then
+                    decorval = tostring(decorator.decor_get_bool(plyveh, decor))
+                    moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
+                elseif exists == true and Type == "DECOR_TYPE_INT" then
+                    local nethash, name
+                    decorval = decorator.decor_get_int(plyveh, decor)
+                    moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
+                    for pid = 0, 32 do
+                        nethash = network.network_hash_from_player(pid)
+                        if nethash == decorval then
+                            name = player.get_player_name(pid)
+                            moist_notify(decor .. " = Hash of Player: ", name)
+                        end
+                    end
 
+                elseif exists == true and Type == "DECOR_TYPE_TIME" then
+                    decorval = decorator.decor_get_int(plyveh, decor)
+                    moist_notify(decor .. " Exists on Vehicle\n", string.lower(Type) .. " Value is: " .. decorval)
+                elseif exists == true and Type == "DECOR_TYPE_UNK" then
+                    moist_notify(decor .. "This Decorator is Type UNK! Function for this Type", "Does not exist in the api Yet!")
+                end
+            end
+        end)
+        DecorCheckCustype:set_str_data(decor_typetable)
+
+        -- if decorators[i][2] == 2 then
+        local f = menu.add_feature("Set Decorator on Vehicle as: ", "action_value_str", Decor_feat, function(feat)
+            local decor, Type, exists, decorval, nplyhash, plyveh
+            plyveh = player.get_player_vehicle(pid)
+            if plyveh ~= nil or plyveh ~= 0 then
+                decor = tostring(decorators[i][1])
+                Type = decoratorType[decorators[i][2]]
+                nplyhash = network.network_hash_from_player(pid)
+                network.request_control_of_entity(plyveh)
+                decorator.decor_register(decor, 2)
+                network.request_control_of_entity(plyveh)
+                decorator.decor_set_bool(plyveh, decor, Bool_Bool[feat.value + 1])
+                decorval = tostring(decorator.decor_get_bool(plyveh, decor))
+                moist_notify(decor .. " Exists on Vehicle\n", decorval)
+            end
+        end)
+        f:set_str_data(Bool_Value)
+        --  end
+        menu.add_feature("Remove Decorator from Vehicle", "action", Decor_feat, function(feat)
+            local plyveh, decor
+            decor = decorators[i][1]
+            plyveh = player.get_player_vehicle(pid)
+            network.request_control_of_entity(plyveh)
+            decorator.decor_remove(plyveh, decor)
+            moist_notify(decor .. " Exists on Vehicle\n", "Now its Been Removed")
+        end)
+        local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_value_str", Decor_feat, function(feat)
+            local decor, Type, exists, decorval, nplyhash, plyveh
+            plyveh = player.get_player_vehicle(pid)
+            if plyveh ~= nil or plyveh ~= 0 then
+                decor = tostring(decorators[i][1])
+                Type = decoratorType[feat.value + 1]
+                nplyhash = network.network_hash_from_player(pid)
+
+                local r, s = input.get("Input DecorValue:int:Num(1234)|float:NumDot(1234.5678)|Bool:(<true|false>)", utils.time(), 96, 2)
+                if r == 1 then
+                    return HANDLER_CONTINUE
+                end
+                if r == 2 then
+                    return HANDLER_POP
+                end
+                if feat.value == 0 then
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 1)
+                    decorator.decor_set_float(plyveh, decor, s)
+                end
+                if feat.value == 1 then
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 2)
+                    decorator.decor_set_bool(plyveh, decor, s)
+                end
+                if feat.value == 2 then
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 3)
+                    decorator.decor_set_int(plyveh, decor, tonumber(s))
+                end
+
+                if feat.value == 3 then
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 4)
+                    decorator.decor_set_int(plyveh, decor, tonumber(s))
+                end
+
+                if feat.value == 4 then
+                    network.request_control_of_entity(plyveh)
+                    decorator.decor_register(decor, 5)
+                    decorator.decor_set_time(plyveh, decor, tonumber(s))
+                end
+
+            end
+        end)
+        add_decor_custype:set_str_data(decoratorType)
+    end
+    --  DecorAddBool:set_str_data({"true","false"})
+end
+vehdecor()
         features["godvehon"] = {
             feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
 
@@ -11908,7 +11842,7 @@ ScriptLocals["playerlist"] = function()
                             tagz[#tagz + 1] = "~h~~r~[G]"
                             Players[pid].pulse = not Players[pid].pulse
                             if not Players[pid].isgod and pid ~= player.player_id() then
-                                ui.notify_above_map("~h~~b~God Mode Player: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, "~l~~h~Ω MoistsScript 2.0.3.5\n~r~~h~Modder Detection", 119)
+                                ui.notify_above_map("~h~~b~God Mode Player: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, "~l~~h~Ω MoistsScript 2.0.3.6\n~r~~h~Modder Detection", 119)
                                 Players[pid].isgod = true
                             end
 
@@ -11924,7 +11858,7 @@ ScriptLocals["playerlist"] = function()
                             tagz[#tagz + 1] = "~h~~o~[V]"
                             Players[pid].pulse = not Players[pid].pulse
                             if not Players[pid].isvgod and pid ~= player.player_id() then
-                                ui.notify_above_map("~h~~b~God Mode Vehicle: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, " ~l~~h~Ω MoistsScript 2.0.3.5\n~r~~h~Modder Detection", 119)
+                                ui.notify_above_map("~h~~b~God Mode Vehicle: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, " ~l~~h~Ω MoistsScript 2.0.3.6\n~r~~h~Modder Detection", 119)
                                 Players[pid].isvgod = true
                             end
 
