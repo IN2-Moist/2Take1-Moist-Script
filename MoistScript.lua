@@ -19,7 +19,7 @@ Paths.interiorpos = Paths.Cfg .. "\\interiors.lua"
 Paths.Spamtxt_Data = Paths.Cfg .. "\\Moists_Spamset.ini"
 
 local Settings = {}
--- Settings["MoistScript"] = "2.0.3.7"
+Settings["MoistScript"] = "2.0.3.8"
 Settings["OSD.modvehspeed_osd"] = false
 Settings["OSD.Player_bar"] = false
 Settings["aimDetonate_control"] = false
@@ -67,9 +67,10 @@ Settings["RagDollHotKey"] = false
 Settings["NotifyLimitON"] = false
 Settings["NotifyLimit"] = 30
 
+
 function SaveSettings()
     local file = io.open(Paths.Settings, "w")
-    for k, v in pairs(Settings) do
+    for k,v in pairs(Settings) do
         file:write(tostring(k) .. "=" .. tostring(v) .. "\n")
     end
 
@@ -78,24 +79,23 @@ end
 
 function LoadSettings()
     if not utils.file_exists(Paths.Settings) then
-        print("No saved settings")
+       print("No saved settings")
         return
     end
     for line in io.lines(Paths.Settings) do
         local separator = line:find("=", 1, true)
         if separator then
             local key = line:sub(1, separator - 1)
-            print(key)
             local value = line:sub(separator + 1)
-            print(value)
             Settings[key] = value
         end
     end
 end
 
+
 function Load_Settings()
     if not utils.file_exists(Paths.Settings) then
-        -- No saved settings
+        --No saved settings
         return
     end
     for line in io.lines(Paths.Settings) do
@@ -104,11 +104,10 @@ function Load_Settings()
             local key = line:sub(1, separator - 1)
             local value = line:sub(separator + 1)
             if value == string.format("true") then
-                value = true
+            value = true
             elseif value == string.format("false") then
-                value = false
-            else
-                value = value
+            value = false
+            else value = value
             end
             Settings[key] = value
         end
@@ -116,7 +115,37 @@ function Load_Settings()
     -- Edit feature values based on new Settings values
 end
 
+
+function VersionCheck()
+    if Settings["MoistScript"] ~= "2.0.3.8" then
+    print("version Mismatch")
+        local file = io.open(Paths.Settings, "w")
+        file:write(tostring(""))
+        file:close()
+Settings["MoistScript"] = "2.0.3.8"
+Settings["lag_out"] = true
+Settings["global_func.mk1boostrefill"] = false
+Settings["global_func.mk2boostrefill"] = false
+Settings["global_func.veh_rapid_fire"] = false
+Settings["NotifyColorDefault"] = 128
+Settings["NotifyVarDefault"] = 1
+Settings["chat_log"] = true
+Settings["Chat_Command"] = false
+Settings["chat_debug"] = false
+Settings["Blacklist_ON"] = true
+Settings["GodCheck"] = true
+Settings["GodCheckNotif"] = true
+Settings["playerlist_loop"] = 10
+Settings["loop_feat_delay"] = 15
+Settings["ScriptEvent_delay"] = 20
+
+SaveSettings()
+    end
 Load_Settings()
+
+end
+Load_Settings()
+VersionCheck()
 
 function Debug_Out(text)
 
@@ -753,263 +782,6 @@ function modflag_set()
 end
 modflag_set()
 
--- Event Data Arrays
--- TODO: ---------------------------NET EVENT LOGGER THREAD------------------------------------
-
-ScriptLocals["netevent"] = function(feat)
-    local NetEvents = {}
-    NetEvents[0] = "OBJECT_ID_FREED_EVENT"
-    NetEvents[1] = "OBJECT_ID_REQUEST_EVENT"
-    NetEvents[2] = "ARRAY_DATA_VERIFY_EVENT"
-    NetEvents[3] = "SCRIPT_ARRAY_DATA_VERIFY_EVENT"
-    NetEvents[4] = "REQUEST_CONTROL_EVENT"
-    NetEvents[5] = "GIVE_CONTROL_EVENT"
-    NetEvents[6] = "WEAPON_DAMAGE_EVENT"
-    NetEvents[7] = "REQUEST_PICKUP_EVENT"
-    NetEvents[8] = "REQUEST_MAP_PICKUP_EVENT"
-    NetEvents[9] = "GAME_CLOCK_EVENT"
-    NetEvents[10] = "GAME_WEATHER_EVENT"
-    NetEvents[11] = "RESPAWN_PLAYER_PED_EVENT"
-    NetEvents[12] = "GIVE_WEAPON_EVENT"
-    NetEvents[13] = "REMOVE_WEAPON_EVENT"
-    NetEvents[14] = "REMOVE_ALL_WEAPONS_EVENT"
-    NetEvents[15] = "VEHICLE_COMPONENT_CONTROL_EVENT"
-    NetEvents[16] = "FIRE_EVENT"
-    NetEvents[17] = "EXPLOSION_EVENT"
-    NetEvents[18] = "START_PROJECTILE_EVENT"
-    NetEvents[19] = "UPDATE_PROJECTILE_TARGET_EVENT"
-    NetEvents[21] = "BREAK_PROJECTILE_TARGET_LOCK_EVENT"
-    NetEvents[20] = "REMOVE_PROJECTILE_ENTITY_EVENT"
-    NetEvents[22] = "ALTER_WANTED_LEVEL_EVENT"
-    NetEvents[23] = "CHANGE_RADIO_STATION_EVENT"
-    NetEvents[24] = "RAGDOLL_REQUEST_EVENT"
-    NetEvents[25] = "PLAYER_TAUNT_EVENT"
-    NetEvents[26] = "PLAYER_CARD_STAT_EVENT"
-    NetEvents[27] = "DOOR_BREAK_EVENT"
-    NetEvents[28] = "SCRIPTED_GAME_EVENT"
-    NetEvents[29] = "REMOTE_SCRIPT_INFO_EVENT"
-    NetEvents[30] = "REMOTE_SCRIPT_LEAVE_EVENT"
-    NetEvents[31] = "MARK_AS_NO_LONGER_NEEDED_EVENT"
-    NetEvents[32] = "CONVERT_TO_SCRIPT_ENTITY_EVENT"
-    NetEvents[33] = "SCRIPT_WORLD_STATE_EVENT"
-    NetEvents[40] = "INCIDENT_ENTITY_EVENT"
-    NetEvents[34] = "CLEAR_AREA_EVENT"
-    NetEvents[35] = "CLEAR_RECTANGLE_AREA_EVENT"
-    NetEvents[36] = "NETWORK_REQUEST_SYNCED_SCENE_EVENT"
-    NetEvents[37] = "NETWORK_START_SYNCED_SCENE_EVENT"
-    NetEvents[39] = "NETWORK_UPDATE_SYNCED_SCENE_EVENT"
-    NetEvents[38] = "NETWORK_STOP_SYNCED_SCENE_EVENT"
-    NetEvents[41] = "GIVE_PED_SCRIPTED_TASK_EVENT"
-    NetEvents[42] = "GIVE_PED_SEQUENCE_TASK_EVENT"
-    NetEvents[43] = "NETWORK_CLEAR_PED_TASKS_EVENT"
-    NetEvents[44] = "NETWORK_START_PED_ARREST_EVENT"
-    NetEvents[45] = "NETWORK_START_PED_UNCUFF_EVENT"
-    NetEvents[46] = "NETWORK_SOUND_CAR_HORN_EVENT"
-    NetEvents[47] = "NETWORK_ENTITY_AREA_STATUS_EVENT"
-    NetEvents[48] = "NETWORK_GARAGE_OCCUPIED_STATUS_EVENT"
-    NetEvents[49] = "PED_CONVERSATION_LINE_EVENT"
-    NetEvents[50] = "SCRIPT_ENTITY_STATE_CHANGE_EVENT"
-    NetEvents[51] = "NETWORK_PLAY_SOUND_EVENT"
-    NetEvents[52] = "NETWORK_STOP_SOUND_EVENT"
-    NetEvents[53] = "NETWORK_PLAY_AIRDEFENSE_FIRE_EVENT"
-    NetEvents[54] = "NETWORK_BANK_REQUEST_EVENT"
-    NetEvents[55] = "NETWORK_AUDIO_BARK_EVENT"
-    NetEvents[56] = "REQUEST_DOOR_EVENT"
-    NetEvents[58] = "NETWORK_TRAIN_REQUEST_EVENT"
-    NetEvents[57] = "NETWORK_TRAIN_REPORT_EVENT"
-    NetEvents[59] = "NETWORK_INCREMENT_STAT_EVENT"
-    NetEvents[60] = "MODIFY_VEHICLE_LOCK_WORD_STATE_DATA"
-    NetEvents[61] = "MODIFY_PTFX_WORD_STATE_DATA_SCRIPTED_EVOLVE_EVENT"
-    NetEvents[62] = "REQUEST_PHONE_EXPLOSION_EVENT"
-    NetEvents[63] = "REQUEST_DETACHMENT_EVENT"
-    NetEvents[64] = "KICK_VOTES_EVENT"
-    NetEvents[65] = "GIVE_PICKUP_REWARDS_EVENT"
-    NetEvents[66] = "NETWORK_CRC_HASH_CHECK_EVENT"
-    NetEvents[67] = "BLOW_UP_VEHICLE_EVENT"
-    NetEvents[68] = "NETWORK_SPECIAL_FIRE_EQUIPPED_WEAPON"
-    NetEvents[69] = "NETWORK_RESPONDED_TO_THREAT_EVENT"
-    NetEvents[70] = "NETWORK_SHOUT_TARGET_POSITION"
-    NetEvents[71] = "VOICE_DRIVEN_MOUTH_MOVEMENT_FINISHED_EVENT"
-    NetEvents[72] = "PICKUP_DESTROYED_EVENT"
-    NetEvents[73] = "UPDATE_PLAYER_SCARS_EVENT"
-    NetEvents[74] = "NETWORK_CHECK_EXE_SIZE_EVENT"
-    NetEvents[75] = "NETWORK_PTFX_EVENT"
-    NetEvents[76] = "NETWORK_PED_SEEN_DEAD_PED_EVENT"
-    NetEvents[77] = "REMOVE_STICKY_BOMB_EVENT"
-    NetEvents[78] = "NETWORK_CHECK_CODE_CRCS_EVENT"
-    NetEvents[79] = "INFORM_SILENCED_GUNSHOT_EVENT"
-    NetEvents[80] = "PED_PLAY_PAIN_EVENT"
-    NetEvents[81] = "CACHE_PLAYER_HEAD_BLEND_DATA_EVENT"
-    NetEvents[82] = "REMOVE_PED_FROM_PEDGROUP_EVENT"
-    NetEvents[83] = "REPORT_MYSELF_EVENT"
-    NetEvents[84] = "REPORT_CASH_SPAWN_EVENT"
-    NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
-    NetEvents[86] = "BLOCK_WEAPON_SELECTION"
-    NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
-
-    -- Event Hook shit
-
-    ScriptLocals["netevent_start"] = false
-    ScriptLocals["hookID4"] = 0
-    function log_net1()
-        if not ScriptLocals.netevent_start then
-            ScriptLocals.netevent_start = true
-            ScriptLocals.hookID4 = hook.register_net_event_hook(neteventHook4)
-            return HANDLER_POP
-        end
-
-        if ScriptLocals.hookID6 ~= 0 then
-            hook.remove_net_event_hook(ScriptLocals.hookID4)
-            ScriptLocals.hookID4 = 0
-        end
-    end
-
-    function neteventHook4(source, target, id)
-        local player_source = player.get_player_name(source)
-        local player_target = player.get_player_name(target)
-
-        if id == 6 then
-            print(string.format(NetEvents[id] .. "Source: " .. player_source .. " Target: " .. player_target))
-        else
-            return false
-        end
-    end
-
-    log_net1()
-
-end
-
-function neteventthread()
-    threads[#threads + 1] = menu.create_thread(ScriptLocals.netevent, feat)
-    return threads[#threads]
-end
-
-ScriptLocals["netevents"] = function(feat)
-    local NetEvents = {}
-    NetEvents[0] = "OBJECT_ID_FREED_EVENT"
-    NetEvents[1] = "OBJECT_ID_REQUEST_EVENT"
-    NetEvents[2] = "ARRAY_DATA_VERIFY_EVENT"
-    NetEvents[3] = "SCRIPT_ARRAY_DATA_VERIFY_EVENT"
-    NetEvents[4] = "REQUEST_CONTROL_EVENT"
-    NetEvents[5] = "GIVE_CONTROL_EVENT"
-    NetEvents[6] = "WEAPON_DAMAGE_EVENT"
-    NetEvents[7] = "REQUEST_PICKUP_EVENT"
-    NetEvents[8] = "REQUEST_MAP_PICKUP_EVENT"
-    NetEvents[9] = "GAME_CLOCK_EVENT"
-    NetEvents[10] = "GAME_WEATHER_EVENT"
-    NetEvents[11] = "RESPAWN_PLAYER_PED_EVENT"
-    NetEvents[12] = "GIVE_WEAPON_EVENT"
-    NetEvents[13] = "REMOVE_WEAPON_EVENT"
-    NetEvents[14] = "REMOVE_ALL_WEAPONS_EVENT"
-    NetEvents[15] = "VEHICLE_COMPONENT_CONTROL_EVENT"
-    NetEvents[16] = "FIRE_EVENT"
-    NetEvents[17] = "EXPLOSION_EVENT"
-    NetEvents[18] = "START_PROJECTILE_EVENT"
-    NetEvents[19] = "UPDATE_PROJECTILE_TARGET_EVENT"
-    NetEvents[21] = "BREAK_PROJECTILE_TARGET_LOCK_EVENT"
-    NetEvents[20] = "REMOVE_PROJECTILE_ENTITY_EVENT"
-    NetEvents[22] = "ALTER_WANTED_LEVEL_EVENT"
-    NetEvents[23] = "CHANGE_RADIO_STATION_EVENT"
-    NetEvents[24] = "RAGDOLL_REQUEST_EVENT"
-    NetEvents[25] = "PLAYER_TAUNT_EVENT"
-    NetEvents[26] = "PLAYER_CARD_STAT_EVENT"
-    NetEvents[27] = "DOOR_BREAK_EVENT"
-    NetEvents[28] = "SCRIPTED_GAME_EVENT"
-    NetEvents[29] = "REMOTE_SCRIPT_INFO_EVENT"
-    NetEvents[30] = "REMOTE_SCRIPT_LEAVE_EVENT"
-    NetEvents[31] = "MARK_AS_NO_LONGER_NEEDED_EVENT"
-    NetEvents[32] = "CONVERT_TO_SCRIPT_ENTITY_EVENT"
-    NetEvents[33] = "SCRIPT_WORLD_STATE_EVENT"
-    NetEvents[40] = "INCIDENT_ENTITY_EVENT"
-    NetEvents[34] = "CLEAR_AREA_EVENT"
-    NetEvents[35] = "CLEAR_RECTANGLE_AREA_EVENT"
-    NetEvents[36] = "NETWORK_REQUEST_SYNCED_SCENE_EVENT"
-    NetEvents[37] = "NETWORK_START_SYNCED_SCENE_EVENT"
-    NetEvents[39] = "NETWORK_UPDATE_SYNCED_SCENE_EVENT"
-    NetEvents[38] = "NETWORK_STOP_SYNCED_SCENE_EVENT"
-    NetEvents[41] = "GIVE_PED_SCRIPTED_TASK_EVENT"
-    NetEvents[42] = "GIVE_PED_SEQUENCE_TASK_EVENT"
-    NetEvents[43] = "NETWORK_CLEAR_PED_TASKS_EVENT"
-    NetEvents[44] = "NETWORK_START_PED_ARREST_EVENT"
-    NetEvents[45] = "NETWORK_START_PED_UNCUFF_EVENT"
-    NetEvents[46] = "NETWORK_SOUND_CAR_HORN_EVENT"
-    NetEvents[47] = "NETWORK_ENTITY_AREA_STATUS_EVENT"
-    NetEvents[48] = "NETWORK_GARAGE_OCCUPIED_STATUS_EVENT"
-    NetEvents[49] = "PED_CONVERSATION_LINE_EVENT"
-    NetEvents[50] = "SCRIPT_ENTITY_STATE_CHANGE_EVENT"
-    NetEvents[51] = "NETWORK_PLAY_SOUND_EVENT"
-    NetEvents[52] = "NETWORK_STOP_SOUND_EVENT"
-    NetEvents[53] = "NETWORK_PLAY_AIRDEFENSE_FIRE_EVENT"
-    NetEvents[54] = "NETWORK_BANK_REQUEST_EVENT"
-    NetEvents[55] = "NETWORK_AUDIO_BARK_EVENT"
-    NetEvents[56] = "REQUEST_DOOR_EVENT"
-    NetEvents[58] = "NETWORK_TRAIN_REQUEST_EVENT"
-    NetEvents[57] = "NETWORK_TRAIN_REPORT_EVENT"
-    NetEvents[59] = "NETWORK_INCREMENT_STAT_EVENT"
-    NetEvents[60] = "MODIFY_VEHICLE_LOCK_WORD_STATE_DATA"
-    NetEvents[61] = "MODIFY_PTFX_WORD_STATE_DATA_SCRIPTED_EVOLVE_EVENT"
-    NetEvents[62] = "REQUEST_PHONE_EXPLOSION_EVENT"
-    NetEvents[63] = "REQUEST_DETACHMENT_EVENT"
-    NetEvents[64] = "KICK_VOTES_EVENT"
-    NetEvents[65] = "GIVE_PICKUP_REWARDS_EVENT"
-    NetEvents[66] = "NETWORK_CRC_HASH_CHECK_EVENT"
-    NetEvents[67] = "BLOW_UP_VEHICLE_EVENT"
-    NetEvents[68] = "NETWORK_SPECIAL_FIRE_EQUIPPED_WEAPON"
-    NetEvents[69] = "NETWORK_RESPONDED_TO_THREAT_EVENT"
-    NetEvents[70] = "NETWORK_SHOUT_TARGET_POSITION"
-    NetEvents[71] = "VOICE_DRIVEN_MOUTH_MOVEMENT_FINISHED_EVENT"
-    NetEvents[72] = "PICKUP_DESTROYED_EVENT"
-    NetEvents[73] = "UPDATE_PLAYER_SCARS_EVENT"
-    NetEvents[74] = "NETWORK_CHECK_EXE_SIZE_EVENT"
-    NetEvents[75] = "NETWORK_PTFX_EVENT"
-    NetEvents[76] = "NETWORK_PED_SEEN_DEAD_PED_EVENT"
-    NetEvents[77] = "REMOVE_STICKY_BOMB_EVENT"
-    NetEvents[78] = "NETWORK_CHECK_CODE_CRCS_EVENT"
-    NetEvents[79] = "INFORM_SILENCED_GUNSHOT_EVENT"
-    NetEvents[80] = "PED_PLAY_PAIN_EVENT"
-    NetEvents[81] = "CACHE_PLAYER_HEAD_BLEND_DATA_EVENT"
-    NetEvents[82] = "REMOVE_PED_FROM_PEDGROUP_EVENT"
-    NetEvents[83] = "REPORT_MYSELF_EVENT"
-    NetEvents[84] = "REPORT_CASH_SPAWN_EVENT"
-    NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
-    NetEvents[86] = "BLOCK_WEAPON_SELECTION"
-    NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
-
-    -- Event Hook shit
-
-    ScriptLocals["netlog_start"] = false
-    ScriptLocals["hookID6"] = 0
-    function log_net()
-        if not ScriptLocals.netlog_start then
-            ScriptLocals.netlog_start = true
-            ScriptLocals.hookID6 = hook.register_net_event_hook(log_neteventHook)
-            return HANDLER_POP
-        end
-
-        if ScriptLocals.hookID6 ~= 0 then
-            hook.remove_net_event_hook(ScriptLocals.hookID6)
-            ScriptLocals.hookID6 = 0
-        end
-    end
-
-    log_neteventHook = function(source, target, id)
-        local player_source, player_target
-        player_source = player.get_player_name(source)
-        player_target = player.get_player_name(target)
-
-        netlog_out(NetEvents[id])
-        netlog_out(NetEvents[id] .. " | " .. source .. " | " .. player_source .. " | " .. target .. " | " .. player_target .. " | ")
-
-        return false
-    end
-    log_net()
-
-end
-
-function netloggerthread()
-    threads[#threads + 1] = menu.create_thread(ScriptLocals.netevents, feat)
-    return threads[#threads]
-end
 
 -- TODO: --------------Setup Player ARRAY------------
 function modstart()
@@ -1194,13 +966,12 @@ SaveOptions_Hotkey = menu.add_feature("Options Save HotKey", "toggle", globalFea
 end)
 SaveOptions_Hotkey.on = true
 
-clearNotifyLimit = menu.add_feature("Notify Limiter:QueueClear Value:", "toggle", globalFeatures.moistopt, function(feat)
+clearNotifyLimit = menu.add_feature("Notify Limiter", "toggle", globalFeatures.moistopt, function(feat)
     if feat.on then
         if ui.get_current_notification() ~= -1 then
             ui.remove_notification(ui.get_current_notification())
         end
-        -- end
-        --  system.yield(1)
+        system.yield(10)
         return HANDLER_CONTINUE
     end
 
@@ -1225,6 +996,7 @@ notifyclear_hotkey = menu.add_feature("clear Spammed notifications Hotkey", "tog
             end
         end
     end
+    system.wait(1000)
     return HANDLER_CONTINUE
 
 end)
@@ -1236,7 +1008,7 @@ playerlistloop = menu.add_feature("Player List Loop Delay ms:", "autoaction_valu
     Settings["playerlist_loop"] = feat.value
     print(feat.value)
 end)
-playerlistloop.max = 500
+playerlistloop.max = 50
 playerlistloop.min = 0
 playerlistloop.mod = 1
 playerlistloop.value = Settings["playerlist_loop"]
@@ -1244,7 +1016,7 @@ playerlistloop.value = Settings["playerlist_loop"]
 loopfeatdelay = menu.add_feature("Other FeatureLoops Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     Settings["loop_feat_delay"] = feat.value
 end)
-loopfeatdelay.max = 1000
+loopfeatdelay.max = 600
 loopfeatdelay.min = 0
 loopfeatdelay.mod = 1
 loopfeatdelay.value = Settings["loop_feat_delay"]
@@ -1252,18 +1024,10 @@ loopfeatdelay.value = Settings["loop_feat_delay"]
 ScriptEvent_delay = menu.add_feature("Scriptevent Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
     Settings["ScriptEvent_delay"] = feat.value
 end)
-ScriptEvent_delay.max = 1000
+ScriptEvent_delay.max = 500
 ScriptEvent_delay.min = 0
 ScriptEvent_delay.mod = 1
 ScriptEvent_delay.value = Settings["ScriptEvent_delay"]
-
-hotkeyloop_delay = menu.add_feature("Hotkey loop Delay ms:", "autoaction_value_i", globalFeatures.moist_perf, function(feat)
-    Settings["hotkey_loop_delay"] = feat.value
-end)
-hotkeyloop_delay.max = 25
-hotkeyloop_delay.min = 0
-hotkeyloop_delay.mod = 1
-hotkeyloop_delay.value = Settings["loop_feat_delay"]
 
 ToBeNotify = menu.add_feature("Script Notify Me", "toggle", globalFeatures.moistopt, function(feat)
     if not feat.on then
@@ -1562,39 +1326,6 @@ playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent",
 playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", playerfeatVars.parent).id
 playerfeatVars.Preset_sms = menu.add_player_feature("SMS Spam Presets", "parent", playerfeatVars.spam_sms).id
 playerfeatVars.Preset_RUS = menu.add_player_feature("Russian Spam Presets", "parent", playerfeatVars.Preset_sms).id
-
-function peddecor()
-    for i = 1, #decorators do
-        local decor = tostring(decorators[i][1])
-
-        local DecorFt = menu.add_player_feature(i .. ": " .. decor, "parent", Player_Tools).id
-        menu.add_player_feature("Check for Decorator", "action", DecorFt, function(feat, pid)
-            local decor, Type, exists, decorval
-            local pped = player.get_player_ped(pid)
-            if pped ~= nil or pped ~= 0 then
-                decor = tostring(decorators[i][1])
-                Type = decorators[i][2]
-                decorator.decor_register(decor, Type)
-                exists = decorator.decor_exists_on(pped, decor)
-                decorval = decorator.decor_get_int(pped, decor)
-                moist_notify(decor .. " Exists on Vehicle\n", "INT Value is: " .. decorval)
-            end
-        end)
-        menu.add_player_feature("Add Decorator to Ped", "action", DecorFt, function(feat, pid)
-            local decor, Type, exists, decorval
-            local pped = player.get_player_ped(pid)
-            if pped ~= nil or pped ~= 0 then
-                decor = tostring(decorators[i][1])
-                Type = decorators[i][2]
-                nplyhash = network.network_hash_from_player(pid)
-                network.request_control_of_entity(pped)
-                decorator.decor_register(decor, Type)
-                decorator.decor_set_int(pped, decor, nplyhash)
-            end
-        end)
-
-    end
-end
 
 -- TODO: Chat Spam
 
@@ -2484,170 +2215,7 @@ local delete_cunt = menu.add_feature("Delete Spawned Cunts", "action", globalFea
 
 end)
 
--- TODO: Logging output
-
--- local script_hook, hook_pid, lastpid_hooked, hook_id = 0, 0, -1, 0
-
--- --TODO: ScriptHook Check Player
--- local scriptlogpid_on = false
-
--- script_check_pid  = function(pid)
-
--- if hook_pid ~= 0 then
--- hook.remove_script_event_hook(hook_pid)
--- hook_pid = 0
--- end
-
--- hook_pid = hook.register_script_event_hook(script_event_hook_pid)
--- lastpid_hooked = pid
--- end
-
--- local paramspid = {}
--- script_event_hook_pid = function(source, target, paramspid, count)
-
--- local player_source = player.get_player_name(source)
--- local scid = GetSCID(source)
--- local player_target = player.get_player_name(target)
-
--- if source == lastpid_hooked then
--- local txt = Cur_Date_Time()
--- scriptlog_out_pid(txt .."\n[" ..player_source .."[" ..scid .."]] Target:[" ..player_target .."]", player_source)
-
--- local cnt = 0
--- for k, v in pairs(paramspid) do
--- if k == 1 then
--- t = string.format("%x", v)
--- c = tostring("  0x"..t)
--- p = string.format(v .."	" .. c)
--- else
--- p = v
--- end
-
--- scriptlog_out_pid("\n[P: " .. cnt .. "]	= " .."[".. k .."]		" .. p, player_source)
--- cnt = cnt + 1
--- end
--- return false
--- else
--- end
--- end
-
--- function scriptlog_out_pid(text, name)
--- --  if not scriptlog_pid.on then return end
--- Date_Time = Cur_Date_Time()
--- local playerfile = tostring(name..".log")
--- local filepid = io.open(Paths.Root  .."\\lualogs\\" .. playerfile, "a")
--- io.output(filepid)
--- io.write("\n" .. text)
--- io.close(filepid)
--- end
-
--- script_log_pid = menu.add_player_feature("Log player script events", "toggle", Player_Tools, function(feat, pid)
--- if scriptlogpid_on then
--- scriptlogpid_on = false
--- elseif not scriptlogpid_on then
--- scriptlogpid_on = true
--- end
--- script_check_pid(pid)
--- scriptlog_pid.on = not scriptlog_pid.on
--- scriptlog_pid.value = pid
-
--- system.yield(100)
-
--- return HANDLER_POP   
--- end)
--- for i=1,#script_log_pid.feats do
--- script_log_pid.feats[i].on = false
--- end
-
--- scriptlog_pid = menu.add_feature("Log player script events", "value_i", logging.id, function(feat)
--- if feat.on then
--- if scriptlogpid_on ~= true then
--- moist_notify("Goto Online Tab > Player", "\nScript Features to use this")
--- elseif scriptlogpid_on then
--- local name = player.get_player_name(feat.value)
--- moist_notify("Script Events Now Being Logged for: ", "\n" .. feat.value .. ": " ..name)
--- end
--- end
--- if not feat.on then
--- moist_notify("Script Event Logging", "\nStopped")
--- end
-
--- end)
--- scriptlog_pid.on = false
--- scriptlog_pid.max = 32
--- scriptlog_pid.min = 0
--- scriptlog_pid.value = 0
-
-local hookID, hookID6
-
--- TODO: ScriptHook Check
-script_check = function(feat)
-    if feat.on then
-        hook_id = hook.register_script_event_hook(script_event_hook)
-        return HANDLER_POP
-    end
-
-    if hook_id ~= 0 then
-        hook.remove_script_event_hook(hook_id)
-        hook_id = 0
-    end
-end
-
-script_event_hook = function(source, target, params, count)
-
-    local player_source = player.get_player_name(source)
-    local scid = player.get_player_scid(source)
-    local player_target = player.get_player_name(target)
-    Date_Time = Cur_Date_Time()
-    scriptlog_out("\n\n[" .. Date_Time .. "\n[" .. player_source .. "[" .. scid .. "]] Target:[" .. player_target .. "]")
-    local t, c, p
-    local cnt = 0
-    for k, v in pairs(params) do
-        if k == 1 then
-
-            t = string.format("%x", v)
-            c = tostring("0x" .. t)
-            p = string.format(v .. "	" .. c)
-            if scriptevent_log.on then
-                hashlogger("\n" .. c)
-            end
-        else
-            p = v
-        end
-
-        scriptlog_out("\n[P: " .. cnt .. "]	= " .. "[" .. k .. "]		" .. p)
-        print(string.format(("\n[P: " .. cnt .. "]	= " .. "[" .. k .. "]		" .. p)))
-        cnt = cnt + 1
-    end
-
-    -- system.wait(3000)
-    return false
-
-end
-
--- TODO: netlog
-
-function scriptlog_out(text)
-
-    --  if not checkscript.on then return end
-    Date_Time = Cur_Date_Time()
-    local file = io.open(Paths.Logs .. "\\scriptevent_logger.log", "a")
-    io.output(file)
-    io.write(text)
-    io.close(file)
-end
-
-function hashlogger(text)
-    local file = io.open(Paths.Logs .. "\\hashlogger.log", "a")
-    io.output(file)
-    io.write(text)
-    io.close(file)
-end
-
--- TODO: ScriptHook Check Player
--- TODO: Modder Detection Protection shit
-
--- -- **BLACK LIST SHIT**
+-- **BLACK LIST SHIT**
 
 local joining_players_logger = event.add_event_listener("player_join", function(e)
 
@@ -3110,56 +2678,6 @@ chat_console = menu.add_feature("Ouput Game Chat to Debug Console", "toggle", lo
 end)
 chat_console.on = Settings["chat_debug"]
 
--- net_log = menu.add_feature("Log Netevents to File", "toggle", logging.id, log_net)
--- net_log.on = Settings["net_log"]
-netlog_start = false
-netlog_thread = 0
-net_log = menu.add_feature("Log Netevents to File", "toggle", logging.id, function(feat)
-    if feat.on then
-        if not netlog_start then
-            netlog_thread = netloggerthread()
-            netlog_start = true
-            return HANDLER_POP
-        end
-        system.yield(Settings["loop_feat_delay"])
-        return HANDLER_CONTINUE
-    end
-    if netlog_start then
-        log_net()
-        menu.delete_thread(netlog_thread)
-        netlog_start = false
-    end
-    return HANDLER_POP
-end)
-net_log.on = Settings["net_log"]
-
-netevent_start = false
-netevent_thread = 0
-net_event = menu.add_feature("Netevent Test", "toggle", logging.id, function(feat)
-    if feat.on then
-        if not netevent_start then
-            netevent_thread = neteventthread()
-            netevent_start = true
-            return HANDLER_POP
-        end
-        system.yield(Settings["loop_feat_delay"])
-        return HANDLER_CONTINUE
-    end
-    if netevent_start then
-        log_net1()
-        menu.delete_thread(netevent_thread)
-        netevent_start = false
-    end
-    return HANDLER_POP
-end)
-net_event.on = Settings["net_log"]
-
-checkscript = menu.add_feature("Hook Script Events & Log to File", "toggle", logging.id, script_check)
-checkscript.on = Settings["script_check_logger"]
-
-scriptevent_log = menu.add_feature("log event hash only", "toggle", logging.id, nil)
-scriptevent_log.on = false
-
 -- TODO: player Features --Griefing
 function griefing()
 
@@ -3230,25 +2748,6 @@ function griefing()
     menu.add_player_feature("CEO TERMINATE", "action", playerfeatVars.parent, function(feat, pid)
         script.trigger_script_event(0x9DB77399, pid, {1, 1, 6})
         script.trigger_script_event(0x9DB77399, pid, {0, 1, 6, 0})
-    end)
-
-    menu.add_player_feature("New Player Kick", "action", playerfeatVars.parent, function(feat, pid)
-        local pos = v3()
-        pos = player.get_player_coords(pid)
-        pos.x = math.floor(pos.x)
-        pos.y = math.floor(pos.y)
-        pos.z = math.floor(pos.z)
-
-        script.trigger_script_event(0x827B244F, pid, {0, 1, 5})
-        script.trigger_script_event(0x827B244F, pid, {0, 1, 5, 0})
-        script.trigger_script_event(0x827B244F, pid, {1, 1, 6})
-        script.trigger_script_event(0x827B244F, pid, {0, 1, 6, 0})
-
-        script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z})
-        script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
-        script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, pos.x, pos.z, pos.x, pos.y})
-        script.trigger_script_event(0x827B244F, pid, {pos.x, pos.y, pos.z, pos.z, pos.z, pos.z, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y, pos.y, pos.x, pos.x, pos.y})
-
     end)
 
     for i = 1, #missions do
@@ -3338,7 +2837,7 @@ end
 
 -- Options Toggles etc
 
-global_func.lag_out = menu.add_feature("Lag Self out of session", "toggle", globalFeatures.moistopt, function(feat)
+global_func.lag_out = menu.add_feature("Lag Self out of session", "toggle", globalFeatures.moist_hotkeys, function(feat)
     Settings["lag_out"] = true
     if feat.on then
         local key = MenuKey()
@@ -3999,7 +3498,7 @@ function MoistsRagdollControl()
         return HANDLER_POP
     end
 
-    ragdoll_key = menu.add_feature("Ragdoll HotKey LCTRL+X ", "toggle", Ragdoll_Control.id, function(feat)
+    ragdoll_key = menu.add_feature("Ragdoll HotKey LCTRL+X ", "toggle", globalFeatures.moist_hotkeys, function(feat)
         Settings["RagDollHotKey"] = true
         if feat.on then
 
@@ -4091,7 +3590,7 @@ function self_func()
 
     -- TODO: Self Options
 
-    local ewo_key = menu.add_feature("Self Suicide EWO", "toggle", globalFeatures.self_options, function(feat)
+    local ewo_key = menu.add_feature("Self Suicide EWO", "toggle", globalFeatures.moist_hotkeys, function(feat)
         if feat.on then
             local pos = v3()
             local key = MenuKey()
@@ -4120,7 +3619,6 @@ function self_func()
             ped.get_ped_drawable_variation(pped, 5)
             ped.set_ped_component_variation(pped, 5, 58, 8, 0)
 
-            system.yield(Settings["hotkey_loop_delay"])
             return HANDLER_CONTINUE
         end
         Settings["force_wPara"] = false
@@ -4136,7 +3634,6 @@ function self_func()
             ped.get_ped_drawable_variation(pped, 5)
             ped.set_ped_component_variation(pped, 5, 58, 3, 0)
 
-            system.yield(Settings["hotkey_loop_delay"])
             return HANDLER_CONTINUE
         end
         Settings["force_pPara"] = false
@@ -4152,7 +3649,7 @@ function self_func()
             ped.get_ped_prop_index(pped, 0)
             ped.set_ped_prop_index(pped, 0, 59, 8, 0)
 
-            system.yield(Settings["hotkey_loop_delay"])
+
             return HANDLER_CONTINUE
         end
         Settings["force_wBPH"] = false
@@ -4169,7 +3666,6 @@ function self_func()
                 ped.get_ped_prop_index(pped, 0)
                 ped.set_ped_prop_index(pped, 0, 59, 3, 0)
             end
-            system.yield(Settings["hotkey_loop_delay"])
             return HANDLER_CONTINUE
         end
         Settings["force_pBPH"] = false
@@ -4358,7 +3854,7 @@ function self_func()
 
     -- TODO: Countermeasure Hotkey
 
-    local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalFeatures.self_veh, function(feat)
+    local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalFeatures.moist_hotkeys, function(feat)
 
         Settings["counter_Hotkey"] = true
 
@@ -4490,7 +3986,7 @@ function self_func()
     end)
     global_func.veh_rapid_fire.on = Settings["global_func.veh_rapid_fire"]
 
-    global_func.rapidfire_hotkey1 = menu.add_feature("RapidFire RepairLoop Hotkey", "toggle", globalFeatures.self_options, function(feat)
+    global_func.rapidfire_hotkey1 = menu.add_feature("RapidFire RepairLoop Hotkey", "toggle", globalFeatures.moist_hotkeys, function(feat)
         Settings["global_func.rapidfire_hotkey1"] = true
         if feat.on then
             local key = MenuKey()
@@ -4501,7 +3997,6 @@ function self_func()
                 moist_notify("Switching Rapid Fire for your Current Vehicle", global_func.veh_rapid_fire.on and "ON" or "OFF", global_func.veh_rapid_fire.on and "Glitch On" or "Set Repaired")
                 system.wait(1200)
             end
-            system.yield(Settings["hotkey_loop_delay"])
             return HANDLER_CONTINUE
         end
         Settings["global_func.rapidfire_hotkey1"] = false
@@ -4511,7 +4006,7 @@ function self_func()
 
     -- TODO: Self Stat Hotkey Switches
 
-    global_func.thermal_stat_switch_hotkey = menu.add_feature("Switch Thermal/NV Hotkey", "toggle", globalFeatures.self_options, function(feat)
+    global_func.thermal_stat_switch_hotkey = menu.add_feature("Switch Thermal/NV Hotkey", "toggle", globalFeatures.moist_hotkeys, function(feat)
         Settings["global_func.thermal_stat_switch_hotkey"] = true
         local stat = Get_Last_MP("HAS_DEACTIVATE_NIGHTVISION")
         local thermalstat_hash = gameplay.get_hash_key(stat)
@@ -4527,7 +4022,6 @@ function self_func()
                 moist_notify("Thermal/Nightvision State:\n", "Switched")
                 system.wait(1200)
             end
-            system.yield(Settings["hotkey_loop_delay"])
             return HANDLER_CONTINUE
         end
         Settings["global_func.thermal_stat_switch_hotkey"] = false
