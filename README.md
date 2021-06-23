@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.5: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.3.8: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -27,10 +27,10 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 ### **\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg**
 
 - interiors.lua
-- Moist_KickParam.data
-- Moist_Kicks.data
-- Moist_Kicks2.data
-- Moist_Kicks3.data
+- Moist_KickParam.ini
+- Moist_Kicks.ini
+- Moist_Kicks2.ini
+- Moist_Kicks3.ini
 - vehicle-hashes.lua
 
 **Extras :**
@@ -44,28 +44,22 @@ These must be inside the Folder : **scripts**
 **So Folder Structure for Script to Work as Intendended:** Should look like below
 ```
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\interiors.lua
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_KickParam.data
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks.data
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks2.data
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks3.data
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_KickParam.ini
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks.ini
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks2.ini
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks3.ini
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\vehicle-hashes.lua
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\autoexec.lua
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistScript.lua
 ```
-
-```**For Better Compatibility with 2take1script:**```
-1. Remove autoexec.lua
-2. execute MoistScript.lua first then 2take1script
-
-Seems to work so far without errors
-
-The files and folders required are as they should be and should be extracted from the archive as above.
-
 # Function Parents Sub Parents & Functions within
 
 ## Local Script Features
 
 ### Moists Script ?.?.?.? (Build Number Version being used)
+#### Online Features
+
+
 ##### Online Players
 `List Of Players by name in the session with the below functions inside`
 Player Names have tags:
@@ -99,7 +93,6 @@ Player Names have tags:
 ##### Player Features
 ##### Combat Features
 ##### Other Scripts
-##### Function Testing
 ##### Options
 
 ### Online Player Script Features
@@ -184,6 +177,8 @@ Custom Value `Enter any Value Between 0 & 10,000`
 - List of Recently Encountered Players
 - Copy SCID
 - Add to Blacklist
+- Temp BlacklistPlayer:
+   ** By IP, SCID or Players Name **
 
 ### Online Session
 
