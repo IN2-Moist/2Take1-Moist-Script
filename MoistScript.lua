@@ -65,6 +65,7 @@ Settings["ScriptEvent_delay"] = 2
 Settings["RagDollHotKey"] = false
 Settings["NotifyLimitON"] = false
 Settings["NotifyLimit"] = 30
+Settings["OTR_Blips"] = true
 
 function SaveSettings()
     local file = io.open(Paths.Settings, "w")
@@ -2469,6 +2470,15 @@ function modderflag(pid)
     end
     return HANDLER_POP
 end
+AddOTRBlips = menu.add_feature("Add Blips for OTR Players", "toggle", globalFeatures.moistopt, function(feat)
+				if not feat.on then
+								Settings["OTR_Blips"] = false
+								return HANDLER_POP
+				end
+				Settings["OTR_Blips"] = true
+end)
+AddOTRBlips.on = Settings["OTR_Blips"]
+
 --TODO: Player Feature Parents
 playerfeatVars.parent = menu.add_player_feature("Moists Script 2.0.3.8", "parent", 0).id
 local Player_Tools = menu.add_player_feature("Player Tools", "parent", playerfeatVars.parent).id
@@ -10601,186 +10611,198 @@ featureVars.f.hidden = false
 end
 local loop_logsent = false
 loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, function(feat)
-    if feat.on then
-        local Online = network.is_session_started()
-        if not Online then
-            SessionHost = nil
-            ScriptHost = nil
-            loop_logsent = false
-            Active_menu = nil
-        end
-        local lpid = player.player_id()
-        for pid = 0, 32 do
-        playerFeatures[pid].features["blamedorbital"].feat:set_str_data(Playerz)
-        pped = PlyPed(pid)
-            local tbl = playerFeatures[pid]
-            local f = tbl.feat
-            local scid = player.get_player_scid(pid)
-            SessionPlayers[pid].Scid = scid
-            playerFeatures[pid].scid = scid
-            if scid ~= 4294967295 then
-                if f.hidden then
-                    f.hidden = false
-                end
-                Playerz[pid+1] = player.get_player_name(pid)
-                local name = player.get_player_name(pid)
-                local toname = ""
-                local isYou = lpid == pid
-                local tags, tagz = {}, {}
-                if Online then
-                    if isYou then
-                        tags[#tags + 1] = "Y"
-                    end
-                    if player.is_player_friend(pid) then
-                        tags[#tags + 1] = "F"
-                    end
-                    if player.is_player_host(pid) then
-                        tags[#tags + 1] = "H"
-                        toname = tostring(toname .."~h~~b~[H]")
-                        if SessionHost ~= pid then
-                            SessionHost = pid
-                       moist_notify(name, (isYou and "You Are Now The The Session Host!" or "The Session Host is Now"))
-                            Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
-                        end
-                    end
-                    if pid == script.get_host_of_this_script() then
-                        tags[#tags + 1] = "S"
-                        toname = tostring(toname .. "~h~~y~[S]")
-                        if ScriptHost ~= pid then
-                            ScriptHost = pid
-                            moist_notify(name, (isYou and "You Are Now The Script Host!"  or  "The Script Host is Now"))
-                            Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
-                        end
-                    end
-                        if player.is_player_playing(pid) and player.is_player_god(pid) then
-                            tags[#tags + 1] = "G"
-                        end
-                        if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
-                                tagz[#tagz + 1] = "~h~~r~[G]"
-                                 Players[pid].pulse = not Players[pid].pulse
-                                 if not Players[pid].isgod and pid ~= player.player_id() then
-                                 ui.notify_above_map("~h~~b~God Mode Player: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, "~l~~h~Ω MoistsScript 2.0.3.8\n~r~~h~Modder Detection", 119)
-                                 Players[pid].isgod = true
-                                 end
-                        end
-                            if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
-                                tags[#tags + 1] = "V"
-                            end
-                            if player.is_player_vehicle_god(pid) and logsent ~= true then
-                                Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
-                                logsent = true
-                            end
-                            if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
-                                    tagz[#tagz + 1] = "~h~~o~[V]"
-                                    Players[pid].pulse = not Players[pid].pulse
-                                if not Players[pid].isvgod and pid ~= player.player_id() then
-                                 ui.notify_above_map("~h~~b~God Mode Vehicle: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, " ~l~~h~Ω MoistsScript 2.0.3.8\n~r~~h~Modder Detection", 119)
-                                 Players[pid].isvgod = true
-                                 end
-                            end
-                    if Players[pid].isint ~= true then
-                        if player.is_player_spectating(pid) and player.is_player_playing(pid) then
-                            tags[#tags + 1] = ".SPEC."
-                        end
-                    end
-                    if Players[pid].isint == true then
-                     Players[pid].pulse = false
-                    end
-                    if not isYou then
-                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
-                            tags[#tags + 1] = "O"
-                            tagz[#tagz + 1] = "~h~~g~[O]"
-                            toname = tostring(toname .. "~h~~g~[O]")
-                            if Players[pid].OTRBlipID == nil then
-                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
-                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                            end
-                        end
-                        if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
-                            if Players[pid].OTRBlipID ~= nil then
-                             ui.remove_blip(Players[pid].OTRBlipID)
-                             Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
-                             ui.remove_blip(Players[pid].OTRBlipID)
-                             Players[pid].OTRBlipID = nil
-                            end
-                        end
-                    end
-                    if not player.is_player_modder(pid, -1) then
-                        if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
-                            tags[#tags + 1] = "U"
-                            tagz[#tagz + 1] = "~h~~q~[U]"
-                           -- toname = tostring(toname .. "~h~~q~[U]")
-                        end
-                    end
-                    if Players[pid].bounty then
-                            tags[#tags + 1] = "[B:" .. Players[pid].bountyvalue .."]"
-                            tagz[#tagz + 1] = "~h~~p~[B: " .. Players[pid].bountyvalue .. "]"
-                           -- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
-                    end
-                    if player.is_player_modder(pid, -1) then
-                        tags[#tags + 1] = "M"
-                        RAC_OFF(pid)
-                        modderflag(pid)
-                    elseif not player.is_player_modder(pid, -1) then
-                        Modders_DB[pid].ismod = false
-                    end
-                    if tbl.scid ~= scid then
-                        for cf_name,cf in pairs(tbl.features) do
-                            if cf.type == "toggle" and cf.feat.on then
-                                cf.feat.on = false
-                            end
-                        end
-                        tbl.scid = scid
-                        if not isYou then
-                        --TODO: Modder shit
-                        end
-                    end
-                end
-                if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
-                    SessionPlayers[pid].Name = name .. " " .. toname
-                    system.wait(100)
-                    if #tagz > 0 then
-                    SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
-                    end
-            else
-                SessionPlayers[pid].Name = name 
-                system.wait(100)
-                if #tagz > 0 then
-                SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
-                end
-            end
-                if #tags > 0 then
-                    name = name .. " [" .. table.concat(tags) .. "]"
-                end
-                if f.name ~= name then f.name = name end
-                for cf_name,cf in pairs(tbl.features) do
-                    if (cf.type ~= "toggle" or cf.feat.on) and cf.callback then
-                        local status, err = pcall(cf.callback)
-                        if not status then
-                            moist_notify("\nError on pid " .. pid, "Error running feature " .. i)
-                            Print(status .. err)
-                        end
-                    end
-                end
-            else
-                if not f.hidden then
-                    f.hidden = true
-                    for cf_name,cf in pairs(tbl.features) do
-                        if cf.type == "toggle" and cf.feat.on then
-                            cf.feat.on = false
-                        end
-                    end
-                end
-            Playerz[pid+1] = string.format("Player " .. pid)
-            end
-        end
-        system.yield(Settings["playerlist_loop"])
-        return HANDLER_CONTINUE
-    end
-    for i = 0, 32 do
-     playerFeatures[i].feat.hidden = false
-    end
-    return HANDLER_POP
+	if feat.on then
+		local Online = network.is_session_started()
+		if not Online then
+			SessionHost = nil
+			ScriptHost = nil
+			loop_logsent = false
+			Active_menu = nil
+		end
+		local lpid = player.player_id()
+		for pid = 0, 32 do
+		playerFeatures[pid].features["blamedorbital"].feat:set_str_data(Playerz)
+		pped = PlyPed(pid)
+			local tbl = playerFeatures[pid]
+			local f = tbl.feat
+			local scid = player.get_player_scid(pid)
+			SessionPlayers[pid].Scid = scid
+			playerFeatures[pid].scid = scid
+			if scid ~= 4294967295 then
+				if f.hidden then
+					f.hidden = false
+				end
+				Playerz[pid+1] = player.get_player_name(pid)
+				local name = player.get_player_name(pid)
+				local toname = ""
+				local isYou = lpid == pid
+				local tags, tagz = {}, {}
+				if Online then
+					if isYou then
+						tags[#tags + 1] = "Y"
+					end
+					if player.is_player_friend(pid) then
+						tags[#tags + 1] = "F"
+					end
+					if player.is_player_host(pid) then
+						tags[#tags + 1] = "H"
+						toname = tostring(toname .."~h~~b~[H]")
+						if SessionHost ~= pid then
+							SessionHost = pid
+					   moist_notify(name, (isYou and "You Are Now The The Session Host!" or "The Session Host is Now"))
+							Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
+						end
+					end
+					if pid == script.get_host_of_this_script() then
+						tags[#tags + 1] = "S"
+						toname = tostring(toname .. "~h~~y~[S]")
+						if ScriptHost ~= pid then
+							ScriptHost = pid
+							moist_notify(name, (isYou and "You Are Now The Script Host!"  or  "The Script Host is Now"))
+							Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
+						end
+					end
+						if player.is_player_playing(pid) and player.is_player_god(pid) then
+							tags[#tags + 1] = "G"
+						end
+						if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
+								tagz[#tagz + 1] = "~h~~r~[G]"
+								 Players[pid].pulse = not Players[pid].pulse
+								 if not Players[pid].isgod and player.is_player_god(pid) and pid ~= player.player_id() then
+									 if Settings["GodCheckNotif"] and Settings["GodCheck"] then
+								 ui.notify_above_map("~h~~b~God Mode Player: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name .. "\n~l~~h~Ω MoistsScript 2.0.3.8 ~b~~h~Modder Detection", "Modder Detection", 119)
+								 Players[pid].isgod = true
+								 end
+						end
+								 end
+							if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
+								tags[#tags + 1] = "V"
+							end
+							if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
+								Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
+								logsent = true
+							end
+							if player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
+									tagz[#tagz + 1] = "~h~~o~[V]"
+									Players[pid].pulse = not Players[pid].pulse
+								if not Players[pid].isvgod and pid ~= player.player_id() then
+								 ui.notify_above_map("~h~~b~God Mode Vehicle: " .. "\n~y~" .. pid .. " : ~w~ " .. SessionPlayers[pid].Name, " ~l~~h~Ω MoistsScript 2.0.3.8\n~r~~h~Modder Detection", 119)
+								 Players[pid].isvgod = true
+								 end
+							end
+					if Players[pid].isint ~= true then
+						if player.is_player_spectating(pid) and player.is_player_playing(pid) then
+							tags[#tags + 1] = ".SPEC."
+							Players[pid].pulse = not Players[pid].pulse
+						end
+					end
+					if Players[pid].isint == true then
+					 Players[pid].pulse = false
+					end
+					if not isYou then
+						if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
+							tags[#tags + 1] = "O"
+							tagz[#tagz + 1] = "~h~~g~[O]"
+							--toname = tostring(toname .. "~h~~g~[O]")
+							if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
+								Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+								ui.set_blip_colour(Players[pid].OTRBlipID, 2)
+							end
+						end
+						
+						if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
+							if Players[pid].OTRBlipID ~= nil then
+							 ui.remove_blip(Players[pid].OTRBlipID)
+							 Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+							 ui.remove_blip(Players[pid].OTRBlipID)
+							 Players[pid].OTRBlipID = nil
+							end
+						end
+					end
+					if not player.is_player_modder(pid, -1) then
+						if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
+							tags[#tags + 1] = "U"
+							tagz[#tagz + 1] = "~h~~q~[U]"
+						   -- toname = tostring(toname .. "~h~~q~[U]")
+						end
+					end
+					if not player.is_player_modder(pid, -1) then
+						if (player.get_player_health(pid) == 0) and (player.get_player_max_health(pid) == 0) and (tracking.playerped_speed1[pid + 1] >= 10) then
+							tags[#tags + 1] = "U"
+							tagz[#tagz + 1] = "~h~~q~[U]"
+						   -- toname = tostring(toname .. "~h~~q~[U]")
+						end
+					end
+					if Players[pid].bounty then
+							tags[#tags + 1] = "[B:" .. Players[pid].bountyvalue .."]"
+							tagz[#tagz + 1] = "~h~~p~[B:~h~~w~ " .. Players[pid].bountyvalue .. "~h~~p~]"
+						   -- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
+					end
+					if player.is_player_modder(pid, -1) then
+						tags[#tags + 1] = "M"
+						tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"
+						RAC_OFF(pid)
+						modderflag(pid)
+					elseif not player.is_player_modder(pid, -1) then
+						Modders_DB[pid].ismod = false
+					end
+					if tbl.scid ~= scid then
+						for cf_name,cf in pairs(tbl.features) do
+							if cf.type == "toggle" and cf.feat.on then
+								cf.feat.on = false
+							end
+						end
+						tbl.scid = scid
+						if not isYou then
+						--TODO: Modder shit
+						end
+					end
+				end
+				if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
+					SessionPlayers[pid].Name = name .. " " .. toname
+					system.wait(100)
+					if #tagz > 0 then
+					SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
+					end
+			else
+				SessionPlayers[pid].Name = name 
+				system.wait(100)
+				if #tagz > 0 then
+				SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
+				end
+			end
+				if #tags > 0 then
+					name = name .. " [" .. table.concat(tags) .. "]"
+				end
+				if f.name ~= name then f.name = name end
+				for cf_name,cf in pairs(tbl.features) do
+					if (cf.type ~= "toggle" or cf.feat.on) and cf.callback then
+						local status, err = pcall(cf.callback)
+						if not status then
+							moist_notify("\nError on pid " .. pid, "Error running feature " .. i)
+							Print(status .. err)
+						end
+					end
+				end
+			else
+				if not f.hidden then
+					f.hidden = true
+					for cf_name,cf in pairs(tbl.features) do
+						if cf.type == "toggle" and cf.feat.on then
+							cf.feat.on = false
+						end
+					end
+				end
+			Playerz[pid+1] = string.format("Player " .. pid)
+			end
+		end
+		system.yield(Settings["playerlist_loop"])
+		return HANDLER_CONTINUE
+	end
+	for i = 0, 32 do
+	 playerFeatures[i].feat.hidden = false
+	end
+	return HANDLER_POP
 end)
 loopFeat.hidden = false
 loopFeat.on = true
