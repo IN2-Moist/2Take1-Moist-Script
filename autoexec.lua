@@ -1,12 +1,12 @@
 local rootPath = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
-local Scripts = rootPath .. "\\scripts\\"
+local Scripts = rootPath .. "\\scripts"
 utils.make_dir(rootPath .. "\\lualogs")
 local debugfile = rootPath .. "\\lualogs\\Moists_debug.log"
 
 	
 function autoload_lua(file)
 		
-		local luaload = rootPath .. "\\PopstarDevs\\2Take1Menu\\scripts\\"
+		local luaload = rootPath .. "\\PopstarDevs\\2Take1Menu\\scripts"
 		local load_autoload_lua = debug.getinfo(1, "S").source:sub(luaload:len() + 2)
 		
 		local lua = {}
