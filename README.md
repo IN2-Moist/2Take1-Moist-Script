@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.8: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.3.9: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -8,6 +8,16 @@ Thanks to haekkzer for his help and advice over time i was a tester for the menu
 Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
 script would  not exist!
 
+** Fixed Recent Player Numbering
+Added Request Control Loop to decorator functions.
+improved decorator functions
+Added Missing Decorators
+Enabled Experimental Features Section
+Added RPM Gauge to Experimental Features
+Added Modder Mark Tag to Playerbar
+Fixed the duplicate OTR tag getting added
+OTR Blips is an option
+Fixed the Remove Blips**
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
