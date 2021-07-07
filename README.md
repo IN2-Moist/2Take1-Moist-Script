@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.3.9: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.4.0: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -8,16 +8,31 @@ Thanks to haekkzer for his help and advice over time i was a tester for the menu
 Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
 script would  not exist!
 
-** Fixed Recent Player Numbering
-Added Request Control Loop to decorator functions.
-improved decorator functions
-Added Missing Decorators
-Enabled Experimental Features Section
-Added RPM Gauge to Experimental Features
-Added Modder Mark Tag to Playerbar
-Fixed the duplicate OTR tag getting added
-OTR Blips is an option
-Fixed the Remove Blips**
+** Recent Updates & Changes **
+
+Parent Renames :
+other scripts -> Script (Auto)Loader
+Experimental Features -> Experimental Test Features
+Options -> MoistScript Options
+
+Fixed Code in some functions causing an infinate loop of the function trying to gain control of a vehicle rather than looping just the request control
+
+Added Additional OSD info to your Speed Indicator:
+Gears Now Next Max and Ratio
+
+New Section Added to Experimental Test Features:
+Added Vehicle Overide & Control Section:
+Added Set Current Gear
+Added Set Next Gear
+Added Set Max Gear
+Added Set Current Gear Ratio (Combined Function of Gear Ratio Modifier and a Torque Multiplier)
+Added Get Current Gear (needed for the osd info to update)
+Added Set Gear (not really functional as yet will be part of a manual transmission)
+
+Added Option to disable Notify Recent Players
+
+Fixed Duplicate Notfy of vehicle god and player god when vehicle god detected
+
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
