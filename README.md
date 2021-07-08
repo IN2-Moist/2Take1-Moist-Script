@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.4.0: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.4.1: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -9,6 +9,13 @@ Big thanks goes Proddy for all his coding help advice and work to get shit done 
 script would  not exist!
 
 ** Recent Updates & Changes **
+
+Fixed While Loop not having a delay causing game to crash
+More Notify  moved over to the new system
+New Notify system colour customisation added
+Autoexec updated for new notify
+changed Big Dildo Bone attaches to now be a world object & mission entity
+Removed the old text customisation in functions updated the notifys to work better with the new notify system
 
 Parent Renames :
 other scripts -> Script (Auto)Loader
