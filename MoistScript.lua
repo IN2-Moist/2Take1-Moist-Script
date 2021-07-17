@@ -3605,6 +3605,7 @@ function joined_csv(text)
 end
 
 function Create_Csv()
+	local Date = os.date("%d-%m-%y")
 	local file = (Paths.Logs  .. "\\PlayerJoins" .. Date .. ".csv")
 	if not utils.file_exists(file) then
 		io.open(file, "a")
@@ -3613,7 +3614,6 @@ function Create_Csv()
 		io.close()
 	end
 end
-
 
 function playerDB(pid, ip)
 	if player.is_player_valid(pid) then
@@ -8108,8 +8108,9 @@ marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt
 end)
 marker1_rgbd.on = false
 
+--TODO: ***********ONLINE PLAYER Ped Spawn Options ******
 Attacker_Model = "cs_lestercrest_2"
-Attacker_Weapon = nil or wephash
+Attacker_Weapon = "weapon_unarmed"
 LoadWeapList = Weapon_Lists_type.Melee
 type_value = 1
 Spawn_As = {"Send via Parachute","Spawn & Task","Spawn as Support Ped"}
@@ -8126,14 +8127,14 @@ PedSpawnList = menu.add_player_feature("Modals:", "autoaction_value_str", Online
 	pedattacker:set_str_data(Modals[feat.value + 1])
 	
 end)
-PedSpawnList:set_str_data({"a_c_ / a_f_ / a_m_","csb_ / cs_","g_f_ / g_m_","hc_","ig_","mp_","s_f_ / s_m_","u_f_ /u_m_"})
+PedSpawnList:set_str_data({"a_c_ a_f_ a_m_","csb_ cs_","g_f_ g_m_","hc_","ig_","mp_","player_","s_f_ s_m_","u_f_u_m"})
 
 pedattacker = menu.add_player_feature("Spawn Ped:", "action_value_str", Online_Spawn_options, function(feat, pid)
 	Attacker = gameplay.get_hash_key(Attacker_Model[feat.value + 1])
 	streaming.request_model(Attacker)
-	streaming.has_model_loaded(Attacker)
-	
-	
+	while not (streaming.has_model_loaded(Attacker)) do
+	system.wait(0)
+	end
 	
 	moist_notify(string.format("Ped : " .. Attacker_Model[feat.value + 1] .. " Selected for spawn"), "Moists Ped Modifier")
 	
@@ -8173,16 +8174,30 @@ pedattacker_wep = menu.add_player_feature("Select Ped Weapon: ", "action_value_s
 	wephash = gameplay.get_hash_key(Miscellaneous[feat.value + 1])
 	end
 end)
-pedattacker_wep:set_str_data(Weapon_Lists.Handguns)
+pedattacker_wep:set_str_data(Weapon_Lists.Melee)
 
+local SpawnCount = 1
+local attacker = {}
 
+Spawn_Count = menu.add_player_feature("Amount to spawn: ", "autoaction_value_i", Online_Spawn_options, function(feat, pid)
+	
+	SpawnCount = feat.value
+end)
+Spawn_Count.max = 50
+Spawn_Count.min = 1
+Spawn_Count.value = 1
+	
 Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_options, function(feat, pid)
+	
+	for v = 0, SpawnCount do
+	
 	if Spawn_As[feat.value + 1] == "Send via Parachute" then
-		if Attacker_Weapon == nil then
-			wephash = gameplay.get_hash_key("weapon_unarmed")
+		if wephash == nil then
+			wephash = gameplay.get_hash_key(Attacker_Weapon)
 		end
-		spawn_ped_v2(pid, Attacker, true)
-		system.wait(100)
+		local v = #attacker + 1
+		attacker[v] = spawn_ped_v2(pid, Attacker, true)
+		system.wait(10)
 		local i = #escort
 		entity.set_entity_god_mode(escort[i], true)
 		ped.set_ped_combat_attributes(escort[i], 52, true)
@@ -8213,7 +8228,8 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 		elseif Spawn_As[feat.value + 1] == "Spawn & Task" then
 
 
-		spawn_ped(pid, Attacker, -8, true, nil)
+		local v = #attacker + 1
+		attacker[v] = spawn_ped(pid, Attacker, -8, true, nil)
 		local i = #escort
 		entity.set_entity_god_mode(escort[i], true)
 		ped.set_ped_combat_attributes(escort[i], 52, true)
@@ -8242,7 +8258,8 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 		elseif Spawn_As[feat.value + 1] == "Spawn as Support Ped" then
 		
 		pped = player.get_player_ped(pid)
-		spawn_ped(pid, Attacker, 5, false, nil)
+		local v = #attacker + 1
+		attacker[v] = spawn_ped(pid, Attacker, 5, false, nil)
 		system.wait(100)
 		local i = #escort
 		entity.set_entity_god_mode(escort[i], true)
@@ -8276,8 +8293,10 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 		weapon.give_delayed_weapon_to_ped(escort[i], wephash, 0, 1)
 		weapon.set_ped_ammo(escort[i], wephash, 1000000)
 		end
+	end
 end)
 Send_Attacker:set_str_data(Spawn_As)
+
 
 
 
