@@ -12,12 +12,10 @@ Paths.Logs = Paths.Root .. "\\lualogs"
 Paths.debugfile = Paths.Logs .. "\\Moists_debug.log"
 Paths.Player_DB = Paths.Logs .. "\\PlayerDB.txt"
 Paths.kickdata = Paths.Root  .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.ini"
-Paths.kickdata2 = Paths.Root .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks2.ini"
-Paths.kickdata3 = Paths.Root .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks3.ini"
 Paths.kickparam = Paths.Root .. "\\scripts\\MoistsLUA_cfg\\Moist_KickParam.ini"
 Paths.interiorpos = Paths.Cfg .. "\\interiors.lua"
 Paths.Spamtxt_Data = Paths.Cfg .. "\\Moists_Spamset.ini"
-Settings["MoistScript"] = "2.0.4.3"
+Settings["MoistScript"] = "2.0.4.4"
 Settings["OSD.modvehspeed_osd"] = false
 Settings["OSD.Player_bar"] = false
 Settings["aimDetonate_control"] = false
@@ -109,12 +107,12 @@ function Load_Settings()
 	-- Edit feature values based on new Settings values
 end
 function VersionCheck()
-	if Settings["MoistScript"] ~= "2.0.4.3" then
+	if Settings["MoistScript"] ~= "2.0.4.4" then
 		print("version Mismatch")
 		local file = io.open(Paths.Settings, "w")
 		file:write(tostring(""))
 		file:close()
-		Settings["MoistScript"] = "2.0.4.3"
+		Settings["MoistScript"] = "2.0.4.4"
 		Settings["lag_out"] = true
 		Settings["global_func.mk1boostrefill"] = false
 		Settings["global_func.mk2boostrefill"] = false
@@ -155,7 +153,7 @@ function Debug_Out(text)
 		local curdate_time = Cur_Date_Time()
 		local Text = string.format(curdate_time .. text .."\n")
 		io.output(file)
-		io.write(text)
+		io.write(text .."\n")
 		io.close()
 	end
 end
@@ -220,7 +218,7 @@ interiors_load()
 	-- end
 -- end
 -- dupe_param()
-function Cur_Date_Time()local a,b,c;a=os.date()b=string.match(a,"%d%d:%d%d:%d%d")c=os.date("%d/%m/%y")return string.format("["..c.."]".."["..b.."]")end;function dataload()if not utils.file_exists(Paths.kickdata)then return end;for d in io.lines(Paths.kickdata)do data[#data+1]=d end end;dataload()function dataload2()if not utils.file_exists(Paths.kickdata2)then return end;for d in io.lines(Paths.kickdata2)do data2[#data2+1]=d end end;dataload2()function dataload3()if not utils.file_exists(Paths.kickdata3)then return end;for d in io.lines(Paths.kickdata3)do data3[#data3+1]=d end end;dataload3()function paramload()if not utils.file_exists(Paths.kickparam)then return end;for d in io.lines(Paths.kickparam)do kick_param_data[#kick_param_data+1]=d end end;paramload()function dupe_param()for e=1,#kick_param_data do for f=1,#kick_param_data do kick_param[f]=kick_param_data[e]end end end;dupe_param()
+function Cur_Date_Time()local a,b,c;a=os.date()b=string.match(a,"%d%d:%d%d:%d%d")c=os.date("%d/%m/%y")return string.format("["..c.."]".."["..b.."]")end;function dataload()if not utils.file_exists(Paths.kickdata)then return end;for d in io.lines(Paths.kickdata)do data[#data+1]=d end end;dataload()function paramload()if not utils.file_exists(Paths.kickparam)then return end;for d in io.lines(Paths.kickparam)do kick_param_data[#kick_param_data+1]=d end end;paramload()function dupe_param()for e=1,#kick_param_data do for f=1,#kick_param_data do kick_param[f]=kick_param_data[e]end end end;dupe_param()
 
 
 
@@ -265,6 +263,16 @@ preset_color = Settings["NotifyColorDefault"]
 notifytype = Settings["NotifyVarDefault"]
 local AnonymousBounty, trigger_time, cleanup_done, world_dumped, kicklogsent, logsent, spawnoptions_loaded  = true, nil, true, true, false, false, false
 --TODO: Function return values
+
+function build_params(argcnt)
+	local ParaMs = {}
+	for i = 1, argcnt do
+		local y = math.random(1, #kick_param_data)
+		ParaMs[i] = kick_param_data[y]
+	end
+	return ParaMs
+end
+
 function Get_Last_MP(stat)
 	local text = stat
 	local hash = gameplay.get_hash_key("MPPLY_LAST_MP_CHAR")
@@ -351,17 +359,17 @@ interiorcheck_thread = function(context)
 				elseif orbprox > 18 and Players[context.pid].orbnotify then
 				Players[context.pid].orbnotify = false
 			end
-			if interior.get_interior_from_entity(pped) == 0 then
+		if interior.get_interior_from_entity(pped) == 0 then
 			if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
                     for i = 1, #interiors do
 						apartmen = Get_Dist3D(context.pid, interiors[i][2])
-						if apartmen <200 then
+						if apartmen < 90 then
 							Players[context.pid].isint = true
-						else
 						goto interiorcheckEnd
-						end
 						system.yield(0)
+						end
 					end
+
 						Players[context.pid].isint = false
 						-- local zbool, gz = gameplay.get_ground_z(player.get_player_coords(context.pid))
 						-- pos = player.get_player_coords(context.pid)
@@ -370,15 +378,15 @@ interiorcheck_thread = function(context)
 						-- elseif not Players[context.pid].isint and pos.z >= gz then
 							-- Players[context.pid].isint = false
 			 end
+		end
 					::interiorcheckEnd::
-			end
 				elseif player.is_player_god(context.pid) and interior.get_interior_from_entity(pped) ~= 0 then
-				Players[context.pid].isint = false
+				Players[context.pid].isint = true
 				elseif interior.get_interior_from_entity(pped) ~= 0 then
 				Players[context.pid].isint = true
+			end
+		system.yield(600)
 		end
-		system.yield(2)
-	end
 end
 -- Player IP
 function GetIP(pid)
@@ -477,8 +485,8 @@ end
 
 function moist_notify2(msg1, msg2, colour)
 	
-	msg1 =  msg1 .. "\n\n  \t  \t MoistScript 2.0.4.3"
-	msg2 = msg2 or "MoistScript 2.0.4.3"
+	msg1 =  msg1 .. "\n\n  \t  \t MoistScript 2.0.4.4"
+	msg2 = msg2 or "MoistScript 2.0.4.4"
 	local color = Settings["NotifyColorDefault"] or colour
 	menu.notify(msg1, msg2, 5, color)
 end
@@ -2162,7 +2170,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 Active_menu = nil
 --local Menu Features
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.4.3", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.4.4", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 --TODO: Online Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.Online_Session, function(feat)
@@ -2754,7 +2762,7 @@ function modderflag(pid)
 	return HANDLER_POP
 end
 --TODO: Player Feature Parents
-PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.4.3", "parent", 0).id
+PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.4.4", "parent", 0).id
 spawn_parent = menu.add_player_feature("Spawn Options", "parent", PlayerFeatParent).id
 
 local Player_Tools = menu.add_player_feature("Player Tools", "parent", PlayerFeatParent).id
@@ -3088,10 +3096,26 @@ scriptloader()
 
 -- TODO: Recent Player Features
 function recentplayerslist()
-Recent_Players={{name={},count={},rid={},nid={},htoken={},DecIP={}}}
+	Recent_Players = {{
+		name = {},
+		count = {},
+		rid = {},
+		nid = {},
+		htoken = {},
+		DecIP = {}
+	}}
 	RecentPlayers = {}
-TempBlacklist={{name={},scid={},decip={},nameON={},scidON={},decipON={}}}
-RecentPlayer={Features={}}
+	TempBlacklist = {{
+		name = {},
+		scid = {},
+		decip = {},
+		nameON = {},
+		scidON = {},
+		decipON = {}
+	}}
+	RecentPlayer = {
+		Features = {}
+	}
 	
 	Join_Event_Check = event.add_event_listener("player_join", function(e)
 		playerRDB(e.player)
@@ -3123,8 +3147,8 @@ RecentPlayer={Features={}}
 		if network.network_is_host() then
 			network.network_session_kick_player(pid)
 			elseif not network.network_is_host() then
-			script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-			script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+		script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+		script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
 		end
 		network.network_session_kick_player(pid)
 	end
@@ -3137,7 +3161,7 @@ RecentPlayer={Features={}}
 		count = -1
 		token = player.get_player_host_token(pid)
 		tokhex = string.format("%x", token)
-		tokeen = tostring(tokhex:sub(1, 8))
+		tokeen = tostring(tokhex:sub(1, 7))
 		local i = #Recent_Players + 1
 		Recent_Players[i] = {}
 		RecentPlayer[i] = {}
@@ -3370,7 +3394,7 @@ notify_A.hidden = true
 
 --TODO: Online Features
 menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
-	script.trigger_script_event(0x4d8b1e65, pid, {1300962917})
+	script.trigger_script_event(0xa7d29605, pid, {1300962917})
 	return HANDLER_POP
 end)
 
@@ -3391,6 +3415,8 @@ orbitalProxy = menu.add_feature("Add Orbital Proximity Blip", "value_f", globalF
 	end
 	return HANDLER_POP
 	end
+	system.yield(600)
+	system.yield(600)
 	local pos = v3(339.379,4836.629,-58.999)
 	if ObitalBlip == nil then
 	ObitalBlip = ui.add_blip_for_radius(pos, feat.value)
@@ -3825,8 +3851,8 @@ function KickPid(pid)
 			moist_notify("Script-Event Kicked: " .. name .. " : " ..  scids[scid], "Blacklist Player Kicked", 0xff0000ff)
 			BL_Notify[pid+1] = true
 		end
-		script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-		script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+		script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+		script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
 	end
 	network.network_session_kick_player(pid)
 end
@@ -4022,20 +4048,20 @@ event.add_event_listener("exit", function()
 	event.remove_event_listener("chat", ChatEventID)
 end)
 function send_SE_Kick(pid)
-	script.trigger_script_event(0xF5CB92DB, pid, {0, 0, 46190868, 0, 2})
-	script.trigger_script_event(0xF5CB92DB, pid, {46190868, 0, 46190868, 46190868, 2})
-	script.trigger_script_event(0xF5CB92DB, pid, {1337, -1, 1, 1, 0, 0, 0})
-	script.trigger_script_event(0xF5CB92DB, pid, {pid, 1337, -1, 1, 1, 0, 0, 0})
-	script.trigger_script_event(0xc5bc4c4b, pid, {-72614, 63007, 59027, -12012, -26996, 33399})
-	script.trigger_script_event(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
-	script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-	script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-	script.trigger_script_event(-977515445, pid, {-1, 500000, 849451549, -1, -1})
-	script.trigger_script_event(767605081, pid, {-1, 500000, 849451549, -1, -1})
-	script.trigger_script_event(-1949011582, pid, {-1139568479, -1, 1, 100099})
-	script.trigger_script_event(-2122716210, pid, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-	script.trigger_script_event(-922075519, pid, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-	script.trigger_script_event(-1975590661, pid, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+	script.trigger_script_event(0x1d97a038, pid, {0, 0, 46190868, 0, 2})
+	script.trigger_script_event(0x51ac3568, pid, {46190868, 0, 46190868, 46190868, 2})
+	script.trigger_script_event(0x48276e68, pid, {1337, -1, 1, 1, 0, 0, 0})
+	script.trigger_script_event(0x676680c7, pid, {pid, 1337, -1, 1, 1, 0, 0, 0})
+	script.trigger_script_event(0x3935c307, pid, {-72614, 63007, 59027, -12012, -26996, 33399})
+	script.trigger_script_event(0xb9102685, pid, {91645, -99683, 1788, 60877, 55085, 72028})
+	script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+	script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+	script.trigger_script_event(0x1ebe7832, pid, {-1, 500000, 849451549, -1, -1})
+	script.trigger_script_event(0xdf8559f9, pid, {-1, 500000, 849451549, -1, -1})
+	script.trigger_script_event(0x1cfa9df0, pid, {-1139568479, -1, 1, 100099})
+	script.trigger_script_event(0xd8fae799, pid, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+	script.trigger_script_event(0xb14e6c0c, pid, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+	script.trigger_script_event(0xb939987b, pid, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
 end
 
 chat_log = menu.add_feature("Log in Game Chat", "toggle", logging.id, function(feat)
@@ -4113,44 +4139,31 @@ function griefing()
 		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, 0, pos, pos, true, true, false, 0, false)
 	end)
 	menu.add_player_feature("Script Host Crash Kick", "action", 0, function(feat, pid)
-		local pos = v3()
-		pos = player.get_player_coords(pid)
-		pos.x = math.floor(pos.x)
-		pos.y = math.floor(pos.y)
-		pos.z = math.floor(pos.z)
-		-- script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 2147483647, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
-		script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 1000, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
+		local SE_ARGS = build_params(20)
+		script.trigger_script_event(0xcbb6ce33, pid, SE_ARGS)
+		script.trigger_script_event(0x12d09136, pid, SE_ARGS)
+		script.trigger_script_event(0xcbb6ce33, pid, SE_ARGS)
+		script.trigger_script_event(0x12d09136, pid, SE_ARGS)
+		
 	end)
 	menu.add_player_feature("CEO BAN", "action", PlayerFeatParent, function(feat, pid)
-		script.trigger_script_event(0xD3FE818F, pid, {0, 1, 5, 0})
+		script.trigger_script_event(0x50c72ec2, pid, {0, 1, 5, 0})
 	end)
 	menu.add_player_feature("CEO DISMISS", "action", PlayerFeatParent, function(feat, pid)
-		script.trigger_script_event(0x9DB77399, pid, {0, 1, 5})
+		script.trigger_script_event(0xed1bc159, pid, {0, 1, 5})
 	end)
 	menu.add_player_feature("CEO TERMINATE", "action", PlayerFeatParent, function(feat, pid)
-		script.trigger_script_event(0x9DB77399, pid, {1, 1, 6})
-		script.trigger_script_event(0x9DB77399, pid, {0, 1, 6, 0})
+		script.trigger_script_event(0xed1bc159, pid, {1, 1, 6})
+		script.trigger_script_event(0xed1bc159, pid, {0, 1, 6, 0})
 	end)
 		menu.add_player_feature("Send HitSquad?", "action", PlayerFeatParent, function(feat, pid)
-		script.trigger_script_event(0x9DB77399, pid, {1, 1, 6})
-		script.trigger_script_event(0x9DB77399, pid, {0, 1, 6, 0})
-		script.trigger_script_event(0x97262d43, pid, {1, 151, -1, -1, -1})
-		for i = 0, 32 do
-		if player.is_player_valid(i) then
-		script.trigger_script_event(0x97262d43, pid, {i, 151, -1, -1, -1})
-		end
-		end
-		script.trigger_script_event(0xc9a4ea3f, pid, {player.player_id()})
-			script.trigger_script_event(0xc9cc4f80, pid, {player.player_id(), 1})
-		
+		script.trigger_script_event(0xed1bc159, pid, {1, 151, -1, -1, -1})
 	end)
 	
 	for i = 1, #missions do
 		local y = #missions - 1
 		menu.add_player_feature("Force to Mission" ..missions[i], "action", playerfeatVars.fm, function(feat, pid)
-			script.trigger_script_event(0xdf7de926, pid,{y})
-			script.trigger_script_event(1115000764, pid,{y})
-			script.trigger_script_event(-545396442, pid,{y})
+			script.trigger_script_event(0xbb9dd343, pid,{y})
 		end)
 	end
 	
@@ -5283,7 +5296,7 @@ function self_func()
 			return HANDLER_CONTINUE
 		end
 	end)
-	Vehicle_Control_getGear.on = true
+	Vehicle_Control_getGear.on = false
 	
 	Vehicle_Control_SetGear = menu.add_feature("Set Gear", "toggle", Vehicle_Control, function(feat)
 		
@@ -5698,12 +5711,14 @@ end
 --TODO: local session Features
 otr_all =  menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
 	for pid = 0, 32 do
-		script.trigger_script_event(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			script.trigger_script_event(0xE85362F9, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+
 	end
 end)
 nocops_all =  menu.add_feature("Give everyone Cop Bribe", "action", globalFeatures.lobby, function(feat)
 	for pid = 0, 32 do
-		script.trigger_script_event(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+			script.trigger_script_event(0x46C5BFA5, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2544210 + 4627), 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+
 	end
 end)
 blip_all =  menu.add_feature("Give everyone Enemy Blips", "action", globalFeatures.lobby, function(feat)
@@ -5718,15 +5733,15 @@ blip_all =  menu.add_feature("Give everyone Enemy Blips", "action", globalFeatur
 		end
 	end
 end)
-function blockpassiveall()
-	for i=0,32 do
-		fnd = player.is_player_friend(i)
-		if i ~= player.player_id() or i ~= fnd then
-			script.trigger_script_event(0xC9CC4F80, i, {1, 1})
-			script.trigger_script_event(3385610112, i, {1, 1})
-		end
-	end
-end
+-- function blockpassiveall()
+	-- for i=0,32 do
+		-- fnd = player.is_player_friend(i)
+		-- if i ~= player.player_id() or i ~= fnd then
+			-- script.trigger_script_event(0xC9CC4F80, i, {1, 1})
+			-- script.trigger_script_event(3385610112, i, {1, 1})
+		-- end
+	-- end
+-- end
 local notmarkall = function()
 	for i = 0, 32 do
 		if i ~= player.player_id() then
@@ -5738,60 +5753,17 @@ local notallmod = menu.add_feature("UnMark all Players as Modder", "action", glo
 	notmarkall()
 end)
 --TODO: Session Kicks
-local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino", "toggle", globalFeatures.kick, function(feat)
-	if feat.on then
-		for i = 0, 32 do
-			if player.is_player_valid(i) then
-				local fnd = player.is_player_friend(i)
-				if i ~= player.player_id() or i ~= fnd then
-					script.trigger_script_event(-2122716210, i, {91645, -99683, 1788, 60877, 55085, 72028})
-					script.trigger_script_event(-2120750352, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(0xE6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(-977515445, i, {-1, 500000, 849451549, -1, -1})
-					script.trigger_script_event(767605081, i, {-1, 500000, 849451549, -1, -1})
-					script.trigger_script_event(-1949011582, i, {-1139568479, -1, 1, 100099})
-					script.trigger_script_event(-2122716210, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-					script.trigger_script_event(-922075519, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-					script.trigger_script_event(-1975590661, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-				end
-				if Settings["ScriptEvent_delay"] ~= 0 then
-					system.yield(Settings["ScriptEvent_delay"])
-				end
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end)
-local Kick2Session = menu.add_feature("Session Kick Data2 Type2", "toggle", globalFeatures.kick, function(feat)
+
+Kick_Session = menu.add_feature("Session Kick", "toggle", globalFeatures.kick, function(feat)
 	if feat.on then
 		for pid = 0, 32 do
 			if player.is_player_valid(pid) then
 				local fnd = player.is_player_friend(pid)
-				if pid ~= player.player_id() or pid ~= fnd then
-					local pos = v3()
-					pos = player.get_player_coords(pid)
-					pos.x = math.floor(pos.x)
-					pos.y = math.floor(pos.y)
-					pos.z = math.floor(pos.z)
-					par1 = math.random(104574922, 9999999999)
-					par2 = math.random(-99999999999999, -1)
-					par3 = math.random(461908681885, 99999999999999)
-					par4 = math.random(-999999999999, -1)
-					par5 = math.random(9999999999999, 46190868453454)
-					spc1 = math.random(1090682, 2590682)
-					spc2 = math.floor(math.random(100, 900))
-					spc3 = math.floor(math.random(400, 900))
-					spc4 = math.floor(math.random(100, 400))
-					spc5 = math.floor(math.random(10, 100))
-					for i = 1, #data2 do
-						script.trigger_script_event(data2[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
-						script.trigger_script_event(data2[i], pid, {pid, pos.x, pos.y, pos.z, 0, 0, spc3, 0, script.get_global_i(spc1 + (pid * spc2) + spc5 + spc5), 1})
-						script.trigger_script_event(data2[i], pid, {pid, pos.x, pos.y, pos.z, 0, 0, spc2, 0, script.get_global_i(spc1 + (pid * spc3) + spc4 + spc5), 1})
-					end
-				end
-				if Settings["ScriptEvent_delay"] ~= 0 then
+				if player.player_id() ~= pid or fnd ~= pid then
+				script.trigger_script_event(0x1d97a038, pid, {13, math.random(-5139791970, -1139791970)})
+
 					system.yield(Settings["ScriptEvent_delay"])
+			
 				end
 			end
 		end
@@ -5799,6 +5771,8 @@ local Kick2Session = menu.add_feature("Session Kick Data2 Type2", "toggle", glob
 	end
 	return HANDLER_POP
 end)
+
+
 passive_players = {}
 function Set_PassiveTracker()
 	for i = 1, 32 do
@@ -5810,7 +5784,7 @@ Passive_trackerIN = event.add_event_listener("player_join", function(e)
 	local pid = tonumber(e.player)
 	passive_players[pid +  1] = false
 	orbitalProxy.on = false
-	system.wait(0)
+	system.wait(800)
 	orbitalProxy.on = true
 	return
 end)
@@ -5831,7 +5805,7 @@ Passive_trackerOUT = event.add_event_listener("player_leave", function(e)
 	SessionPlayers[pid].scid = 4294967295
 	SessionPlayers[pid].Name = "nil"
 	orbitalProxy.on = false
-	system.wait(0)
+	system.wait(800)
 	orbitalProxy.on = true
 	return
 end)
@@ -5839,7 +5813,7 @@ end)
 local bountyhook_id = 0
 bountyhook_event = function(source, target, params, count)
 	local player_source = player.get_player_name(source)
-	if params[1] == 0xf90cc891 then
+	if params[1] == 0x8e628456 then
 		Players[source].bounty = true
 		Players[source].bountyvalue = params[5]
 		return false
@@ -5888,7 +5862,7 @@ end
 passivehook_Alert = menu.add_feature("Custom SEP Passive", "toggle", globalFeatures.moist_tools.id, sep)
 passivehook_Alert.on = true
 
-local SECrash = {-977515445,767605081,-1730227041,-1949011582,-2122716210,-1882923979}
+local SECrash = {-988842806,-2043109205,1926582096,153488394}
 
 function build_params(argcnt)
 	local ParaMs = {}
@@ -5929,19 +5903,8 @@ HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFea
 		if not network.network_is_host() then
 			if hostnow ~= player.player_id() or hostnow ~= fnd then
 				player.unset_player_as_modder(hostnow, -1)
-				script.trigger_script_event(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-				script.trigger_script_event(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-				system.yield(10)
-				script.trigger_script_event(0xc5bc4c4b, hostnow, {-72614, 63007, 59027, -12012, -26996, 33399})
-				script.trigger_script_event(-2122716210, hostnow, {91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(-2120750352, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-				script.trigger_script_event(0xE6116600, hostnow, {hostnow, script.get_global_i(1630317 + (1 + (hostnow * 595)) + 506)})
-				script.trigger_script_event(-977515445, hostnow, {-1, 500000, 849451549, -1, -1})
-				script.trigger_script_event(767605081, hostnow, {-1, 500000, 849451549, -1, -1})
-				script.trigger_script_event(-1949011582, hostnow, {-1139568479, -1, 1, 100099})
-				script.trigger_script_event(-2122716210, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(-922075519, hostnow, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(-1975590661, hostnow, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				script.trigger_script_event(2092565704, hostnow, {hostnow, script.get_global_i(1630816 + (1 + (hostnow * 597)) + 508)})
+				script.trigger_script_event(0x7CBA04C8, hostnow, {hostnow, script.get_global_i(1630816 + (1 + (hostnow * 597)) + 508)})
 			end
 		end
 		if network.network_is_host() then
@@ -5962,23 +5925,19 @@ local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatur
 			if player.is_player_valid(i) then
 				local fnd = player.is_player_friend(i)
 				if i ~= player.player_id() or i ~= fnd then
-					script.trigger_script_event(-81613951, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(-1292453789, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(1623637790, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(-1905128202, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(1160415507, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(-2120750352, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
-					script.trigger_script_event(0xe6116600, i, {i, script.get_global_i(1630317 + (1 + (i * 595)) + 506)})
+						script.trigger_script_event(2092565704, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+						script.trigger_script_event(0x7CBA04C8, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
 				end
 			end
-			if Settings["ScriptEvent_delay"] ~= 0 then
+
 				system.yield(Settings["ScriptEvent_delay"])
-			end
+
 		end
 		return HANDLER_CONTINUE
 	end
 	return HANDLER_POP
 end)
+
 local hostnotify = false
 function hostkickall(pid)
 	network.network_session_kick_player(pid)
@@ -5996,10 +5955,10 @@ local hostkick = menu.add_feature("Host Kick All", "toggle", globalFeatures.kick
 			hostnotify = false
 			for i = 0, 32 do
 				if player.is_player_valid(i) then
-					if i ~= player.player_id() then
-						if i ~= player.is_player_friend(i) then
+					if player.player_id() ~= i then
+					--	if i ~= player.is_player_friend(i) then
 							hostkickall(i)
-						end
+					--	end
 					end
 				end
 			end
@@ -7436,14 +7395,14 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 						PCR, PCG, PCB, PCA = 255, 0, 0, 255
 					end
 				end
-				if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) and Players[pid].isint == true and player.is_player_god(i) then
+				if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1)and Players[pid].isint == true and player.is_player_god(i) then
 					if  Players[pid].pulse then
 						PCR, PCG, PCB, PCA = 255, 255, 255, 150
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 0, 150
 					end
 				end
-				if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) and Players[pid].isint == false and player.is_player_god(i) then
+				if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1)and Players[pid].isint == false and player.is_player_god(i) then
 					if  Players[pid].pulse then
 						PCR, PCG, PCB, PCA = 0, 255, 0, 255
 						else
@@ -7784,24 +7743,24 @@ OSD.osd_My_speed2 = menu.add_feature("Show My Speed in Mph", "toggle", globalFea
 		
 		ui.draw_text(myspeed2 .." mph", pos)
 		
-		local gear_Text1 = tostring("~h~~r~Gears:\n" .. "~w~~h~Now: " .. MyvehControl["MyGearNow"].. "\nNext: " .. MyvehControl["MyNextGear"] .. "\nMax:" .. MyvehControl["MyMaxGear"] .. "\nRatio: " .. MyvehControl["MyGearRatio"])
-		local gear_Text2 = tostring("Gears:\n" .. "Now: " .. MyvehControl["MyGearNow"].. "\nNext: " .. MyvehControl["MyNextGear"] .. "\nMax: " .. MyvehControl["MyMaxGear"] .. "\nRatio: " .. MyvehControl["MyGearRatio"])
-		pos.x = .970
-		pos.y =  0.0750001
-		ui.set_text_scale(0.18)
-		ui.set_text_font(0)
-		ui.set_text_color(0, 0, 0, 255)
-		ui.set_text_centre(false)
-		ui.set_text_outline(1)
-		ui.draw_text(gear_Text2, pos)
-		pos.x = .971
-		pos.y =  0.0750002
-		ui.set_text_scale(0.18)
-		ui.set_text_font(0)
-		ui.set_text_color(255, 255, 255, 255)
-		ui.set_text_centre(false)
-		ui.set_text_outline(1)
-		ui.draw_text(gear_Text1, pos)
+		-- local gear_Text1 = tostring("~h~~r~Gears:\n" .. "~w~~h~Now: " .. MyvehControl["MyGearNow"].. "\nNext: " .. MyvehControl["MyNextGear"] .. "\nMax:" .. MyvehControl["MyMaxGear"] .. "\nRatio: " .. MyvehControl["MyGearRatio"])
+		-- local gear_Text2 = tostring("Gears:\n" .. "Now: " .. MyvehControl["MyGearNow"].. "\nNext: " .. MyvehControl["MyNextGear"] .. "\nMax: " .. MyvehControl["MyMaxGear"] .. "\nRatio: " .. MyvehControl["MyGearRatio"])
+		-- pos.x = .970
+		-- pos.y =  0.0750001
+		-- ui.set_text_scale(0.18)
+		-- ui.set_text_font(0)
+		-- ui.set_text_color(0, 0, 0, 255)
+		-- ui.set_text_centre(false)
+		-- ui.set_text_outline(1)
+		-- ui.draw_text(gear_Text2, pos)
+		-- pos.x = .971
+		-- pos.y =  0.0750002
+		-- ui.set_text_scale(0.18)
+		-- ui.set_text_font(0)
+		-- ui.set_text_color(255, 255, 255, 255)
+		-- ui.set_text_centre(false)
+		-- ui.set_text_outline(1)
+		-- ui.draw_text(gear_Text1, pos)
 		
 		return HANDLER_CONTINUE
 	end
@@ -8753,7 +8712,6 @@ local function vehdecor()
 end
 vehdecor()
 
-
 features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
 	plyveh = player.get_player_vehicle(pid)
 	while not network.has_control_of_entity(plyveh) do
@@ -9249,175 +9207,16 @@ features["marker_active5"].feat.value = 28
 features["marker_active5"].feat.on = false
 --TODO: CEO Money
 featureVars.ceo = menu.add_feature("CEO Money Shit", "parent", featureVars.f.id)
-features["ceo_money_a1"] = {feat = menu.add_feature("CEO 10k v1", "action", featureVars.ceo.id, function(feat)
-	script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-	script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money_a1"].feat.on = false
-features["ceo_money_a01"] = {feat = menu.add_feature("CEO 10k v2", "action", featureVars.ceo.id, function(feat)
-	script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, 198210293, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-	script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money_a01"].feat.on = false
-features["ceo_money_a2"] = {feat = menu.add_feature("CEO 30k 1 shot", "action", featureVars.ceo.id, function(feat)
-	script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-	script.trigger_script_event(-2029779863, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money_a2"].feat.on = false
-features["ceo_money_a02"] = {feat = menu.add_feature("CEO 30k v1", "value_i", featureVars.ceo.id, function(feat)
-	if feat.on then
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(feat.value)
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money_a02"].feat.on = false
-features["ceo_money_a02"].feat.max = 200000
-features["ceo_money_a02"].feat.min = 30000
-features["ceo_money_a02"].feat.value = 30000
-features["ceo_money_a02"].feat.mod = 1000
-features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "value_i", featureVars.ceo.id, function(feat)
-	while feat.on do
-		print("Money Trigger loop")
-		print(os.date())
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(feat.value)
-		print(os.date())
-		return HANDLER_CONTINUE
-	end
-	print("loop end")
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money1"].feat.on = false
-features["ceo_money1"].feat.max = 200000
-features["ceo_money1"].feat.min = 30000
-features["ceo_money1"].feat.value = 30000
-features["ceo_money1"].feat.mod = 1000
-features["ceo_money1"] = {feat = menu.add_feature("CEO 10k money loop", "toggle", featureVars.ceo.id, function(feat)
-	while feat.on do
-		print("Money Trigger loop")
-		print(os.date())
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(31000)
-		print(os.date())
-		return HANDLER_CONTINUE
-	end
-	print("loop end")
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money1"].feat.on = false
-features["ceo_money2"] = {feat = menu.add_feature("CEO 20k money loop", "value_i", featureVars.ceo.id, function(feat)
-	while feat.on do
-		print("20k Money Trigger loop")
-		print(os.date())
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(31000)
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, 198210293, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(feat.value)
-		print(os.date())
-		return HANDLER_CONTINUE
-	end
-	print("loop end")
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money2"].feat.on = false
-features["ceo_money2"].feat.max = 200000
-features["ceo_money2"].feat.min = 30000
-features["ceo_money2"].feat.value = 30000
-features["ceo_money2"].feat.mod = 1000
-features["ceo_money3"] = {feat = menu.add_feature("Quick CEO Money", "toggle", featureVars.ceo.id, function(feat)
-	while feat.on do
-		print("Money Trigger loop")
-		print(os.date())
-		print("ceo 10k sell")
-		--transaction id:1
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		print("10k sell Complete")
-		print(os.date())
-		print("Money Trigger 10k Wage")
-		print(os.date())
-		--transaction id:2
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		system.wait(31000)
-		print("10k Wage Complete")
-		print(os.date())
-		system.wait(1200)
-		print("Money Trigger 20k sell")
-		print(os.date())
-		--transaction id:3
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		system.wait(31000)
-		print("20k Sell Complete")
-		print(os.date())
-		print("Money Trigger 10k Wage")
-		print(os.date())
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		system.wait(31000)
-		system.wait(1200)
-		print("20k sell Complete")
-		print(os.date())
-		return HANDLER_CONTINUE
-	end
-	print("loop end")
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money3"].feat.on = false
-features["ceo_money4"] = {feat = menu.add_feature("Fast 10k CEO Money", "toggle", featureVars.ceo.id, function(feat)
-	while feat.on do
-		print("Money Trigger loop")
-		print(os.date())
-		print("ceo 10k sell")
-		--transaction id:1
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		print("10k sell Complete")
-		print(os.date())
-		print("Money Trigger 10k Wage")
-		print(os.date())
-		--transaction id:2
-		script.trigger_script_event(-2029779863, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630317 + (1 + (pid * 595)) + 506), script.get_global_i(1652336 + 9), script.get_global_i(1652336 + 10)})
-		system.wait(1200)
-		system.wait(31000)
-		return HANDLER_CONTINUE
-	end
-	print("loop end")
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money4"].feat.on = false
+
 features["ceo_otr"] = {feat = menu.add_feature("OTR", "action", featureVars.f.id, function(feat)
-	-- globals.send_script_event("Give OTR or ghost organization", pid, {pid, utils.time() - 60, utils.time(), 1, 1, globals.generic_player_global(pid)}, true)
-	-- script.get_global_i(2424073 + (1 + (spid * 421)) + 200) == 1
-	-- script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1
-	-- script.get_global_i(1630317 + (1 + (pid * 595) + 506))
-	script.trigger_script_event(575518757, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630317 + (1 + (pid * 595) + 506))})
+
+	script.trigger_script_event(0xE85362F9, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
 	return HANDLER_POP
 end), type = "toggle", callback = function()
 end}
 features["ceo_otr"].feat.on = false
 features["give_nocops"] = {feat = menu.add_feature("Give Long Cop Bribe", "action", featureVars.f.id, function(feat)
-	script.trigger_script_event(392501634, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2540384 + 4624), 1, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
+	script.trigger_script_event(0x46C5BFA5, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2544210 + 4627), 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
 	return HANDLER_POP
 end), type = "action", callback = function()
 end}
@@ -10377,11 +10176,6 @@ features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "
 	name = tostring(player.get_player_name(pid))
 	Debug_Out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
 end), type = "action"}
-features["DisableJumping"] = {feat = menu.add_feature("Fuck Ability to Play", "action", featureVars.f.id, function(feat)
-	script.trigger_script_event(0xf5cb92db, pid, {1, 2, 4294967295, 1, 115, 0, 0,0})
-	script.trigger_script_event(-171207973, pid, {1, 2, 4294967295, 1, 115, 0, 0,0})
-	script.trigger_script_event(4123759323, pid, {1, 2, -1, 1, 115, 0, 0,0})
-end), type = "action"}
 --TODO: Grief
 featureVars.lag = menu.add_feature("Lag Player with Entity Spam", "parent", featureVars.g.id)
 menu.add_feature("Value = Spawn Amount", "action", featureVars.lag.id)
@@ -10432,7 +10226,6 @@ features["blamedorbital"] = {feat = menu.add_feature("Orbital Player Blaming: ",
 	audio.play_sound_from_coord(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
 	audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, myped, true, 0, false)
 	audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
-	script.get_global_i(1694982)
 	graphics.set_next_ptfx_asset("scr_xm_orbital")
 	while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
 		graphics.request_named_ptfx_asset("scr_xm_orbital")
@@ -11002,27 +10795,20 @@ features["EventSpam_toggle"] = {feat = menu.add_feature("Spam Them ALL!", "toggl
 		playerFeatures[pid].features["Kick1_Type1"].feat.on = false
 		playerFeatures[pid].features["Kick1_Type2"].feat.on = false
 		playerFeatures[pid].features["Kick1_Type3"].feat.on = false
-		playerFeatures[pid].features["Kick2_Type1"].feat.on = false
-		playerFeatures[pid].features["Kick2_Type2"].feat.on = false
-		playerFeatures[pid].features["Kick2_Type3"].feat.on = false
-		playerFeatures[pid].features["Kick3_Type1"].feat.on = false
 		playerFeatures[pid].features["SE_CRASH_DATA1"].feat.on = false
-		playerFeatures[pid].features["Kick3_Type2"].feat.on = false
+
 		return HANDLER_POP
 	end
 end),  type = "toggle", callback = function()
 playerFeatures[pid].features["Kick1_Type1"].feat.on = true
 playerFeatures[pid].features["Kick1_Type2"].feat.on = true
 playerFeatures[pid].features["Kick1_Type3"].feat.on = true
-playerFeatures[pid].features["Kick2_Type1"].feat.on = true
-playerFeatures[pid].features["Kick2_Type2"].feat.on = true
-playerFeatures[pid].features["Kick2_Type3"].feat.on = true
-playerFeatures[pid].features["Kick3_Type1"].feat.on = true
 playerFeatures[pid].features["SE_CRASH_DATA1"].feat.on = true
-playerFeatures[pid].features["Kick3_Type2"].feat.on = true
+
 return HANDLER_POP
 end}
 features["EventSpam_toggle"].feat.on = false
+
 features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:", "value_i", featureVars.k.id, function(feat)
 	local Args = {}
 	if feat.on then
@@ -11042,9 +10828,9 @@ features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:"
 			-- system.wait(200)
 			script.trigger_script_event(data[i], pid, {par1, par2, par3, par4, par5, par1, par2, par3, par2})
 			-- system.wait(200)
-			if Settings["ScriptEvent_delay"] ~= 0 then
+
 				system.yield(Settings["ScriptEvent_delay"])
-			end
+
 		end
 		return HANDLER_CONTINUE
 	end
@@ -11055,6 +10841,7 @@ end}
 features["SE_CRASH_DATA1"].feat.max = 100
 features["SE_CRASH_DATA1"].feat.min = 1
 features["SE_CRASH_DATA1"].feat.on = false
+
 features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle", featureVars.ses.id, function(feat)
 	if feat.on then
 		-- player.unset_player_as_modder(pid, -1)
@@ -11067,9 +10854,7 @@ features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle
 			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2})
 			system.wait(0)
 			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
-			if Settings["ScriptEvent_delay"] ~= 0 then
 				system.yield(Settings["ScriptEvent_delay"])
-			end
 		end
 		return HANDLER_CONTINUE
 	end
@@ -11091,9 +10876,7 @@ features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "toggle
 			script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
 			system.wait(0)
 			script.trigger_script_event(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
-			if Settings["ScriptEvent_delay"] ~= 0 then
 				system.yield(Settings["ScriptEvent_delay"])
-			end
 		end
 		return HANDLER_CONTINUE
 	end
@@ -11115,9 +10898,7 @@ features["Kick1_Type3"] = {feat = menu.add_feature("Kick Data 1 Type 3", "toggle
 			script.trigger_script_event(data[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par6, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par6, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par6})
 			system.wait(0)
 			script.trigger_script_event(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
-			if Settings["ScriptEvent_delay"] ~= 0 then
 				system.yield(Settings["ScriptEvent_delay"])
-			end
 		end
 		return HANDLER_CONTINUE
 	end
@@ -11125,176 +10906,17 @@ features["Kick1_Type3"] = {feat = menu.add_feature("Kick Data 1 Type 3", "toggle
 end),  type = "toggle", callback = function()
 end}
 features["Kick1_Type3"].feat.on = false
-features["Kick2_Type1"] = {feat = menu.add_feature("Kick Data 2 Type 1", "toggle", featureVars.ses.id, function(feat)
-	if feat.on then
-		for i = 1, #data2 do
-			par1 = math.random(-1000, 99999999)
-			par2 = math.random(-1, 9)
-			par3 = math.random(-1, 1)
-			par4 = math.random(-1, 9)
-			par5 = math.random(-1, 1)
-			script.trigger_script_event(data2[i], pid, {par3, par5, par2, par3, par2})
-			if Settings["ScriptEvent_delay"] ~= 0 then
-				system.yield(Settings["ScriptEvent_delay"])
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick2_Type1"].feat.on = false
-features["Kick2_Type2"] = {feat = menu.add_feature("Kick Data 2 Type 2", "toggle", featureVars.ses.id, function(feat)
-	if feat.on then
-		for i = 1, #data2 do
-			par1 = math.random(-1000, 99999999)
-			par2 = math.random(-99999999999999, -9)
-			par3 = math.random(46190868, 999999999)
-			par4 = math.random(-1, 9)
-			par5 = math.random(-99999999999999, -46190868)
-			script.trigger_script_event(data2[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
-			if Settings["ScriptEvent_delay"] ~= 0 then
-				system.yield(Settings["ScriptEvent_delay"])
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick2_Type2"].feat.on = false
-features["Kick2_Type3"] = {feat = menu.add_feature("Kick Data 2 Type 3", "toggle", featureVars.ses.id, function(feat)
-	if feat.on then
-		for i = 1, #data2 do
-			par1 = math.random(104574922, 9999999999)
-			par2 = math.random(-99999999999999, -1)
-			par3 = math.random(461908681885, 99999999999999)
-			par4 = math.random(-999999999999, -1)
-			par5 = math.random(9999999999999, 46190868453454)
-			script.trigger_script_event(data2[i], pid, {par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
-			system.yield(Settings["ScriptEvent_delay"])
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick2_Type3"].feat.on = false
-features["Kick3_Type1"] = {feat = menu.add_feature("Kick Data 3 Type 1", "toggle", featureVars.ses.id, function(feat)
-	if feat.on then
-		for i = 1, #data3 do
-			par1 = math.random(-1000, 99999999)
-			par2 = math.random(-1, 9999999999)
-			par3 = math.random(4904904, 100000000000)
-			par4 = math.random(4000, 9999999)
-			par5 = math.random(-1, 1)
-			script.trigger_script_event(data3[i], pid, {par3, par5, par2, par3, par2})
-			if Settings["ScriptEvent_delay"] ~= 0 then
-				system.yield(Settings["ScriptEvent_delay"])
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick3_Type1"].feat.on = false
-features["Kick3_Type2"] = {feat = menu.add_feature("Kick Data 3 Type 2", "toggle", featureVars.ses.id, function(feat)
-	if feat.on then
-		for i = 1, #data3 do
-			par1 = math.random(-1000, 99999999)
-			par2 = math.random(-99999999999999, -9)
-			par3 = math.random(46190868, 999999999)
-			par4 = math.random(-1, 9)
-			par5 = math.random(-99999999999999, -46190868)
-			script.trigger_script_event(data3[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
-			if Settings["ScriptEvent_delay"] ~= 0 then
-				system.yield(Settings["ScriptEvent_delay"])
-			end
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick3_Type2"].feat.on = false
-features["Kick3_Type3"] = {feat = menu.add_feature("Kick from data3 index: ", "value_i", featureVars.ses.id, function(feat)
-	if feat.on then
-		--player.unset_player_as_modder(pid, -1)
-		local i = feat.value
-		par1 = math.random(-1000, 99999999)
-		par2 = math.random(-99999999999999, -9)
-		par3 = math.random(46190868, 999999999)
-		par4 = math.random(-1, 9)
-		par5 = math.random(-99999999999999, -46190868)
-		script.trigger_script_event(data3[i], pid, {-1, par3, par5, par2, par3, -1, par2, par1, par3, par1})
-		if Settings["ScriptEvent_delay"] ~= 0 then
-			system.yield(Settings["ScriptEvent_delay"])
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick3_Type3"].feat.max = #data3
-features["Kick3_Type3"].feat.min = 1
-features["Kick3_Type3"].feat.value = 1
-features["Kick3_Type3"].feat.mod = 1
-features["Kick3_Type3"].feat.on = false
+
 features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
 	--player.unset_player_as_modder(pid, -1)
 	local scid = player.get_player_scid(pid)
 	local name = tostring(player.get_player_name(pid))
-	script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-	script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-	script.trigger_script_event(-720040631, pid, {})
+						script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+						script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
 	Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 end), type = "action", callback = function()
 end}
-features["net-kick2"] = {feat = menu.add_feature("Network Bail Kick ScriptFuck", "action", featureVars.k.id, function(feat)
-	script.trigger_script_event(-922075519, pid, {pid, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1})
-	script.trigger_script_event(-1975590661, pid, {84857178, 61749268, -80053711, -78045655, 56341553, -78686524, -46044922, -22412109, 29388428, -56335450})
-	local pos = v3()
-	pos = player.get_player_coords(pid)
-	pos.x = math.floor(pos.x)
-	pos.y = math.floor(pos.y)
-	pos.z = math.floor(pos.z)
-	local scid = player.get_player_scid(pid)
-	local name = tostring(player.get_player_name(pid))
-	script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 2147483647, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
-	script.trigger_script_event(-1975590661, pid, {pid, pos.x, pos.y, pos.z, 0, 0, 1000, 0, script.get_global_i(1590682 + (pid * 883) + 99 + 28), 1})
-	script.trigger_script_event(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
-	script.trigger_script_event(-2120750352, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-	script.trigger_script_event(-2122716210, pid, {91645, -99683, 1788, 60877, 55085, 72028})
-	script.trigger_script_event(0xE6116600, pid, {pid, script.get_global_i(1630317 + (1 + (pid * 595)) + 506)})
-	Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
-end), type = "action", callback = function()
-end}
-features["SE-kick"] = {feat = menu.add_feature("SE Kick", "action", featureVars.k.id, function(feat)
-	--player.unset_player_as_modder(pid, -1)
-	local scid = player.get_player_scid(pid)
-	script.trigger_script_event(0xB0886E20, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
-	script.trigger_script_event(0xB0886E20, pid, {0, 30583, 0, 0, 0, 1061578342, 1061578342, 4})
-	script.trigger_script_event(0x9DB77399, pid, {50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 999999999999999, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-	script.trigger_script_event(0x9DB77399, pid, {50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 999999999999999, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-	local name = tostring(player.get_player_name(pid))
-	script.trigger_script_event(0xB0886E20, pid, {-1, 0, 0, 0})
-	script.trigger_script_event(0xB0886E20, pid, {0, -1, -1, 0})
-	script.trigger_script_event(0x9DB77399, pid, {-1, 0, -1, 0})
-	Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
-end), type = "action", callback = function()
-end}
-features["SPE-kick"] = {feat = menu.add_feature("SPECIAL KICK", "action", featureVars.k.id, function(feat)
-	--player.unset_player_as_modder(pid, -1)
-	local scid = player.get_player_scid(pid)
-	script.trigger_script_event(0xF5CB92DB, pid, {0, 0, 46190868, 0, 2})
-	script.trigger_script_event(0xF5CB92DB, pid, {46190868, 0, 46190868, 46190868, 2})
-	script.trigger_script_event(0xF5CB92DB, pid, {1337, -1, 1, 1, 0, 0, 0})
-	script.trigger_script_event(0xF5CB92DB, pid, {pid, 1337, -1, 1, 1, 0, 0, 0})
-	local name = tostring(player.get_player_name(pid))
-	Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Special SE Kicked"))
-end), type = "action", callback = function()
-end}
+
 features["SEC-kick"] = {feat = menu.add_feature("Script Event Crash", "toggle", featureVars.k.id, function(feat)
 	if feat.on then
 		par1 = kick_param_data[math.random(1, #kick_param_data)]
@@ -11305,21 +10927,19 @@ features["SEC-kick"] = {feat = menu.add_feature("Script Event Crash", "toggle", 
 		script.trigger_script_event(data[math.random(1, #data)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
 		script.trigger_script_event(data2[math.random(1, #data2)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
 		script.trigger_script_event(data3[math.random(1, #data3)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
-		if Settings["ScriptEvent_delay"] ~= 0 then
 			system.yield(Settings["ScriptEvent_delay"])
-		end
+
 	end
 end), type = "toggle",  callback = function()
 end}
 features["SEC-kick"].feat.on = false
+
 features["Apt_Inv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "toggle", featureVars.k.id, function(feat)
 	if feat.on then
 		par5 = kick_param_data[math.random(1, #kick_param_data)]
-		script.trigger_script_event(0xf5cb92db, pid, {24, 24, 1, 0, par5, 1, 1, 1})
-		script.trigger_script_event(-171207973, pid, {24, 24, 1, 0, par5, 1, 1, 1})
-		if Settings["ScriptEvent_delay"] ~= 0 then
+		script.trigger_script_event(0x4a72a08d, pid, {24, 24, 1, 0, par5, 1, 1, 1})
 			system.yield(Settings["ScriptEvent_delay"])
-		end
+
 		return HANDLER_CONTINUE
 	end
 	return HANDLER_POP
@@ -11329,11 +10949,9 @@ features["Apt_Inv_Spam"].feat.on = false
 features["AptInv_Spam"] = {feat = menu.add_feature("Disable Players Game & Give God", "action", featureVars.f.id, function(feat)
 	if feat.on then
 		par5 = kick_param_data[math.random(1, #kick_param_data)]
-		script.trigger_script_event(0xf5cb92db, pid, {24, 24, 1, 0, 115, 1, 1, 1})
-		script.trigger_script_event(-171207973, pid, {24, 24, 1, 0, 115, 1, 1, 1})
-		if Settings["ScriptEvent_delay"] ~= 0 then
+		script.trigger_script_event(0x4a72a08d, pid, {24, 24, 1, 0, 115, 1, 1, 1})
 			system.yield(Settings["ScriptEvent_delay"])
-		end
+
 		return HANDLER_CONTINUE
 	end
 	return HANDLER_POP
@@ -11342,8 +10960,7 @@ end}
 features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites v2", "toggle", featureVars.k.id, function(feat)
 	if feat.on then
 		par5 = math.ceil(math.random(1, 100))
-		script.trigger_script_event(0xf5cb92db, pid, {24, 24, 1, 0, par5, 1, 1, 1})
-		script.trigger_script_event(-171207973, pid, {24, 24, 1, 0, par5, 1, 1, 1})
+		script.trigger_script_event(0x4a72a08d, pid, {24, 24, 1, 0, par5, 1, 1, 1})
 		system.yield(6000)
 		return HANDLER_CONTINUE
 	end
@@ -11351,41 +10968,6 @@ features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites v2",
 end), type = "toggle", callback = function()
 end}
 features["AptInv_Spam"].feat.on = false
-features["PSE-Crash"] = {feat = menu.add_feature("Script Event Crash / Kick", "toggle", featureVars.k.id, function(feat)
-	if feat.on then
-		local event = {-977515445,-2122716210,767605081,-1949011582,-1882923979,-1975590661,-922075519,1120313136,-435067392,-171207973,-1212832151,1317868303,-1054826273,1620254541,1401831542,-1491386500,-1070934291,-1949011582,-720040631,523402757,-1279955769,162639435,1331862851,2086111581,860051171,-2069242129,-1125804155,-1495195128,94936514,-751761218,761687265,2136412382,1456429682,1503592133,-487923362}
-		par1 = kick_param_data[math.random(1, #kick_param_data)]
-		par2 = kick_param_data[math.random(1, #kick_param_data)]
-		par3 = kick_param_data[math.random(1, #kick_param_data)]
-		par4 = kick_param_data[math.random(1, #kick_param_data)]
-		par5 = kick_param_data[math.random(1, #kick_param_data)]
-		for i = 1, #event do
-			script.trigger_script_event(event[i], pid, {-1, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
-		end
-		if Settings["ScriptEvent_delay"] ~= 0 then
-			system.yield(Settings["ScriptEvent_delay"])
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["PSE-Crash"].feat.on = false
-features["SE-Crash"] = {feat = menu.add_feature("Script Event Crash Player", "toggle", featureVars.k.id, function(feat)
-	if feat.on then
-		local Params = build_params(80)
-		for i = 1, #SECrash do
-			script.trigger_script_event(SECrash[i], pid, Params)
-		end
-		if Settings["ScriptEvent_delay"] ~= 0 then
-			system.yield(Settings["ScriptEvent_delay"])
-		end
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["SE-Crash"].feat.on = false
 
 playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
 featureVars.f.hidden = false
@@ -11485,7 +11067,7 @@ if feat.on then
 					Players[pid].pulse = false
 				end
 				if not isYou then
-					if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 1) then
+					if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1)then
 						tags[#tags + 1] = "O"
 						tagz[#tagz + 1] = "~h~~g~[O]"
 						--toname = tostring(toname .. "~h~~g~[O]")
@@ -11495,7 +11077,7 @@ if feat.on then
 						end
 					end
 					
-					if (script.get_global_i(2426097 + (1 + (pid * 443)) + 204) == 0) then
+					if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 0) then
 						if Players[pid].OTRBlipID ~= nil then
 							ui.remove_blip(Players[pid].OTRBlipID)
 							Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
