@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.4.3: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.4.5: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -10,36 +10,15 @@ script would  not exist!
 
 ** Recent Updates & Changes **
 
-Fixed While Loop not having a delay causing game to crash
-More Notify  moved over to the new system
-New Notify system colour customisation added
-Autoexec updated for new notify
-changed Big Dildo Bone attaches to now be a world object & mission entity
-Removed the old text customisation in functions updated the notifys to work better with the new notify system
-
-Parent Renames :
-other scripts -> Script (Auto)Loader
-Experimental Features -> Experimental Test Features
-Options -> MoistScript Options
-
-Fixed Code in some functions causing an infinate loop of the function trying to gain control of a vehicle rather than looping just the request control
-
-Added Additional OSD info to your Speed Indicator:
-Gears Now Next Max and Ratio
-
-New Section Added to Experimental Test Features:
-Added Vehicle Overide & Control Section:
-Added Set Current Gear
-Added Set Next Gear
-Added Set Max Gear
-Added Set Current Gear Ratio (Combined Function of Gear Ratio Modifier and a Torque Multiplier)
-Added Get Current Gear (needed for the osd info to update)
-Added Set Gear (not really functional as yet will be part of a manual transmission)
-
-Added Option to disable Notify Recent Players
-
-Fixed Duplicate Notfy of vehicle god and player god when vehicle god detected
-
+Removed Script loader due to issues with some scripts breaking this script loading them
+updated Event hashes kicks etc
+Removed some kick Features Updated remaining
+Removed the need for Kick data 2+3 files no longer needed
+Added back Bounty options both session wide 10k and player feature Method
+Bounty indicator on playerbar once set will most likely stick until reset state as i have not had chance to look into the new event hash as yet
+Removed CEO Money not had time to look at the new game scripts in depth to work this one out yet
+Give Weapon Strike updated to show Named Weapon Strike Values
+Updated interior location lua with some new interiors
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
@@ -61,8 +40,6 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 - interiors.lua
 - Moist_KickParam.ini
 - Moist_Kicks.ini
-- Moist_Kicks2.ini
-- Moist_Kicks3.ini
 - vehicle-hashes.lua
 
 **Extras :**
