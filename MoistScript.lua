@@ -5784,7 +5784,7 @@ bountyhook_event = function(source, target, params, count)
 		Players[source].bountyvalue = nil
 		return false
 	end
-	return true
+	return false
 end
 sep1 = function(feat)
 	if bountyhook.on then
