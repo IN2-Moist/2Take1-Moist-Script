@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.4.5: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.4.6: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -10,15 +10,15 @@ script would  not exist!
 
 ** Recent Updates & Changes **
 
-Removed Script loader due to issues with some scripts breaking this script loading them
-updated Event hashes kicks etc
-Removed some kick Features Updated remaining
-Removed the need for Kick data 2+3 files no longer needed
-Added back Bounty options both session wide 10k and player feature Method
-Bounty indicator on playerbar once set will most likely stick until reset state as i have not had chance to look into the new event hash as yet
-Removed CEO Money not had time to look at the new game scripts in depth to work this one out yet
-Give Weapon Strike updated to show Named Weapon Strike Values
-Updated interior location lua with some new interiors
+Updates will now be Posted on Keks Menu Discord Server Join for updates:
+https://discord.gg/9QUr3sVDfE
+
+Added Back Ceo Money 10k + 20k loop options (timing needs to be worked out still to stop transaction errors 10k alone will be fine)
+
+** Bug Fixes **
+Bugs breaking script in theory should be fixed.
+updated the bounty tagging to now remove when the bounty has been taken by someone
+also when bounty set on you or someone else by someone the tag now correctly gets applied to you or the person its being set on rather than the player placing the bounty.
 
 ### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 

@@ -10236,6 +10236,7 @@ features["weapon_impact"].feat.hidden = false
 --TODO: Weapon strike
 local current_loop_delay
 current_loop_delay = Settings["playerlist_loop"]
+
 features["Give_Airstrike"] = {feat = menu.add_feature("Give Weapon\nStrike", "value_str", featureVars.f.id, function(feat)
 	playerFeatures[pid].features["weapon_impact"].feat.on = true
 	if feat.on then
