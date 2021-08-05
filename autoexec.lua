@@ -35,32 +35,32 @@ local function autoload_lua(file)
 
 end
 
-local autoexec2 = menu.add_feature("Load Moists Build", "action", 0, function(feat)
+local autoexec2 = menu.add_feature("IF YOU ARE SEEING THESE", "action", 0, function(feat)
 
     autoload_lua("Moists2.01.lua")
 
 end)
 autoexec2.hidden = false
 
-local autoexec = menu.add_feature("Load Moist Script Public", "action", 0, function(feat)
+local autoexec = menu.add_feature("OPTIONS THEN SOMETHING HAS BROKEN SCRIPT LOAD", "action", 0, function(feat)
 
     autoload_lua("MoistScript.lua")
 end)
 autoexec.hidden = false
 
-local autoexec1 = menu.add_feature("Load Moist Script Test Build", "action", 0, function(feat)
+local autoexec1 = menu.add_feature("RESET SCRIPT STATE IF NOT FIXED PLEASE", "action", 0, function(feat)
 
     autoload_lua("Moist_Script_testbuild.lua")
 
 end)
 autoexec1.hidden = false
 
-local autoexec3 = menu.add_feature("Load Moist plyfeat Test Build", "action", 0, function(feat)
+local autoexec3 = menu.add_feature("CONTACT IN2MOIST OR POST AN ERROR LOG", "action", 0, function(feat)
 
     autoload_lua("Moists2.01(plyfeattest).lua")
 
 end)
 autoexec3.hidden = false
 
-autoload_lua("MoistScript.lua")
+autoload_lua("MoistScript2047.lua")
 
