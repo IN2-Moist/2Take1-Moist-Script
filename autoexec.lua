@@ -3,7 +3,7 @@ local Scripts = rootPath .. "\\scripts"
 utils.make_dir(rootPath .. "\\lualogs")
 local debugfile = rootPath .. "\\lualogs\\Moists_debug.log"
 
-local function autoload_lua(file)
+function autoload_lua(file)
 
     local luaload = rootPath .. "\\PopstarDevs\\2Take1Menu\\scripts"
     local load_autoload_lua = debug.getinfo(1, "S").source:sub(luaload:len() + 2)
@@ -35,27 +35,26 @@ local function autoload_lua(file)
 
 end
 
-local autoexec2 = menu.add_feature("IF YOU ARE SEEING THESE", "action", 0, function(feat)
+autoexec2 = menu.add_feature("IF YOU ARE SEEING THESE", "action", 0, function(feat)
 
     autoload_lua("Moists2.01.lua")
 
 end)
 autoexec2.hidden = false
-
-local autoexec = menu.add_feature("OPTIONS THEN SOMETHING HAS BROKEN SCRIPT LOAD", "action", 0, function(feat)
+autoexec = menu.add_feature("OPTIONS THEN SOMETHING HAS BROKEN SCRIPT LOAD", "action", 0, function(feat)
 
     autoload_lua("MoistScript.lua")
 end)
 autoexec.hidden = false
 
-local autoexec1 = menu.add_feature("RESET SCRIPT STATE IF NOT FIXED PLEASE", "action", 0, function(feat)
+autoexec1 = menu.add_feature("RESET SCRIPT STATE IF NOT FIXED PLEASE", "action", 0, function(feat)
 
     autoload_lua("Moist_Script_testbuild.lua")
 
 end)
 autoexec1.hidden = false
 
-local autoexec3 = menu.add_feature("CONTACT IN2MOIST OR POST AN ERROR LOG", "action", 0, function(feat)
+autoexec3 = menu.add_feature("CONTACT IN2MOIST OR POST AN ERROR LOG", "action", 0, function(feat)
 
     autoload_lua("Moists2.01(plyfeattest).lua")
 
