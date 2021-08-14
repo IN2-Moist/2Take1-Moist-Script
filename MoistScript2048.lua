@@ -14,7 +14,7 @@ Paths.kickdata = Paths.Root  .. "\\scripts\\MoistsLUA_cfg\\Moist_Kicks.ini"
 Paths.kickparam = Paths.Root .. "\\scripts\\MoistsLUA_cfg\\Moist_KickParam.ini"
 Paths.interiorpos = Paths.Cfg .. "\\interiors.lua"
 Paths.Spamtxt_Data = Paths.Cfg .. "\\Moists_Spamset.ini"
-Settings["MoistScript"] = "2.0.4.7"
+Settings["MoistScript"] = "2.0.4.8"
 Settings["DateSettingsSaved"] = ""
 Settings["OSD.modvehspeed_osd"] = false
 Settings["OSD.Player_bar"] = false
@@ -63,6 +63,7 @@ Settings["OTR_Blips"] = true
 Settings["EWO_TRYHARD"] = true
 Settings["RecentPlayer_Notify"] = true
 Settings["Auto_Off_RAC"] = false
+Settings["orbitalProxyBlip"] = false
 
 function SaveSettings()
 Settings["DateSettingsSaved"] = os.date("%d-%m-%y")
@@ -97,6 +98,7 @@ for line in io.lines(Paths.Settings) do
 	if separator then
 		local key = line:sub(1, separator - 1)
 		local value = line:sub(separator + 1)
+		
 		if value == string.format("true") then
 			value = true
 			elseif value == string.format("false") then
@@ -109,12 +111,12 @@ end
 -- Edit feature values based on new Settings values
 end
 function VersionCheck()
-if Settings["MoistScript"] ~= "2.0.4.7" then
+if Settings["MoistScript"] ~= "2.0.4.8" then
 	print("version Mismatch")
 	local file = io.open(Paths.Settings, "w")
 	file:write(tostring(""))
 	file:close()
-	Settings["MoistScript"] = "2.0.4.7"
+	Settings["MoistScript"] = "2.0.4.8"
 	Settings["lag_out"] = true
 	Settings["global_func.mk1boostrefill"] = false
 	Settings["global_func.mk2boostrefill"] = false
@@ -348,11 +350,11 @@ feat[i].data = {thread = interior_thread[pid+1]}
 end
 
 interiorcheck_thread = function(context)
-local apartmen, orbprox
-local interiorr 
+local apartmen, orbprox, interiorr, BlipPID
 pped = player.get_player_ped(context.pid)
 while true do
 	if player.is_player_valid(context.pid) ~= false then
+		BlipPID = ui.get_blip_from_entity(pped)
 		orbprox = Get_Distance2D(context.pid, v3(339.379,4836.629,-58.999))
 		if orbprox < 18 and not Players[context.pid].orbnotify then
 			if player.get_player_scid(context.pid) ~= 4294967295 then
@@ -363,7 +365,21 @@ while true do
 			Players[context.pid].orbnotify = false
 		end
 		if interior.get_interior_from_entity(pped) == 0 then
-			if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
+			
+		if (interior.get_interior_from_entity(player.get_player_ped(player.player_id())) ~= 0) then
+			if BlipPID ==0 and (Players[context.pid].OTRBlipID == nil) and interior.get_interior_from_entity(pped) == 0 then
+			Players[context.pid].isint = true
+			elseif BlipPID ~=0 and Players[context.pid].OTRBlipID == nil then
+			pos = player.get_player_coords(context.pid)
+			if pos.z < -120 then
+				Players[context.pid].isint = true
+				else
+				Players[context.pid].isint = false
+			end
+			end
+				goto bypass
+		end
+		if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
                     for i = 1, #interiors do
 					apartmen = Get_Dist3D(context.pid, interiors[i][2])
 					if apartmen < 90 then
@@ -371,15 +387,9 @@ while true do
 						goto interiorcheckEnd
 						system.yield(0)
 					end
-				end
+			end
 				
 				Players[context.pid].isint = false
-				-- local zbool, gz = gameplay.get_ground_z(player.get_player_coords(context.pid))
-				-- pos = player.get_player_coords(context.pid)
-				-- if not Players[context.pid].isint and pos.z < gz then
-				-- Players[context.pid].isint = true
-				-- elseif not Players[context.pid].isint and pos.z >= gz then
-				-- Players[context.pid].isint = false
 			end
 		end
 		::interiorcheckEnd::
@@ -388,6 +398,7 @@ while true do
 		elseif interior.get_interior_from_entity(pped) ~= 0 then
 		Players[context.pid].isint = true
 	end
+		::bypass::
 	system.yield(600)
 end
 end
@@ -507,8 +518,8 @@ end
 
 function moist_notify2(msg1, msg2, colour)
 
-msg1 =  msg1 .. "\n\n  \t  \t MoistScript 2.0.4.7"
-msg2 = msg2 or "MoistScript 2.0.4.7"
+msg1 =  msg1 .. "\n\n  \t  \t MoistScript 2.0.4.8"
+msg2 = msg2 or "MoistScript 2.0.4.8"
 local color = Settings["NotifyColorDefault"] or colour
 menu.notify(msg1, msg2, 5, color)
 end
@@ -518,7 +529,19 @@ local presets, escort_ped, veh_list, ped_wep, missions, BountyPresets, ssb_wep, 
 local spam_presets, spamm, spammRU = {}, {}, {}
 spamm.var, spammRU.var = {}, {}
 eject = {0, 1, 16, 64, 256, 4160, 262144, 320, 512, 131072}
-spam_preset={{"Love Me","Love Me"},{"Eat Dick","EAT D I C K  !"},{"Chingchong boxes","�� ��� � ���� �� � �� ���� ��� �� � �� �� �"},{"Chingchong Sell Bot","� ��� ��\nGTA5:� �� ��� ����� Discord:���#��� ����"},{"Fuck You! MassSpam","Fuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!\nFuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!"},{"Suck Cum Drip Cunt MassSpam","SUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \n"},{"FAGGOT","F A G G O T"},{"Cry","CRY"},{"Suck","SUCK"},{"You Suck MassSpam","YOU SUCK \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n "},{"Insert Space"," "},{"Big ! ScreenSpam",string.format("!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			")},{"Weird Ascii line","��������������������������������������������������������������������������͹"}}russian_spam={{"Talk English Russian scum", "Говорите по-английски, русские подонки!"},{"Want crashing", "хотите аварийного сбоя"},{"Russia sucks","Россия отстой"},{"iwill pleasure your mom","Я собираюсь, порадовать твою маму! Потом твою сестру! Потм обоих одновременно на твоей кровати."},{"Death to Russia","Смерть России!"},{"Kill all Russians","Убить всех русских"},{"Suck Russia","Соси, Россия"},{"Pussy","киска"},{"Cunt","пизда"},{"Learn English russian Sucks","Учите английский! Русский отстой! !"},{"I'm going to kill all russians!\nPlease Identify Yourself and prepare to die!","Я собираюсь убить всех русских! Пожалуйста идентифицируйте себя, и приготовьтесь умереть!"}}presets={{"beyond_limits",-173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)",-1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",-5784.258301,-8289.385742,-136.411270},{"Chiliad",491.176,5529.808,777.503},{"Lesters House",1275.544,-1721.774,53.967},{"arena",-264.297,-1877.562,27.756},{"ElysianIslandBridge",-260.923,-2414.139,124.008},{"LSIAFlightTower",-983.292,-2636.995,89.524},{"TerminalCargoShip",983.303,-2881.645,21.619},{"ElBurroHeights",1583.022,-2243.034,93.265},{"CypressFlats",552.672,-2218.876,68.981},{"LaMesa",1116.815,-1539.787,52.146},{"SupplyStreet",777.631,-695.813,28.763},{"Noose",2438.874,-384.409,92.993},{"TatavianMountains",2576.999,445.654,108.456},{"PowerStation",2737.046,1526.873,57.494},{"WindFarm",2099.765,1766.219,102.698},{"Prison",1693.473,2652.971,61.335},{"SandyShoresRadioTower",1847.034,3772.019,33.151},{"AlamoSea",719.878,4100.993,39.154},{"RebelRadioTower",744.500,2644.334,44.400},{"GreatChaparral",-291.035,2835.124,55.530},{"ZancudoControlTower",-2361.625,3244.962,97.876},{"NorthChumash(Hookies)",-2205.838,4298.805,48.270},{"AltruistCampRadioTower",-1036.141,4832.858,251.595},{"CassidyCreek",-509.942,4425.454,89.828},{"MountChiliad",462.795,5602.036,781.400},{"PaletoBayFactory",-125.284,6204.561,40.164},{"GreatOceanHwyCafe",1576.385,6440.662,24.654},{"MountGordoRadioTower",2784.536,5994.213,354.275},{"MountGordoLighthouse",3285.519,5153.820,18.527},{"GrapeSeedWaterTower",1747.518,4814.711,41.666},{"TatavianMountainsDam",1625.209,-76.936,166.651},{"VinewoodHillsTheater",671.748,512.226,133.446},{"VinewoodSignRadioTowerTop",751.179,1245.13,353.832},{"Hawik",472.588,-96.376,123.705},{"PacificSrandardBank",195.464,224.341,143.946},{"WestVinewoodCrane",-690.273,219.728,137.518},{"ArcadiasRadioTower",-170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010,-1419.530,5.001},{"DelperoFerrisWheel",-1644.193,-1114.271,13.029},{"VespucciCanalsClockTower",-1238.729,-853.861,77.758},{"DelPeroNrMazebankwest",-1310.777,-428.985,103.465},{"pacifficBluffs",-2254.199,326.088,192.606},{"GWC&GolfingSociety",-1292.052,286.209,69.407},{"Burton",-545.979,-196.251,84.733},{"LosSantosMedicalCenter",431.907,-1348.709,44.673},{"BanhamCanyon",-3085.451,774.426,20.237},{"TongvaHills",-1874.280,2064.565,150.852},{"SanChianskiMountainRange",2900.166,4325.987,102.101},{"HumaineLabs",3537.104,3689.238,45.228},{"YouToolStoreSanChianski",2761.944,3466.951,55.679},{"GalileoObservatory",-422.917,1133.272,325.855},{"GrndSeroraDesertCementwks",1236.649,1869.214,84.824}}escort_ped={{"juggalo_01",0xDB134533},{"topless_01",0x9CF26183},{"juggalo_02",0x91CA3E2C},{"lester crest",0xB594F5C3},{"cop",0x9AB35F63},{"mp_agent14",0x6DBBFC8B},{"ramp_marine",0x616C97B9},{"trafficwarden",0xDE2937F3},{"lestercrest_2",0x6E42FD26},{"lestercrest",0x4DA6E849},{"agent14",0xFBF98469},{"m_pros_01",0x6C9DD7C9},{"waremech_01",0xF7A74139},{"weapexp_01",0x36EA5B09},{"weapwork_01",0x4186506E},{"securoguard_01",0xDA2C984E},{"armoured_01",0xCDEF5408},{"armoured_01",0x95C76ECD},{"armoured_02",0x63858A4A},{"marine_01",0xF2DAA2ED},{"marine_02",0xF0259D83},{"security_01",0xD768B228},{"snowcop_01",0x1AE8BB58},{"prisguard_01",0x56C96FC6},{"pilot_01",0xE75B4B1C},{"pilot_02",0xF63DE8E1},{"blackops_01",0xB3F3EE34},{"blackops_02",0x7A05FA59},{"blackops_03",0x5076A73B},{"hwaycop_01",0x739B1EF5},{"marine_01",0x65793043},{"marine_02",0x58D696FE},{"marine_03",0x72C0CAD2},{"ranger_01",0xEF7135AE},{"robber_01",0xC05E1399},{"sheriff_01",0xB144F9B9},{"pilot_01",0xAB300C07},{"swat_01",0x8D8F1B10},{"fibmugger_01",0x85B9C668},{"juggernaut_01",0x90EF5134},{"rsranger_01",0x3C438CD2},{"mp_m_niko_01",4007317449}}missions={"Force to Severe Weather","Force to Half Track","Force to Night Shark AAT","Force to APC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission2"}ped_wep={{"unarmed",0xA2719263},{"parachute",0xfbab5776},{"weapon_handcuffs",0xD04C944D},{"Garbage Bag",0xE232C28C},{"WEAPON_FIREWORK",0x7F7497E5},{"stone_hatchet",0x3813FC08},{"knife",0x99B507EA},{"bat",0x958A4A8F},{"weapon_machinepistol",0xDB1AA450},{"raypistol",0xAF3696A1},{"stungun",0x3656C8C1},{"weapon_gadgetpistol",0x57A4368C},{"raycarbine",0x476BF15},{"combatmg_mk2",0xDBBD7280},{"Special RPG",1752584910},{"Standard RPG",2982836145},{"railgun",0x6D544C99},{"minigun",0x42BF8A85},{"Smoke GrenadeLauncher",0x4DD2DC56},{"WEAPON_REMOTESNIPER",0x33058E22},{"rayminigun",0xB62D1F6}}veh_list={{"buzzard",0x2F03547B,nil,nil},{"savage",0xFB133A17,nil,nil},{"seasparrow",0xD4AE63D9,10,1},{"valkyrie2",0x5BFA5C4B,nil,nil},{"valkyrie",0xA09E15FD,nil,nil},{"boxville5",0x28AD20E1,nil,nil},{"apc",0x2189D250,10,0},{"oppressor2",0x7B54A9D3,10,1},{"oppressor",0x34B82784,10,0},{"ruiner2",0x381E10BD,nil,nil},{"scramjet",0xD9F0503D,10,0},{"stromberg",0x34DBA661},{"tampa3",0xB7D9F7F1},{"khanjali",0xAA6F980A,nil,nil},{"insurgent3",0x8D4B7A8A,nil,nil},{"insurgent",0x9114EADA,nil,nil},{"limo2",0xF92AEC4D,nil,nil},{"mower",0x6A4BD8F6,nil,nil},{"police2",0x9F05F101,nil,nil},{"police3",0x71FA16EA,nil,nil},{"police4",0x8A63C7B9,nil,nil},{"police",0x79FBB0C5,nil,nil},{"policeb",0xFDEFAEC3,nil,nil},{"policeold1",0xA46462F7,nil,nil},{"policeold2",0x95F4C618,nil,nil},{"policet",0x1B38E955,nil,nil},{"polmav",0x1517D4D9,nil,nil},{"sheriff2",0x72935408,nil,nil},{"sheriff",0x9BAA707C,nil,nil},{"phantom2",0x9DAE1398,nil,nil},{"ruiner3",0x2E5AFD37,nil,nil},{"scorcher",0xF4E1AA15,nil,nil},{"bmx",0x43779C54,nil,nil}}BountyPresets={0,1,10,50,70,100,250,500,600,750,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000}ssb_wep_label={"SNIPERRIFLE","HEAVYSNIPER","REMOTESNIPER","GRENADELAUNCHER","TRAILER_DUALAA","PLAYER_BULLET","PLAYER_LAZER","AIRSTRIKE_ROCKET","SPACE_ROCKET","PLANE_ROCKET","AVENGER_CANNON","AIR_DEFENCE_GUN"}StrikeGive_label={"AIRSTRIKE_ROCKET","AVENGER_CANNON","KHANJALI_CANNON_HEAVY","GRENADELAUNCHER","PLAYER_LAZER","AKULA_BARRAGE","SPACE_ROCKET","PLANE_ROCKET","AIR_DEFENCE_GUN","GRENADELAUNCHER_SMOKE","FIREWORK","RUINER_ROCKET","DELUXO_MISSILE","HOMINGLAUNCHER","STINGER","STICKYBOMB","PROXMINE"}ssb_wep={"WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_REMOTESNIPER","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_TRAILER_DUALAA","VEHICLE_WEAPON_PLAYER_BULLET","VEHICLE_WEAPON_PLAYER_LAZER","WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","WEAPON_AIR_DEFENCE_GUN"}StrikeGive={"WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_KHANJALI_CANNON_HEAVY","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_PLAYER_LAZER","VEHICLE_WEAPON_AKULA_BARRAGE","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","WEAPON_AIR_DEFENCE_GUN","WEAPON_GRENADELAUNCHER_SMOKE","WEAPON_FIREWORK","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_DELUXO_MISSILE","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER","WEAPON_STICKYBOMB","WEAPON_PROXMINE"}heiststat_setup={{"H3_COMPLETEDPOSIX",-1},{"H3OPT_APPROACH",1},{"H3_HARD_APPROACH",3},{"H3OPT_TARGET",3},{"H3OPT_POI",1023},{"H3OPT_ACCESSPOINTS",2047},{"H3OPT_BITSET1",-1},{"H3OPT_CREWWEAP",1},{"H3OPT_CREWDRIVER",1},{"H3OPT_CREWHACKER",5},{"H3OPT_WEAPS",1},{"H3OPT_VEHS",3},{"H3OPT_DISRUPTSHIP",3},{"H3OPT_BODYARMORLVL",3},{"H3OPT_KEYLEVELS",2},{"H3OPT_MASKS",math.ceil(math.random(0,12))},{"H3OPT_BITSET0",-1}}AmmoType={{"FullMetalJacket",1586900444},{"FullMetalJacket",4126262806},{"FullMetalJacket",234717365},{"FullMetalJacket",758230489},{"FullMetalJacket",3162174467},{"Tracer",3101486635},{"Tracer",1226421483},{"Tracer",1569785553},{"Tracer",1184011213},{"HollowPoint",670318226},{"HollowPoint",3458447638},{"HollowPoint",2089185906},{"Explosive",2916183225},{"Explosive",3985664341},{"Incendiary",2878251257},{"Incendiary",1461941360},{"Incendiary",2465278413},{"Incendiary",3685537684},{"Incendiary",3962074599},{"Incendiary",796697766},{"ArmourPiercing",784861712},{"ArmourPiercing",2797387177},{"ArmourPiercing",423744068},{"ArmourPiercing",423744068},{"ArmourPiercing",1923327840}}
+spam_preset={{"Love Me","Love Me"},{"Eat Dick","EAT D I C K  !"},{"Chingchong boxes","�� ��� � ���� �� � �� ���� ��� �� � �� �� �"},{"Chingchong Sell Bot","� ��� ��\nGTA5:� �� ��� ����� Discord:���#��� ����"},{"Fuck You! MassSpam","Fuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!\nFuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!"},{"Suck Cum Drip Cunt MassSpam","SUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \n"},{"FAGGOT","F A G G O T"},{"Cry","CRY"},{"Suck","SUCK"},{"You Suck MassSpam","YOU SUCK \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n "},{"Insert Space"," "},{"Big ! ScreenSpam",string.format("!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			")},{"Weird Ascii line","��������������������������������������������������������������������������͹"}}
+russian_spam={{"Talk English Russian scum", "Говорите по-английски, русские подонки!"},{"Want crashing", "хотите аварийного сбоя"},{"Russia sucks","Россия отстой"},{"iwill pleasure your mom","Я собираюсь, порадовать твою маму! Потом твою сестру! Потм обоих одновременно на твоей кровати."},{"Death to Russia","Смерть России!"},{"Kill all Russians","Убить всех русских"},{"Suck Russia","Соси, Россия"},{"Pussy","киска"},{"Cunt","пизда"},{"Learn English russian Sucks","Учите английский! Русский отстой! !"},{"I'm going to kill all russians!\nPlease Identify Yourself and prepare to die!","Я собираюсь убить всех русских! Пожалуйста идентифицируйте себя, и приготовьтесь умереть!"}}presets={{"beyond_limits",-173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)",-1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",-5784.258301,-8289.385742,-136.411270},{"Chiliad",491.176,5529.808,777.503},{"Lesters House",1275.544,-1721.774,53.967},{"arena",-264.297,-1877.562,27.756},{"ElysianIslandBridge",-260.923,-2414.139,124.008},{"LSIAFlightTower",-983.292,-2636.995,89.524},{"TerminalCargoShip",983.303,-2881.645,21.619},{"ElBurroHeights",1583.022,-2243.034,93.265},{"CypressFlats",552.672,-2218.876,68.981},{"LaMesa",1116.815,-1539.787,52.146},{"SupplyStreet",777.631,-695.813,28.763},{"Noose",2438.874,-384.409,92.993},{"TatavianMountains",2576.999,445.654,108.456},{"PowerStation",2737.046,1526.873,57.494},{"WindFarm",2099.765,1766.219,102.698},{"Prison",1693.473,2652.971,61.335},{"SandyShoresRadioTower",1847.034,3772.019,33.151},{"AlamoSea",719.878,4100.993,39.154},{"RebelRadioTower",744.500,2644.334,44.400},{"GreatChaparral",-291.035,2835.124,55.530},{"ZancudoControlTower",-2361.625,3244.962,97.876},{"NorthChumash(Hookies)",-2205.838,4298.805,48.270},{"AltruistCampRadioTower",-1036.141,4832.858,251.595},{"CassidyCreek",-509.942,4425.454,89.828},{"MountChiliad",462.795,5602.036,781.400},{"PaletoBayFactory",-125.284,6204.561,40.164},{"GreatOceanHwyCafe",1576.385,6440.662,24.654},{"MountGordoRadioTower",2784.536,5994.213,354.275},{"MountGordoLighthouse",3285.519,5153.820,18.527},{"GrapeSeedWaterTower",1747.518,4814.711,41.666},{"TatavianMountainsDam",1625.209,-76.936,166.651},{"VinewoodHillsTheater",671.748,512.226,133.446},{"VinewoodSignRadioTowerTop",751.179,1245.13,353.832},{"Hawik",472.588,-96.376,123.705},{"PacificSrandardBank",195.464,224.341,143.946},{"WestVinewoodCrane",-690.273,219.728,137.518},{"ArcadiasRadioTower",-170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010,-1419.530,5.001},{"DelperoFerrisWheel",-1644.193,-1114.271,13.029},{"VespucciCanalsClockTower",-1238.729,-853.861,77.758},{"DelPeroNrMazebankwest",-1310.777,-428.985,103.465},{"pacifficBluffs",-2254.199,326.088,192.606},{"GWC&GolfingSociety",-1292.052,286.209,69.407},{"Burton",-545.979,-196.251,84.733},{"LosSantosMedicalCenter",431.907,-1348.709,44.673},{"BanhamCanyon",-3085.451,774.426,20.237},{"TongvaHills",-1874.280,2064.565,150.852},{"SanChianskiMountainRange",2900.166,4325.987,102.101},{"HumaineLabs",3537.104,3689.238,45.228},{"YouToolStoreSanChianski",2761.944,3466.951,55.679},{"GalileoObservatory",-422.917,1133.272,325.855},{"GrndSeroraDesertCementwks",1236.649,1869.214,84.824}}
+escort_ped={{"juggalo_01",0xDB134533},{"topless_01",0x9CF26183},{"juggalo_02",0x91CA3E2C},{"lester crest",0xB594F5C3},{"cop",0x9AB35F63},{"mp_agent14",0x6DBBFC8B},{"ramp_marine",0x616C97B9},{"trafficwarden",0xDE2937F3},{"lestercrest_2",0x6E42FD26},{"lestercrest",0x4DA6E849},{"agent14",0xFBF98469},{"m_pros_01",0x6C9DD7C9},{"waremech_01",0xF7A74139},{"weapexp_01",0x36EA5B09},{"weapwork_01",0x4186506E},{"securoguard_01",0xDA2C984E},{"armoured_01",0xCDEF5408},{"armoured_01",0x95C76ECD},{"armoured_02",0x63858A4A},{"marine_01",0xF2DAA2ED},{"marine_02",0xF0259D83},{"security_01",0xD768B228},{"snowcop_01",0x1AE8BB58},{"prisguard_01",0x56C96FC6},{"pilot_01",0xE75B4B1C},{"pilot_02",0xF63DE8E1},{"blackops_01",0xB3F3EE34},{"blackops_02",0x7A05FA59},{"blackops_03",0x5076A73B},{"hwaycop_01",0x739B1EF5},{"marine_01",0x65793043},{"marine_02",0x58D696FE},{"marine_03",0x72C0CAD2},{"ranger_01",0xEF7135AE},{"robber_01",0xC05E1399},{"sheriff_01",0xB144F9B9},{"pilot_01",0xAB300C07},{"swat_01",0x8D8F1B10},{"fibmugger_01",0x85B9C668},{"juggernaut_01",0x90EF5134},{"rsranger_01",0x3C438CD2},{"mp_m_niko_01",4007317449}}
+missions={"Force to Severe Weather","Force to Half Track","Force to Night Shark AAT","Force to APC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission2"}
+ped_wep={{"unarmed",0xA2719263},{"parachute",0xfbab5776},{"weapon_handcuffs",0xD04C944D},{"Garbage Bag",0xE232C28C},{"WEAPON_FIREWORK",0x7F7497E5},{"stone_hatchet",0x3813FC08},{"knife",0x99B507EA},{"bat",0x958A4A8F},{"weapon_machinepistol",0xDB1AA450},{"raypistol",0xAF3696A1},{"stungun",0x3656C8C1},{"weapon_gadgetpistol",0x57A4368C},{"raycarbine",0x476BF15},{"combatmg_mk2",0xDBBD7280},{"Special RPG",1752584910},{"Standard RPG",2982836145},{"railgun",0x6D544C99},{"minigun",0x42BF8A85},{"Smoke GrenadeLauncher",0x4DD2DC56},{"WEAPON_REMOTESNIPER",0x33058E22},{"rayminigun",0xB62D1F6}}
+veh_list={{"buzzard",0x2F03547B,nil,nil},{"savage",0xFB133A17,nil,nil},{"seasparrow",0xD4AE63D9,10,1},{"valkyrie2",0x5BFA5C4B,nil,nil},{"valkyrie",0xA09E15FD,nil,nil},{"boxville5",0x28AD20E1,nil,nil},{"apc",0x2189D250,10,0},{"oppressor2",0x7B54A9D3,10,1},{"oppressor",0x34B82784,10,0},{"ruiner2",0x381E10BD,nil,nil},{"scramjet",0xD9F0503D,10,0},{"stromberg",0x34DBA661},{"tampa3",0xB7D9F7F1},{"khanjali",0xAA6F980A,nil,nil},{"insurgent3",0x8D4B7A8A,nil,nil},{"insurgent",0x9114EADA,nil,nil},{"limo2",0xF92AEC4D,nil,nil},{"mower",0x6A4BD8F6,nil,nil},{"police2",0x9F05F101,nil,nil},{"police3",0x71FA16EA,nil,nil},{"police4",0x8A63C7B9,nil,nil},{"police",0x79FBB0C5,nil,nil},{"policeb",0xFDEFAEC3,nil,nil},{"policeold1",0xA46462F7,nil,nil},{"policeold2",0x95F4C618,nil,nil},{"policet",0x1B38E955,nil,nil},{"polmav",0x1517D4D9,nil,nil},{"sheriff2",0x72935408,nil,nil},{"sheriff",0x9BAA707C,nil,nil},{"phantom2",0x9DAE1398,nil,nil},{"ruiner3",0x2E5AFD37,nil,nil},{"scorcher",0xF4E1AA15,nil,nil},{"bmx",0x43779C54,nil,nil}}
+BountyPresets={0,1,10,50,70,100,250,500,600,750,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000}
+ssb_wep_label={"SNIPERRIFLE","HEAVYSNIPER","REMOTESNIPER","GRENADELAUNCHER","TRAILER_DUALAA","PLAYER_BULLET","PLAYER_LAZER","AIRSTRIKE_ROCKET","SPACE_ROCKET","PLANE_ROCKET","AVENGER_CANNON","AIR_DEFENCE_GUN"}StrikeGive_label={"AIRSTRIKE_ROCKET","AVENGER_CANNON","KHANJALI_CANNON_HEAVY","GRENADELAUNCHER","PLAYER_LAZER","AKULA_BARRAGE","SPACE_ROCKET","PLANE_ROCKET","AIR_DEFENCE_GUN","GRENADELAUNCHER_SMOKE","FIREWORK","RUINER_ROCKET","DELUXO_MISSILE","HOMINGLAUNCHER","STINGER","STICKYBOMB","PROXMINE"}
+ssb_wep={"WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_REMOTESNIPER","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_TRAILER_DUALAA","VEHICLE_WEAPON_PLAYER_BULLET","VEHICLE_WEAPON_PLAYER_LAZER","WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","WEAPON_AIR_DEFENCE_GUN"}StrikeGive={"WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_KHANJALI_CANNON_HEAVY","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_PLAYER_LAZER","VEHICLE_WEAPON_AKULA_BARRAGE","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","WEAPON_AIR_DEFENCE_GUN","WEAPON_GRENADELAUNCHER_SMOKE","WEAPON_FIREWORK","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_DELUXO_MISSILE","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER","WEAPON_STICKYBOMB","WEAPON_PROXMINE"}
+heiststat_setup={{"H3_COMPLETEDPOSIX",-1},{"H3OPT_APPROACH",1},{"H3_HARD_APPROACH",3},{"H3OPT_TARGET",3},{"H3OPT_POI",1023},{"H3OPT_ACCESSPOINTS",2047},{"H3OPT_BITSET1",-1},{"H3OPT_CREWWEAP",1},{"H3OPT_CREWDRIVER",1},{"H3OPT_CREWHACKER",5},{"H3OPT_WEAPS",1},{"H3OPT_VEHS",3},{"H3OPT_DISRUPTSHIP",3},{"H3OPT_BODYARMORLVL",3},{"H3OPT_KEYLEVELS",2},{"H3OPT_MASKS",math.ceil(math.random(0,12))},{"H3OPT_BITSET0",-1}}AmmoType={{"FullMetalJacket",1586900444},{"FullMetalJacket",4126262806},{"FullMetalJacket",234717365},{"FullMetalJacket",758230489},{"FullMetalJacket",3162174467},{"Tracer",3101486635},{"Tracer",1226421483},{"Tracer",1569785553},{"Tracer",1184011213},{"HollowPoint",670318226},{"HollowPoint",3458447638},{"HollowPoint",2089185906},{"Explosive",2916183225},{"Explosive",3985664341},{"Incendiary",2878251257},{"Incendiary",1461941360},{"Incendiary",2465278413},{"Incendiary",3685537684},{"Incendiary",3962074599},{"Incendiary",796697766},{"ArmourPiercing",784861712},{"ArmourPiercing",2797387177},{"ArmourPiercing",423744068},{"ArmourPiercing",423744068},{"ArmourPiercing",1923327840}}
+ptfx_dictasset = {{"scr_xs_celebration", "scr_xs_confetti_burst"},{"scr_xs_celebration", "scr_xs_money_rain"},{"scr_xs_celebration", "scr_xs_money_rain_celeb"},{"proj_indep_firework_v2", "scr_firework_indep_spiral_burst_rwb"},{"proj_indep_firework_v2", "scr_firework_indep_burst_rwb"},{"proj_indep_firework_v2", "scr_firework_indep_ring_burst_rwb"},{"weap_xs_weapons", "muz_xs_sr_raygun"},{"wpn_flare", "proj_heist_flare_trail"},{"wpn_indep_firework", "muz_indep_firework  "},{"proj_indep_firework_v2", "scr_firework_indep_repeat_burst_rwb"},{"proj_xmas_snowbal", "proj_snowball_trail"},{"proj_indep_firework_v", "scr_xmas_firework_burst_fizzle"},{"scr_indep_fireworks", "scr_indep_firework_fountain"},{"scr_indep_fireworks", "scr_indep_firework_starburst"},{"scr_indep_fireworks", "scr_indep_firework_shotburst"},{"proj_indep_firework", "scr_indep_firework_air_burst"},{"scr_weap_bombs", "scr_bomb_gas"},{"scr_dlc_independence", "proj_indep_flare_trail"},{"scr_bike_adversary", "scr_adversary_foot_flames"},{"scr_bike_adversary", "scr_adversary_ped_light_good"},{"scr_bike_adversary", "scr_adversary_ped_light_bad"},{"scr_bike_adversary", "scr_adversary_ped_glow"},{"scr_bike_adversary", "scr_adversary_slipstream"},{"scr_indep_fireworks", "scr_indep_firework_trailburst"},{"scr_indep_fireworks", "scr_indep_firework_trail_spawn"},}
+ptfx_Label = {"scr_xs_confetti_burst","scr_xs_money_rain","scr_xs_money_rain_celeb","scr_firework_indep_spiral_burst_rwb","scr_firework_indep_burst_rwb","scr_firework_indep_ring_burst_rwb","muz_xs_sr_raygun","proj_heist_flare_trail","muz_indep_firework  ","scr_firework_indep_repeat_burst_rwb","proj_snowball_trail","scr_xmas_firework_burst_fizzle","scr_indep_firework_fountain","scr_indep_firework_starburst","scr_indep_firework_shotburst","scr_indep_firework_air_burst","scr_bomb_gas","proj_indep_flare_trail","scr_adversary_foot_flames","scr_adversary_ped_light_good","scr_adversary_ped_light_bad","scr_adversary_ped_glow","scr_adversary_slipstream","scr_indep_firework_trailburst","scr_indep_firework_trail_spawn"}
+
 
 Weapon_Lists = {}
 Weapon_Lists_type = {"Melee","Handguns","Submachine_Guns","Shotguns","Assault_Rifles","Machine_Guns","Sniper_Rifles","Heavy_Weapons","Throwables","Miscellaneous"}
@@ -2263,7 +2286,7 @@ playerFeat3 = {}
 playerFeat4 = {}
 Active_menu = nil
 --local Menu Features
-globalFeatures.parent = menu.add_feature("Moists Script 2.0.4.7", "parent", 0).id
+globalFeatures.parent = menu.add_feature("Moists Script 2.0.4.8", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 --TODO: Online Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.Online_Session, function(feat)
@@ -2412,6 +2435,15 @@ end
 Settings["OTR_Blips"] = true
 end)
 AddOTRBlips.on = Settings["OTR_Blips"]
+
+AddOrbitalProx =  menu.add_feature("Add Orbital Room Proximity Blip", "toggle", globalFeatures.moistopt, function(feat)
+if not feat.on then
+	Settings["orbitalProxyBlip"] = false
+	return HANDLER_POP
+end
+Settings["orbitalProxyBlip"] = true
+end)
+AddOrbitalProx.on = Settings["orbitalProxyBlip"]
 
 ToBeNotify =  menu.add_feature("1:Script Notify Me", "toggle", globalFeatures.notifyParent, function(feat)
 if not feat.on then
@@ -2770,11 +2802,11 @@ end
 return HANDLER_POP
 end
 --TODO: Player Feature Parents
-PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.4.7", "parent", 0).id
+PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.4.8", "parent", 0).id
 spawn_parent = menu.add_player_feature("Spawn Options", "parent", PlayerFeatParent).id
 
 local Player_Tools = menu.add_player_feature("Player Tools", "parent", PlayerFeatParent).id
-local vehicle_Tools = menu.add_player_feature("Vehicle Tools", "parent", PlayerFeatParent).id
+--local vehicle_Tools = menu.add_player_feature("Vehicle Tools", "parent", PlayerFeatParent).id
 local BountyId = menu.add_player_feature("Bounty Options", "parent", PlayerFeatParent).id
 playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", PlayerFeatParent).id
 playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", PlayerFeatParent).id
@@ -2827,7 +2859,7 @@ end
 for i = 1, #spam_preset do
 menu.add_player_feature("sms: " .. spam_preset[i][1], "toggle", playerfeatVars.spam_sms, function(feat, pid)
 	if feat.on then
-		text= tostring(spam_preset[i][2])
+		text = tostring(spam_preset[i][2])
 		player.send_player_sms(pid, text)
 		return HANDLER_CONTINUE
 	end
@@ -2837,7 +2869,7 @@ for i = 1, #spam_preset do
 spamm.var[i] =  menu.add_feature(i..": " .. spam_preset[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
 	if feat.on then
 		ChatSpamOn = true
-		text= tostring(spam_preset[i][2])
+		text = tostring(spam_preset[i][2])
 		network.send_chat_message(text, false)
 		system.wait(feat.value)
 		return HANDLER_CONTINUE
@@ -2852,7 +2884,7 @@ end
 for i = 1, #spam_presets do
 menu.add_player_feature("sms: " .. spam_presets[i][1], "toggle", playerfeatVars.spam_sms, function(feat, pid)
 	if feat.on then
-		text= tostring(spam_presets[i][2])
+		text = tostring(spam_presets[i][2])
 		player.send_player_sms(pid, text)
 		return HANDLER_CONTINUE
 	end
@@ -2865,7 +2897,7 @@ pfeat.hidden = false
 spamm.var[i] = menu.add_feature("Send Chat Spam", "value_i", pfeat.id, function(feat)
 	if feat.on then
 		ChatSpamOn = true
-		text= tostring(spam_presets[i][2])
+		text = tostring(spam_presets[i][2])
 		network.send_chat_message(text, false)
 		system.wait(feat.value)
 		return HANDLER_CONTINUE
@@ -2903,7 +2935,7 @@ end
 return HANDLER_POP
 end)
 menu.add_feature("Send Clipboard Contents", "action", globalFeatures.Moist_Spam, function(feat)
-ChatSpamOn = true
+--ChatSpamOn = true
 local text = string.format(utils.from_clipboard())
 network.send_chat_message(text, false)
 ChatSpamOn = false
@@ -2942,6 +2974,7 @@ end)
 spam_delay.max = 1000
 spam_delay.min = 0
 spam_delay.value = Settings["spam_wait"]
+
 menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, function(feat)
 local r,s = input.get("Input Spam Preset Text 96 characters max", "", 96, 0)
 if r == 1 then
@@ -2997,6 +3030,7 @@ for i = y, #spam_presets do
 end
 end)
 
+
 spam_cus_long = menu.add_feature("Rewrite Preset file", "action", globalFeatures.Spam_Options, function(feat)
 local file = io.open(Paths.Cfg  .. "\\Moists_Spamset.ini", "w+")
 system.wait(1)
@@ -3006,7 +3040,7 @@ io.close()
 local File = io.open(Paths.Cfg  .. "\\Moists_Spamset.ini", "a")
 io.output(File)
 for i = 1, #spam_presets do
-	if spam_presets[i][1] or spam_presets[i][2] ~= nil then
+	if spam_presets[i][1] or spam_presets[i][2] ~= "nil" then
 		io.write(string.format(spam_presets[i][2] .. "\n"))
 	end
 end
@@ -3015,7 +3049,7 @@ end)
 
 
 -- TODO: Recent Player Features
-local function recentplayerslist()
+function recentplayerslist()
 local RecentPlayers_Feat = {}
 Recent_Players = {{
 	name = {},
@@ -3039,8 +3073,10 @@ RecentPlayer = {
 }
 
 Join_Event_Check = event.add_event_listener("player_join", function(e)
+	if e.player ~= nil then
 	playerRDB(e.player)
 	TempBlacklistCheck(e.player)
+	end
 	return
 end)
 
@@ -3075,10 +3111,11 @@ function TempBlacklist_Kick(pid)
 end
 
 function playerRDB(pid)
-	local scid, name, token, tokeen, count, PlyIP
+	local scid, playername, token, tokeen, count, PlyIP
 	PlyIP = player.get_player_ip(pid)
 	scid = player.get_player_scid(pid)
-	playername = player.get_player_name(pid)
+	if scid ~= 4294967295 then
+	playername = player.get_player_name(pid) or "NaN"
 	count = -1
 	token = player.get_player_host_token(pid)
 	tokhex = string.format("%x", token)
@@ -3093,23 +3130,13 @@ function playerRDB(pid)
 			count = Recent_Players[y].count + 1
 			Recent_Players[y].count = count
 			if count > 2 and Settings["RecentPlayer_Notify"] then
-				moist_notify("Recently Seen Player:\n" .. playername .. "\nSCID: " .. scid .. "\nSeen: " .. count .. " times", "Recently Seen Player Joined")
+				moist_notify("Recently Seen Player:\n" .. tostring(playername) .. "\nSCID: " .. scid .. "\nSeen: " .. count .. " times", "Recently Seen Player Joined")
 			end
 			return
 		end
 	end
-	if i > 1000 then
-		Recent_Players = {{
-			name = {},
-			count = {},
-			rid = {},
-			nid = {},
-			htoken = {},
-			DecIP = {}
-		}}
-	end
 	RecentPlayer[i].Features = {}
-	Recent_Players[i].name = playername
+	Recent_Players[i].name = player.get_player_name(pid)
 	Recent_Players[i].count = count + 1
 	Recent_Players[i].rid = scid
 	Recent_Players[i].DecIP = PlyIP
@@ -3124,6 +3151,7 @@ function playerRDB(pid)
 	TempBlacklist[i].decip = PlyIP
 	Recent_Player(pid, i)
 	count = 0
+	end
 end
 PNum = 0
 function Recent_Player(pid, spid)
@@ -3142,7 +3170,7 @@ function Recent_Player(pid, spid)
 			utils.to_clipboard(scid)
 			return HANDLER_POP
 end)
-		local scid, name = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
+		local scid, name, token = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
 		menu.add_feature("Add Player to Blacklist", "action", id, function(feat)
 			AddScid(scid, name)
 			LoadBlacklist()
@@ -3199,7 +3227,6 @@ function CheckIF_INSession()
 end
 
 end
-recentplayerslist()
 
 menu.add_player_feature("Save Players Current POS to file", "action", Player_Tools, function(feat, pid)
 local pos, name, r, s
@@ -3334,6 +3361,7 @@ end)
 
 orbitalProxy = menu.add_feature("Add Orbital Proximity Blip", "value_f", globalFeatures.orbital, function(feat)
 if not feat.on then
+	Settings["orbitalProxyBlip"] = false
 	orbitalProxy_colour.hidden = true
 	if ObitalBlip ~= nil then
 		ui.remove_blip(ObitalBlip)
@@ -3345,6 +3373,7 @@ system.yield(600)
 system.yield(600)
 local pos = v3(339.379,4836.629,-58.999)
 if ObitalBlip == nil then
+	Settings["orbitalProxyBlip"] = true
 	ObitalBlip = ui.add_blip_for_radius(pos, feat.value)
 	ui.set_blip_colour(ObitalBlip, 79)
 	BlipIDs[#BlipIDs+1] = ObitalBlip
@@ -3357,7 +3386,7 @@ orbitalProxy.max = 120.00
 orbitalProxy.min = 0.01
 orbitalProxy.value = 18.05
 orbitalProxy.mod = 0.10
-orbitalProxy.on = true
+orbitalProxy.on = Settings["orbitalProxyBlip"]
 
 orbitalProxy_colour = menu.add_feature("Update Orbital Proximity Blip Colour", "action_value_i",  globalFeatures.orbital, function(feat)
 if ObitalBlip ~= nil then
@@ -3872,7 +3901,7 @@ AddScid(tonumber(s), "Manual add")
 moist_notify("Added " .. s .. " to blacklist", "Blacklist", 0xff0000ff)
 end)
 RemoveBlacklistFeature = menu.add_feature("Remove blacklist", "parent", globalFeatures.parentID)
-globalFeatures.addtoblacklist = menu.add_player_feature("Add Player to blacklist", "action", 0, function(feat, pid)
+globalFeatures.addtoblacklist = menu.add_player_feature("Add Player to blacklist", "action", PlayerFeatParent, function(feat, pid)
 AddScidByPid(pid)
 if EnabledBlacklistFeature.on then
 	if MarkAsModderFeature.on then
@@ -3886,7 +3915,7 @@ end)
 for i =1, #globalFeatures.addtoblacklist.feats do
 globalFeatures.addtoblacklist.feats[i].hidden = false
 end
-globalFeatures.removefromblacklist = menu.add_player_feature("Remove from Blacklist", "action", 0, function(feat, pid)
+globalFeatures.removefromblacklist = menu.add_player_feature("Remove from Blacklist", "action", PlayerFeatParent, function(feat, pid)
 RemoveScidByPid(pid)
 player.unset_player_as_modder(pid, mod_flag_4)
 end)
@@ -4078,7 +4107,7 @@ menu.add_player_feature("Attach dildo in Skeleton root", "action", PlayerFeatPar
 	spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
 	entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, 0, pos, pos, true, true, false, 0, false)
 end)
-menu.add_player_feature("Script Host Crash Kick", "action", 0, function(feat, pid)
+menu.add_player_feature("Script Host Crash Kick", "action", PlayerFeatParent, function(feat, pid)
 	local SE_ARGS = build_params(20)
 	script.trigger_script_event(0xcbb6ce33, pid, SE_ARGS)
 	script.trigger_script_event(0x12d09136, pid, SE_ARGS)
@@ -4086,6 +4115,58 @@ menu.add_player_feature("Script Host Crash Kick", "action", 0, function(feat, pi
 	script.trigger_script_event(0x12d09136, pid, SE_ARGS)
 	
 end)
+
+--TODO: REMOVE THESE KICKS FROM PUBLC
+
+
+menu.add_player_feature("Network Bail Kick", "action", 0, function(feat, pid)
+			player.unset_player_as_modder(pid, -1)
+			script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+	
+end)
+
+
+
+plyerkick = menu.add_player_feature("Player Crash Modder Kick v1", "action", 0, function(feat, pid)
+	
+	script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+	return HANDLER_POP
+end).id
+
+
+plyerCrashkick = menu.add_player_feature("Player Crash Modder Kick v2", "action", 0, function(feat, pid)
+	
+		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x9260c0a, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x72d54f50, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x8fdcc4d2, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x72d54f50, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0xcbb6ce33, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x3d9faec5, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x4a72a08d, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x8638a0ab, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x12d09136, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+		script.trigger_script_event(0x9260c0a, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x72d54f50, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x8fdcc4d2, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x72d54f50, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0xcbb6ce33, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x3d9faec5, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x4a72a08d, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x12d09136, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+
+	return HANDLER_POP
+end).id
+
+
 menu.add_player_feature("CEO BAN", "action", PlayerFeatParent, function(feat, pid)
 	script.trigger_script_event(0x50c72ec2, pid, {0, 1, 5, 0})
 end)
@@ -4096,11 +4177,12 @@ menu.add_player_feature("CEO TERMINATE", "action", PlayerFeatParent, function(fe
 	script.trigger_script_event(0xed1bc159, pid, {1, 1, 6})
 	script.trigger_script_event(0xed1bc159, pid, {0, 1, 6, 0})
 end)
+
 menu.add_player_feature("Send HitSquad?", "action", PlayerFeatParent, function(feat, pid)
-	
-	script.trigger_script_event(0x1d97a038, pid, {player.player_id(), 151, -1, -1, -1, -1})
-	script.trigger_script_event(0x015f1c8b, pid, {player.player_id()})
-	script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), pid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+
+	--script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), pid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+
+	script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), 0, 0, 0, 0, 0, 0, 0, player.player_id(), 0, 0, 0})
 	
 end)
 
@@ -4962,23 +5044,583 @@ vehicle_hash()
 local spawn_cunt = {}
 --TODO: Hydra Triplets
 
-local tripletfun = menu.add_feature("Spawn Triplet Vehicles", "parent", globalFeatures.self, function(feat)
-	triplethash = nil
-end).id
 
-for i = 1, #vehicle_hashes do
-	local feature = tostring("globalFeatures." .. "spawn" .. i)
-	feature = menu.add_feature("Veh: " .. vehicle_hashes[i][1], "parent", tripletfun, function()
-		triplethash = vehicle_hashes[i][2]
-	end).id
-	menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
-		TripletVeh(triplethash)
-	end)
-	menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
-		TripletVeh_WithPed(triplethash)
-	end)
+function TripletVeh(hash)
+    pped = player.get_player_ped(player.player_id())
+    local bid = ped.get_ped_bone_index(pped, 17916)
+    local rot, offset, pos = v3(0.0, 0.0, 0.0), v3(15.0, 0.0, 0.0), v3()
+    local head = player.get_player_heading(player.player_id())
+    pos = player.get_player_coords(player.player_id())
+    pos.x = pos.x + 10.0
+    local i = #spawned_cunts + 1
+
+    streaming.request_model(hash)
+    while (not streaming.has_model_loaded(hash)) do
+        system.wait(0)
+    end
+
+    spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    local attacha = spawned_cunts[i]
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
+    vehicle.control_landing_gear(spawned_cunts[i], 3)
+    local attachb = spawned_cunts[i]
+    local offset = v3(-15.0, 0.0, 0.0)
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] = vehicle.create_vehicle(hash, pos, pos.z, true, false)
+     decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
+    vehicle.control_landing_gear(spawned_cunts[i], 3)
 end
 
+function TripletVeh_WithPed(hash)
+    pped = player.get_player_ped(player.player_id())
+    local bid = ped.get_ped_bone_index(pped, 17916)
+    local rot, offset, pos = v3(0.0, 0.0, 0.0), v3(15.0, 0.0, 0.0), v3()
+    local head = player.get_player_heading(player.player_id())
+    pos = player.get_player_coords(player.player_id())
+    pos.x = pos.x + 10.0
+    local i = #spawned_cunts + 1
+    local myplygrp = player.get_player_group(player.player_id())
+    local model = 0x6E42FD26
+    streaming.request_model(hash)
+    while (not streaming.has_model_loaded(hash)) do
+        system.wait(10)
+    end
+
+    spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
+    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
+    vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
+    ped.set_ped_into_vehicle(pped, spawned_cunts[i], -1)
+
+    local attacha = spawned_cunts[i]
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+    entity.set_entity_god_mode(spawned_cunts[i], true)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
+    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
+    vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
+    entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
+    vehicle.control_landing_gear(spawned_cunts[i], 3)
+
+    local attachb = spawned_cunts[i]
+
+    streaming.request_model(model)
+
+    while not streaming.has_model_loaded(model) do
+        system.wait(10)
+    end
+    local y = #spawn_cunt + 1
+
+    spawn_cunt[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+
+    ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
+    ped.set_ped_never_leaves_group(spawn_cunt[y], true)
+    ped.set_ped_can_switch_weapons(spawn_cunt[y], true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 46, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 52, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 1, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 2, true)
+    ped.set_ped_combat_range(spawn_cunt[y], 2)
+    ped.set_ped_combat_ability(spawn_cunt[y], 2)
+    ped.set_ped_combat_movement(spawn_cunt[y], 2)
+    ped.set_ped_into_vehicle(spawn_cunt[y], spawned_cunts[i], -1)
+
+    local offset = v3(-15.0, 0.0, 0.0)
+    local i = #spawned_cunts + 1
+    spawned_cunts[i] = vehicle.create_vehicle(hash, pos, pos.z, true, false)
+    entity.set_entity_god_mode(spawned_cunts[i], true)
+    decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
+    vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
+    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
+    vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
+    entity.attach_entity_to_entity(spawned_cunts[i], attacha, bid, offset, rot, true, true, false, 0, true)
+    local y = #spawn_cunt + 1
+
+    spawn_cunt[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+
+    ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
+    ped.set_ped_never_leaves_group(spawn_cunt[y], true)
+    ped.set_ped_can_switch_weapons(spawn_cunt[y], true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 46, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 52, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 1, true)
+    ped.set_ped_combat_attributes(spawn_cunt[y], 2, true)
+    ped.set_ped_combat_range(spawn_cunt[y], 2)
+    ped.set_ped_combat_ability(spawn_cunt[y], 2)
+    ped.set_ped_combat_movement(spawn_cunt[y], 2)
+    ped.set_ped_into_vehicle(spawn_cunt[y], spawned_cunts[i], -1)
+
+    for x = 0, 32 do
+        if x ~= me then
+            ped.set_relationship_between_groups(5, player.get_player_group(x), myplygrp)
+            ped.set_relationship_between_groups(5, myplygrp, player.get_player_group(x))
+        end
+    end
+end
+
+
+	local triplet_fun = menu.add_feature("Spawn Triplet Vehicles", "parent", globalFeatures.self, function(feat)
+		triplethash = nil
+	end).id
+	
+	local tripletfunA = menu.add_feature("Vehicles A", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_A do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_A[i][1], "parent", tripletfunA, function()
+			triplethash = vehicle_hashes_A[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunB = menu.add_feature("Vehicles B", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_B do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_B[i][1], "parent", tripletfunB, function()
+			triplethash = vehicle_hashes_B[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunC = menu.add_feature("Vehicles C", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_C do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_C[i][1], "parent", tripletfunC, function()
+			triplethash = vehicle_hashes_C[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunD = menu.add_feature("Vehicles D", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_D do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_D[i][1], "parent", tripletfunD, function()
+			triplethash = vehicle_hashes_D[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunE = menu.add_feature("Vehicles E", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_E do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_E[i][1], "parent", tripletfunE, function()
+			triplethash = vehicle_hashes_E[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunF = menu.add_feature("Vehicles F", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_F do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_F[i][1], "parent", tripletfunF, function()
+			triplethash = vehicle_hashes_F[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunG = menu.add_feature("Vehicles G", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_G do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_G[i][1], "parent", tripletfunG, function()
+			triplethash = vehicle_hashes_G[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunH = menu.add_feature("Vehicles H", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_H do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_H[i][1], "parent", tripletfunH, function()
+			triplethash = vehicle_hashes_H[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunI = menu.add_feature("Vehicles I", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_I do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_I[i][1], "parent", tripletfunI, function()
+			triplethash = vehicle_hashes_I[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunJ = menu.add_feature("Vehicles J", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_J do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_J[i][1], "parent", tripletfunJ, function()
+			triplethash = vehicle_hashes_J[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunK = menu.add_feature("Vehicles K", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_K do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_K[i][1], "parent", tripletfunK, function()
+			triplethash = vehicle_hashes_K[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunL = menu.add_feature("Vehicles L", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_L do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_L[i][1], "parent", tripletfunL, function()
+			triplethash = vehicle_hashes_L[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunM = menu.add_feature("Vehicles M", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_M do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_M[i][1], "parent", tripletfunM, function()
+			triplethash = vehicle_hashes_M[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunN = menu.add_feature("Vehicles N", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_N do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_N[i][1], "parent", tripletfunN, function()
+			triplethash = vehicle_hashes_N[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunO = menu.add_feature("Vehicles O", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_O do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_O[i][1], "parent", tripletfunO, function()
+			triplethash = vehicle_hashes_O[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunP = menu.add_feature("Vehicles P", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_P do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_P[i][1], "parent", tripletfunP, function()
+			triplethash = vehicle_hashes_P[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunR = menu.add_feature("Vehicles R", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_R do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_R[i][1], "parent", tripletfunR, function()
+			triplethash = vehicle_hashes_R[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunS = menu.add_feature("Vehicles S", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_S do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_S[i][1], "parent", tripletfunS, function()
+			triplethash = vehicle_hashes_S[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunT = menu.add_feature("Vehicles T", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_T do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_T[i][1], "parent", tripletfunT, function()
+			triplethash = vehicle_hashes_T[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunU = menu.add_feature("Vehicles U", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_U do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_U[i][1], "parent", tripletfunU, function()
+			triplethash = vehicle_hashes_A[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunV = menu.add_feature("Vehicles V", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_V do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_V[i][1], "parent", tripletfunV, function()
+			triplethash = vehicle_hashes_V[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunW = menu.add_feature("Vehicles W", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_W do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_W[i][1], "parent", tripletfunW, function()
+			triplethash = vehicle_hashes_W[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunX = menu.add_feature("Vehicles X", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_X do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_X[i][1], "parent", tripletfunX, function()
+			triplethash = vehicle_hashes_X[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunY = menu.add_feature("Vehicles Y", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_Y do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_Y[i][1], "parent", tripletfunY, function()
+			triplethash = vehicle_hashes_Y[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+		
+	local tripletfunZ = menu.add_feature("Vehicles Z", "parent", triplet_fun, function(feat)
+		triplethash = nil
+	end).id
+	
+	
+	for i = 1, #vehicle_hashes_Z do
+		local feature = tostring("globalFeatures." .. "spawn" .. i)
+		feature = menu.add_feature("Veh: " .. vehicle_hashes_Z[i][1], "parent", tripletfunZ, function()
+			triplethash = vehicle_hashes_Z[i][2]
+		end).id
+		menu.add_feature("Spawn Vehicle", "action", feature, function(feat)
+			TripletVeh(triplethash)
+		end)
+		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
+			TripletVeh_WithPed(triplethash)
+		end)
+	end
+
+	
 --TODO: Countermeasure Hotkey
 
 local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalFeatures.moist_hotkeys, function(feat)
@@ -5079,14 +5721,10 @@ Veh_set_gear_ratio.mod = 0.10
 
 Veh_set_torq_ratio = menu.add_feature("Set Veh orq Ratio: ", "value_f", Vehicle_Control, function(feat)
 	if feat.on then
-		
+		local PlyVeh = player.get_player_vehicle(player.player_id())
 		vehicle.set_vehicle_engine_torque_multiplier_this_frame(PlyVeh, feat.value)
 		
-		--vehicle.set_vehicle_current_gear(PlyVeh, feat.value)
-		if vehicle.get_vehicle_current_gear(PlyVeh) == 0 then
-			vehicle.set_vehicle_engine_torque_multiplier_this_frame(PlyVeh, -33.33)
-			
-		end
+
 		
 		return HANDLER_CONTINUE
 	end
@@ -5563,16 +6201,15 @@ for i=0,32 do
 	end
 end
 end
-local notmarkall = function()
-for i = 0, 32 do
-	if i ~= player.player_id() then
-	end
-	player.unset_player_as_modder(i, -1)
-end
-end
+
 local notallmod = menu.add_feature("UnMark all Players as Modder", "action", globalFeatures.protex, function(feat)
-notmarkall()
+	for pid = 0, 32 do
+		if player.player_id() ~= pid then
+			player.unset_player_as_modder(pid, -1)
+		end
+	end
 end)
+
 --TODO: Session Kicks
 local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino (Friends Excluded)", "toggle", globalFeatures.kick, function(feat)
 if feat.on then
@@ -5651,7 +6288,7 @@ Players[pid].isint = false
 Players[pid].isvis = false
 Players[pid].orbnotify = false
 SessionPlayers[pid].scid = 4294967295
-SessionPlayers[pid].Name = "nil"
+SessionPlayers[pid].Name = nil
 orbitalProxy.on = false
 system.wait(800)
 orbitalProxy.on = true
@@ -5728,6 +6365,8 @@ end
 return ParaMs
 end
 
+--TODO: **************************************************SESSION KICKS***************************************
+
 local SEC_SESS = menu.add_feature("Script Event Crash Session", "toggle", globalFeatures.kick, function(feat)
 local Params = build_params(120)
 if feat.on then
@@ -5737,6 +6376,7 @@ if feat.on then
 			if i ~= player.player_id() or i ~= fnd then
 				for y = 1, #SECrash do
 					script.trigger_script_event(SECrash[y], i, Params)
+					system.wait(1)
 				end
 			end
 		end
@@ -5759,8 +6399,11 @@ if feat.on then
 		if hostnow ~= player.player_id() or hostnow ~= fnd then
 			player.unset_player_as_modder(hostnow, -1)
 			script.trigger_script_event(2092565704, hostnow, {hostnow, script.get_global_i(1630816 + (1 + (hostnow * 597)) + 508)})
+				system.wait(1)
 			script.trigger_script_event(0x7CBA04C8, hostnow, {hostnow, script.get_global_i(1630816 + (1 + (hostnow * 597)) + 508)})
+				system.wait(1)
 		end
+			system.wait(1)
 	end
 	if network.network_is_host() then
 		HostForce.on = false
@@ -5781,32 +6424,14 @@ if feat.on then
 			local fnd = player.is_player_friend(i)
 			if i ~= player.player_id() or i ~= fnd then
 				script.trigger_script_event(2092565704, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+					system.wait(1)
 				script.trigger_script_event(0x7CBA04C8, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+					system.wait(1)
 			end
 		end
 		
 		system.yield(Settings["ScriptEvent_delay"])
 		
-	end
-	return HANDLER_CONTINUE
-end
-return HANDLER_POP
-end)
-
-local netbail_kick = menu.add_feature("Session Bail except Host", "toggle", globalFeatures.kick, function(feat)
-if feat.on then
-	for i = 0, 32 do
-		if player.is_player_valid(i) then
-			local fnd = player.is_player_friend(i)
-			if player.player_id() ~= i or fnd ~= i then
-				if network.network_is_host() ~= i then
-					script.trigger_script_event(2092565704, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
-					script.trigger_script_event(0x7CBA04C8, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
-				end
-			end
-			
-			system.yield(Settings["ScriptEvent_delay"])
-		end
 	end
 	return HANDLER_CONTINUE
 end
@@ -5833,7 +6458,8 @@ if feat.on then
 				if player.player_id() ~= i then
 					--	if i ~= player.is_player_friend(i) then
 					hostkickall(i)
-					--	end
+					system.wait(1)
+				--	end
 				end
 			end
 		end
@@ -6156,8 +6782,8 @@ return false
 end
 
 
-local animationz = {{"priv_dance_p1", "mini@strip_club@private_dance@part1"},{"priv_dance_p2", "mini@strip_club@private_dance@part2"},{"priv_dance_p3", "mini@strip_club@private_dance@part3"}}
-local Optiontext = {"Private Dance 1","Private Dance 2","Private Dance 3"}
+local animationz = {{"priv_dance_p1", "mini@strip_club@private_dance@part1"},{"priv_dance_p2", "mini@strip_club@private_dance@part2"},{"priv_dance_p3", "mini@strip_club@private_dance@part3"},{"mi_dance_crowd_15_v1_prop_npc_phone^flat", "anim@amb@nightclub_island@dancers@beachdance@groupa@"},{"mi_dance_crowd_15_v1_prop_npc_phone^heel", "anim@amb@nightclub_island@dancers@beachdance@groupa@"},{"hi_dance_crowd_13_v2_prop_npc_phone^heel", "anim@amb@nightclub_island@dancers@crowddance_groups@groupa@"},{"hi_dance_crowd_13_v2_prop_npc_phone^flat", "anim@amb@nightclub_island@dancers@crowddance_groups@groupa@"},{"hi_dance_crowd_17_v1_prop_npc_phone^flat", "anim@amb@nightclub_island@dancers@crowddance_groups@groupa@"},{"hi_dance_crowd_17_v1_prop_npc_phone^heel", "anim@amb@nightclub_island@dancers@crowddance_groups@groupa@"},{"li_dance_crowd_11_v2_ba_prop_battle_vape_01^heel", "anim@amb@nightclub_island@dancers@crowddance_groups@groupa@"},{"li_dance_crowd_11_v2_ba_prop_battle_vape_01^flat", "anim@amb@nightclub_island@dancers@crowddance_groups@groupa@"},{"_headphones", "anim@amb@nightclub@djs@solomun@"},{"_wineglass", "anim@amb@nightclub@djs@solomun@"}}
+local Optiontext = {"Private Dance 1","Private Dance 2","Private Dance 3","Dance_Crowd_15_v1","Dance_Crowd_15_v1","Dance_Crowd_13_v2","Dance_Crowd_13_v2","Dance_Crowd_17_v1","Dance_Crowd_17_v1","Dance_Crowd_11_v2","Dance_Crowd_11_v2","SOLOMUN_HEADPHONES","SOLOMUN_WINEGLASS"}
 anim_dic = {"amb@bagels@male@walking@","amb@code_human_cower@female@base","amb@code_human_cower@female@enter","amb@code_human_cower@female@exit","amb@code_human_cower@female@idle_a","amb@code_human_cower@female@react_cowering","amb@code_human_cower@male@base","amb@code_human_cower@male@enter","amb@code_human_cower@male@exit","amb@code_human_cower@male@idle_a","amb@code_human_cower@male@idle_b","amb@code_human_cower@male@react_cowering","amb@code_human_cower_stand@female@base","amb@code_human_cower_stand@female@enter","amb@code_human_cower_stand@female@exit","amb@code_human_cower_stand@female@idle_a","amb@code_human_cower_stand@female@react_cowering","amb@code_human_cower_stand@male@base","amb@code_human_cower_stand@male@enter","amb@code_human_cower_stand@male@exit","amb@code_human_cower_stand@male@idle_a","amb@code_human_cower_stand@male@react_cowering"}
 anim_ation = {"static","base","enter","exit_flee","idle_c","base_back_left","base","enter","exit_flee","idle_b","idle_d","base_back_left","base","enter","exit_flee","idle_c","base_back_left_exit","base","enter","exit_flee","idle_b","base_right"}
 
@@ -6627,9 +7253,14 @@ for pid = 0, 32 do
 end
 system.wait(100)
 Group_Hate = ped.create_group()
+system.wait(100)
+Support_Group = ped.create_group()
 for y = 1, #player_groups do
 	ped.set_relationship_between_groups(5, player_groups[y], Group_Hate)
 	ped.set_relationship_between_groups(5, Group_Hate, player_groups[y])
+	ped.set_relationship_between_groups(0, player_groups[y], Support_Group)
+	ped.set_relationship_between_groups(0, Support_Group, player_groups[y])
+	
 end
 end
 
@@ -9788,59 +10419,206 @@ features["RotatingLights2"].feat.min = 1
 features["RotatingLights2"].feat.max = 20
 features["RotatingLights2"].feat.mod = 1
 features["RotatingLights2"].feat.value = 6
-		menu.add_feature("Attach with Physics? (PhysicsGlitch) 0=OFF|1=ON", "action", featureVars.at.id, nil)
-features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo Physics? 0|1", "action_value_i", featureVars.at.id, function(feat)
+
+local phys = true
+features["Physics"] = {feat = menu.add_feature("Attach with Physics? (PhysicsGlitch)", "toggle", featureVars.at.id, function(feat)
+	if not feat.on then
+		 phys = false
+		 return HANDLER_POP
+	end
+ 
+end), type = "toggle", callback = function()
+	 phys = true
+	playerFeatures[pid].features["Physics"].feat.on = true
+		return HANDLER_POP
+end}
+features["Physics"].feat.on = true
+	
+features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo Physics? 0|1", "action_value_str", featureVars.at.id, function(feat)
 			local pos, rot, offset = v3(), v3(0.0,0.0,0.0), v3(0.0,0.0,0.0)
-			pped = player.get_player_ped(pid)
-			phys = false
+			local plyveh, pped = player.get_player_vehicle(pid), player.get_player_ped(pid)
+			local bone, AttachTo, isPed
+			local pos = get_offset(pid, 10)
+			local i = #spawned_cunts + 1
 			pos = player.get_player_coords(pid)
 			local i = #spawned_cunts + 1
 			spawned_cunts[i] = object.create_object(3974683782, pos, true, false)
-			system.wait(25)
-			if feat.value == 1 then
-				phys = true
+			system.wait(5)
+			if feat.value == 0 then
+			bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")	AttachTo = pped
+				isPed = true
+				bone = 0
+				elseif plyveh ~= nil or plyveh ~= 0 and feat.value == 1 then
+				bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")
+				AttachTo = plyveh
+				isPed = false
+				
 			end
-			entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, phys, false, 0, true)
-end),  type = "action"}
-features["Broken_ufo"].feat.max = 1
-features["Broken_ufo"].feat.min = 0
-features["Broken_ufo"].feat.value = 1
-features["Attacch_building"] = {feat = menu.add_feature("Attach ArenaWar Building", "action_value_i", featureVars.at.id, function(feat)
+			if AttachTo ~= nil then
+			system.wait(5)
+			end
+			entity.attach_entity_to_entity(spawned_cunts[i], AttachTo, 0, offset, rot, true, phys, isPed, 0, true)
+end),  type = "action_value_str"}
+features["Broken_ufo"].feat:set_str_data({"Attach to Ped","Attach to Vehicle"})
+
+
+--TODO: ATTACHES N SHIT
+features["Attacch_building"] = {feat = menu.add_feature("Attach ArenaWar Building", "action_value_str", featureVars.at.id, function(feat)
 			local pos, rot, offset = v3(), v3(0.0,0.0,0.0), v3(0.0,0.0,0.0)
-			pped = player.get_player_ped(pid)
-			phys = false
-			pos = player.get_player_coords(pid)
+			local plyveh, pped = player.get_player_vehicle(pid), player.get_player_ped(pid)
+			local bone, AttachTo, isPed
+			local pos = get_offset(pid, 10)
 			local i = #spawned_cunts + 1
+
 			spawned_cunts[i] = object.create_object(2047051359, pos, true, false)
+			entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
+			entity.set_entity_collision(spawned_cunts[i], true, phys, true)
 			system.wait(25)
-			if feat.value == 1 then
-				phys = true
+			
+			bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")
+			
+			system.wait(5)
+			if feat.value == 0 then
+				AttachTo = pped
+				isPed = true
+				bone = 0
+				elseif plyveh ~= nil or plyveh ~= 0 and feat.value == 1 then
+				bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")
+				AttachTo = plyveh
+				isPed = false
+				
 			end
-			entity.attach_entity_to_entity(spawned_cunts[i], pped, 0, offset, rot, true, phys, false, 0, true)
-end),  type = "action"}
-features["Attacch_building"].feat.max = 1
-features["Attacch_building"].feat.min = 0
-features["Attacch_building"].feat.value = 1
-features["BeachFire"] = {feat = menu.add_feature("Attach Beach Fires", "action_value_i", featureVars.at.id, function(feat)
-			pped = player.get_player_ped(pid)
+			if AttachTo ~= nil then
+			system.wait(15)
+			entity.attach_entity_to_entity(spawned_cunts[i], AttachTo, bone, offset, rot, true, phys, isPed, 0, true)
+			end
+
+end),  type = "action_value_f"}
+features["Attacch_building"].feat:set_str_data({"Attach to Ped","Attach to Vehicle"})
+
+features["Attach_build"] = {feat = menu.add_feature("Attach FIB Building", "action_value_str", featureVars.at.id, function(feat)
+	
+			local pos, rot, offset = v3(), v3(-14.599995613098,-1.7075473124351e-06,0.0), v3(0.0,0.0,0.0)
+			local plyveh, pped = player.get_player_vehicle(pid), player.get_player_ped(pid)
+			local bone, AttachTo, isPed
+			local ObjectModel = 3775166597
+			local pos = get_offset(pid, 10)
+			local i = #spawned_cunts + 1
+
+			spawned_cunts[i] = object.create_world_object(ObjectModel, pos, true, false)
+			entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
+			entity.set_entity_collision(spawned_cunts[i], true, phys, true)
+			system.wait(25)
+			local ObjectModel = 2890098141
+
+			local y = #spawned_cunts + 1
+			spawned_cunts[y] = object.create_world_object(ObjectModel, pos, true, false)
+			entity.set_entity_as_mission_entity(spawned_cunts[y], true, true)
+			entity.set_entity_collision(spawned_cunts[y], true, phys, true)
+			system.wait(25)
+
+			
+			
+			system.wait(5)
+			if feat.value == 0 then
+				AttachTo = pped
+				isPed = true
+				bone = 0
+				elseif plyveh ~= nil or plyveh ~= 0 and feat.value == 1 then
+			bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")
+				AttachTo = plyveh
+				isPed = false
+				
+			end
+			if AttachTo ~= nil then
+			system.wait(25)
+			entity.attach_entity_to_entity(spawned_cunts[i], AttachTo, bone, offset, rot, true, phys, isPed, 0, true)
+			entity.attach_entity_to_entity(spawned_cunts[y], AttachTo, bone, offset, rot, true, phys, isPed, 0, true)	
+			end
+end),  type = "action_value_f"}
+features["Attach_build"].feat:set_str_data({"Attach to Ped","Attach to Vehicle"})
+
+features["Attach_Sub"] = {feat = menu.add_feature("Attach DoomsDay Sub", "action_value_str", featureVars.at.id, function(feat)
+	
+			local pos, rot, offset = v3(), v3(0.0,0.0,-260.0), v3(0.0,0.0,10.0)
+			local plyveh, pped = player.get_player_vehicle(pid), player.get_player_ped(pid)
+			local bone, AttachTo, isPed
+			local ObjectModel = 1723871309
+			local pos = get_offset(pid, 10)
+			local i = #spawned_cunts + 1
+
+			spawned_cunts[i] = object.create_world_object(ObjectModel, pos, true, false)
+			entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
+			entity.set_entity_collision(spawned_cunts[i], true, phys, true)
+			system.wait(25)
+
+
+			system.wait(5)
+			if feat.value == 0 then
+				AttachTo = pped
+				bone = 0
+				isPed = true
+				elseif plyveh ~= nil or plyveh ~= 0 and feat.value == 1 then
+				bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")
+				AttachTo = plyveh
+				isPed = false
+				
+			end
+			if AttachTo ~= nil then
+			system.wait(5)
+			entity.attach_entity_to_entity(spawned_cunts[i], AttachTo, bone, offset, rot, true, phys, isPed, 0, true)
+
+			end
+			
+			
+end),  type = "action_value_f"}
+features["Attach_Sub"].feat:set_str_data({"Attach to Ped","Attach to Vehicle"})
+
+features["BeachFire"] = {feat = menu.add_feature("Attach Beach Fires", "action_value_str", featureVars.at.id, function(feat)
+			local bones = {}
+			local pos, offset = v3(), v3(0.0,0.0,10.0)
+			local plyveh, pped = player.get_player_vehicle(pid), player.get_player_ped(pid)
+			local bone, AttachTo
+			local pos = get_offset(pid, 10)
+			local i = #spawned_cunts + 1
+
+	
 			local pos, offset = v3(), v3(0.0,0.0,10.0)
 			local bid1, bid2
-			bid1 =  ped.get_ped_bone_index(pped, 31086)
-			bid2 =  ped.get_ped_bone_index(pped, 11816)
 			phys = false
-			if feat.value == 1 then
-				phys = true
-			end
+			if feat.value == 0 then
+				AttachTo = pped
+			bones[#bones + 1] =  ped.get_ped_bone_index(pped, 31086)
+			isPed = true
 			spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
-			entity.attach_entity_to_entity( spawned_cunts[#spawned_cunts], pped,  bid1, pos, offset, true, phys, false, 0, false)
+			entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], AttachTo,  bones[#bones], pos, offset, true, phys, isPed, 0, false)
 			local offset = v3(0.0,0.0,-10.0)
+			bones[#bones + 1] =  ped.get_ped_bone_index(pped, 11816)
 			spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
-			entity.attach_entity_to_entity( spawned_cunts[#spawned_cunts], pped,  bid2, pos, offset, true, phys, false, 0, false)
+			entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], AttachTo,  bones[#bones], pos, offset, true, phys, isPed, 0, false)
+			elseif plyveh ~= nil or plyveh ~= 0 and feat.value == 1 then
+			AttachTo = plyveh
+			isPed = false
+				bones = {}
+				local bone = {"wheel_rr","wheel_lr","wheel_rf","wheel_lf"}
+				for i = 1, #bone do
+				bones[#bones + 1] = entity.get_entity_bone_index_by_name(plyveh, bone[i])
+				end
+				for y = 1, #bones do
+					offset = v3(0.0,0.0,0.0)
+					spawned_cunts[#spawned_cunts + 1] = object.create_object(3229200997, pos, true, false)
+					entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], AttachTo,  bones[y], pos, offset, true, phys, isPed, 0, false)
+				end
+				
+				
+				
+			end
+
 			return HANDLER_POP
-end), type = "action"}
-features["BeachFire"].feat.max = 1
-features["BeachFire"].feat.min = 0
-features["BeachFire"].feat.value = 1
+			
+end), type = "action_value_f"}
+features["BeachFire"].feat:set_str_data({"Attach to Ped","Attach to Vehicle"})
+
 features["attach_room"] = {feat = menu.add_feature("Room Attachment", "action", featureVars.at.id, function(feat)
 			local pos, rot = v3(), v3()
 			pos.z = -0.5
@@ -10390,7 +11168,7 @@ features["blamer"].feat.max = 2
 features["blamer"].feat.min = 0
 features["blamer"].feat.value = 0
 		
-features["blamedorbital"] = {feat = menu.add_feature("Orbital Player Blaming: ", "action_value_str", featureVars.f.id, function(feat)
+features["blamedorbital"] = {feat = menu.add_feature("Orbital Player Blaming: ", "action_value_str", featureVars.g.id, function(feat)
 			local pos = v3()
 			pped = player.get_player_ped(pid)
 			myped = player.get_player_ped(feat.value)
@@ -10538,6 +11316,7 @@ features["Dildo_Dick"] = {feat = menu.add_feature("Dildo Illuminate Cunt", "acti
 			entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone, offset, rot, true, false, true, 0, true)
 			return HANDLER_POP
 end), type = "action"}
+
 features["Firework_ply"] = {feat = menu.add_feature("Fireworks Around Player Delay: ", "value_i", featureVars.tr.id, function(feat)
 			if feat.on then
 				local pos, Pos, Rpos1, Rpos2
@@ -10572,6 +11351,41 @@ features["Firework_ply"].feat.max = 2000
 features["Firework_ply"].feat.min = 0
 features["Firework_ply"].feat.value = 100
 features["Firework_ply"].feat.mod = 10
+--TODO: ************** PTFX ********************
+local asset = "scr_bike_adversary"
+local effect = "scr_adversary_foot_flames"
+features["ptfx_annoy"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
+	pped = player.get_player_ped(pid)
+	local i = feat.value + 1
+	local pos, rot = v3(), v3()
+		if feat.on then
+	rot.x = math.random(0.0, 360.0)
+	rot.y = math.random(0.0, 360.0)
+	rot.z = math.random(0.0, 360.0)
+				asset = tostring(ptfx_dictasset[i][1])
+				effect = tostring(ptfx_dictasset[i][2]) 
+				graphics.set_next_ptfx_asset(asset)
+				while not graphics.has_named_ptfx_asset_loaded(asset)do graphics.request_named_ptfx_asset(asset)system.wait(0)end
+
+				pos = player.get_player_coords(pid)
+				--graphics.start_networked_ptfx_looped_at_coord(effect, pos, v3(0.0,0.0,0.0), 2.1, false, false, true)
+				graphics.start_networked_ptfx_non_looped_at_coord(effect, pos, toy, 2.1, false, false, true)
+				
+		graphics.start_networked_ptfx_non_looped_on_entity(effect, pped, v3(0.0,0.0,0.0), rot, 1.2)
+
+	system.wait(1)
+			return HANDLER_CONTINUE		
+			end
+		
+		graphics.remove_named_ptfx_asset(asset)
+		graphics.remove_ptfx_from_entity(pped)
+			return HANDLER_POP
+end), type = "value_str", callback = function()
+
+end}
+features["ptfx_annoy"].feat:set_str_data(ptfx_Label)
+
+
 features["explodeply"] = {feat = menu.add_feature("Explosions Around Player", "value_i", featureVars.g.id, function(feat)
 			if feat.on then
 				local pos, Pos, Rpos1, Rpos2
@@ -10775,7 +11589,7 @@ features["multishoot"] = {feat = menu.add_feature("Snipe for all Directions", "a
 end), type = "action"}
 features["Ped_hate"] = {feat = menu.add_feature("PedsHate & AttackPlayer Weap:", "action_value_i", featureVars.g.id, function(feat)
 			local weap = feat.value
-			moist_notify("Peds Attack With:\n", ped_wep[feat.value][1])
+			moist_notify("Peds Attack With:\n" .. ped_wep[feat.value][1])
 			Peds_hateWorld(pid, weap)
 end), type = "action_value_i", callback = function()
 end}
@@ -10783,7 +11597,7 @@ features["Ped_hate"].feat.max = #ped_wep
 features["Ped_hate"].feat.min = 1
 features["Ped_hate"].feat.value = 10
 features["Peds_eject"] = {feat = menu.add_feature("Task NearbyPeds Bail/Exit Veh", "action_value_i", featureVars.tr.id, function(feat)
-			moist_notify("Peds around Target Player\n", "Will Exit Vehicle or Bail from it")
+			moist_notify("Peds around Target Player\nWill Exit Vehicle or Bail from it", "MoistScript Troll")
 			Ped_eject(pid, eject[feat.value])
 end), type = "action_value_i", callback = function()
 end}
@@ -10810,7 +11624,7 @@ features["Send_HunterLester"] = {feat = menu.add_feature("Send Lester Hunt them 
 			vehicle.control_landing_gear(escortveh[y], 3)
 			system.wait(4000)
 			entity.set_entity_collision(escortveh[y], false, false, false)
-			moist_notify("Lester Savage Hunter", "\nSent from Maze Tower to Target")
+			moist_notify("Lester Sent in a Savage \nfrom Maze Tower to Seek & Destroy Target", "Lester Griefer")
 end), type = "action"}
 features["Send_HunterLester1"] = {feat = menu.add_feature("Lester Thruster Hunter 2:weap", "action_value_i", featureVars.lgr.id, function(feat)
 			playerFeatures[pid].features["hunter_taskloop"].feat.on = true
@@ -10843,7 +11657,7 @@ features["Send_HunterLester1"] = {feat = menu.add_feature("Lester Thruster Hunte
 			entity.set_entity_collision(huntv, false, false, false)
 			network.request_control_of_entity(escortveh[y])
 			entity.set_entity_collision(escortveh[y], false, false, false)
-			moist_notify("Thruster Lester Hunter", "\nSent from Maze Tower to Target")
+			moist_notify("Thruster Lester\nSent from Maze Tower to Hunt Target", "Lester Griefer")
 end), type = "action"}
 features["Send_HunterLester1"].feat.max = 2
 features["Send_HunterLester1"].feat.min = 1
@@ -10990,8 +11804,8 @@ features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:"
 				system.yield(10000)
 				-- player.unset_player_as_modder(pid, -1)
 				for i = 1, #data do
-					par1 = math.random(-1000, 99999999)
-					par2 = math.random(20000, 99999999)
+					par1 = math.random(-100000, 99999999)
+					par2 = math.random(200000, 99999999)
 					par3 = math.random(-1, 1)
 					par4 = math.random(-1, 9)
 					par5 = math.random(-1, 1)
@@ -11094,15 +11908,12 @@ end), type = "action", callback = function()
 end}
 		
 features["SE_Crash"] = {feat = menu.add_feature("Script Event Crash", "action", featureVars.k.id, function(feat)
-			if feat.on then
+
 				script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-				script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-				
 				system.yield(Settings["ScriptEvent_delay"])
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-			
+				script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+				system.yield(Settings["ScriptEvent_delay"])
+				script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
 end), type = "action",  callback = function()
 end}
 		
@@ -11238,18 +12049,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 								end
 							end
 						end
-						-- if player.is_player_god(pid) and Players[pid].isint ~= true then
-						-- tagz[#tagz + 1] = "~h~~r~[G]"
-						-- Players[pid].pulse = not Players[pid].pulse
-						-- if not Players[pid].isgod and player.is_player_god(pid) and player.player_id() ~= pid then
-						-- if Settings["GodCheckNotif"] and Settings["GodCheck"] then
-						-- Debug_Out(string.format("Player: " .. name .. " [God Mode Player]"))
-						-- moist_notify("God Mode Player:\n" .. pid .. " : " .. (SessionPlayers[pid].Name), "Modder Detection")
-						
-						-- Players[pid].isgod = true
-						-- end
-						-- end
-						-- end
+
 						if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
 							tags[#tags + 1] = "V"
 						end
@@ -11335,13 +12135,11 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 					end
 					if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
 						SessionPlayers[pid].Name = name .. " " .. toname
-						system.wait(100)
 						if #tagz > 0 then
 							SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
 						end
 						else
 						SessionPlayers[pid].Name = name
-						system.wait(100)
 						if #tagz > 0 then
 							SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
 						end
@@ -11396,6 +12194,7 @@ function OnlineResetCheck()
 		end
 		
 end
-OnlineResetCheck()
 notify_colour_setting()
-Create_Csv()		
+Create_Csv()
+recentplayerslist()
+OnlineResetCheck()
