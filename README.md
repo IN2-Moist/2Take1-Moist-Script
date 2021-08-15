@@ -1,5 +1,5 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.4.6: Moist Edition)
+# 2Take1-Moist-Script (Build 2.0.4.8: Moist Edition)
 
  Credits & Thanks to Kektram for help with OTR Code and code Advice
 
@@ -12,6 +12,35 @@ script would  not exist!
 
 Updates will now be Posted on Keks Menu Discord Server Join for updates:
 https://discord.gg/9QUr3sVDfE
+
+** Script Changes Additions and Fixes **
+
+~ Major bug fix with recent players reaching reset value breaking script.
+limitation has now been removed
+
+^ Updated Attach Options:
+all but the room attaches are now select-able attach to players ped or Players vehicle (if no attach entity nothing will happen to avoid any breaks when no vehicle exists or detectable)
+
++ Added Attach Options:
+
++ Added Attach FIB Building
+(note that this will trigger 2t1's modder detection when attaching to peds! False invalid world object and invalid attach attempts or crash attempts on whoever is close when you are near it or spectating)
+
++ Added Attach Dooms Day Sub
+Similar situation with the FIB Attach and false modder detection's
+
++ Added 2 New Script Event Crashes to Online Player Features
+
+- Hidden empty vehicle tools in Online Player Features
+
+Removed the delays in the Player list loop
+Player bar updates faster now
+
+Added Save-able option for the Orbital Proximity Blip.
+
+Updated the Spawn Vehicle Triplets
+Now sorted into Alpha Sub Functions
+Vehicle Hash LUA updated for this will break the script if you dont update this file too.
 
 Added Back Ceo Money 10k + 20k loop options (timing needs to be worked out still to stop transaction errors 10k alone will be fine)
 
