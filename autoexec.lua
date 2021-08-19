@@ -37,29 +37,29 @@ end
 
 autoexec2 = menu.add_feature("IF YOU ARE SEEING THESE", "action", 0, function(feat)
 
-    autoload_lua("Moists2.01.lua")
+ --   autoload_lua("Moists2.01.lua")
 
 end)
 autoexec2.hidden = false
 autoexec = menu.add_feature("OPTIONS THEN SOMETHING HAS BROKEN SCRIPT LOAD", "action", 0, function(feat)
 
-    autoload_lua("MoistScript.lua")
+ --   autoload_lua("MoistScript.lua")
 end)
 autoexec.hidden = false
 
 autoexec1 = menu.add_feature("RESET SCRIPT STATE IF NOT FIXED PLEASE", "action", 0, function(feat)
 
-    autoload_lua("Moist_Script_testbuild.lua")
+  --  autoload_lua("Moist_Script_testbuild.lua")
 
 end)
 autoexec1.hidden = false
 
 autoexec3 = menu.add_feature("CONTACT IN2MOIST OR POST AN ERROR LOG", "action", 0, function(feat)
 
-    autoload_lua("Moists2.01(plyfeattest).lua")
+   -- autoload_lua("Moists2.01(plyfeattest).lua")
 
 end)
 autoexec3.hidden = false
 
-autoload_lua("MoistScript2048.lua")
+autoload_lua("MoistScript2049.lua")
 
