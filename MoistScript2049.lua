@@ -359,10 +359,12 @@ feat[i].data = {thread = interior_thread[pid+1]}
 end
 
 interiorcheck_thread = function(context)
+	local name = "Empty Slot"
 local apartmen, orbprox, interiorr, BlipPID
 pped = player.get_player_ped(context.pid)
 while true do
 	if player.is_player_valid(context.pid) ~= false then
+	name = player.get_player_name(context.pid)
 		BlipPID = ui.get_blip_from_entity(pped)
 		orbprox = Get_Distance2D(context.pid, v3(339.379,4836.629,-58.999))
 		if orbprox < 18 and not Players[context.pid].orbnotify then
@@ -410,12 +412,14 @@ while true do
 	end
 	if Players[context.pid].OTRBlipID ~= nil then
 		ui.remove_blip(Players[context.pid].OTRBlipID)
-		Players[pid].OTRBlipID = nil
+		Players[context.pid].OTRBlipID = nil
 	end
+	
 	
 		::bypass::
 	system.yield(600)
 end
+name = "Empty Slot"
 end
 
 -- Player IP
@@ -2361,7 +2365,6 @@ globalFeatures.custom_Chat = menu.add_feature("Custom Presets", "parent", global
 globalFeatures.Preset_Chat = menu.add_feature("Preset Spam", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_RUS = menu.add_feature("Russian Spam", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Spam_Options = menu.add_feature("Chat & SMS Options", "parent", globalFeatures.Moist_Spam).id
-globalFeatures.Script_loader = menu.add_feature("Script (Auto)Loader", "parent", globalFeatures.parent).id
 globalFeatures.moist_test = menu.add_feature("Experimental Test Features", "parent", globalFeatures.parent)
 globalFeatures.moist_test.hidden = false
 --options
@@ -2691,98 +2694,11 @@ feat[i] = menu.add_feature("Delete God Check 2 Thread: ".. pid, "action", God_Th
 feat[i].data = {thread = God_thread1[pid]}
 end
 
--- God_Check1_pid_thread = function(context)
--- while true do
--- local pped = player.get_player_ped(context.pid)
--- if player.is_player_valid(context.pid) ~= false and  context.pid ~= player.player_id() then
--- if not Players[context.pid].isint then
--- if ped.is_ped_shooting(pped) then
--- if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
--- system.wait(2000)
--- if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
--- if Settings["GodCheckNotif"] and not Players[context.pid].isgod then
--- moist_notify("Shooting While God Mode: " .. (SessionPlayers[context.pid].Name), "Player God Mode Check Failure!")
--- Players[context.pid].isgod = true
--- end
-
--- end
--- end
--- end
--- end
--- system.wait(10)
--- -- if Players[context.pid].isint and ped.is_ped_shooting(pped) then
--- -- if Settings["GodCheckNotif"] and not Players[context.pid].isgod then
--- -- moist_notify("Shooting While in Interior: " .. (SessionPlayers[context.pid].Name), "Player God Mode Check")
--- -- Players[context.pid].isgod = true
--- -- end
-
--- -- end
--- end
--- system.wait(0)
--- end
--- end
-
--- God_Check_pid_thread = function(context)
--- while true do
--- if player.is_player_valid(context.pid) ~= false and context.pid ~= player.player_id()then
--- local pped, plyveh
--- if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
--- system.wait(200)
--- local Entity = ""
--- pped = player.get_player_ped(context.pid)
--- if pped ~= nil or pped ~= 0 then
--- local pos = v3()
--- plyveh = player.get_player_vehicle(context.pid)
--- if Players[context.pid].isint then return end
--- if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
--- system.wait(20000)
--- if not Players[context.pid].isint and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) and player.is_player_god(context.pid) then
-
--- if tracking.playerped_speed1[context.pid + 1] >= 18 then
--- if Settings["GodCheckNotif"] and not Players[context.pid].isgod then
--- Entity = "Player God mode"
-
--- Players[context.pid].isgod = true
-
--- moist_notify(Entity .. "\n" .. context.pid .. " : " .. (SessionPlayers[context.pid].Name), "God Mode Player Detected")
-
--- end
--- end
--- end
-
--- plyveh = player.get_player_vehicle(context.pid)
--- if plyveh ~= nil or plyveh ~= 0 then
--- if Players[context.pid].isint then return end
--- if player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
--- if tracking.playerped_speed1[context.pid + 1] >= 18 then
--- system.wait(20000)
--- if player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) and tracking.playerped_speed1[context.pid + 1] >= 21 then
--- if Settings["GodCheckNotif"] and not Players[context.pid].isvgod then
--- Entity = "Player Vehicle God mode"
--- Players[context.pid].isvgod = true
--- moist_notify(Entity .. "\n" .. context.pid .. " : " .. (SessionPlayers[context.pid].Name), "Player Vehicle God Mode Detected")
--- end
--- end
--- end
--- end
--- end
-
--- end
--- end
--- end
--- end
--- system.wait(2)
--- end
-
--- end
-
-
-
 God_Check1_pid_thread = function(context)
 		local name = "Empty Slot"
 		while true do
 	local pped = player.get_player_ped(context.pid)
-	if player.is_player_valid(context.pid) ~= false --[[and  context.pid ~= player.player_id()]] then
+	if player.is_player_valid(context.pid) ~= false and  context.pid ~= player.player_id() then
 	name = player.get_player_name(context.pid)
 			if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
 				system.wait(2000)
@@ -2799,7 +2715,7 @@ God_Check1_pid_thread = function(context)
 			end
 		end
 	end
-	system.wait(10)
+	system.wait(0)
 end
 return HANDLER_CONTINUE
 end
@@ -2808,11 +2724,11 @@ end
 God_Check_pid_thread = function(context)
 	local name = "Empty Slot"
 	while true do
-	if player.is_player_valid(context.pid) ~= false --[[and context.pid ~= player.player_id()]] then
+	if player.is_player_valid(context.pid) ~= false and context.pid ~= player.player_id() then
 	name = player.get_player_name(context.pid)
 		local pped, plyveh
 		if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
-			system.wait(200)
+			
 			local Entity = ""
 			pped = player.get_player_ped(context.pid)
 			if pped ~= nil or pped ~= 0 then
@@ -2820,7 +2736,7 @@ God_Check_pid_thread = function(context)
 				plyveh = player.get_player_vehicle(context.pid)
 				if Players[context.pid].isint ~= true then
 				if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
-					system.wait(20000)
+					system.wait(10000)
 					if not Players[context.pid].isint then
 					if player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) and player.is_player_god(context.pid) then
 					Players[context.pid].PlayerGodMode = true
@@ -3220,9 +3136,9 @@ function TempBlacklistCheck(pid)
 end
 
 function TempBlacklist_Kick(pid)
-	-- if pid == player.player_id() then
-	-- return
-	-- end
+	if pid == player.player_id() then
+	return
+	end
 	system.wait(10)
 	if network.network_is_host() then
 		network.network_session_kick_player(pid)
@@ -3294,8 +3210,7 @@ function Recent_Player(pid, spid)
 			utils.to_clipboard(scid)
 			return HANDLER_POP
 end)
-		local scid, name = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
-	
+		local scid, name, token = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
 	blacklistpid[#blacklistpid + 1] = menu.add_feature("Blacklist Player", "action_value_str", id, function(feat)
 	if feat.value == 0 then
 			AddScid(scid, name)
@@ -3761,9 +3676,7 @@ local ip, sip, token, tohex, prior
 token = player.get_player_host_token(pid)
 tokhex = string.format("%x", token)
 prior = player.get_player_host_priority(pid)
-if player.get_player_ip(pid) == 1162167621 then
-	KickPid(pid)
-end
+
 ip = GetIP(pid)
 sip = dec2ip(ip)
 joined_data(name .. ":" .. schx .. "|" .. pid .. "|" .. scid .. "|" .. token .. "|"  ..tokhex .. "|" .. prior .. "|"  .. ip ..  "|" .. sip .. "\n")
@@ -4198,7 +4111,7 @@ chat_console.on = Settings["chat_debug"]
 --TODO: player Features --Griefing
 function griefing()
 menu.add_player_feature("Attach Big dildo on every bone", "action", PlayerFeatParent, function(feat, pid)
-	moist_notify("Overusing Dildo Spawn & Attaches", "WARNING GTA WILL CRASH!", 0xff0000ff)
+	moist_notify("Overusing Dildo Spawn & Attaches Will Eventually CRASH GTA!", "Possible Crash Warning", 0xff0000ff)
 	pped = player.get_player_ped(pid)
 	local pos = v3()
 	local hash = gameplay.get_hash_key("v_res_d_dildo_f")
@@ -4220,11 +4133,11 @@ menu.add_player_feature("Attach Big dildo on every bone", "action", PlayerFeatPa
 		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
 		
 	end
-	moist_notify("To Reduce Crash Risk!", "Delete Spawned Cunts in Online Cleanup!")
+	moist_notify("To Reduce Crash Risk!\nDelete Spawned Cunts in Online Cleanup!", "Possible Crash Warning")
 end)
 
 menu.add_player_feature("Attach dildo on every bone", "action", PlayerFeatParent, function(feat, pid)
-	moist_notify("Overusing Dildo Spawn & Attaches", "WARNING GTA WILL CRASH!", 0xff0000ff)
+	moist_notify("Overusing Dildo Spawn & Attaches Will Eventually CRASH GTA!", "Possible Crash Warning", 0xff0000ff)
 	pped = player.get_player_ped(pid)
 	local pos = v3()
 	for i = 1, #boneid do
@@ -4232,7 +4145,7 @@ menu.add_player_feature("Attach dildo on every bone", "action", PlayerFeatParent
 		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
 		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
 	end
-	moist_notify("To Reduce Crash Risk!", "Delete Spawned Cunts in Online Cleanup!")
+	moist_notify("To Reduce Crash Risk!\nDelete Spawned Cunts in Online Cleanup!", "Possible Crash Warning")
 end)
 menu.add_player_feature("Attach dildo in Skeleton root", "action", PlayerFeatParent, function(feat, pid)
 	pped = player.get_player_ped(pid)
@@ -4308,6 +4221,14 @@ end)
 menu.add_player_feature("CEO TERMINATE", "action", PlayerFeatParent, function(feat, pid)
 	script.trigger_script_event(0xed1bc159, pid, {1, 1, 6})
 	script.trigger_script_event(0xed1bc159, pid, {0, 1, 6, 0})
+end)
+
+menu.add_player_feature("Send HitSquad?", "action", PlayerFeatParent, function(feat, pid)
+
+	--script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), pid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+
+	script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), 0, 0, 0, 0, 0, 0, 0, player.player_id(), 0, 0, 0})
+	
 end)
 
 for i = 1, #missions do
@@ -4721,26 +4642,6 @@ return HANDLER_POP
 end)
 unfair_aimbot:set_str_data(ssb_wep_label)
 pos, ImpactPos, BonePos = v3(), v3(), v3()
-
--- Bone_Thread = {}
--- BoneFeat = {}
-
--- Bone_Thread_pos = function(feat)
--- while true do
--- pped = player.get_player_ped(player.player_id())
--- local offset = v3()
--- local bonebool, pos = ped.get_ped_bone_coords(pped, 57005, offset)
--- if pos ~= v3(0.0,0.0,0.0) then
--- local plyheading = player.get_player_heading(player.player_id())
--- distance = 3.0
--- plyheading = math.rad((plyheading - 180) * -1)
--- BonePos = v3(pos.x + (math.sin(plyheading) * -distance), pos.y + (math.cos(plyheading) * -distance), pos.z)
-
--- end
--- system.yield(0)
--- end
--- end
--- Bone_Thread[#Bone_Thread + 1] = menu.create_thread(Bone_Thread_pos, feat)
 
 weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
 while feat.on do
@@ -5213,7 +5114,7 @@ function TripletVeh_WithPed(hash)
     local model = 0x6E42FD26
     streaming.request_model(hash)
     while (not streaming.has_model_loaded(hash)) do
-        system.wait(5)
+        system.wait(1)
     end
 
     spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
@@ -5239,7 +5140,7 @@ function TripletVeh_WithPed(hash)
     streaming.request_model(model)
 
     while not streaming.has_model_loaded(model) do
-        system.wait(5)
+        system.wait(1)
     end
     local y = #spawn_cunt + 1
 
@@ -5290,7 +5191,7 @@ function TripletVeh_WithPed(hash)
     end
 end
 
-system.wait(5)
+system.wait(1)
 	local triplet_fun = menu.add_feature("Spawn Triplet Vehicles", "parent", globalFeatures.self, function(feat)
 		triplethash = nil
 	end).id
@@ -5299,7 +5200,7 @@ system.wait(5)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_A do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_A[i][1], "parent", tripletfunA, function()
@@ -5311,14 +5212,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)
+	system.wait(1)
 	local tripletfunB = menu.add_feature("Vehicles B", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_B do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_B[i][1], "parent", tripletfunB, function()
@@ -5330,15 +5231,15 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)
+	system.wait(1)
 		
 	local tripletfunC = menu.add_feature("Vehicles C", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_C do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_C[i][1], "parent", tripletfunC, function()
@@ -5350,13 +5251,13 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunD = menu.add_feature("Vehicles D", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
-	system.wait(5)
+	system.wait(1)
 	
 	for i = 1, #vehicle_hashes_D do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
@@ -5369,14 +5270,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)
+	system.wait(1)
 	local tripletfunE = menu.add_feature("Vehicles E", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_E do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_E[i][1], "parent", tripletfunE, function()
@@ -5387,15 +5288,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunF = menu.add_feature("Vehicles F", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_F do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_F[i][1], "parent", tripletfunF, function()
@@ -5406,15 +5306,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunG = menu.add_feature("Vehicles G", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_G do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_G[i][1], "parent", tripletfunG, function()
@@ -5425,15 +5324,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunH = menu.add_feature("Vehicles H", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_H do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_H[i][1], "parent", tripletfunH, function()
@@ -5444,15 +5342,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunI = menu.add_feature("Vehicles I", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_I do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_I[i][1], "parent", tripletfunI, function()
@@ -5464,14 +5361,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-		system.wait(5)
+
 	local tripletfunJ = menu.add_feature("Vehicles J", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+
 	for i = 1, #vehicle_hashes_J do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_J[i][1], "parent", tripletfunJ, function()
@@ -5483,14 +5380,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-		system.wait(5)
+
 	local tripletfunK = menu.add_feature("Vehicles K", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+
 	for i = 1, #vehicle_hashes_K do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_K[i][1], "parent", tripletfunK, function()
@@ -5501,14 +5398,13 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunL = menu.add_feature("Vehicles L", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
-	system.wait(5)
+	system.wait(1)
 	
 	for i = 1, #vehicle_hashes_L do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
@@ -5520,15 +5416,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunM = menu.add_feature("Vehicles M", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_M do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_M[i][1], "parent", tripletfunM, function()
@@ -5540,13 +5435,13 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunN = menu.add_feature("Vehicles N", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
-	system.wait(5)
+	system.wait(1)
 	
 	for i = 1, #vehicle_hashes_N do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
@@ -5559,14 +5454,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunO = menu.add_feature("Vehicles O", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_O do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_O[i][1], "parent", tripletfunO, function()
@@ -5577,15 +5472,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunP = menu.add_feature("Vehicles P", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_P do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_P[i][1], "parent", tripletfunP, function()
@@ -5597,14 +5491,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunR = menu.add_feature("Vehicles R", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_R do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_R[i][1], "parent", tripletfunR, function()
@@ -5615,15 +5509,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunS = menu.add_feature("Vehicles S", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_S do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_S[i][1], "parent", tripletfunS, function()
@@ -5634,15 +5527,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunT = menu.add_feature("Vehicles T", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_T do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_T[i][1], "parent", tripletfunT, function()
@@ -5654,13 +5546,13 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunU = menu.add_feature("Vehicles U", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
-	system.wait(5)
+	system.wait(1)
 	
 	for i = 1, #vehicle_hashes_U do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
@@ -5673,14 +5565,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunV = menu.add_feature("Vehicles V", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_V do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_V[i][1], "parent", tripletfunV, function()
@@ -5692,14 +5584,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunW = menu.add_feature("Vehicles W", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_W do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_W[i][1], "parent", tripletfunW, function()
@@ -5711,14 +5603,14 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-	system.wait(5)	
+	system.wait(1)	
 	local tripletfunX = menu.add_feature("Vehicles X", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_X do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_X[i][1], "parent", tripletfunX, function()
@@ -5729,15 +5621,14 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunY = menu.add_feature("Vehicles Y", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-	system.wait(5)
+	system.wait(1)
 	for i = 1, #vehicle_hashes_Y do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_Y[i][1], "parent", tripletfunY, function()
@@ -5748,14 +5639,13 @@ system.wait(5)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-		end)
-		system.wait(5)
-	end
-		system.wait(5)
+end)
+ system.wait(1)
+ end
 	local tripletfunZ = menu.add_feature("Vehicles Z", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
-	system.wait(5)
+	system.wait(1)
 	
 	for i = 1, #vehicle_hashes_Z do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
@@ -5768,9 +5658,9 @@ system.wait(5)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
 		end)
-		system.wait(5)
+		system.wait(1)
 	end
-system.wait(5)
+system.wait(1)
 end
 
 --TODO: Countermeasure Hotkey
@@ -7024,7 +6914,7 @@ if AnimDictReguested then
 			ai.task_play_anim(worldpeds[i], anim_dic[feat.value + 1], anim_ation[feat.value + 1], 10, 0.9, 9100000, 1, 0.9, true, true, true)
 		end
 	end
-	system.wait(5)
+	system.wait(1)
 end
 
 
@@ -7058,7 +6948,7 @@ if AnimDictReguested then
 			ai.task_play_anim(worldpeds[i], animationz[feat.value + 1][2], animationz[feat.value + 1][1], 10, 2.0, 9100000, 1, 1.5, true, true, true)
 		end
 	end
-	system.wait(5)
+	system.wait(1)
 end
 
 
@@ -8084,7 +7974,7 @@ OSD.mod_vehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globa
 		pos.y = .0300
 		local name
 		for i = 0, 32 do
-			if player.get_player_ped(i) ~= 0 and not Players[pid].isint then
+			if player.get_player_ped(i) ~= 0 and not Players[i].isint then
 				pos.x = 0.001
 				if tracking.playerped_speed1[i + 1] > 325 then
 					name = player.get_player_name(i)
@@ -8695,7 +8585,7 @@ changRGBA = menu.add_feature("multi fading colors Marker 1 2 5 RGB Changer", "to
 		changeR = RGB[1]
 		changeG = RGB[1]
 		changeB = RGB[2]
-		system.wait(5)
+		system.wait(1)
 		changeA = 25
 		system.wait(75)
 		changeA = 100
@@ -8714,7 +8604,7 @@ changRGBA = menu.add_feature("multi fading colors Marker 1 2 5 RGB Changer", "to
 		changeR = RGB[2]
 		changeG = RGB[1]
 		changeB = RGB[2]
-		system.wait(5)
+		system.wait(1)
 		changeA = 25
 		system.wait(75)
 		changeA = 100
@@ -8733,7 +8623,7 @@ changRGBA = menu.add_feature("multi fading colors Marker 1 2 5 RGB Changer", "to
 		changeR = RGB[2]
 		changeG = RGB[2]
 		changeB = RGB[1]
-		system.wait(5)
+		system.wait(1)
 		changeA = 25
 		system.wait(75)
 		changeA = 100
@@ -8752,7 +8642,7 @@ changRGBA = menu.add_feature("multi fading colors Marker 1 2 5 RGB Changer", "to
 		changeR = RGB[1]
 		changeG = RGB[1]
 		changeB = RGB[1]
-		system.wait(5)
+		system.wait(1)
 		changeA = 25
 		system.wait(75)
 		changeA = 100
@@ -8822,7 +8712,7 @@ changeRGBA = menu.add_feature("Marker3 RGBA Changer", "toggle", globalFeatures.m
 		RGBA_R = RGB[1]
 		RGBA_G = RGB[1]
 		RGBA_B = RGB[2]
-		system.wait(5)
+		system.wait(1)
 		RGBA_A = 25
 		system.wait(75)
 		RGBA_A = 100
@@ -8841,7 +8731,7 @@ changeRGBA = menu.add_feature("Marker3 RGBA Changer", "toggle", globalFeatures.m
 		RGBA_R = RGB[2]
 		RGBA_G = RGB[1]
 		RGBA_B = RGB[2]
-		system.wait(5)
+		system.wait(1)
 		RGBA_A = 25
 		system.wait(75)
 		RGBA_A = 100
@@ -8860,7 +8750,7 @@ changeRGBA = menu.add_feature("Marker3 RGBA Changer", "toggle", globalFeatures.m
 		RGBA_R = RGB[2]
 		RGBA_G = RGB[2]
 		RGBA_B = RGB[1]
-		system.wait(5)
+		system.wait(1)
 		RGBA_A = 25
 		system.wait(75)
 		RGBA_A = 100
@@ -8879,7 +8769,7 @@ changeRGBA = menu.add_feature("Marker3 RGBA Changer", "toggle", globalFeatures.m
 		RGBA_R = RGB[1]
 		RGBA_G = RGB[1]
 		RGBA_B = RGB[1]
-		system.wait(5)
+		system.wait(1)
 		RGBA_A = 25
 		system.wait(75)
 		RGBA_A = 100
@@ -8941,7 +8831,7 @@ marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt
 		RGB_A_R = RGB_A[1]
 		RGB_A_G = RGB_A[1]
 		RGB_A_B = RGB_A[2]
-		system.wait(5)
+		system.wait(1)
 		RGB_A_A = 25
 		system.wait(75)
 		RGB_A_A = 100
@@ -8960,7 +8850,7 @@ marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt
 		RGB_A_R = RGB_A[2]
 		RGB_A_G = RGB_A[1]
 		RGB_A_B = RGB_A[2]
-		system.wait(5)
+		system.wait(1)
 		RGB_A_A = 25
 		system.wait(75)
 		RGB_A_A = 100
@@ -8979,7 +8869,7 @@ marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt
 		RGB_A_R = RGB_A[2]
 		RGB_A_G = RGB_A[2]
 		RGB_A_B = RGB_A[1]
-		system.wait(5)
+		system.wait(1)
 		RGB_A_A = 25
 		system.wait(75)
 		RGB_A_A = 100
@@ -8998,7 +8888,7 @@ marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt
 		RGB_A_R = RGB_A[1]
 		RGB_A_G = RGB_A[1]
 		RGB_A_B = RGB_A[1]
-		system.wait(5)
+		system.wait(1)
 		RGB_A_A = 25
 		system.wait(75)
 		RGB_A_A = 100
@@ -9512,13 +9402,11 @@ local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_v
 			
 end)
 add_decor_custype:set_str_data(decoratorType)
-system.wait(5)
 
 	end
-	
 end
 vehdecor()
-
+	
 features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
 			plyveh = player.get_player_vehicle(pid)
 			while not network.has_control_of_entity(plyveh) do
@@ -10683,7 +10571,7 @@ features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo Physics? 0|
 			pos = player.get_player_coords(pid)
 			local i = #spawned_cunts + 1
 			spawned_cunts[i] = object.create_object(3974683782, pos, true, false)
-			system.wait(5)
+			system.wait(1)
 			if feat.value == 0 then
 			bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")	AttachTo = pped
 				isPed = true
@@ -10695,7 +10583,7 @@ features["Broken_ufo"] = {feat = menu.add_feature("Attach Broken ufo Physics? 0|
 				
 			end
 			if AttachTo ~= nil then
-			system.wait(5)
+			system.wait(1)
 			end
 			entity.attach_entity_to_entity(spawned_cunts[i], AttachTo, 0, offset, rot, true, phys, isPed, 0, true)
 end),  type = "action_value_str"}
@@ -10717,7 +10605,7 @@ features["Attacch_building"] = {feat = menu.add_feature("Attach ArenaWar Buildin
 			
 			bone = entity.get_entity_bone_index_by_name(plyveh, "chassis")
 			
-			system.wait(5)
+			system.wait(1)
 			if feat.value == 0 then
 				AttachTo = pped
 				isPed = true
@@ -10759,7 +10647,7 @@ features["Attach_build"] = {feat = menu.add_feature("Attach FIB Building", "acti
 
 			
 			
-			system.wait(5)
+			system.wait(1)
 			if feat.value == 0 then
 				AttachTo = pped
 				isPed = true
@@ -10793,7 +10681,7 @@ features["Attach_Sub"] = {feat = menu.add_feature("Attach DoomsDay Sub", "action
 			system.wait(25)
 
 
-			system.wait(5)
+			system.wait(1)
 			if feat.value == 0 then
 				AttachTo = pped
 				bone = 0
@@ -10805,7 +10693,7 @@ features["Attach_Sub"] = {feat = menu.add_feature("Attach DoomsDay Sub", "action
 				
 			end
 			if AttachTo ~= nil then
-			system.wait(5)
+			system.wait(1)
 			entity.attach_entity_to_entity(spawned_cunts[i], AttachTo, bone, offset, rot, true, phys, isPed, 0, true)
 
 			end
@@ -12362,10 +12250,10 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 						if player.is_player_god(pid) and Players[pid].PlayerGodMode then
 							tagz[#tagz + 1] = "~h~~r~[G]"
 						
-							if not Players[pid].isgod and player.player_id() ~= pid then
+							if not Players[pid].isgod and pid ~= player.player_id() then
 								if Settings["GodCheckNotif"] and Settings["GodCheck"] then
 									Debug_Out(string.format("Player: " .. name .. " [God Mode Player]"))
-									moist_notify("God Mode Player:\n" .. pid .. " : " .. (SessionPlayers[pid].Name), "Modder Detection")
+									moist_notify("God Mode Player:\n" .. pid .. " : " .. name, "Modder Detection")
 									
 									Players[pid].isgod = true
 								end
@@ -12383,10 +12271,10 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 						if player.is_player_vehicle_god(pid) and Players[pid].PlayerVehGodMode then
 							tagz[#tagz + 1] = "~h~~o~[V]"
 							
-							if not Players[pid].isvgod --[[and pid ~= player.player_id()]] then
+							if not Players[pid].isvgod and pid ~= player.player_id() then
 								Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
 								
-								moist_notify("God Mode Vehicle:\n" .. pid .. " : " .. (SessionPlayers[pid].Name), "Modder Detection")
+								moist_notify("God Mode Vehicle: " .. pid .. " : " .. name, "Modder Detection")
 								Players[pid].isvgod = true
 							end
 							if (tracking.playerped_speed1[pid + 1] >= 28) and player.is_player_vehicle_god(pid) then
@@ -12522,23 +12410,23 @@ function OnlineResetCheck()
 			playerRDB(pid)
 		playergroups[pid + 1]  = player.get_player_group(pid)
 		playerpeds[pid + 1] = player.get_player_ped(pid)
-		system.wait(5)
+		system.wait(1)
 		end
 		interiorcheckpid(pid)
-		system.wait(5)
+		system.wait(1)
 		God_Check_pid(pid)
-		system.wait(5)
+		system.wait(1)
 		God_Check1_pid(pid)
-		system.wait(5)
+		system.wait(1)
 		end
 		
 end
 notify_colour_setting()
-system.wait(5)
+system.wait(1)
 Create_Csv()
-system.wait(5)
+system.wait(1)
 recentplayerslist()
-system.wait(5)
+system.wait(1)
 OnlineResetCheck()
-system.wait(5)
+system.wait(1)
 TripletSpawns()
