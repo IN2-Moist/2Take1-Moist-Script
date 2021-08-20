@@ -359,12 +359,10 @@ feat[i].data = {thread = interior_thread[pid+1]}
 end
 
 interiorcheck_thread = function(context)
-	local name = "Empty Slot"
 local apartmen, orbprox, interiorr, BlipPID
 pped = player.get_player_ped(context.pid)
 while true do
 	if player.is_player_valid(context.pid) ~= false then
-	name = player.get_player_name(context.pid)
 		BlipPID = ui.get_blip_from_entity(pped)
 		orbprox = Get_Distance2D(context.pid, v3(339.379,4836.629,-58.999))
 		if orbprox < 18 and not Players[context.pid].orbnotify then
@@ -396,7 +394,7 @@ while true do
 					if apartmen < 90 then
 						Players[context.pid].isint = true
 						goto interiorcheckEnd
-						system.yield(0)
+						system.wait(0)
 					end
 			end
 				
@@ -415,11 +413,9 @@ while true do
 		Players[context.pid].OTRBlipID = nil
 	end
 	
-	
 		::bypass::
-	system.yield(600)
+	system.wait(0)
 end
-name = "Empty Slot"
 end
 
 -- Player IP
@@ -2365,6 +2361,7 @@ globalFeatures.custom_Chat = menu.add_feature("Custom Presets", "parent", global
 globalFeatures.Preset_Chat = menu.add_feature("Preset Spam", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_RUS = menu.add_feature("Russian Spam", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Spam_Options = menu.add_feature("Chat & SMS Options", "parent", globalFeatures.Moist_Spam).id
+globalFeatures.Script_loader = menu.add_feature("Script (Auto)Loader", "parent", globalFeatures.parent).id
 globalFeatures.moist_test = menu.add_feature("Experimental Test Features", "parent", globalFeatures.parent)
 globalFeatures.moist_test.hidden = false
 --options
@@ -2598,7 +2595,7 @@ if feat.on then
 		globalFeatures.moist_tools.hidden = not globalFeatures.moist_tools.hidden
 		system.wait(1200)
 	end
-	system.yield(10)
+
 	return HANDLER_CONTINUE
 end
 return HANDLER_POP
@@ -2698,7 +2695,7 @@ God_Check1_pid_thread = function(context)
 		local name = "Empty Slot"
 		while true do
 	local pped = player.get_player_ped(context.pid)
-	if player.is_player_valid(context.pid) ~= false and  context.pid ~= player.player_id() then
+	if player.is_player_valid(context.pid) ~= false --[[and  context.pid ~= player.player_id()]] then
 	name = player.get_player_name(context.pid)
 			if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
 				system.wait(2000)
@@ -2715,7 +2712,7 @@ God_Check1_pid_thread = function(context)
 			end
 		end
 	end
-	system.wait(0)
+	system.wait(10)
 end
 return HANDLER_CONTINUE
 end
@@ -2724,11 +2721,11 @@ end
 God_Check_pid_thread = function(context)
 	local name = "Empty Slot"
 	while true do
-	if player.is_player_valid(context.pid) ~= false and context.pid ~= player.player_id() then
+	if player.is_player_valid(context.pid) ~= false --[[and context.pid ~= player.player_id()]] then
 	name = player.get_player_name(context.pid)
 		local pped, plyveh
 		if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
-			
+			system.wait(200)
 			local Entity = ""
 			pped = player.get_player_ped(context.pid)
 			if pped ~= nil or pped ~= 0 then
@@ -2736,7 +2733,7 @@ God_Check_pid_thread = function(context)
 				plyveh = player.get_player_vehicle(context.pid)
 				if Players[context.pid].isint ~= true then
 				if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
-					system.wait(10000)
+					system.wait(20000)
 					if not Players[context.pid].isint then
 					if player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) and player.is_player_god(context.pid) then
 					Players[context.pid].PlayerGodMode = true
@@ -3136,9 +3133,9 @@ function TempBlacklistCheck(pid)
 end
 
 function TempBlacklist_Kick(pid)
-	if pid == player.player_id() then
-	return
-	end
+	-- if pid == player.player_id() then
+	-- return
+	-- end
 	system.wait(10)
 	if network.network_is_host() then
 		network.network_session_kick_player(pid)
@@ -3676,7 +3673,6 @@ local ip, sip, token, tohex, prior
 token = player.get_player_host_token(pid)
 tokhex = string.format("%x", token)
 prior = player.get_player_host_priority(pid)
-
 ip = GetIP(pid)
 sip = dec2ip(ip)
 joined_data(name .. ":" .. schx .. "|" .. pid .. "|" .. scid .. "|" .. token .. "|"  ..tokhex .. "|" .. prior .. "|"  .. ip ..  "|" .. sip .. "\n")
@@ -4111,7 +4107,7 @@ chat_console.on = Settings["chat_debug"]
 --TODO: player Features --Griefing
 function griefing()
 menu.add_player_feature("Attach Big dildo on every bone", "action", PlayerFeatParent, function(feat, pid)
-	moist_notify("Overusing Dildo Spawn & Attaches Will Eventually CRASH GTA!", "Possible Crash Warning", 0xff0000ff)
+	moist_notify("Overusing Dildo Spawn & Attaches", "WARNING GTA WILL CRASH!", 0xff0000ff)
 	pped = player.get_player_ped(pid)
 	local pos = v3()
 	local hash = gameplay.get_hash_key("v_res_d_dildo_f")
@@ -4133,11 +4129,11 @@ menu.add_player_feature("Attach Big dildo on every bone", "action", PlayerFeatPa
 		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
 		
 	end
-	moist_notify("To Reduce Crash Risk!\nDelete Spawned Cunts in Online Cleanup!", "Possible Crash Warning")
+	moist_notify("To Reduce Crash Risk!", "Delete Spawned Cunts in Online Cleanup!")
 end)
 
 menu.add_player_feature("Attach dildo on every bone", "action", PlayerFeatParent, function(feat, pid)
-	moist_notify("Overusing Dildo Spawn & Attaches Will Eventually CRASH GTA!", "Possible Crash Warning", 0xff0000ff)
+	moist_notify("Overusing Dildo Spawn & Attaches", "WARNING GTA WILL CRASH!", 0xff0000ff)
 	pped = player.get_player_ped(pid)
 	local pos = v3()
 	for i = 1, #boneid do
@@ -4145,7 +4141,7 @@ menu.add_player_feature("Attach dildo on every bone", "action", PlayerFeatParent
 		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
 		entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, bone_idx, pos, pos, true, true, false, 0, false)
 	end
-	moist_notify("To Reduce Crash Risk!\nDelete Spawned Cunts in Online Cleanup!", "Possible Crash Warning")
+	moist_notify("To Reduce Crash Risk!", "Delete Spawned Cunts in Online Cleanup!")
 end)
 menu.add_player_feature("Attach dildo in Skeleton root", "action", PlayerFeatParent, function(feat, pid)
 	pped = player.get_player_ped(pid)
@@ -4163,6 +4159,7 @@ menu.add_player_feature("Script Host Crash Kick", "action", PlayerFeatParent, fu
 end)
 
 --TODO: REMOVE THESE KICKS FROM PUBLC
+
 
 menu.add_player_feature("Network Bail Kick", "action", 0, function(feat, pid)
 			player.unset_player_as_modder(pid, -1)
@@ -4642,6 +4639,26 @@ return HANDLER_POP
 end)
 unfair_aimbot:set_str_data(ssb_wep_label)
 pos, ImpactPos, BonePos = v3(), v3(), v3()
+
+-- Bone_Thread = {}
+-- BoneFeat = {}
+
+-- Bone_Thread_pos = function(feat)
+-- while true do
+-- pped = player.get_player_ped(player.player_id())
+-- local offset = v3()
+-- local bonebool, pos = ped.get_ped_bone_coords(pped, 57005, offset)
+-- if pos ~= v3(0.0,0.0,0.0) then
+-- local plyheading = player.get_player_heading(player.player_id())
+-- distance = 3.0
+-- plyheading = math.rad((plyheading - 180) * -1)
+-- BonePos = v3(pos.x + (math.sin(plyheading) * -distance), pos.y + (math.cos(plyheading) * -distance), pos.z)
+
+-- end
+-- system.yield(0)
+-- end
+-- end
+-- Bone_Thread[#Bone_Thread + 1] = menu.create_thread(Bone_Thread_pos, feat)
 
 weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
 while feat.on do
@@ -5288,9 +5305,10 @@ system.wait(1)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunF = menu.add_feature("Vehicles F", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5306,9 +5324,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunG = menu.add_feature("Vehicles G", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5324,9 +5343,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunH = menu.add_feature("Vehicles H", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5342,9 +5362,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunI = menu.add_feature("Vehicles I", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5363,12 +5384,12 @@ end)
 		end)
 		system.wait(1)
 	end
-
+		system.wait(1)
 	local tripletfunJ = menu.add_feature("Vehicles J", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-
+	system.wait(1)
 	for i = 1, #vehicle_hashes_J do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_J[i][1], "parent", tripletfunJ, function()
@@ -5382,12 +5403,12 @@ end)
 		end)
 		system.wait(1)
 	end
-
+		system.wait(1)
 	local tripletfunK = menu.add_feature("Vehicles K", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
 	
-
+	system.wait(1)
 	for i = 1, #vehicle_hashes_K do
 		local feature = tostring("globalFeatures." .. "spawn" .. i)
 		feature = menu.add_feature("Veh: " .. vehicle_hashes_K[i][1], "parent", tripletfunK, function()
@@ -5398,9 +5419,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunL = menu.add_feature("Vehicles L", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5416,9 +5438,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunM = menu.add_feature("Vehicles M", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5472,9 +5495,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunP = menu.add_feature("Vehicles P", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5509,9 +5533,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunS = menu.add_feature("Vehicles S", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5527,9 +5552,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunT = menu.add_feature("Vehicles T", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5621,9 +5647,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunY = menu.add_feature("Vehicles Y", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -5639,9 +5666,10 @@ end)
 		end)
 		menu.add_feature("Spawn Vehicle + Bodyguard", "action", feature, function(feat)
 			TripletVeh_WithPed(triplethash)
-end)
- system.wait(1)
- end
+		end)
+		system.wait(1)
+	end
+		system.wait(1)
 	local tripletfunZ = menu.add_feature("Vehicles Z", "parent", triplet_fun, function(feat)
 		triplethash = nil
 	end).id
@@ -7867,10 +7895,8 @@ globalFeatures.moistopt, function(feat)
 				moist_notify("RIP CUNT! DETONATING BOMB!!", "\nFUCK YOU\nGG ~ex_r*~")
 				vehicle.detonate_vehicle_phone_explosive_device()
 			end
-			system.yield(10)
 			return HANDLER_CONTINUE
 		end
-		system.yield(Settings["loop_feat_delay"])
 		return HANDLER_CONTINUE
 	end
 	Settings["aimDetonate_control"] = false
@@ -9402,6 +9428,7 @@ local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_v
 			
 end)
 add_decor_custype:set_str_data(decoratorType)
+system.wait(1)
 
 	end
 end
@@ -12250,10 +12277,10 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 						if player.is_player_god(pid) and Players[pid].PlayerGodMode then
 							tagz[#tagz + 1] = "~h~~r~[G]"
 						
-							if not Players[pid].isgod and pid ~= player.player_id() then
+							if not Players[pid].isgod and player.player_id() ~= pid then
 								if Settings["GodCheckNotif"] and Settings["GodCheck"] then
 									Debug_Out(string.format("Player: " .. name .. " [God Mode Player]"))
-									moist_notify("God Mode Player:\n" .. pid .. " : " .. name, "Modder Detection")
+									moist_notify("God Mode Player:\n" .. pid .. " : " .. (SessionPlayers[pid].Name), "Modder Detection")
 									
 									Players[pid].isgod = true
 								end
@@ -12271,10 +12298,10 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 						if player.is_player_vehicle_god(pid) and Players[pid].PlayerVehGodMode then
 							tagz[#tagz + 1] = "~h~~o~[V]"
 							
-							if not Players[pid].isvgod and pid ~= player.player_id() then
+							if not Players[pid].isvgod --[[and pid ~= player.player_id()]] then
 								Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
 								
-								moist_notify("God Mode Vehicle: " .. pid .. " : " .. name, "Modder Detection")
+								moist_notify("God Mode Vehicle:\n" .. pid .. " : " .. (SessionPlayers[pid].Name), "Modder Detection")
 								Players[pid].isvgod = true
 							end
 							if (tracking.playerped_speed1[pid + 1] >= 28) and player.is_player_vehicle_god(pid) then
@@ -12410,23 +12437,19 @@ function OnlineResetCheck()
 			playerRDB(pid)
 		playergroups[pid + 1]  = player.get_player_group(pid)
 		playerpeds[pid + 1] = player.get_player_ped(pid)
-		system.wait(1)
 		end
 		interiorcheckpid(pid)
-		system.wait(1)
 		God_Check_pid(pid)
-		system.wait(1)
 		God_Check1_pid(pid)
-		system.wait(1)
 		end
 		
 end
 notify_colour_setting()
-system.wait(1)
+
 Create_Csv()
-system.wait(1)
+
 recentplayerslist()
-system.wait(1)
+
 OnlineResetCheck()
-system.wait(1)
+
 TripletSpawns()
