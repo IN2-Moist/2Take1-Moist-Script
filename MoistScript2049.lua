@@ -2695,7 +2695,7 @@ God_Check1_pid_thread = function(context)
 		local name = "Empty Slot"
 		while true do
 	local pped = player.get_player_ped(context.pid)
-	if player.is_player_valid(context.pid) ~= false --[[and  context.pid ~= player.player_id()]] then
+	if player.is_player_valid(context.pid) ~= false and  context.pid ~= player.player_id() then
 	name = player.get_player_name(context.pid)
 			if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) and player.is_player_playing(context.pid) and not entity.is_entity_dead(pped) then
 				system.wait(2000)
@@ -2721,7 +2721,7 @@ end
 God_Check_pid_thread = function(context)
 	local name = "Empty Slot"
 	while true do
-	if player.is_player_valid(context.pid) ~= false --[[and context.pid ~= player.player_id()]] then
+	if player.is_player_valid(context.pid) ~= false and context.pid ~= player.player_id() then
 	name = player.get_player_name(context.pid)
 		local pped, plyveh
 		if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
@@ -3133,9 +3133,9 @@ function TempBlacklistCheck(pid)
 end
 
 function TempBlacklist_Kick(pid)
-	-- if pid == player.player_id() then
-	-- return
-	-- end
+	if pid == player.player_id() then
+	return
+	end
 	system.wait(10)
 	if network.network_is_host() then
 		network.network_session_kick_player(pid)
@@ -3207,7 +3207,7 @@ function Recent_Player(pid, spid)
 			utils.to_clipboard(scid)
 			return HANDLER_POP
 end)
-		local scid, name, token = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
+		local scid, name = (Recent_Players[rpid].rid), (Recent_Players[rpid].name)
 	blacklistpid[#blacklistpid + 1] = menu.add_feature("Blacklist Player", "action_value_str", id, function(feat)
 	if feat.value == 0 then
 			AddScid(scid, name)
@@ -4220,13 +4220,6 @@ menu.add_player_feature("CEO TERMINATE", "action", PlayerFeatParent, function(fe
 	script.trigger_script_event(0xed1bc159, pid, {0, 1, 6, 0})
 end)
 
-menu.add_player_feature("Send HitSquad?", "action", PlayerFeatParent, function(feat, pid)
-
-	--script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), pid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-
-	script.trigger_script_event(0x09260c0a, pid, {player.player_id(), script.get_global_i(2544210 + 4627), 0, 0, 0, 0, 0, 0, 0, player.player_id(), 0, 0, 0})
-	
-end)
 
 for i = 1, #missions do
 	local y = #missions - 1
@@ -4639,26 +4632,6 @@ return HANDLER_POP
 end)
 unfair_aimbot:set_str_data(ssb_wep_label)
 pos, ImpactPos, BonePos = v3(), v3(), v3()
-
--- Bone_Thread = {}
--- BoneFeat = {}
-
--- Bone_Thread_pos = function(feat)
--- while true do
--- pped = player.get_player_ped(player.player_id())
--- local offset = v3()
--- local bonebool, pos = ped.get_ped_bone_coords(pped, 57005, offset)
--- if pos ~= v3(0.0,0.0,0.0) then
--- local plyheading = player.get_player_heading(player.player_id())
--- distance = 3.0
--- plyheading = math.rad((plyheading - 180) * -1)
--- BonePos = v3(pos.x + (math.sin(plyheading) * -distance), pos.y + (math.cos(plyheading) * -distance), pos.z)
-
--- end
--- system.yield(0)
--- end
--- end
--- Bone_Thread[#Bone_Thread + 1] = menu.create_thread(Bone_Thread_pos, feat)
 
 weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_ped_combat, function(feat)
 while feat.on do
@@ -12298,7 +12271,7 @@ loopFeat = menu.add_feature("Loop", "toggle", globalFeatures.moist_tools.id, fun
 						if player.is_player_vehicle_god(pid) and Players[pid].PlayerVehGodMode then
 							tagz[#tagz + 1] = "~h~~o~[V]"
 							
-							if not Players[pid].isvgod --[[and pid ~= player.player_id()]] then
+							if not Players[pid].isvgod and pid ~= player.player_id() then
 								Debug_Out(string.format("Player: " .. name .. " [Vehicle Godmode]"))
 								
 								moist_notify("God Mode Vehicle:\n" .. pid .. " : " .. (SessionPlayers[pid].Name), "Modder Detection")
