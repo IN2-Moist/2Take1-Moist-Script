@@ -1,55 +1,171 @@
+```
+Please be Aware that Frequent updates and test builds for the script will only be posted on Keks Menu Discord Server, Updates may eventually end up on Github but it will be done as and when rather than now!
+
+Please use the invite link below to Join the discord server for the most recent updates:
+```
+
+[Keks Menu Server](https://discord.gg/9QUr3sVDfE)
+
+
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
-# 2Take1-Moist-Script (Build 2.0.4.8: Moist Edition)
+<hr>
 
- Credits & Thanks to Kektram for help with OTR Code and code Advice
+# Moist Script (Build 2.0.5.2)
 
-Thanks to haekkzer for his help and advice over time i was a tester for the menu
+ Credits & Thanks to Kektram for all his support help moving away from 2take1 server
+ Kektram's help & Advice with some of the more challenging coding has been a huge help!
 
-Big thanks goes Proddy for all his coding help advice and work to get shit done which without him alot of this
-script would  not exist!
+Thanks to Proddy for his continued support, help and advice with coding some of the more challeging functions, alot of functions would not exist without his help!
+He knows his stuff and has survived many headaches caused by looking at my code so spectial thanks for taking the time to help me out!
+<hr>
 
-** Recent Updates & Changes **
-
+`
 Updates will now be Posted on Keks Menu Discord Server Join for updates:
 https://discord.gg/9QUr3sVDfE
+`
+<hr>
 
-** Script Changes Additions and Fixes **
+# ** Script Changes Additions and Fixes **
 
-~ Major bug fix with recent players reaching reset value breaking script.
-limitation has now been removed
+* Added 15k CEO Loop
 
-^ Updated Attach Options:
-all but the room attaches are now select-able attach to players ped or Players vehicle (if no attach entity nothing will happen to avoid any breaks when no vehicle exists or detectable)
+   `works for Associates in other Organisations or Associates of yours`
 
-+ Added Attach Options:
 
-+ Added Attach FIB Building
-(note that this will trigger 2t1's modder detection when attaching to peds! False invalid world object and invalid attach attempts or crash attempts on whoever is close when you are near it or spectating)
+* Changed Rapid Switch RPG
+    
+    `<Standard RPG | Special RPG> `
+ 
+  (special has very far range lifetime so travels further without hitting something before exploding)
 
-+ Added Attach Dooms Day Sub
+
+* Updated Online Ped Spawn Options
+
+  Basic Integrity check added to check that all options prior to them selves have been selected if not notify will popup showing which have been selected or not to prevent breaking the script
+
+* Added function: Saved Settings Check which will create a default settings file before executing the main function of the script
+  (this will fix the issues some people have when first executing the script)
+
+* Added: New Experimental God Modder Check
+  (Runs independent to other checks and works best if you have an expanded Radar there is option to change the function for normal or expanded, Normal Radar requires you to be outside of any interior)
+  Notify's for this contain the god mode return result for both player and vehicle if either were detected after 2 delayed checks
+
+* Added: Crash ScriptEvent Kick (Online Player Feature)
+  (uses my script event argument builder to create kick/crash using known events)
+
+* Added 2 troll/griefing options: Online Features -> Online Session
+  1. Send Mk1 Lester Wandering by all
+  2. MK1 Lester Annihilation
+
+* Fixed: Incorrect Bounty Tagging
+
+* Fixed: Auto-Remove RAC-Modder Marking
+  (Now Removes the correct tag)
+
+* Updated: OSD Speed for self Now indicates:
+  Current Speed/Estimated Vehicle Max Speed
+
+* Added: Temporarily 2x Interior & God Check Versions
+  * version 1 the older God Check version & interior check which did not spam detection's
+
+  * version 2 the newer ones might still be a little spammy but the blip checks in Theory should reduce the false notify's
+
+
+* Added- Netevent logging for player spawn
+        this is now used to determine if player is in an interior loaded into the session and not on death screen (note this may well cause the index feat error with everything if you reset state too much)
+
+
+* Added- section **  V1.40 Functions **
+        Found inside Script options (some features from my old 1.40 script no longer in v2)
+        
+* Added- OSD Spectate in V1.40 Functions
+        Will show on screen someone not in a detectable interior spectating any other player and will show you who they are spectating no saveable option for this its default on
+        
+* Updated- Rapid Weapon Switch and RPG Switch
+        More checks added to these to prevent crash
+        
+* Added- New Blip Pulse Option
+        Runs on playerlist loop hidden as u have no control over it other than having the old option on or not
+        
+* Added- New Godmode Check
+        Since detection of entity speed is something else limited in range i have added a check that is turned on when god mode and on a delay will check the players location and compare to its original location
+        if its over the value it will trigger a notify. (player accepting invite to heist (teleport to apt) this could potentially trigger false positive needs further testing)
+      
+* Updated- Vehicle RPM Reduced the size
+  
+* Added- Attach Vehicle to Mine
+        Attaches to your selection: Attach to Vehicle or Attach to Ped
+        Attaches and sets their alpha to 80 detaches and resets alpha when off
+
+* Updated- SE Spam with more delays to prevent crash
+
+* Updated Combat Features- Added Sub Sections to them:
+                        Player Ped Combat Features
+                        Vehicle Combat Features
+
+* Added- Vehicle Weapon Fire which can be positioned with the controls in here its designed mainly for aircraft
+
+* Updated- 2 Orbital Blocks:
+  * New Orbital Blast Door
+  * Moving Wall Orbital Block
+
+    `These can now be done remotely with ease no need to spectate
+you will be teleported to the location block will be built then you get teleported back to original location this is so fast your character twitches for a second
+objects are now world objects + mission objects and set to god
+`
+
+* Added- option to disable Script created Blips so all functions that use this have been updated with a check for that setting
+
+* updated- some SE functions
+
+* Update- toggle off Vehicle God -> Now is: Force Control & God Mode OFF and does exactly what it says so could be used to force control over their vehicle for other stuff too
+
+<hr>
+Script is executed in 2 parts which both are executed in a protected call so should stop shit breaking in other scripts i hope and started to do this to other functions to hopefully stop the break generating spammy errors if they happen
+<hr>
+
+
+* Disabled- Player Checks and Playerinfo box
+        cant be sure but im certain crash related to getting weapon info while in a vehicle (major menu bug) still causing this
+        its random since it could potentially be passed my checks for vehicle or having an attachment just as they get in a vehicle so disabled until i can investigate further
+
+* Added- Blip cleanup when resetting state
+* Added- Force Orbital block
+
+   (works off the blast door block and loops control and position 
+update on it)
+
+
+* (^) Updated Attach Options:
+
+  all but the room attaches are now select-able attach to players ped or Players vehicle (if no attach entity nothing will happen to avoid any breaks when no vehicle exists or detectable)
+
+* (+) Added Attach Options:
+
+* (+) Added Attach FIB Building
+
+  (note that this will trigger 2t1's modder detection when attaching to peds! False invalid world object and invalid attach attempts or crash attempts on whoever is close when you are near it or spectating)
+
+* (+) Added Attach Dooms Day Sub
 Similar situation with the FIB Attach and false modder detection's
 
-+ Added 2 New Script Event Crashes to Online Player Features
+* (+) Added 2 New Script Event Crashes to Online Player Features
 
-- Hidden empty vehicle tools in Online Player Features
+* (-) Hidden empty vehicle tools in Online Player Features
 
-Removed the delays in the Player list loop
+* Removed the delays in the Player list loop
 Player bar updates faster now
 
-Added Save-able option for the Orbital Proximity Blip.
+* Added Save-able option for the Orbital Proximity Blip.
 
-Updated the Spawn Vehicle Triplets
-Now sorted into Alpha Sub Functions
-Vehicle Hash LUA updated for this will break the script if you dont update this file too.
+* Updated the Spawn Vehicle Triplets
 
-Added Back Ceo Money 10k + 20k loop options (timing needs to be worked out still to stop transaction errors 10k alone will be fine)
+  `Now sorted into Alpha Sub Functions
+Vehicle Hash LUA updated for this will break the script if you dont update this file too.`
+<hr><hr>
 
-** Bug Fixes **
-Bugs breaking script in theory should be fixed.
-updated the bounty tagging to now remove when the bounty has been taken by someone
-also when bounty set on you or someone else by someone the tag now correctly gets applied to you or the person its being set on rather than the player placing the bounty.
 
-### GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
+## GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
 
 ## Installation
 
