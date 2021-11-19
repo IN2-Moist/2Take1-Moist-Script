@@ -41,5 +41,7 @@ rem start /B powershell -Command "& {$a Get-Content Translated_IP_OUT_4console.t
 rem start /B powershell -Command "& { Get-WebURL -Content -ResponseHeaders -Url http://ip-api.com/line/$TransIP ; $TransIP = 0 ; }"
 
 
-  start /B powershell -Command "& { $TransIP = Get-Content Translated_IP_OUT_4console.txt -Tail 1 ;}"
-    start /B powershell -Command "& { $FetchedIPINFO = Get-WebURL -Content -ResponseHeaders -Url $TransIP ; -wait ;}"
+ rem start /B powershell -Command "& { $TransIP = Get-Content Translated_IP_OUT_4console.txt -Tail 1 ;}"
+  rem  start /B powershell -Command "& { $FetchedIPINFO = Get-WebURL -Content -ResponseHeaders -Url $TransIP ; -wait ;}"
+       start /B powershell -Command "& { $Response = Invoke-RestMethod -Uri https://support.rockstargames.com/services/status.json -Method get ;  Write-Output $Response;}" 
+       pause
