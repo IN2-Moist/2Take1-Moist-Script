@@ -13,11 +13,11 @@ if not utils.file_exists(Root) then
 menu.notify("No Saved Settings Found!!", "MoistScript Settings", 8, 0xffffff00)
 		
 local file = io.open(Root, "a")
-file:write(tostring("OSD.modvehspeed_osd=false") .. "\n")
-file:write(tostring("OTR_Blips=false") .. "\n")
+file:write(tostring("OSD.modvehspeed_osd=true") .. "\n")
+file:write(tostring("OTR_Blips=true") .. "\n")
 file:write(tostring("New_Notifys=true") .. "\n")
-file:write(tostring("osd_My_speed2=false") .. "\n")
-file:write(tostring("Notify_Me=false") .. "\n")
+file:write(tostring("osd_My_speed2=true") .. "\n")
+file:write(tostring("Notify_Me=true") .. "\n")
 file:write(tostring("NotifyColorBDefault=0") .. "\n")
 file:write(tostring("aimDetonate_control=false") .. "\n")
 file:write(tostring("Auto_Off_RAC=false") .. "\n")
@@ -35,15 +35,15 @@ file:write(tostring("PlayerGodCheckVersion=1") .. "\n")
 file:write(tostring("lag_out=false") .. "\n")
 file:write(tostring("no_peds=false") .. "\n")
 file:write(tostring("no_traffic=false") .. "\n")
-file:write(tostring("osd_date_time=false") .. "\n")
+file:write(tostring("osd_date_time=true") .. "\n")
 file:write(tostring("Blacklist_ON=false") .. "\n")
-file:write(tostring("global_func.rapidfire_hotkey1=false") .. "\n")
+file:write(tostring("global_func.rapidfire_hotkey1=true") .. "\n")
 file:write(tostring("NotifyColorRDefault=0") .. "\n")
 file:write(tostring("OSDDebug2=false") .. "\n")
 file:write(tostring("force_wPara=false") .. "\n")
 file:write(tostring("NotifyColorDefault=0xffffff00") .. "\n")
 file:write(tostring("EWO_TRYHARD=false") .. "\n")
-file:write(tostring("global_func.thermal_stat_switch_hotkey=false") .. "\n")
+file:write(tostring("global_func.thermal_stat_switch_hotkey=true") .. "\n")
 file:write(tostring("spam_wait=1000") .. "\n")
 file:write(tostring("Weapon_Recticle=false") .. "\n")
 file:write(tostring("Weapon_TargetDot=false") .. "\n")
@@ -57,17 +57,17 @@ file:write(tostring("global_func.veh_rapid_fire=false") .. "\n")
 file:write(tostring("GodCheck=false") .. "\n")
 file:write(tostring("NotifyColorADefault=255") .. "\n")
 file:write(tostring("RagDollHotKey=false") .. "\n")
-file:write(tostring("MoistScript=2.0.5.4") .. "\n")
-file:write(tostring("global_func.mk2boostrefill=false") .. "\n")
+file:write(tostring("MoistScript=2.0.5.7") .. "\n")
+file:write(tostring("global_func.mk2boostrefill=true") .. "\n")
 file:write(tostring("chat_debug=false") .. "\n")
-file:write(tostring("orbitalProxyBlip=false") .. "\n")
+file:write(tostring("orbitalProxyBlip=true") .. "\n")
 todaysdate = os.date("%d-%m-%y")
 file:write(tostring("DateSettingsSaved=" .. todaysdate) .. "\n")
 file:write(tostring("force_wBPH=false") .. "\n")
 file:write(tostring("WeaponFastSwitch=false") .. "\n")
 file:write(tostring("Chat_Command=false") .. "\n")
-file:write(tostring("RecentPlayer_Notify=false") .. "\n")
-file:write(tostring("OSD.Player_bar=false") .. "\n")
+file:write(tostring("RecentPlayer_Notify=true") .. "\n")
+file:write(tostring("OSD.Player_bar=true") .. "\n")
 file:write(tostring("Blacklist_Mark=false") .. "\n")
 file:write(tostring("force_pPara=false") .. "\n")
 file:write(tostring("AudioNotify=0") .. "\n")
@@ -91,8 +91,25 @@ Paths, Settings, threads, kick_param = {}, {}, {}, {}
 local Passive_trackerOUT, Passive_trackerIN, ChatEventID, joining_players_logger, Join_Event_Check
 Modders_DB = {{flag = {}, flags = {}, ismod = {}}}
 SessionPlayers = {{pid = {}, Name = {}, Tags = {}, tags = {}, Scid = {}}}
-Players = {{name = {}, orbnotify = {}, isHost = {}, isScHost = {}, isOTR = {}, OTRBlipID = {}, BlipPID = {}, pulse = {}, PedSpawned = {}, bounty = {}, bountyvalue = {}, isUnDead = {}, isPassive = {}, isTalking = {},  flag = {}, flags = {}, ismod = {}, isgod = {}, isvgod = {}, PlayerGodMode = {}, PlayerVehGodMode = {}, isint = {}, Interiorname = {}, isDead = {}, isDamagedbY = {},  isvis = {}, speedK = {}, speedM = {}, InteriorThread = {}, IsGodThread = {}, IsGodThread1 = {}}}
+Players = {{name = {}, orbnotify = {}, isHost = {}, isScHost = {}, isTyping = {}, isOTR = {}, OTRBlipID = {}, BlipPID = {}, pulse = {}, PedSpawned = {}, bounty = {}, bountyvalue = {}, isUnDead = {}, isPassive = {}, isTalking = {},  flag = {}, flags = {}, ismod = {}, isgod = {}, isvgod = {}, PlayerGodMode = {}, PlayerVehGodMode = {}, isint = {}, Interiorname = {}, isDead = {}, isDamagedbY = {},  isvis = {}, speedK = {}, speedM = {}, InteriorThread = {}, IsGodThread = {}, IsGodThread1 = {}}}
+CurrentMenuVersion = "2.40.0"
+MenuVersion = nil
+function NewDLC()
+	MenuVersion = menu.get_version()
+	if MenuVersion ~= CurrentMenuVersion then
 
+	return true
+	elseif MenuVersion == CurrentMenuVersion then
+	return false
+	end
+end
+function moist_notify2(msg1, msg2, colour)
+
+msg1 = msg1 or "MoistScript Putting Fun and Moisture over GTA ONLINE\nLike a Pussy Dripping ona Hard Cock!\nPenetrating Like a Missile from Lester on Opressor!!"
+msg2 =  msg2 or "MoistScript 2.0.5.7"
+local color = Settings["NotifyColorDefault"] or colour
+menu.notify(msg1, msg2, 15, color)
+end
 
 function Moist_Script_Main()
 
@@ -114,7 +131,7 @@ Paths.onlineinterior = Paths.Cfg .. "\\online_interiors.lua"
 Paths.Spamtxt_Data = Paths.Cfg .. "\\Moists_Spamset.ini"
 Paths.tempchat = Paths.Cfg .. "\\TempChatSpam.ini"
 
-Settings["MoistScript"] = "2.0.5.4"
+Settings["MoistScript"] = "2.0.5.7"
 Settings["DateSettingsSaved"] = ""
 Settings["OSD.modvehspeed_osd"] = false
 Settings["OSD.Player_bar"] = false
@@ -122,11 +139,11 @@ Settings["aimDetonate_control"] = false
 Settings["osd_date_time"] = false
 Settings["force_wPara"] = false
 Settings["force_wBPH"] = false
-Settings["lag_out"] = false
+Settings["lag_out"] = true
 Settings["global_func.mk1boostrefill"] = false
-Settings["global_func.mk2boostrefill"] = false
+Settings["global_func.mk2boostrefill"] = true
 Settings["global_func.veh_rapid_fire"] = false
-Settings["global_func.rapidfire_hotkey1"] = false
+Settings["global_func.rapidfire_hotkey1"] = true
 Settings["NotifyColorDefault"] = 0xffffff00
 Settings["NotifyColorRDefault"] = 0
 Settings["NotifyColorGDefault"] = 255
@@ -141,9 +158,9 @@ Settings["chat_debug"] = false
 Settings["Blacklist_ON"] = false
 Settings["Blacklist_Mark"] = false
 Settings["Blacklist_kick"] = false
-Settings["global_func.thermal_stat_switch_hotkey"] = false
+Settings["global_func.thermal_stat_switch_hotkey"] = true
 Settings["osd_My_speed1"] = false
-Settings["osd_My_speed2"] = false
+Settings["osd_My_speed2"] = true
 Settings["RPG_HOTFIRE"] = false
 Settings["counter_Hotkey"] = false
 Settings["spam_wait"] = 0
@@ -151,9 +168,9 @@ Settings["GodCheck"] = false
 Settings["GodCheckNotif"] = false
 Settings["force_pPara"] = false
 Settings["force_pBPH"] = false
-Settings["Notify_Me"] = false
+Settings["Notify_Me"] = true
 Settings["New_Notifys"] = true
-Settings["playerscriptinfo"] = false
+Settings["playerscriptinfo"] = true
 Settings["OSDDebug2"] = false
 Settings["playerlist_loop"] = 1
 Settings["loop_feat_delay"] = 1
@@ -161,9 +178,9 @@ Settings["ScriptEvent_delay"] = 3
 Settings["PlayerCheckVersion"] = 1
 Settings["PlayerGodCheckVersion"] = 1
 Settings["RagDollHotKey"] = false
-Settings["OTR_Blips"] = false
+Settings["OTR_Blips"] = true
 Settings["EWO_TRYHARD"] = false
-Settings["RecentPlayer_Notify"] = false
+Settings["RecentPlayer_Notify"] = true
 Settings["Auto_Off_RAC"] = false
 Settings["orbitalProxyBlip"] = false
 Settings["WeaponFastSwitch"] = false
@@ -179,6 +196,7 @@ Settings["Combat_Tracker_DebugLog"] = true
 Settings["Combat_Tracker_ON"] = true
 Settings["Combat_Tracker_Value"] = 0
 Settings["spec_osd"] = false
+Settings["missilehook"] = true
 
 function SaveSettings()
 Settings["DateSettingsSaved"] = os.date("%d-%m-%y")
@@ -229,49 +247,22 @@ end
 -- Edit feature values based on new Settings values
 end
 function VersionCheck()
-if Settings["MoistScript"] ~= "2.0.5.4" then
-	print("version Mismatch")
-	local file = io.open(Paths.Settings, "w")
-	file:write(tostring(""))
-	file:close()
-	Settings["MoistScript"] = "2.0.5.4"
-	Settings["lag_out"] = false
-	Settings["global_func.mk1boostrefill"] = false
-	Settings["global_func.mk2boostrefill"] = false
-	Settings["global_func.veh_rapid_fire"] = false
-	Settings["NotifyColorDefault"] = 0xffffff00
-	Settings["NotifyColorRDefault"] = 0
-	Settings["NotifyColorGDefault"] = 255
-	Settings["NotifyColorBDefault"] = 0
-	Settings["NotifyColorADefault"] = 255
-	Settings["chat_log"] = true
-	Settings["Chat_Command"] = false
-	Settings["chat_debug"] = false
-	Settings["Blacklist_ON"] = false
-	Settings["GodCheck"] = false
-	Settings["GodCheckNotif"] = false
-	Settings["playerlist_loop"] = 0
-	Settings["loop_feat_delay"] = 0
-	Settings["ScriptEvent_delay"] = 1
-	Settings["Auto_Off_RAC"] = false
-	Settings["blipGodcheck"] = false
-	Settings["blipGodcheckvalue"] = 1
-	Settings["AudioNotify"] = 0
-	Settings["VFX_NotifyGod_ON"] = true
-	Settings["VFX_NotifyGod"] = 0
-	Settings["Weapon_TargetDot"] = false
-    vSettings["Combat_Tracker_Notify"] = false
-    Settings["Combat_Tracker_DebugLog"] = true
-    Settings["Combat_Tracker_ON"] = true
-    Settings["Combat_Tracker_Value"] = 0
-    Settings["spec_osd"] = false
+	
+	Load_Settings()
+if Settings["MoistScript"] ~= "2.0.5.7" then
+	local saved_version = Settings["MoistScript"]
+	Settings["MoistScript"] = "2.0.5.7"
+	moist_notify2("Saved Version = " ..  saved_version .."\nThis Version = ".. Settings["MoistScript"], "Script Version Out of Date", 0xffffff)
+	moist_notify2("Loading Current Saved Settings\nAdding New Settings\nSaving all", "Script Version Updated", 0xffffff)
 
 	SaveSettings()
 end
-Load_Settings()
 end
-Load_Settings()
 VersionCheck()
+Load_Settings()
+
+--TODO: Version Check only to enable when major settings are changed
+
 
 
 function Debug_Out(text, adddate)
@@ -298,6 +289,7 @@ io.write("\n" .. txt .. "\t")
 io.write(tostring(text))
 io.close()
 end
+
 local ScriptLocals, data, data2, data3, kick_param_data = {}, {}, {}, {}, {}
 ScriptLocals["RUSPAM"] = {}
 ScriptLocals.SMS_spam = {}
@@ -360,7 +352,7 @@ setup_vehcontrol()
 
 Playerz = {}
 function PlayerArray()
-for pid = 0, 32 do
+for pid = 0, 31 do
 	Playerz[pid+1] = string.format("Player " .. tonumber(pid))
 end
 	Playerz[34] = "Anonymous"
@@ -488,7 +480,7 @@ end
 
 function Get_Distance3D(pid)
 local pped = player.get_player_ped(pid)
-local playerCoord = player.get_player_coords(player.player_id(0))
+local playerCoord = player.get_player_coords(player.player_id())
 local coord = entity.get_entity_coords(pped)
 local xDis = playerCoord.x - coord.x --PED
 local yDis = playerCoord.y - coord.y	--PED
@@ -873,15 +865,6 @@ if Settings["Notify_Me"] == true then
 end
 end
 
-
-function moist_notify2(msg1, msg2, colour)
-
-msg1 = msg1 or "MoistScript Putting Fun and Moisture over GTA ONLINE\nLike a Pussy Dripping ona Hard Cock!\nPenetrating Like a Missile from Lester on Opressor!!"
-msg2 =  msg2 or "MoistScript 2.0.5.4"
-local color = Settings["NotifyColorDefault"] or colour
-menu.notify(msg1, msg2, 15, color)
-end
-
 ped_group_setup = function()
 	
 	local i = #groupIDs + 1
@@ -899,7 +882,25 @@ spamm.var, spammRU.var = {}, {}
 local mod, modvalue, pedspawns, Group_Hate, Support_Group
 local Ped_Haters, playergroups, playerpeds = {}, {}, {}
 eject = {0, 1, 16, 64, 256, 4160, 262144, 320, 512, 131072}
-spam_preset={{"Love Me","Love Me"},{"Eat Dick","EAT D I C K  !"},{"DEATH TO KOREA(in Korean)","데스 투 코리아"},{"Fake Chinese Looking Boxes","�� ��� � ���� �� � �� ���� ��� �� � �� �� �"},{"Fake Chinese Sell Bot","� ��� ��\nGTA5:� �� ��� ����� Discord:���#��� ����"},{"Fuck You! MassSpam","Fuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!\nFuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!"},{"Suck Cum Drip Cunt MassSpam","SUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \n"},{"FAGGOT","F A G G O T"},{"Cry","CRY"},{"Suck","SUCK"},{"You Suck MassSpam","YOU SUCK \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n "},{"Insert Space"," "},{"Big ! ScreenSpam",string.format("!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			")},{"Weird Ascii line","��������������������������������������������������������������������������͹"}}
+spam_preset={
+	{"Love Me","Love Me"},
+	{"Eat Dick","EAT D I C K  !"},
+	{"DEATH TO KOREA(in Korean)","데스 투 코리아"},
+	{"Fake Chinese Looking Boxes","�� ��� � ���� �� � �� ���� ��� �� � �� �� �"},
+	{"Fake Chinese Sell Bot","� ��� ��\nGTA5:� �� ��� ����� Discord:���#��� ����"},
+	{"Mass Locksign Spam","ΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩΩ"},
+	{"Mass R* Verified Spam","¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦"},
+	{"Mass R* Logo Spam","∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑"},
+	{"Fuck You! MassSpam","Fuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!\nFuck You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You! Fuck  You!"},
+	{"Suck Cum Drip Cunt MassSpam","SUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \nSUCK MY C U M DRIPPING C U N T ! YOU F U C K ! \n"},
+	{"FAGGOT","F A G G O T"},
+	{"Cry","CRY"},
+	{"Suck","SUCK"},
+	{"You Suck MassSpam","YOU SUCK \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n YOU SUCK  \n "},
+	{"Insert Space"," "},
+	{"Big ! ScreenSpam",string.format("!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			!			!			!			\n!			!			!			")},
+	{"Weird Ascii line","��������������������������������������������������������������������������͹"}
+}
 russian_spam={{"Die Infidel", "СМЕРТЬ ИНФИДЕЛ\n\nУМРИ НЕВЕРНЫЙ"},{"Talk English Russian scum", "Говорите по-английски, русские подонки!"},{"Want crashing", "хотите аварийного сбоя"},{"Russia sucks","Россия отстой"},{"iwill pleasure your mom","Я собираюсь, порадовать твою маму! Потом твою сестру! Потм обоих одновременно на твоей кровати."},{"Death to Russia","Смерть России!"},{"Kill all Russians","Убить всех русских"},{"Suck Russia","Соси, Россия"},{"Pussy","киска"},{"Cunt","пизда"},{"Learn English russian Sucks","Учите английский! Русский отстой! !"},{"I'm going to kill all russians!\nPlease Identify Yourself and prepare to die!","Я собираюсь убить всех русских! Пожалуйста идентифицируйте себя, и приготовьтесь умереть!"}}presets={{"beyond_limits",-173663.281250,915722.000000,362299.750000},{"God Mode Death (Kill Barrier)",-1387.175,-618.242,30.362},{"Ocean God Mode Death\n(Outside Limits Deep Ocean)",-5784.258301,-8289.385742,-136.411270},{"Chiliad",491.176,5529.808,777.503},{"Lesters House",1275.544,-1721.774,53.967},{"arena",-264.297,-1877.562,27.756},{"ElysianIslandBridge",-260.923,-2414.139,124.008},{"LSIAFlightTower",-983.292,-2636.995,89.524},{"TerminalCargoShip",983.303,-2881.645,21.619},{"ElBurroHeights",1583.022,-2243.034,93.265},{"CypressFlats",552.672,-2218.876,68.981},{"LaMesa",1116.815,-1539.787,52.146},{"SupplyStreet",777.631,-695.813,28.763},{"Noose",2438.874,-384.409,92.993},{"TatavianMountains",2576.999,445.654,108.456},{"PowerStation",2737.046,1526.873,57.494},{"WindFarm",2099.765,1766.219,102.698},{"Prison",1693.473,2652.971,61.335},{"SandyShoresRadioTower",1847.034,3772.019,33.151},{"AlamoSea",719.878,4100.993,39.154},{"RebelRadioTower",744.500,2644.334,44.400},{"GreatChaparral",-291.035,2835.124,55.530},{"ZancudoControlTower",-2361.625,3244.962,97.876},{"NorthChumash(Hookies)",-2205.838,4298.805,48.270},{"AltruistCampRadioTower",-1036.141,4832.858,251.595},{"CassidyCreek",-509.942,4425.454,89.828},{"MountChiliad",462.795,5602.036,781.400},{"PaletoBayFactory",-125.284,6204.561,40.164},{"GreatOceanHwyCafe",1576.385,6440.662,24.654},{"MountGordoRadioTower",2784.536,5994.213,354.275},{"MountGordoLighthouse",3285.519,5153.820,18.527},{"GrapeSeedWaterTower",1747.518,4814.711,41.666},{"TatavianMountainsDam",1625.209,-76.936,166.651},{"VinewoodHillsTheater",671.748,512.226,133.446},{"VinewoodSignRadioTowerTop",751.179,1245.13,353.832},{"Hawik",472.588,-96.376,123.705},{"PacificSrandardBank",195.464,224.341,143.946},{"WestVinewoodCrane",-690.273,219.728,137.518},{"ArcadiasRadioTower",-170.232,-586.307,200.138},{"HookahPalaceSign",-1.414,-1008.324,89.189},{"MarinaAirportRadioTower",-697.010,-1419.530,5.001},{"DelperoFerrisWheel",-1644.193,-1114.271,13.029},{"VespucciCanalsClockTower",-1238.729,-853.861,77.758},{"DelPeroNrMazebankwest",-1310.777,-428.985,103.465},{"pacifficBluffs",-2254.199,326.088,192.606},{"GWC&GolfingSociety",-1292.052,286.209,69.407},{"Burton",-545.979,-196.251,84.733},{"LosSantosMedicalCenter",431.907,-1348.709,44.673},{"BanhamCanyon",-3085.451,774.426,20.237},{"TongvaHills",-1874.280,2064.565,150.852},{"SanChianskiMountainRange",2900.166,4325.987,102.101},{"HumaineLabs",3537.104,3689.238,45.228},{"YouToolStoreSanChianski",2761.944,3466.951,55.679},{"GalileoObservatory",-422.917,1133.272,325.855},{"GrndSeroraDesertCementwks",1236.649,1869.214,84.824}}
 escort_ped={{"juggalo_01",0xDB134533},{"topless_01",0x9CF26183},{"juggalo_02",0x91CA3E2C},{"lester crest",0xB594F5C3},{"cop",0x9AB35F63},{"mp_agent14",0x6DBBFC8B},{"ramp_marine",0x616C97B9},{"trafficwarden",0xDE2937F3},{"lestercrest_2",0x6E42FD26},{"lestercrest",0x4DA6E849},{"agent14",0xFBF98469},{"m_pros_01",0x6C9DD7C9},{"waremech_01",0xF7A74139},{"weapexp_01",0x36EA5B09},{"weapwork_01",0x4186506E},{"securoguard_01",0xDA2C984E},{"armoured_01",0xCDEF5408},{"armoured_01",0x95C76ECD},{"armoured_02",0x63858A4A},{"marine_01",0xF2DAA2ED},{"marine_02",0xF0259D83},{"security_01",0xD768B228},{"snowcop_01",0x1AE8BB58},{"prisguard_01",0x56C96FC6},{"pilot_01",0xE75B4B1C},{"pilot_02",0xF63DE8E1},{"blackops_01",0xB3F3EE34},{"blackops_02",0x7A05FA59},{"blackops_03",0x5076A73B},{"hwaycop_01",0x739B1EF5},{"marine_01",0x65793043},{"marine_02",0x58D696FE},{"marine_03",0x72C0CAD2},{"ranger_01",0xEF7135AE},{"robber_01",0xC05E1399},{"sheriff_01",0xB144F9B9},{"pilot_01",0xAB300C07},{"swat_01",0x8D8F1B10},{"fibmugger_01",0x85B9C668},{"juggernaut_01",0x90EF5134},{"rsranger_01",0x3C438CD2},{"mp_m_niko_01",4007317449}}
 missions={"Force to Severe Weather","Force to Half Track","Force to Night Shark AAT","Force to APC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission2"}
@@ -2652,7 +2653,7 @@ OSD_Debug2.hidden = true
 
 --TODO: --------------Setup Player ARRAY------------
 function modstart()
-for pid = 0, 32 do
+for pid = 0, 31 do
 	Modders_DB[pid] = {}
 	Modders_DB[pid].flag = nil
 	Modders_DB[pid].flags = nil
@@ -2676,6 +2677,7 @@ for pid = 0, 32 do
 	Players[pid].isDead = false
 	Players[pid].isPassive = false
 	Players[pid].isTalking = false
+	Players[pid].isTyping = false
 	Players[pid].flag = nil
 	Players[pid].flags = nil
 	Players[pid].ismod = false
@@ -2702,7 +2704,7 @@ playerFeat4 = {}
 Active_menu = nil
 local health, infoA, infoAB, infoB
 --local Menu Features
-globalFeatures.parent = menu.add_feature("MoistScript 2.0.5.4", "parent", 0).id
+globalFeatures.parent = menu.add_feature("MoistScript 2.0.5.7", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent, function(feat)
 	if network.network_is_host() then
 	HostOptionsParent.hidden = false
@@ -2726,7 +2728,11 @@ God_Threads_Created.hidden = true
 HostOptionsParent = menu.add_feature("Session Host Options", "parent", globalFeatures.Online_Session)
 HostOptionsParent.hidden = true
 
-globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.Online_Session).id
+globalFeatures.lobby = menu.add_feature("Online Session", "parent", globalFeatures.Online_Session, function(feat)
+    RefreshPlayerInterior:set_str_data(Playerz)
+    interiorcheckbytype:set_str_data(Playerz)
+    OrbitalStrike_AllEntities:set_str_data(Playerz)
+end).id
 globalFeatures.lobbyGrief = menu.add_feature("Session Griefing", "parent", globalFeatures.lobby).id
 
 globalFeatures.troll = menu.add_feature("Troll Features", "parent", globalFeatures.lobby).id
@@ -2759,6 +2765,8 @@ globalFeatures.quick_stats = menu.add_feature("Quick Stat Setups", "parent", glo
 moist_notify("ensure to pay for heist setup first", "Casino Heist Quick Stat Setup")
 moist_notify("cooldown can be removed running the setup first\nEnsure to reapply after paying for it", "Casino Heist Quick Stat Setup")
 end).id
+
+--TODO: Remove ------------------------------------------ REMOVE ---------------------------------------------
 
 globalFeatures.self_options = menu.add_feature("Player Options", "parent", globalFeatures.self).id
 globalFeatures.self_wep = menu.add_feature("Player Weapons", "parent", globalFeatures.self_ped).id
@@ -2798,7 +2806,7 @@ globalFeatures.Spam_Options = menu.add_feature("Chat & SMS Options", "parent", g
 --globalFeatures.Script_loader = menu.add_feature("Script (Auto)Loader", "parent", globalFeatures.parent).id
 globalFeatures.moist_test = menu.add_feature("Experimental Features", "parent", globalFeatures.parent, function(feat)
 
-        for pid = 0, 32 do
+        for pid = 0, 31 do
             if player.is_player_valid(pid) then
 
                 Playerz[pid+1] = player.get_player_name(pid)
@@ -2806,6 +2814,7 @@ globalFeatures.moist_test = menu.add_feature("Experimental Features", "parent", 
         end
         RefreshPlayerInterior:set_str_data(Playerz)
         interiorcheckbytype:set_str_data(Playerz)
+        OrbitalStrike_AllEntities:set_str_data(Playerz)
 
 end)
 
@@ -2937,6 +2946,7 @@ New_Notify.hidden = true
 globalFeatures.moist_tools = menu.add_feature("Moist Test Shit", "parent", globalFeatures.moistopt)
 globalFeatures.moist_tools.hidden = true
 Test_ScriptMode = false
+--TODO: -----------------UPDATE FEATURE VISIBILITY-------------------------
 
 blipids = menu.add_feature("Enable TestMode", "toggle", globalFeatures.moist_tools.id, function(feat)
 	if not feat.on then
@@ -2974,19 +2984,19 @@ local Blip_God = {"Normal Radar","Expanded Radar"}
 blipcheck = menu.add_feature("Blip Interior Check", "value_str", ModderShit, function(feat)
 	local pped
 	if feat.on then
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 	if player.is_player_valid(pid) then
 	pped = player.get_player_ped(pid)
 	Players[pid].BlipPID = ui.get_blip_from_entity(pped)
 		
 	
-	if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1) then return end
+	if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) then return end
 	if Settings["blipGodcheckvalue"] == 0 then
 	if (interior.get_interior_from_entity(player.get_player_ped(player.player_id())) == 0) then
 	system.wait(2000)
 	
 	
-	if ui.get_blip_from_entity(pped) ~= 0 and (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 0) then
+	if ui.get_blip_from_entity(pped) ~= 0 and (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
 		Players[pid].isint = false
 	end
 	end
@@ -2997,8 +3007,8 @@ blipcheck = menu.add_feature("Blip Interior Check", "value_str", ModderShit, fun
 	if not player.is_player_god(player.player_id()) or player.is_player_vehicle_god(player.player_id()) then
 	system.wait(2000)
 	
-		if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1) then return end
-	if ui.get_blip_from_entity(pped) ~= 0 and (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 0) then
+		if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) then return end
+	if ui.get_blip_from_entity(pped) ~= 0 and (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
 		Players[pid].isint = false
 	
 	end
@@ -3035,14 +3045,14 @@ blipGodcheck = menu.add_feature("God Blip Check", "value_str", ModderShit, funct
 	blipcheck.on = true
 
 
-    for pid = 0, 32 do
+    for pid = 0, 31 do
         if player.is_player_valid(pid) and Players[pid].PedSpawned then
             name = player.get_player_name(pid)
             pped = player.get_player_ped(pid)
             Players[pid].BlipPID = ui.get_blip_from_entity(pped)
             local pos = player.get_player_coords(pid)
 		
-				if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1) then return end
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) then return end
 
             if feat.value == 0 then
 
@@ -3113,7 +3123,7 @@ blipGodcheck = menu.add_feature("God Blip Check 2", "toggle", ModderShit, functi
 	blipcheck.on = true
 
 
-    for pid = 0, 32 do
+    for pid = 0, 31 do
 	if  ui.get_blip_from_entity(player.get_player_ped(pid)) == 0 then return end
 	
         if player.is_player_valid(pid) and ui.get_blip_from_entity(player.get_player_ped(pid)) ~= 0 then
@@ -3343,27 +3353,27 @@ end
 end
 
 function ModderAudio_notify()
-	if Settings["AudioNotify"] == 1 then
-	audio.play_sound_frontend(-1, "TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+	-- if Settings["AudioNotify"] == 1 then
+	-- audio.play_sound_frontend(-1, "TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
 	
-		audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
-		system.wait(800)
-		audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
-		system.wait(8)
-		audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
+		-- audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
+		-- system.wait(800)
+		-- audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
 		-- system.wait(8)
 		-- audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
-	end
+		-- -- system.wait(8)
+		-- -- audio.play_sound_from_entity(-1, "Zone_Enemy_Capture", player.get_player_ped(player.player_id()), "DLC_Apartments_Drop_Zone_Sounds")
+	-- end
 	
-	ScreenFX = {"RaceTurbo","LostTimeDay","LostTimeNight"}
+	-- ScreenFX = {"RaceTurbo","LostTimeDay","LostTimeNight"}
 
-	local i = Settings["VFX_NotifyGod"] + 1
-			local postfxhash = gameplay.get_hash_key(ScreenFX[i])
+	-- local i = Settings["VFX_NotifyGod"] + 1
+			-- local postfxhash = gameplay.get_hash_key(ScreenFX[i])
 			
 		
-			graphics.animpostfx_play(postfxhash, 20, true)
-system.wait(1000)
-			graphics.animpostfx_stop_all()
+			-- graphics.animpostfx_play(postfxhash, 20, true)
+-- system.wait(1000)
+			-- graphics.animpostfx_stop_all()
 end
 
 
@@ -3399,7 +3409,7 @@ VFX_NotifyGod.on = Settings["VFX_NotifyGod_ON"]
 NotifyGod = menu.add_feature("Notify God Player/Vehicle", "toggle", ModderShit, function(feat)
 if not feat.on then
 	Settings["GodCheckNotif"] = false
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 		Players[pid].isgod = true
 		Players[pid].isvgod = true
 	end
@@ -3407,7 +3417,7 @@ if not feat.on then
 end
 Settings["GodCheckNotif"] = true
 notifyclear.on = true
-for pid = 0, 32 do
+for pid = 0, 31 do
 	Players[pid].isgod = false
 	Players[pid].isvgod = false
 end
@@ -3451,7 +3461,7 @@ InteriorCheckVer.on = Settings["GodCheckNotif"]
 
 
 function clearnotif()
-for pid = 0, 32 do
+for pid = 0, 31 do
 	note = false
 	Players[pid].isvgod = false
 	Players[pid].isgod = false
@@ -3870,13 +3880,25 @@ end
 return HANDLER_POP
 end
 --TODO: Player Feature Parents
-PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.5.4", "parent", 0).id
+PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.5.7", "parent", 0).id
 spawn_parent = menu.add_player_feature("Spawn Options", "parent", PlayerFeatParent).id
 
 Player_Tools = menu.add_player_feature("Player Tools", "parent", PlayerFeatParent).id
 --vehicle_Tools = menu.add_player_feature("Vehicle Tools", "parent", PlayerFeatParent).id
-BountyId = menu.add_player_feature("Bounty Options", "parent", PlayerFeatParent).id
-playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", PlayerFeatParent).id
+
+	
+BountyId = menu.add_player_feature("Bounty Options", "parent", PlayerFeatParent, function(feat)
+	return HANDLER_POP
+end)
+for i=0,#BountyId.feats do
+BountyId.feats[i].hidden = NewDLC()
+end
+
+playerfeatVars.fm = menu.add_player_feature("Force Player to Mission", "parent", PlayerFeatParent)
+for i=0,#playerfeatVars.fm.feats do
+playerfeatVars.fm.feats[i].hidden = NewDLC()
+end
+
 playerfeatVars.spam_sms = menu.add_player_feature("SMS Spam", "parent", PlayerFeatParent).id
 playerfeatVars.Preset_sms = menu.add_player_feature("SMS Spam Presets", "parent", playerfeatVars.spam_sms).id
 playerfeatVars.Preset_RUS = menu.add_player_feature("Russian Spam Presets", "parent", playerfeatVars.Preset_sms).id
@@ -3909,23 +3931,34 @@ end)
 spam_modifier.max = 200
 spam_modifier.min = 1
 spam_modifier.value = 1
+Spam_type_set = " "
+typeset = "Spam File "
 
-local spam_type = menu.add_feature("Spam Type: ", "autoaction_value_str", parent1.id, function(feat)
-	local notifyvalue = {"Infinate Loop","Stop @ End of Text"}
+spam_type = menu.add_feature("Spam Type: ", "autoaction_value_str", parent1.id, function(feat)
+	local notifyvalue = {}
+	notifyvalue = spam_type:get_str_data()
 	menu.notify("Spam Type Set:\n" .. notifyvalue[feat.value+1], "Moists ChatSpam By File", 5, 0xffffff00)
+	if feat.value == 0 then Spam_type_set = "SpamFile on " elseif feat.value == 1 then Spam_type_set = "Spam2End " end
+	spambyline.name = tostring(Spam_type_set .. notifyvalue[feat.value+1])
+	
 end)
-spam_type:set_str_data({"Infinate Loop","Stop @ End of Text"})
+spam_type:set_str_data({"Loop","Once"})
+spam_type.value = 0
 
-
-local spam_byline = menu.add_feature("spam by line 1 shot", "action_value_i", parent1.id, function(feat)
+spam_byline = menu.add_feature("1 Shot Spam Line: " .. typeset, "action_value_i", parent1.id, function(feat)
 
 	if #loaded_text == nil then return end
 	network.send_chat_message(loaded_text[feat.value], false)
 
 end)
+spam_byline.max = 1
+spam_byline.min = 1
+spam_byline.value = 1
 
 
-local spambyline = menu.add_feature("spam by line", "slider", parent1.id, function(feat)
+
+
+spambyline = menu.add_feature(typeset, "slider", parent1.id, function(feat)
 	if feat.on then
 	if #loaded_text == nil then return end
 	for i = 1, #loaded_text do
@@ -3943,6 +3976,7 @@ spambyline.on = false
 spambyline.max = 2000.00
 spambyline.min = 0.0
 spambyline.mod = 50.0
+
 
 
 function list_File_load_Text()
@@ -3972,6 +4006,7 @@ local files = utils.get_all_files_in_directory(text_dir, "txt")
 	loaded_text[#loaded_text + 1] = line
 	system.wait(0)
 	end
+	spam_byline.max = #loaded_text
 	end
 	if spamon == true then
 	spambyline.on = true
@@ -4023,7 +4058,7 @@ function Chat_N_SMS_Spam()
 
 end
 for y =1, #ScriptLocals["RUSPAM"] do
-for i=1,#ScriptLocals["RUSPAM"][y].feats do
+for i=0,#ScriptLocals["RUSPAM"][y].feats do
 	ScriptLocals["RUSPAM"][y].feats[i].on = false
 	
 end
@@ -4106,12 +4141,12 @@ end
         end)
 end
 	for y =1, #ScriptLocals["RUSPAM"] do
-	    for i=1,#ScriptLocals["RUSPAM"][y].feats do
+	    for i=0,#ScriptLocals["RUSPAM"][y].feats do
         ScriptLocals["RUSPAM"][y].feats[i].on = false
 end
 		end
 	for y =1, #ScriptLocals["SMS_spam"] do
-    for i=1,#ScriptLocals["SMS_spam"][y].feats do
+    for i=0,#ScriptLocals["SMS_spam"][y].feats do
         ScriptLocals["SMS_spam"][y].feats[i].on = false
 end
 	end
@@ -4266,7 +4301,7 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
                     return HANDLER_CONTINUE
                 end
             end)
-            for i=1,#plyfeat.feats do
+            for i=0,#plyfeat.feats do
                 plyfeat.feats[i].on = false
             end
         end
@@ -4331,11 +4366,11 @@ function scriptloader()
             funcname = featname
 			
 		local status, err = pcall(LoadScript, ScriptFiles[i], ScriptFeat[i])
-		if not status then
-		print(tostring(status) .. " Function Error " .. tostring(err))
-		menu.notify("MoistScript: Script Loader\nStatus = " .. tostring(status) .."\nError = " .. tostring(err), "Error Loading Script", 5, 0xff0000ff)
+	--	if not status then
+	--	print(tostring(status) .. " Function Error " .. tostring(err))
+	--	menu.notify("MoistScript: Script Loader\nStatus = " .. tostring(status) .."\nError = " .. tostring(err), "Error Loading Script", 5, 0xff0000ff)
 
-		end
+	--	end
 
         end)
         ScriptFeat[i].hidden = false
@@ -4430,8 +4465,8 @@ end
         if network.network_is_host() then
             network.network_session_kick_player(pid)
         elseif not network.network_is_host() then
-            script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
-            script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+            script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+            script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
         end
         network.network_session_kick_player(pid)
 end
@@ -4515,7 +4550,6 @@ end
                 utils.to_clipboard(ip)
                 return HANDLER_POP
             end)
-
             local scid, name, token = (Recent_Players[rpid].rid), (Recent_Players[rpid].name), (Recent_Players[rpid].htoken)
             blacklistpid[#blacklistpid + 1] = menu.add_feature("Blacklist Player", "action_value_str", RecentID.id, function(feat)
                 if feat.value == 0 then
@@ -4524,7 +4558,6 @@ end
                 elseif feat.value == 1 then
                     RemoveScid(scid)
                     LoadBlacklist()
-
                 end
 
                 return HANDLER_POP
@@ -4590,7 +4623,7 @@ end
         end
 end
     function CheckIF_INSession()
-        for pid = 0, 32 do
+        for pid = 0, 31 do
             if player.is_player_valid(pid) then
                 TempBlacklistCheck(pid)
             end
@@ -4717,12 +4750,16 @@ notify_A.value = Settings["NotifyColorADefault"]
 notify_A.hidden = true
 
 --TODO: Online Features
-menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
-script.trigger_script_event(0xa7d29605, pid, {1300962917})
-script.trigger_script_event(0xa7d29605, pid, {0, 0, 9})
-script.trigger_script_event(0xa7d29605, pid, {pid, 0, 0, 9})
+Send2Island = menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
+script.trigger_script_event(0xDAF8082C, pid, {1300962917})
+script.trigger_script_event(0xDAF8082C, pid, {0, 0, 9})
+script.trigger_script_event(0xDAF8082C, pid, {pid, 0, 0, 9})
 return HANDLER_POP
 end)
+for i=0,#Send2Island.feats do
+    Send2Island.feats[i].hidden = NewDLC()
+end
+
 
 ip_clip = menu.add_player_feature("Copy IP to Clipboard", "action", 0, function(feat, pid)
 ip = GetIP(pid)
@@ -5260,7 +5297,7 @@ end
 end
 function GetPID(scid)
 
-for pid = 0, 32 do
+for pid = 0, 31 do
 	if scid == player.get_player_scid(pid) then
 	return pid
 	end
@@ -5338,7 +5375,7 @@ end
 BL_Notify = {}
 BL_M_Notify = {}
 
-for pid = 0, 32 do
+for pid = 0, 31 do
 BL_Notify[pid] = false
 
 BL_M_Notify[pid] = false
@@ -5368,8 +5405,9 @@ end
             moist_notify("Script-Event Kicked: " .. name .. " : " .. scids[scid], "Blacklist Player Kicked", 0xff0000ff)
             BL_Notify[pid + 1] = true
         end
-        script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
-        script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+        script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+        script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+
 end
     network.network_session_kick_player(pid)
 end
@@ -5403,7 +5441,7 @@ end
     Settings["Blacklist_ON"] = true
 
     local lp = player.player_id()
-    for pid = 0, 32 do
+    for pid = 0, 31 do
         if pid ~= lp then
             local scid = player.get_player_scid(pid)
             if ValidScid(scid) and scids[scid] then
@@ -5465,7 +5503,7 @@ globalFeatures.addtoblacklist = menu.add_player_feature("Add Player to blacklist
             end
         end
 end)
-for i =1, #globalFeatures.addtoblacklist.feats do
+for i =0, #globalFeatures.addtoblacklist.feats do
 globalFeatures.addtoblacklist.feats[i].hidden = false
 end
 
@@ -5473,7 +5511,7 @@ globalFeatures.removefromblacklist = menu.add_player_feature("Remove from Blackl
 RemoveScidByPid(pid)
 player.unset_player_as_modder(pid, mod_flag_4)
 end)
-for i =1, #globalFeatures.removefromblacklist.feats do
+for i =0, #globalFeatures.removefromblacklist.feats do
 globalFeatures.removefromblacklist.feats[i].hidden = false
 end
 
@@ -5606,7 +5644,7 @@ end
             chat_clear = (chat_clear + 1)
             network.send_chat_message(string.format(chat_clear), false)
         until (chat_clear == 30)
-        for i = 0, 32 do
+        for i = 0, 31 do
             if i ~= player.player_id() then
                 Name = tostring(player.get_player_name(i))
                 name = string.lower(string.format(Name))
@@ -5626,21 +5664,22 @@ end
 end
 end
 
+function SE_KickCrash(pid)
+
+    for i = 1, #data do
+        script.trigger_script_event(data[i], pid, {(math.random(1002039228, 9999993922)), 3, (math.random(827870001, 927870001)), (math.random(1002039228, 2022580431)), (math.random(-938762645, -908761645)), (math.random(175165, 1754244778)), (math.random(827470001, 827870001)), 1754244778, 23135423, 827870001, 23135423})
+        system.yield(10)
+        script.trigger_script_event(data[i], pid, {pid, (math.random(-1, 1)), 30583, 0, (math.random(-1, 1)), 0, -328966, 1132039228, (math.random(-1, 1))})
+        system.yield(10)
+		
+    end
+    system.yield(25)
+end
+
 function send_SE_Kick(pid)
-    script.trigger_script_event(0x1d97a038, pid, {0, 0, 46190868, 0, 2})
-    script.trigger_script_event(0x51ac3568, pid, {46190868, 0, 46190868, 46190868, 2})
-    script.trigger_script_event(0x48276e68, pid, {1337, -1, 1, 1, 0, 0, 0})
-    script.trigger_script_event(0x676680c7, pid, {pid, 1337, -1, 1, 1, 0, 0, 0})
-    script.trigger_script_event(0x3935c307, pid, {-72614, 63007, 59027, -12012, -26996, 33399})
-    script.trigger_script_event(0xb9102685, pid, {91645, -99683, 1788, 60877, 55085, 72028})
-    script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
-    script.trigger_script_event(0x7CBA04C8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
-    script.trigger_script_event(0x1ebe7832, pid, {-1, 500000, 849451549, -1, -1})
-    script.trigger_script_event(0xdf8559f9, pid, {-1, 500000, 849451549, -1, -1})
-    script.trigger_script_event(0x1cfa9df0, pid, {-1139568479, -1, 1, 100099})
-    script.trigger_script_event(0xd8fae799, pid, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-    script.trigger_script_event(0xb14e6c0c, pid, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-    script.trigger_script_event(0xb939987b, pid, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+
+    script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+    script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 end
 
 chat_log = menu.add_feature("Log in Game Chat", "toggle", logging, function(feat)
@@ -5723,85 +5762,113 @@ end)
         spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
         entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], pped, 0, pos, pos, true, true, false, 0, false)
 end)
-    menu.add_player_feature("Crash ScriptEvent Kick", "action", PlayerFeatParent, function(feat, pid)
+
+
+plyfeatkick1 = menu.add_player_feature("Crash ScriptEvent Kick", "action", PlayerFeatParent, function(feat, pid)
         local SE_ARGS = build_params(20)
         script.trigger_script_event(0xcbb6ce33, pid, SE_ARGS)
         script.trigger_script_event(0x12d09136, pid, SE_ARGS)
         script.trigger_script_event(0xc50f74ca, pid, SE_ARGS)
-        script.trigger_script_event(2092565704, pid, SE_ARGS)
-
-end)    menu.add_player_feature("Script Host Crash Kick", "action", PlayerFeatParent, function(feat, pid)
-        local SE_ARGS = build_params(20)
-		system.wait(800)
-        script.trigger_script_event(0x8fdcc4d2, pid, SE_ARGS)
-        script.trigger_script_event(0x72d54f50, pid, SE_ARGS)
-        script.trigger_script_event(0xcbb6ce33, pid, SE_ARGS)
-        script.trigger_script_event(0x12d09136, pid, SE_ARGS)
+        script.trigger_script_event(0x493FC6BB, pid, SE_ARGS)
 
 end)
+for i=0,#plyfeatkick1.feats do
+    plyfeatkick1.feats[i].hidden = NewDLC()	
+end
+
+plyfeatkick2 = menu.add_player_feature("Script Host Crash Kick", "action", PlayerFeatParent, function(feat, pid)
+        local SE_ARGS, SE_HASH = build_params(20), {0xB82BDCA4,0x4B07E333}
+		system.wait(800)
+		
+		
+		for i = 1, # SE_HASH do
+        script.trigger_script_event(SE_HASH[i], pid, SE_ARGS)
+		system.yield(0)
+		end
+
+end)
+for i=0,#plyfeatkick2.feats do
+    plyfeatkick2.feats[i].hidden = NewDLC()
+end
 
 
     -- TODO: REMOVE THESE KICKS FROM PUBLC
 
-menu.add_player_feature("Network Bail Kick", "action", 0, function(feat, pid)
+plyfeatBailkick = menu.add_player_feature("Network Bail Kick", "action", 0, function(feat, pid)
         player.unset_player_as_modder(pid, -1)
-        script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+        script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 
 end)
+for i=0,#plyfeatBailkick.feats do
+    plyfeatBailkick.feats[i].hidden = NewDLC()
+end
+
 
 plyerkick = menu.add_player_feature("Player Crash Modder Kick v1", "action", 0, function(feat, pid)
-
-        script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-		script.trigger_script_event(2092565704, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-		script.trigger_script_event(2092565704, pid, {23135423, pid, 827870001, -1729222815, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+	
+	local args_array1 = {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423}
+	local args_array2 = {23135423, pid, 827870001, -1729222815, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423}
+	local events_array = {0x39624029,0xAD63290E,0x7DE8CAC0,0x285DDF33}
+	
+	for i = 1, #events_array do
+	
+        script.trigger_script_event(events_array[i], pid, args_array1)
+		system.yield(0)
+		script.trigger_script_event(events_array[i], pid, args_array2)
+		system.yield(0)
+	end
+		
 		
         return HANDLER_POP
-end).id
+end)
+for i=0,#plyerkick.feats do
+    plyerkick.feats[i].hidden = NewDLC()
+end
 
 plyerCrashkick = menu.add_player_feature("Player Crash Modder Kick v2", "action", 0, function(feat, pid)
+	
+	
+	
+	
+	
 
-        script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x9260c0a, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x72d54f50, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x8fdcc4d2, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x72d54f50, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0xcbb6ce33, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x3d9faec5, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x4a72a08d, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x8638a0ab, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x12d09136, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-        script.trigger_script_event(0x9260c0a, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x72d54f50, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x8fdcc4d2, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x72d54f50, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0xcbb6ce33, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x3d9faec5, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x4a72a08d, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x12d09136, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-        script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
-
+        script.trigger_script_event(0x39624029, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+        script.trigger_script_event(0xAD63290E, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+        script.trigger_script_event(0x7DE8CAC0, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+        script.trigger_script_event(0x285DDF33, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+        
+		script.trigger_script_event(0x39624029, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+        script.trigger_script_event(0xAD63290E, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+        script.trigger_script_event(0x7DE8CAC0, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+        script.trigger_script_event(0x285DDF33, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+        
         return HANDLER_POP
-end).id
+end)
+for i=0,#plyerCrashkick.feats do
+    plyerCrashkick.feats[i].hidden = NewDLC()
+end
 
-    menu.add_player_feature("CEO BAN", "action", PlayerFeatParent, function(feat, pid)
-        script.trigger_script_event(0x50c72ec2, pid, {0, 1, 5, 0})
+CEOBAN = menu.add_player_feature("CEO BAN", "action", PlayerFeatParent, function(feat, pid)
+        script.trigger_script_event(0xD26E4A01, pid, {0, 1, 5, 0})
 end)
-    menu.add_player_feature("CEO DISMISS", "action", PlayerFeatParent, function(feat, pid)
-        script.trigger_script_event(0xed1bc159, pid, {0, 1, 5})
+for i=0,#CEOBAN.feats do
+    CEOBAN.feats[i].hidden = NewDLC()
+end
+CEODISS = menu.add_player_feature("CEO DISMISS", "action", PlayerFeatParent, function(feat, pid)
+        script.trigger_script_event(0x0ED6F046, pid, {0, 1, 5})
 end)
-    menu.add_player_feature("CEO TERMINATE", "action", PlayerFeatParent, function(feat, pid)
-        script.trigger_script_event(0xed1bc159, pid, {1, 1, 6})
-        script.trigger_script_event(0xed1bc159, pid, {0, 1, 6, 0})
+for i=0,#CEODISS.feats do
+    CEODISS.feats[i].hidden = NewDLC()
+end
+CEOTER = menu.add_player_feature("CEO TERMINATE", "action", PlayerFeatParent, function(feat, pid)
+        script.trigger_script_event(0x0ED6F046, pid, {1, 1, 6})
+        script.trigger_script_event(0x0ED6F046, pid, {0, 1, 6, 0})
 end)
+for i=0,#CEOTER.feats do
+    CEOTER.feats[i].hidden = NewDLC()
+end
 
-ScriptEvents = {0x9260c0a,0x72d54f50,0x8fdcc4d2,0x72d54f50,0xcbb6ce33,0x3d9faec5,0x4a72a08d,0x8638a0ab,0xc50f74ca,0x12d09136,0x9260c0a,0x72d54f50,0x8fdcc4d2,0x72d54f50,0xcbb6ce33,0x3d9faec5,0x4a72a08d,0x8638a0ab,0xc50f74ca,0x12d09136,0xc50f74ca,0x8638a0ab,0xc50f74ca,0x8638a0ab,0xc50f74ca,2092565704,0x7CBA04C8,1033875141,-1190123899,-720040631,-148441291,-1320260596}
+ScriptEvents = {1258808115,-1205085020,677240627,2112408256,-1386010354,962740265,-2113023004,704979198,-1715193475,163598572,-1970125962,-1056683619,1757755807}
 KickParamArray = {{0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1015222895, 1021665346, 0, 255, 0, 0, 0, 0, 0, 0, 0, 0, -1, 996499522, 1002740646, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1016296636, 220, 255, 255, 255, 255, 255, 255, 4096, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 1065353216, 0, 0, 1056964608, 1056964608, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1065353216, 0},{23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423},{0, 30583, 0, 0, 0, -328966, 1132039228, 0}}
 
 
@@ -5822,13 +5889,14 @@ PlayerEventCrash =  menu.add_player_feature("Spam EventCrash", "toggle", 0, func
 	end
 	return HANDLER_POP
  end)
-for i=1,#PlayerEventCrash.feats do
+for i=0,#PlayerEventCrash.feats do
     PlayerEventCrash.feats[i].on = false
+    PlayerEventCrash.feats[i].hidden = NewDLC()
 end
 
 PlayerEventCrash1 =  menu.add_player_feature("Spam EventCrash other players", "toggle", 0, function(feat, pid)
 	if feat.on then
-	for playerid = 0, 32 do
+	for playerid = 0, 31 do
 	if player.is_player_valid(playerid) and playerid ~= pid then
 
 	for y = 1, #KickParamArray do
@@ -5848,32 +5916,48 @@ PlayerEventCrash1 =  menu.add_player_feature("Spam EventCrash other players", "t
 	end
 	return HANDLER_POP
  end)
-for i=1,#PlayerEventCrash1.feats do
+for i=0,#PlayerEventCrash1.feats do
     PlayerEventCrash1.feats[i].on = false
+    PlayerEventCrash1.feats[i].hidden = NewDLC()
 end
 
 
     for i = 1, #missions do
         local y = #missions - 1
-        menu.add_player_feature("Force to Mission" .. missions[i], "action", playerfeatVars.fm, function(feat, pid)
-            script.trigger_script_event(0xbb9dd343, pid, {y})
+        menu.add_player_feature("Force to Mission" .. missions[i], "action", playerfeatVars.fm.id, function(feat, pid)
+            script.trigger_script_event(0x786FBAAE, pid, {y})
         end)
+end
+
+function Send_Bounty(pid, value, isNpc)
+    if value == nil then value = 10000 end
+    if player.is_player_valid(pid) then
+        for i = 0, 31 do
+            -- local scid = player.get_player_scid(i)
+            -- if (scid ~= -1 or scid ~= 4294967295) then
+			if player.is_player_valid(i) then
+                script.trigger_script_event(0x4d3010a8, i, {i, pid, 0, value, 0, isNpc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+            end
+        end
+    end
 end
 
 function AddBounty(pid, value, anonymous)
         -- if not network.is_session_started() then return end
         local npc_bit = anonymous and 1 or 0
-        for i = 0, 32 do
+        for i = 0, 31 do
             if player.is_player_valid(i) then
-              --  script.trigger_script_event(0x8e628456, i, {i, pid, 3, value, 1, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+              --  script.trigger_script_event(0x4d3010a8, i, {i, pid, 3, value, 1, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 			  
-				script.trigger_script_event(0x8e628456, i, {i, pid, 3, value, 1, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				--script.trigger_script_event(0x4d3010a8, i, {i, pid, 3, value, 1, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+				script.trigger_script_event(0x4d3010a8, i, {i, pid, 1, value, 0, npc_bit, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+				
             end
 			system.yield(10)	
         end
 end
 
-menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, pid)
+menu.add_player_feature("Anonymous Bounty", "toggle", BountyId.id, function(feat, pid)
         if feat.on ~= AnonymousBounty then
             AnonymousBounty = feat.on
             local pf = menu.get_player_feature(feat.id)
@@ -5886,7 +5970,7 @@ menu.add_player_feature("Anonymous Bounty", "toggle", BountyId, function(feat, p
         return HANDLER_POP
 end)
 
-menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
+menu.add_player_feature("Custom Value", "action", BountyId.id, function(feat, pid)
         local r, s = input.get("Custom Bounty Value", "", 64, 3)
         if r == 1 then
             return HANDLER_CONTINUE
@@ -5901,7 +5985,7 @@ menu.add_player_feature("Custom Value", "action", BountyId, function(feat, pid)
         -- notify_above_map("I've placed a $" .. value .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
 end)
     for i = 1, #BountyPresets do
-        menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId, function(feat, pid)
+        menu.add_player_feature("$" .. BountyPresets[i], "action", BountyId.id, function(feat, pid)
             AddBounty(pid, BountyPresets[i], AnonymousBounty)
             -- notify_above_map("I've placed a $" .. BountyPresets[i] .. " bounty on " .. (pid == player.player_id() and "your" or player.get_player_name(pid) .. "'s") ..  " head.")
         end)
@@ -6824,7 +6908,7 @@ end
             key:push_str("x")
             if key:is_down() then
                 rag_self.on = not rag_self.on
-			moist_notify("Ragdoll Set for your Ped = " .. tostring(rag_self.on), "Moists Ragdoll Control\nMoist Script 2.0.5.4")
+			moist_notify("Ragdoll Set for your Ped = " .. tostring(rag_self.on), "Moists Ragdoll Control\nMoist Script 2.0.5.7")
                 system.wait(1200)
             end
             return HANDLER_CONTINUE
@@ -6854,6 +6938,59 @@ MoistsRagdollControl()
 
 -- TODO: player ped options
 function self_func()
+
+function updatedecals()
+	
+	drawable_feature.value = ped.get_ped_drawable_variation(player.get_player_ped(player.player_id()), 10)
+	texture_feature.value = ped.get_ped_texture_variation(player.get_player_ped(player.player_id()), 10)
+	drawable_feature.max = ped.get_number_of_ped_drawable_variations(player.get_player_ped(player.player_id()), 10)
+	texture_feature.max = ped.get_number_of_ped_texture_variations(player.get_player_ped(player.player_id()), 10, drawable_feature.value)
+end
+
+outfitshit =  menu.add_feature("Outfit Related Shit", "parent", globalFeatures.self, function(feat)
+	updatedecals()
+	
+end).id
+
+Decals = menu.add_feature("Outfit Decal Overlays", "parent", outfitshit, function(feat)
+	updatedecals()
+end).id
+	
+drawable_feature = menu.add_feature("Decal Drawable ID", "autoaction_value_i", Decals,  function(feat)
+	local pped = player.get_player_ped(player.player_id())
+	local peddrawable
+	local pedtexture
+
+	peddrawable = ped.get_ped_drawable_variation(pped, 10)
+
+	pedtexture = ped.get_ped_texture_variation(pped, 10)
+			
+	ped.set_ped_component_variation(pped, 10, drawable_feature.value, pedtexture, 0)
+	texture_feature.max = ped.get_number_of_ped_texture_variations(player.get_player_ped(player.player_id()), 10, drawable_feature.value)
+
+	return HANDLER_POP
+
+end)
+drawable_feature.max = 1
+drawable_feature.min = 0
+drawable_feature.value = ped.get_ped_drawable_variation(player.get_player_ped(player.player_id()), 10)
+
+texture_feature = menu.add_feature("Decal Texture ID", "autoaction_value_i", Decals, function(feat) 
+	local pped = player.get_player_ped(player.player_id())
+	local peddrawable
+	local pedtexture
+
+	peddrawable = ped.get_ped_drawable_variation(pped, 10)
+
+	ped.set_ped_component_variation(pped, 10, peddrawable, texture_feature.value, 0)
+
+	return HANDLER_POP
+end)
+texture_feature.max = 1
+texture_feature.min = 0
+texture_feature.value = ped.get_ped_texture_variation(player.get_player_ped(player.player_id()), 10)
+
+	
     menu.add_feature("give self glowstick", "action", globalFeatures.self_ped, function(feat)
         local pos, offset, rot = v3(), v3(), v3()
         offset.x = 0.12
@@ -6868,7 +7005,7 @@ function self_func()
             offset, rot, true, false, true, 0, true)
 end)
 --Handcuffs female 25 male 41
-    global_func.self = menu.add_feature("Put Handcuffs on Self", "action", globalFeatures.self_ped, function(feat)
+    global_func.self = menu.add_feature("Put Handcuffs on Self", "action", outfitshit, function(feat)
 		pped = player.get_player_ped(player.player_id())
 	
 	if player.is_player_female(player.player_id()) then
@@ -6886,7 +7023,7 @@ end)
         end
 	end
 end)
-    global_func.self = menu.add_feature("Set Handcuffs Locked Position", "action", globalFeatures.self_ped, function(feat)
+    global_func.self = menu.add_feature("Set Handcuffs Locked Position", "action", outfitshit, function(feat)
 		pped = player.get_player_ped(player.player_id())
 	
 		if player.is_player_female(player.player_id()) then
@@ -6899,7 +7036,7 @@ end)
 			
         end)
 		
-    global_func.self = menu.add_feature("White Team parachute Pack", "action", globalFeatures.self_ped, function(feat)
+    global_func.self = menu.add_feature("White Team parachute Pack", "action", outfitshit, function(feat)
         pped = player.get_player_ped(player.player_id())
         ped.get_ped_drawable_variation(pped, 5)
         ped.set_ped_component_variation(pped, 5, 58, 8, 0)
@@ -6932,8 +7069,7 @@ end)
 end)
     ewo_key.on = Settings["EWO_TRYHARD"]
 
-    global_func.force_wPara = menu.add_feature("Force White parachute On", "toggle", globalFeatures.self_options,
-        function(feat)
+    global_func.force_wPara = menu.add_feature("Force White parachute On", "toggle", outfitshit, function(feat)
             Settings["force_wPara"] = true
             if feat.on then
                 local pped = player.get_player_ped(player.player_id())
@@ -6945,8 +7081,7 @@ end)
             return HANDLER_POP
         end)
     global_func.force_wPara.on = Settings["force_wPara"]
-    global_func.force_pPara = menu.add_feature("Force pink parachute On", "toggle", globalFeatures.self_options,
-        function(feat)
+    global_func.force_pPara = menu.add_feature("Force pink parachute On", "toggle", outfitshit, function(feat)
             Settings["force_pPara"] = true
             if feat.on then
                 local pped = player.get_player_ped(player.player_id())
@@ -6958,8 +7093,7 @@ end)
             return HANDLER_POP
         end)
     global_func.force_pPara.on = Settings["force_pPara"]
-    global_func.force_wBPH = menu.add_feature("Force White BPH On", "toggle", globalFeatures.self_options,
-        function(feat)
+    global_func.force_wBPH = menu.add_feature("Force White BPH On", "toggle", outfitshit, function(feat)
             Settings["force_wBPH"] = true
             if feat.on then
                 local pped = player.get_player_ped(player.player_id())
@@ -6971,7 +7105,7 @@ end)
             return HANDLER_POP
         end)
     global_func.force_wBPH.on = Settings["force_wBPH"]
-    global_func.force_pBPH = menu.add_feature("Force Pink BPH On", "toggle", globalFeatures.self_options, function(feat)
+    global_func.force_pBPH = menu.add_feature("Force Pink BPH On", "toggle", outfitshit, function(feat)
         Settings["force_pBPH"] = true
         if feat.on then
             local pped = player.get_player_ped(player.player_id())
@@ -7273,7 +7407,6 @@ function playersid()
 	secped_seat = 0
 	player_seat = 0
 	myplygrp =  player.get_player_group(player.player_id())
-	moist_notify("Moists Escort Service initialized:\nDeaults Set: Escort: a_f_y_topless_01\nVehicle: tampa3", "Moists Escort Service")	
 	local i = #groupIDs + 1
 	groupIDs[i] = ped.create_group()
 	
@@ -7289,7 +7422,7 @@ function playersid()
 	end
 	local me
 	me = player.player_id()
-	for z = 0, 32 do
+	for z = 0, 31 do
 		if z ~= me then
 		end
 		local player_groups = player.get_player_group(z)	
@@ -7313,7 +7446,7 @@ playersid()
 function ped_escort_loop()
 
 		local me = player.player_id()
-		for x = 0, 32 do
+		for x = 0, 31 do
 			if x ~= me then
 
 			
@@ -7667,7 +7800,7 @@ end
             ped.set_ped_combat_movement(spawn_cunt[y], 2)
             ped.set_ped_into_vehicle(spawn_cunt[y], spawned_cunts[i], -1)
 
-            for x = 0, 32 do
+            for x = 0, 31 do
                 if x ~= player.player_id() then
                     ped.set_relationship_between_groups(5, player.get_player_group(x), myplygrp)
                     ped.set_relationship_between_groups(5, myplygrp, player.get_player_group(x))
@@ -8095,7 +8228,7 @@ local pid, PlyVeh = player.player_id(), player.get_player_vehicle(player.player_
 if feat.on then
 if not speedup_done then
 vehicle.set_vehicle_undriveable(PlyVeh, true)
-playervehspd(pid, 3000.000)
+playervehspd(pid, 30000.000)
 vehicle.set_vehicle_undriveable(PlyVeh, false)
 speedup_done = true
 end
@@ -8113,6 +8246,12 @@ return HANDLER_POP
 end)
 SpeedupMyVeh.on = false
 
+
+	
+	
+	
+	
+	
     Veh_setgear = menu.add_feature("Set Current Gear: ", "value_i", Vehicle_Control, function(feat)
         if feat.on then
             local PlyVeh = player.get_player_vehicle(player.player_id())
@@ -8576,6 +8715,35 @@ moist_notify("Thermal / Nightvision State:\n" .. statenow, "Moists Self Stat Opt
 end)
 --TODO: Quick Stat Setups
 local em_rec = {}
+OfficeFloorStats = {{"LIFETIME_SELL_COMPLETE",1100},{"LIFETIME_CONTRA_EARNINGS",25000000}}
+OfficeFloorStatCheck = {"LIFETIME_BUY_COMPLETE","LIFETIME_BUY_UNDERTAKEN"}
+
+
+local check = {}
+OfficeFloor_Money = menu.add_feature("Setup Office Floor Money Decor", "action", globalFeatures.quick_stats, function(feat)
+	for i = 1, #OfficeFloorStatCheck do
+	local stat = Get_Last_MP(OfficeFloorStatCheck[i])
+	local stat_hash = gameplay.get_hash_key(stat)
+	check[#check+1] = stats.stat_get_int(stat_hash, 0)
+	
+	end
+	if  check[1] < 1 or check[2] < 1 then
+	moist_notify("You need to do a Buy Mission first")
+	elseif check[1] >= 0 and check[2] >= 0 then
+for i = 1, #OfficeFloorStats do
+	local stat = Get_Last_MP(OfficeFloorStats[i][1])
+	local stat_hash = gameplay.get_hash_key(stat)
+	em_rec[#em_rec + 1] = stats.stat_get_int(stat_hash, 0)
+	stats.stat_set_int(stat_hash, OfficeFloorStats[i][2], true)
+end
+moist_notify("Stats Setup\nFinished", "Moists Self Stat Options")
+moist_notify("Now Creating Stat Recovery Script\nSaved in scripts folder", "Moists Self Stat Options")
+Create_stat_RecoveryScript()
+moist_notify("Stats Recovery Script\nDone", "Moists Self Stat Options")
+	end
+	moist_notify("Now Switch Sessions Complete a Sell Mission and Switch Sessions Again to Apply the Money Decor")
+end)
+
 local setup_casinostats = menu.add_feature("Setup Casino Heist Stealth Diamonds", "action", globalFeatures.quick_stats, function(feat)
 for i = 1, #heiststat_setup do
 	local stat = Get_Last_MP(heiststat_setup[i][1])
@@ -8588,6 +8756,7 @@ moist_notify("Now Creating Stat Recovery Script\nSaved in scripts folder", "Mois
 Create_stat_RecoveryScript()
 moist_notify("Stats Recovery Script\nDone", "Moists Self Stat Options")
 end)
+
 script_recovery = menu.add_feature("Recovery/Transfer", "parent", globalFeatures.self_statsetup.id)
 local character_design = {"MESH_HEADBLEND","MESH_TEXBLEND","MESH_VARBLEND","HEADBLEND_OVER_BLEMISH_PC","HEADBLEND_OVERLAY_BEARD_PC","HEADBLEND_OVERLAY_EYEBRW_PC","HEADBLEND_OVERLAY_WETHR_PC","HEADBLEND_OVERLAY_MAKEUP_PC","HEADBLEND_OVERLAY_DAMAGE_PC","HEADBLEND_OVERLAY_BASE_PC","HEADBLEND_GEOM_BLEND","HEADBLEND_TEX_BLEND","HEADBLEND_VAR_BLEND","HEADBLEND_DOM","FEATURE_0","FEATURE_1","FEATURE_2","FEATURE_3","FEATURE_4","FEATURE_5","FEATURE_6","FEATURE_7","FEATURE_8","FEATURE_9","FEATURE_10","FEATURE_11","FEATURE_12","FEATURE_13","FEATURE_14","FEATURE_15","FEATURE_16","FEATURE_17","FEATURE_18","FEATURE_19","FEATURE_20","HEADBLENDOVERLAYCUTS_PC","HEADBLENDOVERLAYMOLES_PC","HEADBLEND_OVERLAY_BLUSHER","OVERLAY_BODY_2","OVERLAY_BODY_3","OVERLAY_BODY_1"}
 local des_rec = {}
@@ -8641,7 +8810,7 @@ end
 					
 slotfriend = menu.add_feature("Session Slot for Friends", "parent", HostOptionsParent.id)
 
-for pid = 0, 32 do
+for pid = 0, 31 do
 	local feat = "slot" .. pid
 	feat =  menu.add_feature("Slot " .. pid, "toggle", slotfriend.id, function(feat)
 	local PlayerID = pid
@@ -8660,33 +8829,75 @@ for pid = 0, 32 do
 end
 					
 
-
+function Lobby_SE_Features()
 otr_all =  menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
-for pid = 0, 32 do
-	script.trigger_script_event(0xE85362F9, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+for pid = 0, 31 do
+	script.trigger_script_event(0xE8A824A0, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 	
 end
 end)
 
 nocops_all =  menu.add_feature("Give everyone Cop Bribe", "action", globalFeatures.lobby, function(feat)
-for pid = 0, 32 do
-	script.trigger_script_event(0x46C5BFA5, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2544210 + 4627), 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+for pid = 0, 31 do
+	script.trigger_script_event(0x66B0F59A, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2810287 + 4628), 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 	
 end
 end)
 
 all2island =  menu.add_feature("Send Session to Island", "action", globalFeatures.lobby, function(feat)
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 	if player.is_player_valid(pid) then
-	script.trigger_script_event(0xa7d29605, pid, {1300962917})
+	script.trigger_script_event(0xDAF8082C, pid, {1300962917})
 	end
 	system.wait(0)
 	end
 return HANDLER_POP
 end)
 
+function blockpassiveall()
+for i=0,32 do
+	fnd = player.is_player_friend(i)
+	if i ~= player.player_id() or i ~= fnd then
+		script.trigger_script_event(0x4267b065, i, {1, 1})
+		
+	end
+end
+end
+
+local bountyallplayerses2 = menu.add_feature("set Bounty on Lobby2", "action", globalFeatures.lobby, function(feat)
+for pid = 0, 31 do
+	
+	if player.is_player_valid(pid) and player.get_player_scid(pid) ~= 4294967295 then
+		Send_Bounty(pid, 1)
+		system.wait(100)
+	end
+end
+end)
+
+--TODO: Send Bounty Function
+function Send_Bounty(pid, isNpc)
+	--local isNpc = is_Npc and 1 or 0
+if player.is_player_valid(pid) then
+	for i = 0, 31 do
+		local scid = player.get_player_scid(i)
+		if (scid ~= -1 or scid ~= 4294967295) then
+			script.trigger_script_event(0x4d3010a8, i, {i, pid, 3, 10000, 1, isNpc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+		end
+	end
+end
+end
+
+local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.lobby, function(feat)
+blockpassiveall()
+end)
+
+end
+if not NewDLC() then
+	Lobby_SE_Features()
+end
+
 blip_all =  menu.add_feature("Give everyone Enemy Blips", "action", globalFeatures.lobby, function(feat)
-for i = 0, 32 do
+for i = 0, 31 do
 	local scid = player.get_player_scid(i)
 	if scid ~= 4294967295 then
 		local pped = player.get_player_ped(i)
@@ -8697,16 +8908,6 @@ for i = 0, 32 do
 	end
 end
 end)
-
-function blockpassiveall()
-for i=0,32 do
-	fnd = player.is_player_friend(i)
-	if i ~= player.player_id() or i ~= fnd then
-		script.trigger_script_event(0x57c26452, i, {1, 1})
-		
-	end
-end
-end
 
 
 Lester_Wanderall = menu.add_feature("Send Mk1 Lester Wandering by all", "action",  globalFeatures.lobbyGrief, function(feat)
@@ -8875,8 +9076,12 @@ allplayer_atklester = function(playerid)
     return HANDLER_POP
 end
 
+
+
+
+
 local notallmod = menu.add_feature("UnMark all Players as Modder", "action", globalFeatures.protex, function(feat)
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 		if player.player_id() ~= pid then
 			player.unset_player_as_modder(pid, -1)
 		end
@@ -8884,173 +9089,59 @@ local notallmod = menu.add_feature("UnMark all Players as Modder", "action", glo
 end)
 
 --TODO: Session Kicks
-local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino (Friends Excluded)", "toggle", globalFeatures.kick, function(feat)
-if feat.on then
-	for i = 0, 32 do
-		if player.is_player_valid(i) then
-			local fnd = player.is_player_friend(i)
-			if player.player_id() ~= i or fnd ~= i then
-				script.trigger_script_event(-877212109, i, {91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(-877212109, i, {91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(0x7cba04c8, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
-				script.trigger_script_event(-877212109, i, {-1, 500000, 849451549, -1, -1})
-				script.trigger_script_event(315658550, i, {-1, 500000, 849451549, -1, -1})
-				script.trigger_script_event(-877212109, i, {-1139568479, -1, 1, 100099})
-				script.trigger_script_event(315658550, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(-877212109, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-				script.trigger_script_event(315658550, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
-			end
+function Session_SE_Kicks()
+-- local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino (Friends Excluded)", "toggle", globalFeatures.kick, function(feat)
+-- if feat.on then
+	-- for i = 0, 31 do
+		-- if player.is_player_valid(i) then
+			-- local fnd = player.is_player_friend(i)
+			-- if player.player_id() ~= i or fnd ~= i then
+				-- script.trigger_script_event(-877212109, i, {91645, -99683, 1788, 60877, 55085, 72028})
+				-- script.trigger_script_event(-877212109, i, {91645, -99683, 1788, 60877, 55085, 72028})
+				-- script.trigger_script_event(0x493FC6BB, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+				-- script.trigger_script_event(-877212109, i, {-1, 500000, 849451549, -1, -1})
+				-- script.trigger_script_event(315658550, i, {-1, 500000, 849451549, -1, -1})
+				-- script.trigger_script_event(-877212109, i, {-1139568479, -1, 1, 100099})
+				-- script.trigger_script_event(315658550, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				-- script.trigger_script_event(-877212109, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				-- script.trigger_script_event(315658550, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				
+			-- end
 			
-			system.yield(Settings["ScriptEvent_delay"])
+			-- system.yield(Settings["ScriptEvent_delay"])
 			
-		end
-	end
-	return HANDLER_CONTINUE
-end
-return HANDLER_POP
-end)
+		-- end
+	-- end
+	-- return HANDLER_CONTINUE
+-- end
+-- return HANDLER_POP
+-- end)
 
 Kick_Session = menu.add_feature("Session Kick (excludes friends)", "toggle", globalFeatures.kick, function(feat)
 if feat.on then
-	for pid = 0, 32 do
+	for i = 1, #data do
+	for pid = 0, 31 do
 		if player.is_player_valid(pid) then
 			local fnd = player.is_player_friend(pid)
 			if player.player_id() ~= pid or fnd ~= pid then
-				script.trigger_script_event(0x09260c0a, pid, {13, math.random(-5139791970, -1139791970)})
+				script.trigger_script_event(data[i], pid, {13, math.random(-5139791970, -1139791970)})
 				system.yield(10)
-				script.trigger_script_event(0x445b050e, pid, {13, math.random(-5139791970, -1139791970)})
+				script.trigger_script_event(data[i], pid, {13, math.random(-5139791970, -1139791970)})
 				
 				system.yield(Settings["ScriptEvent_delay"])
 				
 			end
 		end
 	end
+	system.yield(Settings["ScriptEvent_delay"])
+	end
 	return HANDLER_CONTINUE
 end
 return HANDLER_POP
 end)
 
 
-passive_players = {}
-function Set_PassiveTracker()
-for i = 1, 32 do
-	passive_players[i] = false
-end
-end
-Set_PassiveTracker()
-
-Passive_trackerIN = event.add_event_listener("player_join", function(e)
-local pid = tonumber(e.player)
-passive_players[pid +  1] = false
-Players[pid].isvgod = true
-Players[pid].isgod = true
-Players[pid].PlayerGodMode = false
-Players[pid].PlayerVehGodMode = false
-Players[pid].isint = true
-Players[pid].isvis = false
-Players[pid].PedSpawned = false
-
-playergroups[pid + 1]  = player.get_player_group(pid)
-playerpeds[pid + 1] = player.get_player_ped(pid)
-orbitalProxy.on = false
-system.wait(800)
-orbitalProxy.on = true
-
-
-
-return
-end)
-
-Passive_trackerOUT = event.add_event_listener("player_leave", function(e)
-local pid = tonumber(e.player)
-BL_Notify[pid+1] = false
-BL_M_Notify[pid+1] = false
-Modders_DB[pid + 1].flag = nil
-Modders_DB[pid + 1].ismod = false
-passive_players[pid +  1] = false
-Players[pid].bounty = false
-Players[pid].bountyvalue = nil
-Players[pid].PedSpawned = false
-Players[pid].isvgod = false
-Players[pid].isgod = false
-Players[pid].BlipPID = 0
-Players[pid].PlayerGodMode = false
-Players[pid].PlayerVehGodMode = false
-Players[pid].isint = false
-Players[pid].isvis = false
-Players[pid].orbnotify = false
-SessionPlayers[pid].scid = 4294967295
-SessionPlayers[pid].Name = nil
-playergroups[pid + 1]  = nil
-playerpeds[pid + 1] = nil
-orbitalProxy.on = false
-system.wait(800)
-orbitalProxy.on = true
-return
-end)
---TODO: Bounty SEP
-local bountyhook_id = 0
-bountyhook_event = function(source, target, params, count)
-local player_source = player.get_player_name(source)
-if params[1] == 0x8e628456 then
-	if params[3] ~= player_source then
-		Players[params[3]].bounty = true
-		Players[params[3]].bountyvalue = params[5]
-		return false
-		elseif params[3] == player_source then
-		
-		Players[source].bounty = true
-		Players[source].bountyvalue = params[5]
-		return false
-	end
-	elseif params[1] == 0x316c9b35 then
-	Players[source].bounty = false
-	Players[source].bountyvalue = nil
-	return false
-end
-return false
-end
-
-sep1 = function(feat)
-if bountyhook.on then
-	bountyhook_id = hook.register_script_event_hook(bountyhook_event)
-	return HANDLER_POP
-end
-if bountyhook_id ~= 0 then
-	hook.remove_script_event_hook(bountyhook_id)
-	bountyhook_id = 0
-end
-end
-bountyhook = menu.add_feature("SEP Bounty Value", "toggle", globalFeatures.moist_tools.id, sep1)
-bountyhook.on = true
-
-local passivehook_id = 0
-local passivehook_event = function(source, target, params, count)
-	
-local player_source = player.get_player_name(source)
-if params[1] == 0xdf8559f9 then
-	passive_players[source+1] = true
-	return false
-	elseif params[1] == 0x9db10c56 then
-	passive_players[source+1] = false
-	return false
-end
-return false
-end
-sep = function(feat)
-if passivehook_Alert.on then
-	passivehook_id = hook.register_script_event_hook(passivehook_event)
-	return HANDLER_POP
-end
-if passivehook_id ~= 0 then
-	hook.remove_script_event_hook(passivehook_id)
-	passivehook_id = 0
-end
-end
-passivehook_Alert = menu.add_feature("Custom SEP Passive", "toggle", globalFeatures.moist_tools.id, sep)
-passivehook_Alert.on = true
-
-local SECrash = {-988842806,-2043109205,1926582096,153488394,1370240360,-1881357102,1249026189,1033875141,315658550,877212109,-1190123899}
+local SECrash = {1258808115,-1205085020,677240627,2112408256,-1386010354,962740265,-2113023004,704979198,-1715193475,163598572,-1970125962,-1056683619,1757755807}
 
 function build_params(argcnt)
 local ParaMs = {}
@@ -9066,7 +9157,7 @@ end
 local SEC_SESS = menu.add_feature("Script Event Crash Session", "toggle", globalFeatures.kick, function(feat)
 local Params = build_params(120)
 if feat.on then
-	for i = 0, 32 do
+	for i = 0, 31 do
 		if player.is_player_valid(i) then
 			local fnd = player.is_player_friend(i)
 			if i ~= player.player_id() or i ~= fnd then
@@ -9094,9 +9185,9 @@ if feat.on then
 	if not network.network_is_host() then
 		if hostnow ~= player.player_id() or hostnow ~= fnd then
 			player.unset_player_as_modder(hostnow, -1)
-			script.trigger_script_event(2092565704, hostnow, {hostnow, script.get_global_i(1630816 + (1 + (hostnow * 597)) + 508)})
+			script.trigger_script_event(0x493FC6BB, hostnow, {hostnow, script.get_global_i(1893548 + (1 + (hostnow * 600)) + 511)})
 				system.yield(Settings["ScriptEvent_delay"])
-			script.trigger_script_event(0x7CBA04C8, hostnow, {hostnow, script.get_global_i(1630816 + (1 + (hostnow * 597)) + 508)})
+			script.trigger_script_event(0x493FC6BB, hostnow, {hostnow, script.get_global_i(1893548 + (1 + (hostnow * 600)) + 511)})
 				system.yield(Settings["ScriptEvent_delay"])
 		end
 			system.wait(1)
@@ -9120,13 +9211,13 @@ HostForce.on = false
 
 local netbailkick = menu.add_feature("Network Bail Kick", "toggle", globalFeatures.kick, function(feat)
 if feat.on then
-	for i = 0, 32 do
+	for i = 0, 31 do
 		if player.is_player_valid(i) then
 			local fnd = player.is_player_friend(i)
 			if i ~= player.player_id() or i ~= fnd then
-				script.trigger_script_event(2092565704, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+				script.trigger_script_event(0x493FC6BB, i, {i, script.get_global_i(1893548 + (1 + (i * 600)) + 511)})
 					system.wait(1)
-				script.trigger_script_event(0x7CBA04C8, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+				script.trigger_script_event(0x493FC6BB, i, {i, script.get_global_i(1893548 + (1 + (i * 600)) + 511)})
 					system.wait(1)
 			end
 		end
@@ -9139,47 +9230,29 @@ end
 return HANDLER_POP
 end)
 
-local SessionCrash = menu.add_feature("Script Event Crash Session", "action", globalFeatures.kick, function(feat)
-	for pid = 0, 32 do
-		if player.is_player_valid(pid) then
-		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+--TODO: Update Session Crash Events
 
-		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x9260c0a, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x72d54f50, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x8fdcc4d2, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x72d54f50, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0xcbb6ce33, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x3d9faec5, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x4a72a08d, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x8638a0ab, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		script.trigger_script_event(0x12d09136, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		system.wait(2)
-		script.trigger_script_event(0x9260c0a, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x72d54f50, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x8fdcc4d2, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x72d54f50, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0xcbb6ce33, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x3d9faec5, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x4a72a08d, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x12d09136, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-		system.wait(1)
+local SessionCrash = menu.add_feature("SE Kick Crash Session", "action", globalFeatures.kick, function(feat)
+	local Kick_Array1 = {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423}
+	local Kick_Array2 = {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0}
+	
+	for i = 1, #data do
+	for pid = 0, 31 do
+		if not player.is_player_valid(pid) then return end
+		script.trigger_script_event(data[i], pid, Kick_Array1)
+		system.yield(0)
+		script.trigger_script_event(data[i], pid, Kick_Array2)
 		end
-		system.wait(1)
 	end
 end)
+	
 
 --TODO: REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE ! ! ! ! ! ! ! ! ! !! ! 
 
-
+end
+if not NewDLC() then
+Session_SE_Kicks()
+end
 
 local hostnotify = false
 function hostkickall(pid)
@@ -9196,7 +9269,7 @@ if feat.on then
 	end
 	if network.network_is_host() then
 		hostnotify = false
-		for i = 0, 32 do
+		for i = 0, 31 do
 			if player.is_player_valid(i) then
 				if player.player_id() ~= i then
 					--	if i ~= player.is_player_friend(i) then
@@ -9217,8 +9290,8 @@ end)
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
 if feat.on then
-	for i = 0, 32 do
-		for i = 0, 32 do
+	for i = 0, 31 do
+		for i = 0, 31 do
 			if i ~= player.player_id() then
 				if i ~= player.is_player_friend(i) then
 					player.set_player_as_modder(i, 1)
@@ -9234,19 +9307,288 @@ end
 return HANDLER_POP
 end)
 all_mod.on = false
+
+--TODO: ------------------Script Event Hooks----------------------------
+
+function Script_Event_Hooks()
+	
+passive_players = {}
+function Set_PassiveTracker()
+for i = 1, 31 do
+	passive_players[i] = false
+end
+end
+Set_PassiveTracker()
+
+Passive_trackerIN = event.add_event_listener("player_join", function(e)
+local pid = tonumber(e.player)
+passive_players[pid +  1] = false
+Players[pid].isvgod = true
+Players[pid].isgod = true
+Players[pid].PlayerGodMode = false
+Players[pid].PlayerVehGodMode = false
+Players[pid].isint = true
+Players[pid].isvis = false
+Players[pid].PedSpawned = false
+Players[pid].isPassive = false
+Players[pid].isDamagedbY = nil
+
+
+playergroups[pid + 1]  = player.get_player_group(pid)
+playerpeds[pid + 1] = player.get_player_ped(pid)
+orbitalProxy.on = false
+system.wait(800)
+orbitalProxy.on = true
+
+
+
+return
+end)
+
+Passive_trackerOUT = event.add_event_listener("player_leave", function(e)
+local pid = tonumber(e.player)
+BL_Notify[pid+1] = false
+BL_M_Notify[pid+1] = false
+Modders_DB[pid + 1].flag = nil
+Modders_DB[pid + 1].ismod = false
+passive_players[pid +  1] = false
+Players[pid].isPassive = false
+Players[pid].bounty = false
+Players[pid].bountyvalue = nil
+Players[pid].PedSpawned = false
+Players[pid].isvgod = false
+Players[pid].isgod = false
+Players[pid].BlipPID = 0
+Players[pid].PlayerGodMode = false
+Players[pid].PlayerVehGodMode = false
+Players[pid].isint = false
+Players[pid].isvis = false
+Players[pid].orbnotify = false
+Players[pid].isDamagedbY = nil
+SessionPlayers[pid].scid = 4294967295
+SessionPlayers[pid].Name = nil
+playergroups[pid + 1]  = nil
+playerpeds[pid + 1] = nil
+orbitalProxy.on = false
+system.wait(800)
+orbitalProxy.on = true
+return
+end)
+--TODO: Bounty SEP
+
+
+
+local bountyhook_id = 0
+bountyhook_event = function(source, target, params, count)
+local player_source = player.get_player_name(source)
+if params[1] == 0x4d3010a8 then
+	if params[3] ~= player_source then
+		Players[params[3]].bounty = true
+		Players[params[3]].bountyvalue = params[5]
+		return false
+		elseif params[3] == player_source then
+		
+		Players[source].bounty = true
+		Players[source].bountyvalue = params[5]
+		return false
+	end
+	elseif params[1] == 0x151b3bc2 then
+	Players[source].bounty = false
+	Players[source].bountyvalue = nil
+	return false
+end
+return false
+end
+
+--TODO: MISSILE TRACKING
+Missile, MissEntity, MissileBlip, MissCount = {}, {}, {}, 0
+
+function Get_Missile_Entity()
+	
+	repeat
+	MissCount = MissCount + 1
+	
+	until MissCount == 25
+	MissCount = 0
+	
+	
+		MissEntity = object.get_all_objects()
+		for i = 1, #MissEntity do
+		local hash = entity.get_entity_model_hash(MissEntity[i])
+		if hash == 1262355818 then
+		bliprem = ui.get_blip_from_entity(MissEntity[i])
+		if #MissileBlip ~= nil then
+		for b = 1, #MissileBlip do
+		if bliprem == MissileBlip[b] then
+		ui.remove_blip(MissileBlip[b])
+		MissileBlip[b] = nil
+		elseif #MissileBlip == nil then
+		ui.remove_blip(bliprem)
+		end
+		end
+		end
+		MissileBlip[#MissileBlip+1] = ui.add_blip_for_entity(MissEntity[i])
+		BlipIDs[#BlipIDs+1] = MissileBlip[#MissileBlip]
+		
+		ui.set_blip_colour(MissileBlip[#MissileBlip], 48)
+		Missile[#Missile+1] = MissEntity[i]
+
+end
+		end
+end
+
+
+function Missile_Exist()
+	
+	for i = 1, #Missile do
+	
+	if entity.has_entity_collided_with_anything(Missile[i]) then
+	isOnFire = entity.is_entity_on_fire(Missile[i])
+	isNowDead = entity.is_entity_dead(Missile[i])
+	moist_notify("On Fire: " .. tostring(isOnFire) .. "\nIs Dead: " .. tostring(isNowDead))
+	ui.remove_blip(MissileBlip[i])
+	Missile[i] = nil
+	end
+	end
+end
+
+local missilehook_id, Missile_ON_PID = 0, -1
+missilehook_event = function(source, target, params, count)
+	local pid = source
+local player_source = tostring(player.get_player_name(source))
+if params[1] == 0xd621a95f then
+	Find_Missiles.on = true
+	Check_Missiles.on = true
+	Find_Missiles.value = 1
+	Missile_ON_PID = source
+	moist_notify(player_source .. "\nLaunched a Submarine Guided Missile")
+	Get_Missile_Entity()
+ 
+	return false
+	elseif params[1] == 0x2c8a72d0 then
+	Players[source].isTyping = true
+	
+	return false
+	elseif params[1] == 0xc4ef2d0b then
+	Players[source].isTyping = false
+	
+	return false
+	end
+return false
+end
+
+SEP_1 = function(feat)
+	Settings["missilehook"] = missilehook.on
+if missilehook.on then
+	--Settings["missilehook"] = true
+	missilehook_id = hook.register_script_event_hook(missilehook_event)
+	return HANDLER_POP
+end
+if missilehook_id ~= 0 then
+	hook.remove_script_event_hook(missilehook_id)
+	missilehook_id = 0
+end
+end
+
+missilehook = menu.add_feature("Guided Missile Tracking", "toggle", globalFeatures.moistopt, SEP_1)
+missilehook.on = Settings["missilehook"]
+
+Find_Missiles = menu.add_feature("Find Missiles", "value_str", globalFeatures.moist_tools.id, function(feat)	
+	if feat.on and feat.value == 0 then
+	Get_Missile_Entity()
+	Find_Missiles.on = false
+	elseif feat.on and feat.value == 1 then
+		Get_Missile_Entity()
+		system.yield(25)
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+Find_Missiles:set_str_data({"One Time","Loop Find"})
+Find_Missiles.on = false
+
+--TODO: MISSILE TIMER
+	missiletime = -1
+Check_Missiles = menu.add_feature("Check Missiles", "toggle", globalFeatures.moist_tools.id, function(feat)
+	if not feat.on then
+	Find_Missiles.on = false
+	Check_Missiles.on = false
+	missiletime = -1
+	return HANDLER_POP
+	end
+	if missiletime < 0 then
+	missiletime = utils.time()
+	end
+	if utils.time() - missiletime > 100 then
+	Find_Missiles.on = false
+	Check_Missiles.on = false
+	missiletime = -1
+	end
+		return HANDLER_CONTINUE
+	
+end)
+Check_Missiles.on = false
+
+sep1 = function(feat)
+if bountyhook.on then
+	bountyhook_id = hook.register_script_event_hook(bountyhook_event)
+	return HANDLER_POP
+end
+if bountyhook_id ~= 0 then
+	hook.remove_script_event_hook(bountyhook_id)
+	bountyhook_id = 0
+end
+end
+bountyhook = menu.add_feature("SEP Bounty Value", "toggle", globalFeatures.moist_tools.id, sep1)
+bountyhook.on = true
+
+local passivehook_id = 0
+local passivehook_event = function(source, target, params, count)
+	local pid = source
+	
+local player_source = player.get_player_name(pid)
+if params[1] == 0xd4052bab then
+	Players[pid].isPassive = true
+	return false
+	elseif params[1] == 0xc674d326 then
+	Players[pid].isPassive = false
+	return false
+end
+return false
+end
+sep = function(feat)
+if passivehook_Alert.on then
+	passivehook_id = hook.register_script_event_hook(passivehook_event)
+	return HANDLER_POP
+end
+if passivehook_id ~= 0 then
+	hook.remove_script_event_hook(passivehook_id)
+	passivehook_id = 0
+end
+end
+passivehook_Alert = menu.add_feature("Custom SEP Passive", "toggle", globalFeatures.moist_tools.id, sep)
+passivehook_Alert.on = true
+end
+if not NewDLC() then
+	Script_Event_Hooks()
+end
+	
+
+
+
 --TODO: World stuff
 -- **WATER WAVE MODIFIERS (local)**
 Moists_Wave_Mod = function()
-wave_int_cur = tostring("~q~~h~"..water.get_waves_intensity())
+wave_int_cur = tostring(water.get_waves_intensity())
 function Moist_WaveMod()
 	CurrentIntensity = tostring(wave_int_cur)
-	moist_notify("~w~~h~Current Wave Intensity is:".." " ..wave_int_cur.." ", "Moists Wave Mod")
+	moist_notify("Current Wave Intensity is: ".." " ..wave_int_cur.." ", "Moists Wave Mod")
 end
 wave_int_osd = menu.add_feature("Get Current Wave Intensity", "toggle", globalFeatures.Wave, function(feat)
 	if feat.on then
 		local pos = v2()
 		pos.x = .05
-		pos.y = .006
+		pos.y = .086
 		ui.set_text_scale(0.25)
 		ui.set_text_font(0)
 		ui.set_text_centre(0)
@@ -9258,30 +9600,43 @@ wave_int_osd = menu.add_feature("Get Current Wave Intensity", "toggle", globalFe
 	return HANDLER_POP
 end)
 wave_int_osd.on = false
-waveintmodifiers = menu.add_feature("Persistant Wave Intensity", "value_i", globalFeatures.Wave, function(feat)
-	if feat.on then
-		local x = feat.value / 10
+local notifymodvalue = false
+
+waveintmodifiers = menu.add_feature("Persistant Wave Intensity", "value_f", globalFeatures.Wave, function(feat)
+	if not feat.on then
+        notifymodvalue = false
+        return HANDLER_POP
+    end
+
+		local x = feat.value
 		water.set_waves_intensity(x)
+        if not notifymodvalue then
 		Moist_WaveMod()
+        notifymodvalue = true
+        end
 		system.yield(Settings["loop_feat_delay"])
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
+		return HANDLER_CONTINUE	
 end)
-waveintmodifiers.max = 500000
-waveintmodifiers.min = -200
-waveintmodifiers.mod = 1
-waveintmodifiers = menu.add_feature("Change Wave Intensity", "action_value_i", globalFeatures.Wave, function(feat)
-	local x = feat.value / 10
+waveintmodifiers.max = 5000.00
+waveintmodifiers.min = -200.00
+waveintmodifiers.mod = 0.01
+
+waveintmodifiers = menu.add_feature("Change Wave Intensity", "action_value_f", globalFeatures.Wave, function(feat)
+	local x = feat.value
 	water.set_waves_intensity(x)
 	Moist_WaveMod()
 end)
 waveintmodifiers.max = 500000
 waveintmodifiers.min = -200
 waveintmodifiers.mod = 1
-menu.add_feature("Change step Size", "autoaction_i",  globalFeatures.Wave, function(feat)
-	waveintmodifiers.mod = f.value
+
+wavestep = menu.add_feature("Change step Size", "autoaction_value_f",  globalFeatures.Wave, function(feat)
+	waveintmodifiers.mod = feat.value
 end)
+wavestep.max = 100.00
+wavestep.min = 0.05
+wavestep.mod = 0.10
+
 local wavemodifiers = menu.add_feature("Reset Intensity", "action", globalFeatures.Wave, function(feat)
 	water.reset_waves_intensity()
 end)
@@ -9679,7 +10034,7 @@ end
 
 --TODO: Session Wide Blamed Orbital Strike
 
-OrbitalStrike_All = menu.add_feature("Orbital Strike Session Blame: : ", "action_value_str",  globalFeatures.lobbyGrief, function(feat)
+OrbitalStrike_All = menu.add_feature("Orbital Session Blaming: ", "action_value_str",  globalFeatures.lobbyGrief, function(feat)
 	local pos, exp_pos = v3(), v3()
 	
 Audio_POS = {v3(-73.31681060791,-820.26013183594,326.17517089844),v3(2784.536,5994.213,354.275),v3(-983.292,-2636.995,89.524),v3(1747.518,4814.711,41.666),v3(1625.209,-76.936,166.651),v3(751.179,1245.13,353.832),v3(-1644.193,-1114.271,13.029),v3(462.795,5602.036,781.400),v3(-125.284,6204.561,40.164),v3(2099.765,1766.219,102.698)}
@@ -9696,7 +10051,7 @@ Audio_POS = {v3(-73.31681060791,-820.26013183594,326.17517089844),v3(2784.536,59
 	
 	
 	end
-				for pid = 0, 32 do
+				for pid = 0, 31 do
 			local pos =	player.get_player_coords(pid)
 			audio.play_sound_from_coord(-1, "Air_Defences_Activated", pos, "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
 			system.wait(300)
@@ -9707,7 +10062,7 @@ Audio_POS = {v3(-73.31681060791,-820.26013183594,326.17517089844),v3(2784.536,59
 				graphics.request_named_ptfx_asset("scr_xm_orbital")
 				system.wait(0)
 			end
-			for pid = 0, 32 do
+			for pid = 0, 31 do
 			system.wait(30)
 			if player.is_player_valid(pid) then
 			pped = player.get_player_ped(pid)
@@ -9785,7 +10140,144 @@ return HANDLER_POP
 end)
 OrbitalStrike_All:set_str_data(Playerz)
 OrbitalStrike_All.value = 33
-	
+
+
+OrbitalStrike_AllEntities = menu.add_feature("Orbital Session Entities Blaming: ", "action_value_str",  globalFeatures.lobbyGrief, function(feat)
+    local pos, exp_pos, all_Entitiy, a, b, c, d = v3(), v3(), {}, {}, {}, {}, {}
+
+    Audio_POS = {v3(-73.31681060791,-820.26013183594,326.17517089844),v3(2784.536,5994.213,354.275),v3(-983.292,-2636.995,89.524),v3(1747.518,4814.711,41.666),v3(1625.209,-76.936,166.651),v3(751.179,1245.13,353.832),v3(-1644.193,-1114.271,13.029),v3(462.795,5602.036,781.400),v3(-125.284,6204.561,40.164),v3(2099.765,1766.219,102.698)}
+
+    for i = 1, #Audio_POS do
+
+        audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+
+
+        audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+
+
+        audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+
+
+    end
+    for pid = 0, 31 do
+        local pos =	player.get_player_coords(pid)
+        audio.play_sound_from_coord(-1, "Air_Defences_Activated", pos, "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+        system.wait(300)
+    end
+
+    local a = vehicle.get_all_vehicles()
+    for i = 1, #a do
+        all_Entitiy[#all_Entitiy+1] = a[i]
+    end
+    local b = ped.get_all_peds()
+    for i = 1, #b do
+        all_Entitiy[#all_Entitiy+1] = b[i]
+    end
+    local c = object.get_all_objects()
+    for i = 1, #c do
+        all_Entitiy[#all_Entitiy+1] = c[i]
+    end
+    local d = object.get_all_pickups()
+    for i = 1, #d do
+        all_Entitiy[#all_Entitiy+1] = d[i]
+    end
+    myped = player.get_player_ped(feat.value)
+    system.wait(2000)
+    graphics.set_next_ptfx_asset("scr_xm_orbital")
+    while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+        graphics.request_named_ptfx_asset("scr_xm_orbital")
+        system.wait(0)
+    end
+    for y = 1, #all_Entitiy do
+        system.wait(30)
+        pos = entity.get_entity_coords(all_Entitiy[y])
+        offset = v3(0.0,0.0,-2000.00)
+        fire.add_explosion(pos, 59, true, false, 1.5, myped)
+        system.wait(10)
+        fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
+        system.wait(10)
+        fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
+        system.wait(10)
+        fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
+        system.wait(10)
+
+        fire.add_explosion(pos, 50, true, false, 1.0, myped)
+        system.wait(10)
+        exp_pos.x = math.random(-2700, 2700)
+        exp_pos.y = math.random(-3300, 7500)
+        exp_pos.z = math.random(30, 90)
+
+        fire.add_explosion(exp_pos, 74, true, false, 0, myped)
+
+
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+
+        audio.play_sound_from_coord(1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
+
+        graphics.set_next_ptfx_asset("scr_xm_orbital")
+        while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+            graphics.request_named_ptfx_asset("scr_xm_orbital")
+            system.wait(0)
+        end
+        system.wait(5)
+        gameplay.set_override_weather(3)
+        gameplay.clear_cloud_hat()
+        fire.add_explosion(pos, 59, false, true, 1.5, myped)
+        system.wait(10)
+        fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
+        system.wait(10)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 10.000, false, false, true)
+        fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
+        system.wait(10)
+        fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
+        system.wait(10)
+        fire.add_explosion(pos, 50, true, false, 1.0, myped)
+        system.wait(10)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 200.000, false, false, true)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 100.000, false, false, true)
+        fire.add_explosion(pos, 50, true, false, 1.0, myped)
+        system.wait(10)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+
+        graphics.set_next_ptfx_asset("scr_xm_orbital")
+        while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+            graphics.request_named_ptfx_asset("scr_xm_orbital")
+            system.wait(0)
+        end
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 200.000, false, false, true)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 100.000, false, false, true)
+        fire.add_explosion(pos, 59, false, true, 1.5, myped)
+        system.wait(10)
+        fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
+        system.wait(10)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 200.000, false, false, true)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 100.000, false, false, true)
+        fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
+        system.wait(10)
+        fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
+        system.wait(10)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 200.000, false, false, true)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 100.000, false, false, true)
+        fire.add_explosion(pos, 50, true, false, 1.0, myped)
+        system.wait(10)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 200.000, false, false, true)
+        graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos + v3(100.0,100.0,100.00), v3(0, 0, 0), 100.000, false, false, true)
+        fire.add_explosion(pos, 50, true, false, 1.0, myped)
+        system.wait(10)
+        if entity.is_entity_a_ped(all_Entitiy[y]) then
+            fire.start_entity_fire(all_Entitiy[y])
+        end
+        system.wait(1)
+    end
+    system.wait(1)
+
+    return HANDLER_POP
+end)
+OrbitalStrike_AllEntities:set_str_data(Playerz)
+
+
+
 
 
 
@@ -9822,44 +10314,9 @@ hb_delay.max = 1000
 hb_delay.min = 0
 hb_delay.value = 0
 
--- bountyallplayerses = menu.add_feature("set Bounty on Lobby", "action", globalFeatures.troll, function(feat)
--- for pid = 0, 32 do
-	
-	-- if player.is_player_valid(pid) and player.player_id() ~= script.get_host_of_this_script() then
-		-- Send_Bounty(pid)
-		-- system.wait(100)
-	-- end
--- end
--- end)
-
-local bountyallplayerses2 = menu.add_feature("set Bounty on Lobby2", "action", globalFeatures.lobby, function(feat)
-for pid = 0, 32 do
-	
-	if player.is_player_valid(pid) and player.get_player_scid(pid) ~= 4294967295 then
-		Send_Bounty(pid)
-		system.wait(100)
-	end
-end
-end)
-
-function Send_Bounty(pid)
-if player.is_player_valid(pid) then
-	for i = 0, 32 do
-		local scid = player.get_player_scid(i)
-		if (scid ~= -1 or scid ~= 4294967295) then
-			script.trigger_script_event(0x8e628456, i, {i, pid, 3, 10000, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
-		end
-	end
-end
-end
-
-local pasivall = menu.add_feature("Block all players Passive", "action", globalFeatures.lobby, function(feat)
-blockpassiveall()
-end)
-
 function AudioAnnoyance(Snd, Aud)
 local pos = v3()
-for i = 0, 32 do
+for i = 0, 31 do
 	pped = player.get_player_ped(i)
 	local scid = player.get_player_scid(i)
 	if (scid ~= -1 or scid ~= 4294967295 and pped ~= 0) then
@@ -9885,7 +10342,7 @@ end
 local session_soundRape = function()
 sndrape_00 = menu.add_feature("all Water Splashes", "action", globalFeatures.troll, function(feat)
 	local pos = v3()
-	for i = 0, 32 do
+	for i = 0, 31 do
 		pped = player.get_player_ped(i)
 		local scid = player.get_player_scid(i)
 		if (scid ~= -1 or scid ~= 4294967295 and i ~= player.player_id()) then
@@ -9903,7 +10360,7 @@ sndrape_00 = menu.add_feature("all Water Splashes", "action", globalFeatures.tro
 end)
 sndrape_01 = menu.add_feature("all Horn", "action", globalFeatures.troll, function(feat)
 	local pos = v3()
-	for i = 0, 32 do
+	for i = 0, 31 do
 		pped = player.get_player_ped(i)
 		local scid = player.get_player_scid(i)
 		if (scid ~= -1 or scid ~= 4294967295 and i ~= player.player_id()) then
@@ -9915,7 +10372,7 @@ sndrape_01 = menu.add_feature("all Horn", "action", globalFeatures.troll, functi
 end)
 local sndrape_02 = menu.add_feature("all Air Drop", "action", globalFeatures.troll, function(feat)
 	local pos = v3()
-	for i = 0, 32 do
+	for i = 0, 31 do
 		local scid = player.get_player_scid(i)
 		if (scid ~= -1 or scid ~= 4294967295 and i ~= player.player_id()) then
 			pped = player.get_player_ped(i)
@@ -9926,7 +10383,7 @@ local sndrape_02 = menu.add_feature("all Air Drop", "action", globalFeatures.tro
 end)
 local sndrape_3 = menu.add_feature("all Explosion Countdown", "action", globalFeatures.troll, function(feat)
 	local pos = v3()
-	for i = 0, 32 do
+	for i = 0, 31 do
 		local scid = player.get_player_scid(i)
 		if (scid ~= -1 or scid ~= 4294967295 and i ~= player.player_id()) then
 			pped = player.get_player_ped(i)
@@ -9938,7 +10395,7 @@ local sndrape_3 = menu.add_feature("all Explosion Countdown", "action", globalFe
 end)
 local sndrape_4 = menu.add_feature("Annoying sound! CANT BE UNDONE!", "action", globalFeatures.troll, function(feat)
 	local pos = v3()
-	for i = 0, 32 do
+	for i = 0, 31 do
 		local scid = player.get_player_scid(i)
 		if (scid ~= -1 and i ~= player.player_id()) then
 			pped = player.get_player_ped(i)
@@ -9951,7 +10408,7 @@ local sndrape_1 = menu.add_feature("allBomb Armed", "value_i", globalFeatures.tr
 	if feat.on then
 		local delaytime = feat.value
 		local pos = v3()
-		for i = 0, 32 do
+		for i = 0, 31 do
 			local scid = player.get_player_scid(i)
 			if (scid ~= -1 and i ~= player.player_id()) then
 				pped = player.get_player_ped(i)
@@ -9971,7 +10428,7 @@ local sndrape_2 = menu.add_feature("all Bomb Disarmed", "value_i", globalFeature
 	if feat.on then
 		local delaytime = feat.value
 		local pos = v3()
-		for i = 0, 32 do
+		for i = 0, 31 do
 			local scid = player.get_player_scid(i)
 			if (scid ~= -1 and i ~= player.player_id()) then
 				pped = player.get_player_ped(i)
@@ -9990,7 +10447,7 @@ sndrape_2.mod = 5
 end
 session_soundRape()
 menu.add_feature("Illuminate Everyone", "action", globalFeatures.troll, function(feat)
-for i = 0, 32 do
+for i = 0, 31 do
 	pped = player.get_player_ped(i)
 	if pped ~= 0 then
 		local pos, offset, rot = v3(), v3(), v3()
@@ -10018,7 +10475,7 @@ end
 return HANDLER_POP
 end)
 menu.add_feature("Everyone is a Dick Head!", "action", globalFeatures.troll, function(feat)
-for i = 0, 32 do
+for i = 0, 31 do
 	pped = player.get_player_ped(i)
 	if pped ~= 0 then
 		local pos, rot, offset = v3(), v3(), v3()
@@ -10037,7 +10494,7 @@ end
 return HANDLER_POP
 end)
 menu.add_feature("Give all Dildo Dicks", "action", globalFeatures.troll, function(feat)
-for i = 0, 32 do
+for i = 0, 31 do
 	pped = player.get_player_ped(i)
 	if pped ~= 0 then
 		local pos, rot, offset = v3(), v3(), v3()
@@ -10093,7 +10550,7 @@ end)
 --TODO: Ped Spawn Features
 
 function spawn_groups()
-for pid = 0, 32 do
+for pid = 0, 31 do
 	playergroups[pid + 1]  = player.get_player_group(pid)
 	playerpeds[pid + 1] = player.get_player_ped(pid)
 end
@@ -10294,7 +10751,7 @@ if #BlipIDs == 0 or nil then return end
 for i = 1, #BlipIDs do
 	ui.remove_blip(BlipIDs[i])
 end
-for pid = 0, 32 do
+for pid = 0, 31 do
 	if Players[pid].OTRBlipID ~= nil then
 		local pped = player.get_player_ped(pid)
 		ply_blip = ui.get_blip_from_entity(pped)
@@ -10651,7 +11108,7 @@ function GetKiller(pid)
   --  end
     --  femped = femped and "Killed Her Self!" or "Killed Him Self!"
     name1 = tostring(player.get_player_name(pid))
-    for pid2 = 0, 32 do
+    for pid2 = 0, 31 do
         pped2 = player.get_player_ped(pid2)
         name2 = tostring(player.get_player_name(pid2))
         if entity.has_entity_been_damaged_by_entity(pped1, pped2) then
@@ -10661,24 +11118,32 @@ function GetKiller(pid)
             if pid == pid2 then
                 text = tostring("Player: " .. name2 .. "\n" .. femped1)
                 if Settings["Combat_Tracker_Notify"] and not Settings["Combat_Tracker_DebugLog"] then
+                    if Settings["Combat_Tracker_ON"] and Settings["Combat_Tracker_Notify"] then
                     menu.notify("Player: " .. name2 .. "\n" .. femped1, "Session Combat Tracker", 6, 0xffff00ff)
+                    end
                 elseif Settings["Combat_Tracker_DebugLog"] and not Settings["Combat_Tracker_Notify"] then
                     Debug_Out(text, false)
                     
                 elseif Settings["Combat_Tracker_DebugLog"] and Settings["Combat_Tracker_Notify"] then
                     
+                    if Settings["Combat_Tracker_ON"] and Settings["Combat_Tracker_Notify"] then
                     menu.notify("Player: " .. name2 .. "\n" .. femped1, "Session Combat Tracker", 6, 0xffff00ff)
+                    end
                     Debug_Out(text, false)
                     system.wait(0)
                     end
                 elseif pid ~= pid2 then
                     text = tostring("Player: " .. name2 .. "\nKilled: " .. name1)
                     if Settings["Combat_Tracker_Notify"] and not Settings["Combat_Tracker_DebugLog"] then
+                        if Settings["Combat_Tracker_ON"] and Settings["Combat_Tracker_Notify"] then
                         menu.notify("Player: " .. name2 .. "\nKilled: " .. name1, "Session Combat Tracker", 6, 0xffff00ff)
+                        end
                     elseif Settings["Combat_Tracker_DebugLog"] and not Settings["Combat_Tracker_Notify"] then  
                     Debug_Out(text, false)
                 elseif Settings["Combat_Tracker_DebugLog"] and Settings["Combat_Tracker_Notify"] then
+                    if Settings["Combat_Tracker_ON"] and Settings["Combat_Tracker_Notify"] then
                     menu.notify("Player: " .. name2 .. "\nKilled: " .. name1, "Session Combat Tracker", 6, 0xffff00ff)
+                    end
                     Debug_Out(text, false)
                     system.wait(0)
                 end
@@ -10715,11 +11180,11 @@ PlyTrackCombat.value = Settings["Combat_Tracker_Value"]
 
 PlyTrackDamage = menu.add_feature("Track all Players Damage", "toggle", globalFeatures.moistopt, function(feat)
 	if feat.on then
-	for pid1 = 0, 32 do
+	for pid1 = 0, 31 do
 	pped1 = player.get_player_ped(pid1)
 	name1 = tostring(player.get_player_name(pid1))
     system.wait(0)
-	for pid2 = 0, 32 do
+	for pid2 = 0, 31 do
 	pped2 = player.get_player_ped(pid2)
 	name2 = tostring(player.get_player_name(pid2))
 	if entity.has_entity_been_damaged_by_entity(pped1, pped2) then
@@ -10737,7 +11202,7 @@ PlyTrackDamage.on = true
 
 PlyTracker.track_all = menu.add_feature("Track all Players Speed", "toggle", globalFeatures.moistopt, function(feat)
 	if feat.on then
-		for i = 0, 32 do
+		for i = 0, 31 do
 			local y = i + 1
 			local ent
 			local ent1 = player.get_player_ped(i)
@@ -10770,7 +11235,7 @@ spec_osd = menu.add_feature("Spectate OSD", "toggle", OldVersion_stuff, function
 	pos.x = 0.10
 	pos.y = .05
 	
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 	if --[[pid ~= player.player_id() and]] player.is_player_valid(pid) then
 	if player.is_player_spectating(pid) and player.is_player_playing(pid) and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
 	local target = network.get_player_player_is_spectating(pid)
@@ -10792,7 +11257,7 @@ spec_osd = menu.add_feature("Spectate OSD", "toggle", OldVersion_stuff, function
 	ui.set_text_centre(0)
 	ui.set_text_outline(1)
 	pos.x = 0.30
-	ui.draw_text("~b~ " ..(tostring(name)) .. "\t~w~Spectating:", pos)
+	ui.draw_text(" ~b~ " ..(tostring(name)) .. " ~w~Spectating: ", pos)
 		ui.set_text_scale(0.255)
 	ui.set_text_font(0)
 	ui.set_text_color(255, 255, 255, 255)
@@ -10807,7 +11272,7 @@ spec_osd = menu.add_feature("Spectate OSD", "toggle", OldVersion_stuff, function
 	ui.set_text_color(255, 255, 255, 255)
 	ui.set_text_centre(0)
 	ui.set_text_outline(1)
-	ui.draw_text("~h~~g~Player~b~ Specate: \t " .. (tostring(name)) .. "\t~w~Spectating:\t" .. (tostring(targetname)), pos)
+	ui.draw_text("~h~~g~Player~b~ Specate: " .. (tostring(name)) .. " ~w~Spectating: " .. (tostring(targetname)), pos)
 	end
 	end
 	end
@@ -10905,75 +11370,6 @@ if AnimDictReguested then
 	return toilet, clone
 end
 
-spawntoilet = menu.add_feature("Vehicle Toilet", "action", globalFeatures.moist_test.id, function(feat)
-	local pid = player.player_id()
-	local pped = player.get_player_ped(pid)
-	local pos, offset, rot = v3(0.0,0.0,0.0), v3(0.0,-0.21,-0.10), v3(0.0,0.0,180.0)
-	local pedbool, pos = ped.get_ped_bone_coords(pped, 11816, offset)
-	local i = #spawned_cunts + 1
-	local clone = ped.clone_ped(pped)
-	local myrot = entity.get_entity_rotation(pped)
-	entity.set_entity_as_mission_entity(clone, true, true)
-	spawned_cunts[i] = object.create_object(1872312775, pos, true, false)
-			entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
-		--	entity.attach_entity_to_entity(spawned_cunts[i], clone, 11816, offset, rot, true, false, true, 0, true)
-			--entity.attach_entity_to_entity(clone, pped, 11816, offset, rot, true, false, true, 0, true)
-	 toilet = spawned_cunts[i]
-			
-system.wait(0)
-RequestAnimDict("rcmpaparazzo_2ig_3", 10)
-system.wait(10)
-
-local AnimDictReguested = RequestAnimDict("rcmpaparazzo_2ig_3", 10)
-system.wait(100)
-AnimDictReguested = RequestAnimDict("rcmpaparazzo_2ig_3", 10)
-if AnimDictReguested then
-	RequestAnimSet("pm_incar_notdoinanythin", 10)
-	system.wait(10)
-		RequestAnimSet("pm_incar_notdoinanythin", 10)
-			network.request_control_of_entity(clone)
-			--task_play_anim(Ped ped, string dict, string anim, float speed, float speedMult, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ) 0.1, 0.01, 999999999, 1, 0.01,
-		end
-	system.wait(1)
-	RequestAnimSet("pm_incar_notdoinanythin", 10)
-	local hash = gameplay.get_hash_key("deluxo")
-	local i = #spawned_cunts + 1
-			entity.attach_entity_to_entity(spawned_cunts[i], clone, 11816, offset, rot, true, false, true, 0, true)
-	
-    streaming.request_model(hash)
-
-    while (not streaming.has_model_loaded(hash)) do
-	system.wait(10)
-	end
-	
-	local vehpos = get_offset(pid, 5)
-	local head = player.get_player_heading(pid)
-	spawned_cunts[i] = vehicle.create_vehicle(hash, vehpos, head, true, false)
-	entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
-	entity.set_entity_visible(spawned_cunts[i], false)
-	decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
-	 vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
-    vehicle.get_vehicle_mod(spawned_cunts[i], 10)
-    vehicle.set_vehicle_mod(spawned_cunts[i], 10, -1, false)
-	--entity.attach_entity_to_entity(clone, toilet, 0, v3(0.95, 0.85, 0.90), v3(0.0, 0.0, 180.0), true, false, true, 0, true)
---	entity.attach_entity_to_entity(clone, pped, 0, v3(0.95, 0.85, 0.90), v3(0.0, 0.0, 90.0), true, false, true, 0, true)
-	entity.set_entity_heading(clone, head)
-	--entity.attach_entity_to_entity(clone, pped, 0, v3(0.95, 0.85, 1.90), myrot, true, false, true, 0, true)
-	
-	ped.set_ped_into_vehicle(pped, spawned_cunts[i], -1)
-	system.wait(100)
-	myrot = entity.get_entity_rotation(pped)
-	myrot.y = myrot.y + 1.50
-	entity.attach_entity_to_entity(toilet, pped, 0, v3(0.0,1.00,1.90), v3(-70.90,0.0,0.0), true, false, true, 0, true)
-	system.wait(100)
-		network.request_control_of_entity(clone)
-	ai.task_play_anim(clone, "rcmpaparazzo_2ig_3", "pm_incar_notdoinanythin", 1.0, 12.0, 999999999, 1, 0.9, false, false, false)
-	--entity.set_entity_alpha(spawned_cunts[i], 1, true)
-	--local bone = entity.get_entity_bone_index_by_name(spawned_cunts[i], "hub_lf")
-	
-	--entity.set_entity_visible(pped, true)
-	
-end)
 local contrllabel = {"LS_AXIS_X","LS_AXIS_Y","RS_AXIS_X","RS_AXIS_Y","TRIGGER_LT","TRIGGER_RT","TopTrigger_LB","TopTrigger_RB"}
 local controlID = {195,196,197,198,207,208,205,206}
 
@@ -11029,7 +11425,7 @@ Control_Force = menu.add_feature("Control Input Apply Force", "toggle", globalFe
 	end
 end)
 Control_Force.on = false
-
+Control_Force.hidden = true
 Control_Velo = menu.add_feature("Control Input velocity", "toggle", globalFeatures.moist_test.id, function(feat)
 	if feat.on then
 	local pid = player.player_id()
@@ -11051,11 +11447,11 @@ Control_Velo = menu.add_feature("Control Input velocity", "toggle", globalFeatur
 	value.x = controls.get_control_normal(-1, controlID[1]) * 100
 	value.y = controls.get_control_normal(-1, controlID[2]) * 100
 		local rad = math.rad(180)
-		RootPos = player.get_player_coords(orbit_pid)
-		local x = Distance*math.cos(rad) + value.x
-		local y = Distance*math.sin(rad) + value.y
-		value.x = x
-		value.y = y
+		RootPos = player.get_player_coords(pid)
+		local x = value.x*math.cos(rad) + value.x
+		local y = value.y*math.sin(rad) + value.y
+		value.x = tonumber(x)
+		value.y = tonumber(y)
 	if controls.get_control_normal(-1, controlID[5]) ~= 0.0 then
 	value.z = tonumber("-" ..controls.get_control_normal(-1, controlID[5]) *100)
 	elseif controls.get_control_normal(-1, controlID[6])  ~= 0.0 then
@@ -11079,6 +11475,92 @@ Control_Velo = menu.add_feature("Control Input velocity", "toggle", globalFeatur
 	end
 end)
 Control_Velo.on = false
+Control_Velo.hidden = true
+--TODO: Input Control Coordinate System
+
+function Ctrl_Coords(pos, heading, distance, degrees)
+	--180 fwd/bkwd 90 sideways
+heading = math.rad((heading - degrees) * -1)
+return v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
+end
+
+function get_ctrl_coords(pid, dist, degrees)
+local pos = player.get_player_coords(pid)
+
+Ctrl_POS = Ctrl_Coords(pos, player.get_player_heading(pid), dist, degrees)
+
+return Ctrl_POS
+end
+
+
+
+Control_POS = menu.add_feature("Control Input Position", "toggle", globalFeatures.moist_test.id, function(feat)
+	if feat.on and not player.is_player_in_any_vehicle(player.player_id()) then
+	local pid = player.player_id()
+	local x, y, z
+	local Entity
+	-- if player.is_player_in_any_vehicle(player.player_id()) then
+	-- Entity = player.get_player_vehicle(player.player_id())
+	-- else 
+	Entity = player.get_player_ped(player.player_id())
+	--end
+	local camrot = cam.get_gameplay_cam_rot()
+	if controls.get_control_normal(-1, controlID[1]) ~= 0.0 then
+	x = tostring(controls.get_control_normal(-1, controlID[1]) or 0.01)
+	if x:sub(1, 1) == "-" then
+	x = x:sub(2, 10)
+	elseif x:sub(1, 1) ~= "-" then
+	x = tostring("-" .. x)
+	end
+	
+	pos = get_ctrl_coords(pid, tonumber(x), 90)
+	entity.set_entity_coords_no_offset(Entity, pos)
+	-- if player.is_player_in_any_vehicle(player.player_id()) then
+	-- vehicle.set_vehicle_on_ground_properly(Entity)
+	 end
+	--end
+	if controls.get_control_normal(-1, controlID[2]) ~= 0.0 then
+	y = tostring(controls.get_control_normal(-1, controlID[2]) or 0.01)
+	if y:sub(1, 1) == "-" then
+	y = y:sub(2, 10)
+	elseif y:sub(1, 1) ~= "-" then
+	y = tostring("-" .. y)
+	end
+	
+	pos = get_ctrl_coords(pid, tonumber(y), 180)
+	entity.set_entity_coords_no_offset(Entity, pos)
+	-- if player.is_player_in_any_vehicle(player.player_id()) then
+	-- vehicle.set_vehicle_on_ground_properly(Entity)
+	-- end
+	end
+	--if not player.is_player_in_any_vehicle(player.player_id()) then
+	if controls.get_control_normal(-1, controlID[5]) ~= 0.0 then
+	z = tonumber("-" ..controls.get_control_normal(-1, controlID[5]))
+	pos = player.get_player_coords(pid)
+	pos.z = pos.z + z
+	entity.set_entity_coords_no_offset(Entity, pos)
+	elseif controls.get_control_normal(-1, controlID[6])  ~= 0.0 then	
+	z = math.floor(controls.get_control_normal(-1, controlID[6]))
+	pos = player.get_player_coords(pid)
+	pos.z = pos.z + z
+	entity.set_entity_coords_no_offset(Entity, pos)
+	end
+	--end
+	--if not player.is_player_in_any_vehicle(player.player_id()) then
+	entity.set_entity_rotation(Entity, camrot)
+	-- if player.is_player_in_any_vehicle(player.player_id()) then
+	-- vehicle.set_vehicle_on_ground_properly(Entity)
+	-- end
+	--end
+
+
+	return HANDLER_CONTINUE
+	end
+end)
+Control_POS.on = false
+-- Control_POS.max = 100
+-- Control_POS.min = 1
+-- Control_POS.value = 1
 
 	
 
@@ -11145,7 +11627,7 @@ OSD_Veh_Meter.hidden = false
 OSD.modvehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globalFeatures.moistopt, function(feat)
 	Settings["OSD.modvehspeed_osd"] = true
 	if feat.on then
-		for i = 1, 32 do
+		for i = 1, 31 do
 			if tracking.playerped_speed1[i + 1] > 325 then
 				OSD.mod_vehspeed_osd.on = true
 				system.yield(13000)
@@ -11166,7 +11648,7 @@ OSD.mod_vehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globa
 		pos.x = 0.001
 		pos.y = .0300
 		local name
-		for i = 0, 32 do
+		for i = 0, 31 do
 			if player.get_player_ped(i) ~= 0 and not Players[i].isint then
 				pos.x = 0.001
 				if tracking.playerped_speed1[i + 1] > 325 then
@@ -11202,13 +11684,130 @@ end)
 OSD.mod_vehspeed_osd.on = false
 OSD.mod_vehspeed_osd.hidden = true
 
+--TODO: v3 Self info on position rotation direction heading and cam rotation
+
+POS_OSD = menu.add_feature("My v3 OSD Info", "toggle", globalFeatures.moistopt, function(feat)
+	if feat.on then
+		local pos = v2()
+		pos.x = 0.001
+		pos.y = .0350
+        local MyPed, MyDir, MyPos, MyRot, Myheading
+        MyPed = player.get_player_ped(player.player_id()) 
+        MyRot = entity.get_entity_rotation(MyPed)
+        MyPos = player.get_player_coords(player.player_id())
+        Myheading = player.get_player_heading(player.player_id())
+		CamROT =  cam.get_gameplay_cam_rot()
+        local dir = MyRot
+
+        dir:transformRotToDir()
+        dir = dir * 4
+        MyDir = MyPos + dir
+
+					ui.set_text_scale(0.20)
+					ui.set_text_font(0)
+					ui.set_text_color(255, 255, 255, 255)
+					ui.set_text_centre(false)
+					ui.set_text_outline(true)
+					ui.draw_text("POS: " .. tostring(MyPos), pos)
+                    pos.x = 0.001
+                    pos.y = .0450
+                    ui.set_text_scale(0.20)
+					ui.set_text_font(0)
+					ui.set_text_color(255, 255, 255, 255)
+					ui.set_text_centre(false)
+					ui.set_text_outline(true)
+					ui.draw_text("ROT: " .. tostring(MyRot), pos)
+                    pos.x = 0.001
+                    pos.y = .0550
+                    ui.set_text_scale(0.20)
+					ui.set_text_font(0)
+					ui.set_text_color(255, 255, 255, 255)
+					ui.set_text_centre(false)
+					ui.set_text_outline(true)
+					ui.draw_text("Heading: " .. tostring(Myheading), pos)
+                    pos.x = 0.001
+                    pos.y = .0650
+                    ui.set_text_scale(0.20)
+					ui.set_text_font(0)
+					ui.set_text_color(255, 255, 255, 255)
+					ui.set_text_centre(false)
+					ui.set_text_outline(true)
+					ui.draw_text("Direction: " .. tostring(MyDir), pos)
+					pos.x = 0.001
+                    pos.y = .0750
+                    ui.set_text_scale(0.20)
+					ui.set_text_font(0)
+					ui.set_text_color(255, 255, 255, 255)
+					ui.set_text_centre(false)
+					ui.set_text_outline(true)
+					ui.draw_text("CamROT: " .. tostring(CamROT), pos)
+
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+POS_OSD.on = false
+POS_OSD.hidden = false
+
+
 function TakeHost(pid)
-	script.trigger_script_event(0x7cba04c8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+	script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 end
 
 local PCR, PCG, PCB, PCA
 local PCR1, PCG1, PCB1, PCA1 = 255, 255, 255, 255
 local PCR2, PCG2, PCB2, PCA2 = 0, 0, 0, 255
+
+-- playerpulse = menu.add_feature("Pulse PlayerBar Names", "value_i", globalFeatures.moistopt, function(feat)
+	-- if feat.on then
+	
+		-- for pid = 0, 31 do
+			-- if player.is_player_valid(pid) then
+				-- pped = player.get_player_ped(pid)
+				-- if Players[pid].isint then
+					-- goto next
+				-- end
+					-- if interior.get_interior_from_entity(pped) == 0 or Players[pid].isint == false then
+					-- system.wait(feat.value)
+					-- Players[pid].pulse = true
+					-- system.wait(feat.value)
+					-- Players[pid].pulse = false
+					-- system.wait(feat.value)
+				-- end
+				  -- system.wait(feat.value)
+			-- end
+			-- ::next::
+		-- end
+		-- return HANDLER_CONTINUE
+	-- end
+	-- return HANDLER_POP
+-- end)
+-- playerpulse.on = false
+-- playerpulse.max = 800
+-- playerpulse.min = 200
+-- playerpulse.value = 500
+-- playerpulse.mod = 1
+Pulse_RGB_R, Pulse_RGB_G, Pulse_RGB_B = 255, 255, 255
+playerpulse = menu.add_feature("Pulse PlayerBar GodNames", "value_i", globalFeatures.moistopt, function(feat)
+	if feat.on then
+		Pulse_RGB_R = math.random(0, 255)
+		--system.wait(feat.value)
+		Pulse_RGB_G = math.random(0, 170)
+		--system.wait(feat.value)
+		Pulse_RGB_B = 255 - Pulse_RGB_R
+		system.wait(feat.value)
+
+		return HANDLER_CONTINUE
+	end
+	Pulse_RGB_R, Pulse_RGB_G, Pulse_RGB_B = 255, 255, 255
+	return HANDLER_POP
+end)
+playerpulse.on = false
+playerpulse.max = 500
+playerpulse.min = 1
+playerpulse.value = 15
+
+
 
 notifysent = {}
 --TODO: PLAYERBAR
@@ -11228,75 +11827,81 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 				PCR, PCG, PCB, PCA = 255, 255, 255, 255
 				if player.is_player_god(i) and player.is_player_vehicle_god(i) and Players[pid].isint == true then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 255, 0, 255, 185
+						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, Pulse_RGB_R, 185
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 255, 185
 					end
 				end
 				if player.is_player_god(i) and player.is_player_vehicle_god(i) and Players[pid].isint == false then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 255, 0, 255, 255
+						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, Pulse_RGB_R, 255
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 255, 200
 					end
 				end
 				if player.is_player_vehicle_god(i) and not player.is_player_god(i) and Players[pid].isint == true then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 255, 170, 0, 185
+						PCR, PCG, PCB, PCA =  Pulse_RGB_R, Pulse_RGB_G, 0, 185
 						else
 						PCR, PCG, PCB, PCA = 255, 170, 0, 185
 					end
 				end
 				if player.is_player_vehicle_god(i) and not player.is_player_god(i) and Players[pid].isint == false then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 255, 170, 0, 255
+						PCR, PCG, PCB, PCA =  Pulse_RGB_R, Pulse_RGB_G, 0, 255
 						else
 						PCR, PCG, PCB, PCA = 255, 170, 0, 200
 					end
 				end
 				if player.is_player_god(i) and not player.is_player_vehicle_god(i) and Players[pid].isint == true then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 255, 0, 0, 185
+						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, 0, 185
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 0, 185
 					end
 				end
 				if player.is_player_god(i) and not player.is_player_vehicle_god(i) and Players[pid].isint == false then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 255, 0, 0, 255
+						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, 0, 255
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 0, 200
 					end
 				end
-				if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1) and Players[pid].isint == true and player.is_player_god(i) then
+				if not NewDLC() then
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == true and player.is_player_god(i) then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 0, 255, 0, 200
+						PCR, PCG, PCB, PCA = Pulse_RGB_B, Pulse_RGB_R, Pulse_RGB_B, 200
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 0, 200
 					end
 				end
-				if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1) and Players[pid].isint == false and player.is_player_god(i) then
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == false and player.is_player_god(i) then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 0, 255, 0, 255
+						PCR, PCG, PCB, PCA = Pulse_RGB_B, Pulse_RGB_R, Pulse_RGB_B, 255
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 0, 255
 					end
 				end
-				if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1) and Players[pid].isint == false then
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == false then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = 0, 255, 0, 255
+						PCR, PCG, PCB, PCA = 0, Pulse_RGB_R, 0, 255
 						else
 						PCR, PCG, PCB, PCA = 255, 255, 255, 255
 					end
 				end
-				if passive_players[i + 1] then
+				if Players[i].isPassive then
 					PCA = 150
+				elseif not Players[i].isPassive then
+				PCA = 255
+				end
 				end
 				if player.is_player_friend(pid) then
 					PCR, PCG, PCB, PCA = 255, 255, 0, 255
 				end
 				if entity.is_entity_dead(pped) then
 				PCR, PCG, PCB, PCA = 100, 50, 50, 200
+				elseif not entity.is_entity_dead(pped) then
+				PCA = 255
 				end
 				if pos.x > 0.95 then
 					pos.y = .015
@@ -12289,6 +12894,7 @@ rgb_rand.on = false
 rgb_rand.max = 500
 rgb_rand.min = 1
 rgb_rand.value = 5
+
 rgb_rand1 = menu.add_feature("rand rgb 4 on (delay)", "value_i", globalFeatures.moistMkropt, function(feat)
 	if feat.on then
 		RGB_A_A = math.random(0, 255)
@@ -12306,6 +12912,7 @@ rgb_rand1.on = false
 rgb_rand1.max = 500
 rgb_rand1.min = 1
 rgb_rand1.value = 15
+
 marker1_rgbd = menu.add_feature("rgb 4 on", "toggle", globalFeatures.moistMkropt, function(feat)
 	if feat.on then
 		local RGB_A = {255,0}
@@ -12465,7 +13072,7 @@ function AttackPed_Vehicle(hash, pid, modal, attack)
 		vehicle.set_vehicle_doors_locked(escortveh[y], 2)
 		entity.set_entity_coords_no_offset(escortveh[y], pose)
 		ai.task_vehicle_follow(spawned_cunts[y], spawned_cunts[i], pped, 220, 262144, 25)
-		for PlayerID = 0, 32 do
+		for PlayerID = 0, 31 do
 		if player.is_player_valid(PlayerID) then
 
 		ped.set_relationship_between_groups(5, player.get_player_group(PlayerID), plygrp)
@@ -13031,7 +13638,7 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 			ped.set_ped_as_group_member(escort[i], plygrp)
 			ped.set_ped_never_leaves_group(escort[i], true)
 			spawn_groups()
-			for Pi = 0, 32 do
+			for Pi = 0, 31 do
 				if Pi ~= pid then
 					pedgroup = ped.get_ped_group(escort[i])
 					ped.set_relationship_between_groups(5, pedgroup, playergroups[Pi + 1])
@@ -13214,7 +13821,7 @@ ScriptLocals["playerlist"] = function()
 	checkstart = {{pid = {}, thread = {}}}
 	God_thread = {}
  
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 	checkstart[pid] = {}
 	checkstart[pid].thread = false
 		ScriptLocals["featureVars"] = featureVars
@@ -13229,12 +13836,13 @@ ScriptLocals["playerlist"] = function()
 
 end)
 		featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
+		featureVars.k.hidden = NewDLC()		
         featureVars.exp = menu.add_feature("Experimental Shit!", "parent", featureVars.f.id)
 		featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id, function(feat)
 			playerFeatures[pid].features["blamer"].feat:set_str_data(Playerz)
 			playerFeatures[pid].features["blamedorbital"].feat:set_str_data(Playerz)
-			playerFeatures[pid].features["blamer"].feat.value = 33
-			playerFeatures[pid].features["blamedorbital"].feat.value = 33
+			playerFeatures[pid].features["blamer"].feat.value = 32
+			playerFeatures[pid].features["blamedorbital"].feat.value = 32
 			
 		end)		
 		featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
@@ -13293,6 +13901,7 @@ local killengine = false
            playerFeatures[pid].features["tog_godvehoff"].feat.on = true
             local PlyVeh = player.get_player_vehicle(pid)
             vehicle.set_vehicle_undriveable(PlyVeh, true)
+			vehicle.set_vehicle_engine_on(PlyVeh, false, true, true)
 			if vehicle.is_vehicle_engine_running(PlyVeh) and killengine == false then
 			vehicle.set_vehicle_engine_health(PlyVeh, 0.00001)
 			 killengine = true
@@ -13662,12 +14271,13 @@ features["GodCheck"] = {feat = menu.add_feature("God Mode Check", "toggle", feat
 			--print(check)
 			end
                 if check > 11.00 and Players[pid].isint ~= true and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and Players[pid].PedSpawned == true  then
-                    moist_notify("Player Failed Position to Poition Check:\n" .. pid .. " : " .. name.. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection")
+					 ModderAudio_notify()
+                    moist_notify("Player Failed Position to Position Check:\n" .. pid .. " : " .. name.. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection")
 				
 				Debug_Out(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1))
 				
 				Debug_Out(name.. "End Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
-				moist_notify(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
+				--moist_notify(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
 					
 					 ModderAudio_notify()
 					end
@@ -13710,12 +14320,12 @@ features["pos2pos"] = {feat = menu.add_feature("Point to Point Test", "toggle", 
 			--print(check)
 			--end
                -- if check > 69.00 and Players[pid].isint ~= true and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and Players[pid].PedSpawned == true  then
-               -- moist_notify("Player Position to Poition Check:\n" .. pid .. " : " .. name, "Point To Point Position Test")
+               -- moist_notify("Player Position to Position Check:\n" .. pid .. " : " .. name, "Point To Point Position Test")
 				
 				Debug_Out(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1))
 				
 				Debug_Out(name.. "End Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
-				moist_notify(name.. "\nStart Time : " .. stdtime .. "\nCheck Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " :\nCheck end Postion = " .. tostring(pos2) .."\nDistance: " .. check, "Point To Point Position Test")
+			--	moist_notify(name.. "\nStart Time : " .. stdtime .. "\nCheck Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " :\nCheck end Postion = " .. tostring(pos2) .."\nDistance: " .. check, "Point To Point Position Test")
 					
 					-- ModderAudio_notify()
 				--	end
@@ -13746,7 +14356,7 @@ features["spawntest"] = {feat = menu.add_feature("God Test", "toggle", featureVa
 		local name = player.get_player_name(pid)
 		if feat.on then
 	--	if not Players[pid].isint and player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
-		for i = 0, 32 do
+		for i = 0, 31 do
 		if player.is_player_valid(i) then 
 		local col = entity.has_entity_been_damaged_by_entity(player.get_player_ped(i), player.get_player_ped(pid))
 				if col == true and note == false then
@@ -13769,11 +14379,10 @@ features["spawntest"] = {feat = menu.add_feature("God Test", "toggle", featureVa
 		end
 end),  type = "toggle", callback = function()
 
-
 end}
+
 features["spawntest"].feat.on = false
 features["spawntest"].feat.hidden = false
-
 
 		--TODO: Vehicle Options
 local decorator_typetable = {"DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
@@ -14529,14 +15138,14 @@ features["marker_active5"].feat.value = 28
 features["marker_active5"].feat.on = false
 		--TODO: CEO Money
 		featureVars.ceo = menu.add_feature("CEO Money Shit", "parent", featureVars.f.id)
-		featureVars.ceo.hidden = false
+		featureVars.ceo.hidden = NewDLC()
 		
 features["ceo_money1"] = {feat = menu.add_feature("10k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
 				print("Money Trigger loop")
 				print(os.date())
 				
-				script.trigger_script_event(0x44ae3246, pid, {pid, 10000, -1292453789, 0, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				script.trigger_script_event(0x70AB59D5, pid, {pid, 10000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 				system.wait(16000)
 				print(os.date())
 				return HANDLER_CONTINUE
@@ -14547,13 +15156,14 @@ features["ceo_money1"] = {feat = menu.add_feature("10k money loop (Their Current
 end), type = "toggle", callback = function()
 end}
 features["ceo_money1"].feat.on = false
+features["ceo_money1"].feat.hidden = NewDLC()
 		
 features["ceo_money15"] = {feat = menu.add_feature("15k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
 				print("Money Trigger loop")
 				print(os.date())
 				
-				script.trigger_script_event(0x44ae3246, pid, {pid, 15000, -1292453789, 0, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				script.trigger_script_event(0x70AB59D5, pid, {pid, 15000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 				system.wait(16000)
 				print(os.date())
 				return HANDLER_CONTINUE
@@ -14564,13 +15174,14 @@ features["ceo_money15"] = {feat = menu.add_feature("15k money loop (Their Curren
 end), type = "toggle", callback = function()
 end}
 features["ceo_money15"].feat.on = false
+features["ceo_money15"].feat.hidden = NewDLC()
 		
 features["ceo_money2"] = {feat = menu.add_feature("20k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
 				print("Money Trigger loop")
 				print(os.date())
 				
-				script.trigger_script_event(0x44ae3246, pid, {pid, 20000, 198210293, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				script.trigger_script_event(0x70AB59D5, pid, {pid, 20000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 				system.wait(121000)
 				print(os.date())
 				return HANDLER_CONTINUE
@@ -14581,11 +15192,12 @@ features["ceo_money2"] = {feat = menu.add_feature("20k money loop (Their Current
 end), type = "toggle", callback = function()
 end}
 features["ceo_money2"].feat.on = false
+features["ceo_money2"].feat.hidden = NewDLC()
 		
 features["ceo_money3"] = {feat = menu.add_feature("30k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
 			
-			script.trigger_script_event(0x44ae3246, pid, {pid, 30000, 198210293, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+			script.trigger_script_event(0x70AB59D5, pid, {pid, 30000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 			system.wait(121000)
 
 				return HANDLER_CONTINUE
@@ -14595,10 +15207,11 @@ features["ceo_money3"] = {feat = menu.add_feature("30k money loop (Their Current
 end), type = "toggle", callback = function()
 end}
 features["ceo_money3"].feat.on = false
+features["ceo_money3"].feat.hidden = NewDLC()
 		
 features["Yceo_money3"] = {feat = menu.add_feature("10k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
-				script.trigger_script_event(0x44ae3246, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 				system.wait(16000)
 				return HANDLER_CONTINUE
 			end
@@ -14606,10 +15219,11 @@ features["Yceo_money3"] = {feat = menu.add_feature("10k money loop (Your CEO As 
 end), type = "toggle", callback = function()
 end}
 features["Yceo_money3"].feat.on = false
+features["Yceo_money3"].feat.hidden = NewDLC()
 		
 features["Yceo_money35"] = {feat = menu.add_feature("15k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
-				script.trigger_script_event(0x44ae3246, pid, {player.player_id(), 15000, -1292453789, 0, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 15000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 				system.wait(16000)
 				return HANDLER_CONTINUE
 			end
@@ -14617,10 +15231,11 @@ features["Yceo_money35"] = {feat = menu.add_feature("15k money loop (Your CEO As
 end), type = "toggle", callback = function()
 end}
 features["Yceo_money35"].feat.on = false
+features["Yceo_money35"].feat.hidden = NewDLC()
 		
 features["Yceo_money4"] = {feat = menu.add_feature("20k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
 			while feat.on do
-				script.trigger_script_event(0x44ae3246, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+				script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 				system.wait(121000)
 				return HANDLER_CONTINUE
 			end			
@@ -14628,11 +15243,12 @@ features["Yceo_money4"] = {feat = menu.add_feature("20k money loop (Your CEO As 
 end), type = "toggle", callback = function()
 end}
 features["Yceo_money4"].feat.on = false
+features["Yceo_money4"].feat.hidden = NewDLC()
 		
 		
 features["Yceo_money5"] = {feat = menu.add_feature("30k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
 	while feat.on do
-		script.trigger_script_event(0x44ae3246, pid, {player.player_id(), 30000, 198210293, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508), script.get_global_i(1658176 + 9), script.get_global_i(1658176 + 10)})
+		script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 30000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 		system.wait(121000)
 		return HANDLER_CONTINUE
 	end
@@ -14640,20 +15256,23 @@ features["Yceo_money5"] = {feat = menu.add_feature("30k money loop (Your CEO As 
 end), type = "toggle", callback = function()
 end}
 features["Yceo_money5"].feat.on = false
+features["Yceo_money5"].feat.hidden = NewDLC()
 		
 features["ceo_otr"] = {feat = menu.add_feature("OTR", "action", featureVars.f.id, function(feat)
 			
-			script.trigger_script_event(0xE85362F9, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+			script.trigger_script_event(0xE8A824A0, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 			return HANDLER_POP
 end), type = "toggle", callback = function()
 end}
-features["ceo_otr"].feat.on = false
+features["ceo_otr"].feat.hidden = NewDLC()
 		
 features["give_nocops"] = {feat = menu.add_feature("Give Long Cop Bribe", "action", featureVars.f.id, function(feat)
-			script.trigger_script_event(0x46C5BFA5, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2544210 + 4627), 1, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+			script.trigger_script_event(0x66B0F59A, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2810287 + 4628), 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 			return HANDLER_POP
 end), type = "action", callback = function()
 end}
+features["give_nocops"].feat.hidden = NewDLC()
+
 		--TODO: teleport
 features["TeleportPlayernext2me"] = {feat = menu.add_feature("Teleport Next 2 Me(old Version)", "toggle", featureVars.t.id, function(feat)
 			if feat.on then
@@ -16075,17 +16694,21 @@ features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on t
 end), type = "action"}
 
 features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
-			script.trigger_script_event(0x57c26452, pid, {1, 1})
+			script.trigger_script_event(0x4267b065, pid, {1, 1})
 			local scid = player.get_player_scid(pid)
 			local name = tostring(player.get_player_name(pid))
 			Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
 end), type = "action"}
+features["Block Passive"].feat.hidden = NewDLC()
+
 features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
-			script.trigger_script_event(0x57c26452, pid, {2, 0})
+			script.trigger_script_event(0x4267b065, pid, {2, 0})
 			scid = player.get_player_scid(pid)
 			name = tostring(player.get_player_name(pid))
 			Debug_Out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
 end), type = "action"}
+features["Unblock Passive"].feat.hidden = NewDLC()
+
 		--TODO: Grief
 		featureVars.lag = menu.add_feature("Entity Area Lag", "parent", featureVars.g.id)
 		menu.add_feature("Value = Spawn Amount", "action", featureVars.lag.id)
@@ -16155,11 +16778,11 @@ local blame = 0
 		
 features["blamer"] = {feat = menu.add_feature("Set Blame: ", "value_str", featureVars.g.id, function(feat)
 			if feat.on then
-				if feat.value == 33 then
+				if feat.value == 32 then
 					blame = 0
-					elseif feat.value ~= 33 then
+					elseif feat.value ~= 32 then
 					blame = player.get_player_ped(feat.value)
-				moist_notify("Blame Set: " .. (feat.value) .. Playerz[feat.value-1])
+				moist_notify("Blame Set: " .. Playerz[feat.value+1])
 
 				end
 				system.wait(200)
@@ -16176,7 +16799,6 @@ features["blamedorbital"] = {feat = menu.add_feature("Orbital Player Blaming: ",
 			myped = player.get_player_ped(feat.value)
 			pos = entity.get_entity_coords(pped)
 			offset = v3(0.0,0.0,-2000.00)
-			script.get_global_f(1694982)
 			graphics.set_next_ptfx_asset("scr_xm_orbital")
 			while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
 				graphics.request_named_ptfx_asset("scr_xm_orbital")
@@ -16418,7 +17040,7 @@ features["explode_ply"].feat.value = 0
 local asset = "scr_bike_adversary"
 local effect = "scr_adversary_foot_flames"
 
-features["ptfx_annoy"] = {feat = menu.add_feature("PTFX:Scale(3.8) ", "value_str", featureVars.tr.id, function(feat)
+features["ptfx_annoy"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
 	pped = player.get_player_ped(pid)
 	if not feat.on then
 	local pos = v3()
@@ -16445,7 +17067,7 @@ features["ptfx_annoy"] = {feat = menu.add_feature("PTFX:Scale(3.8) ", "value_str
 				--graphics.start_networked_ptfx_looped_at_coord(effect, pos, v3(0.0,0.0,0.0), 2.1, false, false, true)
 				--graphics.start_networked_ptfx_non_looped_at_coord(effect, pos, rot, 2.1, false, false, true)
 				if not graphics.does_looped_ptfx_exist(gameplay.get_hash_key(effect)) then
-		graphics.start_networked_ptfx_looped_on_entity(effect, pped, v3(0.0,0.0,0.0), rot, 3.8)
+		graphics.start_networked_ptfx_looped_on_entity(effect, pped, v3(0.0,0.0,0.0), rot, 3.0)
 				end
 
 	system.wait(1)
@@ -16459,7 +17081,7 @@ features["ptfx_annoy"].feat:set_str_data(ptfx_Label)
 local asset2 = "scr_bike_adversary"
 local effect2 = "scr_adversary_foot_flames"
 
-features["ptfx_annoy2"] = {feat = menu.add_feature("PTFX:Scale(1.2) ", "value_str", featureVars.tr.id, function(feat)
+features["ptfx_annoy2"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
 	pped = player.get_player_ped(pid)
 	if not feat.on then
 	local pos = v3()
@@ -16919,7 +17541,21 @@ end),  type = "toggle", callback = function()
 end}
 		--TODO: Kick System
 		featureVars.ses = menu.add_feature("Script Event Spam", "parent", featureVars.k.id)
-local args_done = false	
+		featureVars.ses.hidden = NewDLC()
+		
+features["SE_Kick_Crash"] = {feat = menu.add_feature("New Randomised Kick Crash", "toggle", featureVars.k.id, function(feat)
+	if feat.on then
+	system.yield(1)
+	SE_KickCrash(pid)
+	system.yield(Settings["ScriptEvent_delay"])
+	return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+	end), type = "toggle", callback = function()
+end}
+features["SE_Kick_Crash"].feat.on = false	
+	
+local args_done = false
 features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:", "value_i", featureVars.k.id, function(feat)
 			local Args = {}
 			if feat.on then
@@ -16986,6 +17622,7 @@ end),
 		type = "toggle", callback = function()
 end}
 features["Kick1_Type1"].feat.on = false
+
 features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "toggle", featureVars.ses.id, function(feat)
 			if feat.on then
 				--player.unset_player_as_modder(pid, -1)
@@ -17041,10 +17678,10 @@ features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", f
 			player.unset_player_as_modder(pid, -1)
 			local scid = player.get_player_scid(pid)
 			local name = tostring(player.get_player_name(pid))
-			script.trigger_script_event(2092565704, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+			script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 			
 			system.yield(Settings["ScriptEvent_delay"])
-			script.trigger_script_event(0x7cba04c8, pid, {pid, script.get_global_i(1630816 + (1 + (pid * 597)) + 508)})
+			script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 			system.yield(Settings["ScriptEvent_delay"])
 			Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
 end), type = "action", callback = function()
@@ -17097,7 +17734,7 @@ features["Apt_Inv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "
 			if feat.on then
 				Settings["playerlist_loop"] = 0
 				par5 = kick_param_data[math.random(1, #kick_param_data)]
-				script.trigger_script_event(0x4a72a08d, pid, {24, 24, 1, 0, par5, 1, 1, 1})
+				script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, par5, 1, 1, 1})
 				system.yield(Settings["ScriptEvent_delay"])
 				
 				return HANDLER_CONTINUE
@@ -17107,10 +17744,11 @@ features["Apt_Inv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "
 end), type = "toggle", callback = function()
 end}
 features["Apt_Inv_Spam"].feat.on = false
+features["Apt_Inv_Spam"].feat.hidden = NewDLC()
 		
-features["AptInv_Spam"] = {feat = menu.add_feature("Disable Players Game & Give God", "action", featureVars.g.id, function(feat)
+features["DisableGame"] = {feat = menu.add_feature("Disable Players Game & Give God", "action", featureVars.g.id, function(feat)
 			if feat.on then
-				script.trigger_script_event(0x4a72a08d, pid, {24, 24, 1, 0, 115, 1, 1, 1})
+				script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, 115, 1, 1, 1})
 				system.yield(Settings["ScriptEvent_delay"])
 				
 				return HANDLER_CONTINUE
@@ -17118,12 +17756,13 @@ features["AptInv_Spam"] = {feat = menu.add_feature("Disable Players Game & Give 
 			return HANDLER_POP
 end), type = "action", callback = function()
 end}
+features["DisableGame"].feat.hidden = NewDLC()
 		
 features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites v2", "toggle", featureVars.g.id, function(feat)
 			if feat.on then
 				Settings["playerlist_loop"] = 0
 				par5 = math.ceil(math.random(0, 100))
-				script.trigger_script_event(0x4a72a08d, pid, {24, 24, 1, 0, par5, 1, 1, 1})
+				script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, par5, 1, 1, 1})
 				system.yield(6000)
 				return HANDLER_CONTINUE
 			end
@@ -17131,11 +17770,18 @@ features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites v2",
 end), type = "toggle", callback = function()
 end}
 features["AptInv_Spam"].feat.on = false
+features["AptInv_Spam"].feat.hidden = NewDLC()
 		
 		playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
 		featureVars.f.hidden = false
 end
-local loop_logsent, count, playercount = false, 0, 0
+loop_logsent, count, playercount, check, ModderStart = false, 0, 0, 0, {{ismod = {}, start = {},}}
+
+for pid = 0, 31 do
+	ModderStart[pid] = {}
+	ModderStart[pid].ismod = false
+	ModderStart[pid].start = nil
+end
 
 
 loopFeat = menu.add_feature("New Loop Function", "toggle", globalFeatures.moist_tools.id, function(feat)
@@ -17148,7 +17794,7 @@ loopFeat = menu.add_feature("New Loop Function", "toggle", globalFeatures.moist_
 				Active_menu = nil
 			end
 			local lpid = player.player_id()
-			for pid = 0, 32 do
+			for pid = 0, 31 do
 				playerFeatures[pid].features["blamedorbital"].feat:set_str_data(Playerz)
 				pped = player.get_player_ped(pid)
 				local tbl = playerFeatures[pid]
@@ -17253,7 +17899,7 @@ loopFeat = menu.add_feature("New Loop Function", "toggle", globalFeatures.moist_
 							Players[pid].pulse = false
 						end
 						if not isYou then
-							if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1)then
+							if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1)then
 								tags[#tags + 1] = "O"
 								tagz[#tagz + 1] = "~h~~g~[O]"
 								--toname = tostring(toname .. "~h~~g~[O]")
@@ -17263,7 +17909,7 @@ loopFeat = menu.add_feature("New Loop Function", "toggle", globalFeatures.moist_
 								end
 							end
 							
-							if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 0) then
+							if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
 								if Players[pid].OTRBlipID ~= nil then
 									ui.remove_blip(Players[pid].OTRBlipID)
 									Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
@@ -17354,7 +18000,7 @@ loopFeat = menu.add_feature("New Loop Function", "toggle", globalFeatures.moist_
 			return HANDLER_CONTINUE
 		end
 		
-		for i = 0, 32 do
+		for i = 0, 31 do
 			playerFeatures[i].feat.hidden = false
 		end
 		return HANDLER_POP
@@ -17373,11 +18019,11 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
 			Playercount = 0
         end
         local lpid = player.player_id()
-        for pid = 0, 32 do
+        for pid = 0, 31 do
 
             pped = player.get_player_ped(pid)
-            local tbl = playerFeatures[pid]
-            local f = tbl.feat
+            tbl = playerFeatures[pid]
+            f = tbl.feat
 			local scid, name
             scid = player.get_player_scid(pid)
             SessionPlayers[pid].Scid = scid
@@ -17394,7 +18040,7 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
                 local tags, tagz = {}, {}
                 if Online then	
 				if playercount ~= player.player_count() then
-				for y = 0, 32 do
+				for y = 0, 31 do
 				if Players[y].OTRBlipID ~= nil then
 				ui.remove_blip(Players[y].OTRBlipID)
 				Players[y].OTRBlipID = nil
@@ -17406,6 +18052,7 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
 				interiorcheckbytype:set_str_data(Playerz)
 				player_pos:set_str_data(Playerz)
 				OrbitalStrike_All:set_str_data(Playerz)
+                OrbitalStrike_AllEntities:set_str_data(Playerz)
 				end
                     if isYou then
                         tags[#tags + 1] = "Y"
@@ -17498,26 +18145,11 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
                            --Players[pid].pulse = not Players[pid].pulse
                         end
                     end
-					     if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1)then
-                            tags[#tags + 1] = "O"
-                            tagz[#tagz + 1] = "~h~~g~[O]"
-                            --toname = tostring(toname .. "~h~~g~[O]")
-                            if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
-                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
-								 Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
-                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                            end
-                        end
 
-                        if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 0) then
-                            if Players[pid].OTRBlipID ~= nil then
-							 Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
-                                ui.remove_blip(Players[pid].OTRBlipID)
-                                Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
-                                ui.remove_blip(Players[pid].OTRBlipID)
-                                Players[pid].OTRBlipID = nil
-                            end
-                        end
+							if Players[pid].isTyping then
+						    tags[#tags + 1] = "T"
+                            tagz[#tagz + 1] = "~h~~q~[~h~~b~T~h~~q~]"
+							end
 							if player.get_player_armour(pid) > 50 then
 						    tags[#tags + 1] = "U"
                             tagz[#tagz + 1] = "~h~~q~[U]"
@@ -17531,26 +18163,28 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
                         -- Players[pid].pulse = false
                     -- end
                     if not isYou then
-                        -- if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 1)then
-                            -- tags[#tags + 1] = "O"
-                            -- tagz[#tagz + 1] = "~h~~g~[O]"
-                            -- --toname = tostring(toname .. "~h~~g~[O]")
-                            -- if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
-                                -- Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
-								 -- Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
-                                -- ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                            -- end
-                        -- end
+					if not NewDLC() then
+					     if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1)then
+                            tags[#tags + 1] = "O"
+                            tagz[#tagz + 1] = "~h~~g~[O]"
+                            --toname = tostring(toname .. "~h~~g~[O]")
+                            if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
+                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+								 Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
+                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
+                            end
+                        end
 
-                        -- if (script.get_global_i(2426865 + (1 + (pid * 449)) + 209) == 0) then
-                            -- if Players[pid].OTRBlipID ~= nil then
-							 -- Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
-                                -- ui.remove_blip(Players[pid].OTRBlipID)
-                                -- Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
-                                -- ui.remove_blip(Players[pid].OTRBlipID)
-                                -- Players[pid].OTRBlipID = nil
-                            -- end
-                        -- end
+                        if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
+                            if Players[pid].OTRBlipID ~= nil then
+							 Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
+                                ui.remove_blip(Players[pid].OTRBlipID)
+                                Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+                                ui.remove_blip(Players[pid].OTRBlipID)
+                                Players[pid].OTRBlipID = nil
+                            end
+                        end
+					end
                     end
                     if not player.is_player_modder(pid, -1) then
                         if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
@@ -17572,14 +18206,17 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
                         -- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
                     end
                     if player.is_player_modder(pid, -1) then
-                        tags[#tags + 1] = "M"
-                        tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"
-                        RAC_OFF(pid)
-						if not Settings["Auto_Off_RAC"] then
-                        modderflag(pid)
+							tags[#tags + 1] = "M"
+							tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"
+							RAC_OFF(pid)
+							modderflag(pid)
+							elseif not player.is_player_modder(pid, -1) then
+							Modders_DB[pid].ismod = false
 						end
 						
-                    elseif not player.is_player_modder(pid, -1) then
+						
+                    if not player.is_player_modder(pid, -1) then
+
                         Modders_DB[pid].ismod = false
                     end
 					-- if interior.get_interior_from_entity(pped) ~= 0 then
@@ -17639,7 +18276,7 @@ loopFeat2 = menu.add_feature("Old Loop Function", "toggle", globalFeatures.moist
         system.yield(Settings["playerlist_loop"])
         return HANDLER_CONTINUE
 end
-    for i = 0, 32 do
+    for i = 0, 31 do
         playerFeatures[i].feat.hidden = false
 end
     return HANDLER_POP
@@ -17647,11 +18284,325 @@ end)
 
 loopFeat2.hidden = false
 loopFeat2.on = true
+
+Modder_Start = {{pid = {},}}
+OTR_Start = {{pid = {},}}
+
+loopFeat3 = menu.add_feature("Experimental Loop Function", "toggle", globalFeatures.moist_tools.id, function(feat)
+    if feat.on then
+        local Online = network.is_session_started()
+        if not Online then
+            SessionHost = nil
+            ScriptHost = nil
+            loop_logsent = false
+            Active_menu = nil
+			Playercount = 0
+        end
+        local lpid = player.player_id()
+        for pid = 0, 31 do
+
+            pped = player.get_player_ped(pid)
+            tbl = playerFeatures[pid]
+            f = tbl.feat
+			local scid, name
+            scid = player.get_player_scid(pid)
+            SessionPlayers[pid].Scid = scid
+            playerFeatures[pid].scid = scid
+            if scid ~= 4294967295 then
+                if f.hidden then
+                    f.hidden = false
+                end
+				Playerz[pid+1] = player.get_player_name(pid)
+                name = player.get_player_name(pid)
+                Players[pid].name = name
+                local toname = ""
+                local isYou = lpid == pid
+                local tags, tagz = {}, {}
+                if Online then	
+				if playercount ~= player.player_count() then
+				for y = 0, 31 do
+				if Players[y].OTRBlipID ~= nil then
+				ui.remove_blip(Players[y].OTRBlipID)
+				Players[y].OTRBlipID = nil
+				end
+				end
+				
+				playercount = player.player_count()
+				RefreshPlayerInterior:set_str_data(Playerz)
+				interiorcheckbytype:set_str_data(Playerz)
+				player_pos:set_str_data(Playerz)
+				OrbitalStrike_All:set_str_data(Playerz)
+                OrbitalStrike_AllEntities:set_str_data(Playerz)
+				end
+                    if isYou then
+                        tags[#tags + 1] = "Y"
+                    end
+                    if player.is_player_friend(pid) then
+                        tags[#tags + 1] = "F"
+                    end
+                    if player.is_player_host(pid) then
+                        tags[#tags + 1] = "H"
+                        toname = tostring(toname .."~h~~b~[H]")
+                        if SessionHost ~= pid then
+                            SessionHost = pid
+                            moist_notify((isYou and "You Are Now The The Session Host!" or "The Session Host is Now") .."\n" .. name, nil)
+                            Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
+                        end
+                    end
+                    if pid == script.get_host_of_this_script() then
+                        tags[#tags + 1] = "S"
+                        toname = tostring(toname .. "~h~~y~[S]")
+                        if ScriptHost ~= pid then
+                            ScriptHost = pid
+                            moist_notify((isYou and "You Are Now The Script Host!"  or  "The Script Host is Now") .."\n" .. name, nil)
+                            Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
+                        end
+                    end
+					if entity.is_entity_dead(player.get_player_ped(pid)) then
+                        GetKiller(pid)
+                        Players[pid].isDead = true
+                        Players[pid].PedSpawned = false
+                    elseif not entity.is_entity_dead(player.get_player_ped(pid)) then
+					Players[pid].isDead = false
+					end
+                    if player.is_player_playing(pid) and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) then
+                        tags[#tags + 1] = "G"
+					end
+					if Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 1 then
+					if player.is_player_god(pid) or player.is_player_vehicle_god(pid) then 
+						playerFeatures[pid].features["GodCheck"].feat.on  = true
+						playerFeatures[pid].features["PBPulse"].feat.on  = true
+					elseif not player.is_player_god(pid) or not player.is_player_vehicle_god(pid) then
+						playerFeatures[pid].features["GodCheck"].feat.on  = false
+						playerFeatures[pid].features["PBPulse"].feat.on  = false
+                    end
+					elseif Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 2 then
+					if player.is_player_valid(pid) then
+					playerFeatures[pid].features["GodCheck"].feat.on  = true
+					playerFeatures[pid].features["PBPulse"].feat.on  = true
+					elseif not player.is_player_valid(pid) then
+						playerFeatures[pid].features["GodCheck"].feat.on  = false
+						playerFeatures[pid].features["PBPulse"].feat.on  = false
+					end
+					end
+					
+                    if player.is_player_god(pid) and Players[pid].PlayerGodMode == true and Players[pid].isint ~= true--[[ and Players[pid].PedSpawned == true]]  then
+                        tagz[#tagz + 1] = "~h~~r~[G]"
+					end
+                    if Players[pid].PlayerGodMode then
+						tagz[#tagz] = "~h~~y~[~r~G~y~]"
+						elseif not player.is_player_god(pid) then
+						Players[pid].PlayerGodMode = false
+                        end
+
+						if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
+							tags[#tags + 1] = "V"
+						end
+
+                    if player.is_player_vehicle_god(pid) and Players[pid].PlayerVehGodMode == true and Players[pid].isint ~= true--[[ and Players[pid].PedSpawned == true]]  then
+					if (tracking.playerped_speed1[pid + 1] >= 28) then
+						if Players[pid].pulse == true then
+                        tagz[#tagz + 1] = "~h~~o~[V]"
+						else
+						end
+	
+				
+					
+					elseif player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) then
+					if Players[pid].pulse == true then
+					tagz[#tagz + 1] = "~h~~y~[~o~V~y~]"
+					end
+					
+					--playerFeatures[pid].features["GodCheck"].feat.on  = not playerFeatures[pid].features["GodCheck"].feat.on
+					elseif Players[pid].PlayerVehGodMode then
+					tagz[#tagz + 1] = "~h~~r~[~o~V~r~]"
+					end
+						
+					end
+                    if Players[pid].isint ~= true then
+                        if player.is_player_spectating(pid) and player.is_player_playing(pid) then
+                            tags[#tags + 1] = ".SPEC."
+                           --Players[pid].pulse = not Players[pid].pulse
+                        end
+                    end
+
+							if player.get_player_armour(pid) > 50 then
+						    tags[#tags + 1] = "U"
+                            tagz[#tagz + 1] = "~h~~q~[U]"
+							if Settings["GodCheckNotif"] and not Players[pid].isgod then
+							moist_notify(name .. " Has Excessive Armour ", "Modder Detection")
+							Players[pid].isgod = true
+							end
+						end
+					
+                    -- if Players[pid].isint == true then
+                        -- Players[pid].pulse = false
+                    -- end
+                    if not isYou then
+					if not NewDLC() then
+					     if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1)then
+                            tags[#tags + 1] = "O"
+                            tagz[#tagz + 1] = "~h~~g~[O]"
+							if OTR_Start[pid] == nil then
+					name = player.get_player_name(pid) 
+					OTR_Start[pid] = tonumber(utils.time())
+					end
+					if OTR_Start[pid] ~= nil then
+						if tonumber((utils.time()) - (OTR_Start[pid])) <= 1 then
+						if name == name then name = "**OFF THE RADAR**" end
+						end
+						if tonumber((utils.time()) - (OTR_Start[pid])) >= 2 then
+						 if name ~= player.get_player_name(pid) then name = player.get_player_name(pid) end
+						 if tonumber((utils.time()) - (OTR_Start[pid])) >= 8 then
+						--name = player.get_player_name(pid)
+						OTR_Start[pid] = tonumber(utils.time())
+						--ModderStart[pid] = nil
+						end
+					
+						end
+					end
+						-- end
+					
+
+                            --toname = tostring(toname .. "~h~~g~[O]")
+                            if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
+                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+								 Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
+                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
+                            end
+                        end
+
+                        if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
+                            if Players[pid].OTRBlipID ~= nil then
+							 Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
+                                ui.remove_blip(Players[pid].OTRBlipID)
+                                Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+                                ui.remove_blip(Players[pid].OTRBlipID)
+                                Players[pid].OTRBlipID = nil
+                            end
+                        end
+					end
+                    end
+                    if not player.is_player_modder(pid, -1) then
+                        if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
+                            tags[#tags + 1] = "U"
+                            tagz[#tagz + 1] = "~h~~q~[U]"
+                            -- toname = tostring(toname .. "~h~~q~[U]")
+                        end
+                    end
+                    if not player.is_player_modder(pid, -1) then
+                        if (player.get_player_health(pid) == 0) and (player.get_player_max_health(pid) == 0) and (tracking.playerped_speed1[pid + 1] >= 10) then
+                            tags[#tags + 1] = "U"
+                            tagz[#tagz + 1] = "~h~~q~[U]"
+                            -- toname = tostring(toname .. "~h~~q~[U]")
+                        end
+                    end
+                    if Players[pid].bounty then
+                        tags[#tags + 1] = "[B:" .. Players[pid].bountyvalue .."]"
+                        tagz[#tagz + 1] = "~h~~p~[B:~h~~w~ " .. Players[pid].bountyvalue .. "~h~~p~]"
+                        -- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
+                    end
+                   if player.is_player_modder(pid, -1) then
+                        tags[#tags + 1] = "M"
+                        tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"				   
+                        RAC_OFF(pid)
+					if Modder_Start[pid] == nil then
+					name = player.get_player_name(pid) 
+					Modder_Start[pid] = tonumber(utils.time())
+					end
+					if Modder_Start[pid] ~= nil then
+						if tonumber(utils.time() - Modder_Start[pid]) <= 1 then
+						if name == name then name = "! M O D D E R !" end
+						end
+						if tonumber(utils.time() - Modder_Start[pid]) >= 2 then
+						 if name ~= player.get_player_name(pid) then name = player.get_player_name(pid) end
+						 if tonumber(utils.time() - Modder_Start[pid]) >= 8 then
+						--name = player.get_player_name(pid)
+						Modder_Start[pid] = tonumber(utils.time())
+						--ModderStart[pid] = nil
+						end
+					end
+						end
+						if not Settings["Auto_Off_RAC"] then
+						--ModderStart[pid] = nil
+                        modderflag(pid)
+						
+						end
+						
+                    elseif not player.is_player_modder(pid, -1) then
+					ModderStart[pid] = nil
+                        Modders_DB[pid].ismod = false
+                    end
+					-- if interior.get_interior_from_entity(pped) ~= 0 then
+					-- Players[pid].isint = true
+					-- end
+											
+						if tbl.scid ~= scid then
+							for cf_name,cf in pairs(tbl.features) do
+								if cf.type == "toggle" and cf.feat.on then
+									cf.feat.on = false
+								end
+							end
+							tbl.scid = scid
+							if not isYou then
+								--TODO: Modder shit
+							end
+						end
+					end
+					if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
+						SessionPlayers[pid].Name = name .. " " .. toname
+					--system.wait(0)
+						if #tagz > 0 then
+							SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
+						end
+						else
+						SessionPlayers[pid].Name = name
+					--	system.wait(0)
+						if #tagz > 0 then
+							SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
+						end
+					end
+					if #tags > 0 then
+						name = name .. " [" .. table.concat(tags) .. "]"
+					end
+                if f.name ~= name then f.name = name end
+                for cf_name,cf in pairs(tbl.features) do
+                    if (cf.type ~= "toggle" or cf.type ~= "value_str" or cf.type ~= "value_i" or cf.type ~= "value_f" or cf.feat.on) and cf.callback then
+                        local status, err = pcall(cf.callback)
+                        if not status then
+                            moist_notify("Error running feature " .. cf.callback .. "\nOn pid: " .. pid, "MoistScript PlayerLoop Error")
+                         --   Print(status .. err)
+                        end
+                    end
+                end
+            else
+                if not f.hidden then
+                    f.hidden = true
+                    for cf_name,cf in pairs(tbl.features) do
+                        if cf.type == "toggle"  or cf.type == "value_str" or cf.type == "value_i" or cf.type == "value_f" and cf.feat.on then
+                            cf.feat.on = false
+                        end
+                    end
+                end
+                Playerz[pid+1] = string.format("Player " .. pid)
+            end
+        end
+        system.yield(Settings["playerlist_loop"])
+        return HANDLER_CONTINUE
+end
+    for i = 0, 31 do
+        playerFeatures[i].feat.hidden = false
+end
+    return HANDLER_POP
+end)
+
+loopFeat3.hidden = false
+loopFeat3.on = false
 end
 ScriptLocals["playerlist"]()
 
 function OnlineResetCheck()
-	for pid = 0, 32 do
+	for pid = 0, 31 do
 		if player.is_player_valid(pid) ~= false then
 			playerRDB(pid)
 		end
@@ -17677,7 +18628,7 @@ event.add_event_listener("exit", function()
 	ui.remove_blip(BlipIDs[i])
 	end
 	
-for pid = 0, 32 do
+for pid = 0, 31 do
 	if Players[pid].OTRBlipID ~= nil then
 	ui.remove_blip(Players[pid].OTRBlipID)
 	end
@@ -17773,17 +18724,24 @@ end
 	entity.set_entity_as_no_longer_needed(huntv[i])
 	entity.delete_entity(huntv[i])
 end
-		
+	if missilehook_id ~= 0 then
+		hook.remove_script_event_hook(missilehook_id)
+	missilehook_id = 0
+end
+	
 	 event.remove_event_listener("chat", ChatEventID)
 	 event.remove_event_listener("player_join",  Join_Event_Check)
 	 event.remove_event_listener("player_join", joining_players_logger)
 	 event.remove_event_listener("player_join", Passive_trackerIN)
 	 event.remove_event_listener("player_leave", Passive_trackerOUT)
-	-- hook.remove_net_event_hook(NetEventHookID1)
+	
+	
 end)
 
 end
 		
+
+
 local execstate
 local exec_errors
 
@@ -17811,13 +18769,6 @@ menu.notify("Moist_Script_Main: Main Script Body\nStatus = " .. tostring(status)
 
 end
 local status, err = pcall(scriptloader)
-execstate = status
-exec_errors = tostring(exec_errors) .. tostring(err) .. "\n" or tostring(err) .. "\n"
-if not status then
-print(tostring(status) .. " Function Error " .. tostring(err))
-menu.notify("MoistScript: Script Loader\nStatus = " .. tostring(status) .."\nError = " .. tostring(err), "Script Function Error", 5, 0xff0000ff)
-
-end
 
 local status, err = pcall(Load_Module, "Moists Modder_Module.lua")
 if not status then
@@ -17827,4 +18778,3 @@ elseif status then
 menu.notify("All Modules & MoistScript\nLoaded and any Scripts for Autoload")
 end
 
- menu.notify("MoistScript Version: " .. (Settings["MoistScript"]) .. "\nDate Settings Saved: " .. tostring(Settings["DateSettingsSaved"]),  "MoistScript Executed", 10, 0xff00ff00)

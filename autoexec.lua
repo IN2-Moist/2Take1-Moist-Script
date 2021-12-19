@@ -25,35 +25,19 @@ function autoload_lua(file)
             local chunk, status = loadfile(Scripts .. "\\" .. lua[i])
             if chunk then
                 chunk()
-                menu.notify(files[i] .. " \nExecuted!", "MoistScript Autoexec", 18, 0xffff00ff)
+             --   menu.notify(files[i] .. " \nExecuted!", "MoistScript Autoexec", 18, 0xffff00ff)
             else
 			local errtext = debug.traceback(chunk, 1)
 			
-                menu.notify("Error with " .. files[i] .. "\n" .. status .."\n" .. errtext, "MoistScript Autoexec", 18, 0xffff00ff)
+              --  menu.notify("Error with " .. files[i] .. "\n" .. status .."\n" .. errtext, "MoistScript Autoexec", 18, 0xffff00ff)
 				local t = os.date("*t")
 				io.output(io.open(debugfile, "a"))
 				io.write(string.format("[%02d-%02d-%02d %02d:%02d:%02d] ", t.year, t.month, t.day, t.hour, t.min, t.sec .."\n") ..status .. "\n" ..errtext)
 				io.close()
             end
         end
-
-		autoexec3.hidden = true
 		
 end
-    
-
-autoexec3 = menu.add_feature("Load MoistScript Test Build", "action", 0, function(feat)
-
-
-autoload_lua("MoistScript2052.lua")
-
-
-end)
-autoexec3.hidden = false
-
-
- end
-
 
 autoexecstart = menu.add_feature("Execute Autoexec.lua", "toggle", 0, function(feat)
 	if not feat.on then
@@ -64,22 +48,19 @@ autoexecstart = menu.add_feature("Execute Autoexec.lua", "toggle", 0, function(f
 local status, err = pcall(start)
 if not status then
 print(tostring(status) .. " Function Error " .. tostring(err))
-menu.notify("Status = " .. tostring(status) .."\nError = " .. tostring(err), "Script Execution fucntion Error", 5, 0xffffff00)
+--menu.notify("Status = " .. tostring(status) .."\nError = " .. tostring(err), "Script Execution fucntion Error", 5, 0xffffff00)
 
 end
 
-local files = {"MoistScript2054.lua"}
+local files = {"MoistScript2057.lua"}
 for i = 1, #files do
 local status, err = pcall(autoload_lua, files[i])
 if not status then
 print(tostring(status) .. " Function Error " .. tostring(err))
-menu.notify("Status = " .. tostring(status) .."\nError = " .. tostring(err), "Script Execution fucntion Error", 5, 0xffffff00)
+--menu.notify("Status = " .. tostring(status) .."\nError = " .. tostring(err), "Script Execution fucntion Error", 5, 0xffffff00)
 
 end
 end
-
-		autoexec3.hidden = true
-
 	autoexecstart.hidden = true
 end)
 autoexecstart.on = true

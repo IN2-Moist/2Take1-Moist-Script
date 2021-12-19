@@ -10,7 +10,7 @@ Please use the invite link below to Join the discord server for the most recent 
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
 <hr>
 
-# Moist Script (Build 2.0.5.2)
+# Moist Script (Build 2.0.5.7)
 
  Credits & Thanks to Kektram for all his support help moving away from 2take1 server
  Kektram's help & Advice with some of the more challenging coding has been a huge help!
@@ -25,7 +25,13 @@ https://discord.gg/9QUr3sVDfE
 `
 <hr>
 
-# ** Script Changes Additions and Fixes **
+# ** Script Updates Changes Additions and Fixes **
+TODO: Readme Rewrite
+TO BE UPDATED
+
+
+
+# ** Previous Script Changes Additions and Fixes **
 
 * Added 15k CEO Loop
 
