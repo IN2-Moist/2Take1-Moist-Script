@@ -38,6 +38,8 @@ function autoload_lua(file)
         end
 		
 end
+end
+
 
 autoexecstart = menu.add_feature("Execute Autoexec.lua", "toggle", 0, function(feat)
 	if not feat.on then

@@ -582,6 +582,8 @@ local apartmen, orbprox
 local interiorr, pped
 local exitfound = false
 while true do
+	if player.is_player_valid(pid) then
+	pped = player.get_player_ped(pid)
 	if player.get_player_ped(pid) ~= 0 or player.get_player_ped(pid) ~= nil then
 		if interior.get_interior_from_entity(pped) ~= 0 then
 		Players[pid].isint = true
@@ -600,7 +602,7 @@ while true do
 		Players[pid].isint, Players[pid].Interiorname, Position  = GetPlayerinterior(pid)
 		system.wait(70)
 	end
-		
+	end
 
 	system.yield(6)
 end
@@ -610,7 +612,7 @@ end
 interiorcheck_1_thread = function(pid)
     local apartmen, orbprox, pped
     while true do
-
+	if player.is_player_valid(pid) then
         pped = player.get_player_ped(pid)
         if interior.get_interior_from_entity(pped) ~= 0 then
             Players[pid].isint = true
@@ -646,6 +648,8 @@ interiorcheck_1_thread = function(pid)
         system.yield(600)
 
     end
+	 system.yield(600)
+	end
 
 end
 
