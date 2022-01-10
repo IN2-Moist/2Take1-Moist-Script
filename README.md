@@ -10,7 +10,7 @@ Please use the invite link below to Join the discord server for the most recent 
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
 <hr>
 
-# Moist Script (Build 2.0.5.7)
+# Moist Script (Build 2.0.6.0)
 
  Credits & Thanks to Kektram for all his support help moving away from 2take1 server
  Kektram's help & Advice with some of the more challenging coding has been a huge help!
@@ -181,7 +181,7 @@ These must be inside the Folder : **scripts**
 
 ### **\AppData\Roaming\PopstarDevs\2Take1Menu\scripts**
 
-- **MoistScript.lua** (Main Script)
+- **MoistScript20??.lua** (Main Script) MoistScript1234.lua (numbers 1234 being the current build without the . between each number)
 
 
 Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
@@ -191,7 +191,7 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 - interiors.lua
 - Moist_KickParam.ini
 - Moist_Kicks.ini
-- vehicle-hashes.lua
+- online_interiors.lua
 
 **Extras :**
 These must be inside the Folder : **scripts**
@@ -206,9 +206,7 @@ These must be inside the Folder : **scripts**
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\interiors.lua
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_KickParam.ini
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks.ini
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks2.ini
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks3.ini
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\vehicle-hashes.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\online_interiors.lua
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\autoexec.lua
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistScript.lua
 ```
@@ -234,7 +232,7 @@ Player Names have tags:
 
 -IN2Moist-[V]                    =  V = Vehicle God Mode **`*p`**
 
--IN2Moist-[U]                    =  U = Undead OTR (player health 0/0 or <=328/0) **`*p`**
+-IN2Moist-[U]                    =  U = Undead OTR & Excessive Armour (Undead Player Health 0/0 or <=328/0 -- Excessive Armour 100/50 essentially god mode) **`*p`**
 
 -IN2Moist-[**B:** `somevalue`]   =  B = Bounty: Value of Bounty **`*p`**
 
@@ -248,44 +246,42 @@ Player Names have tags:
 
 -IN2Moist-[S]                    = S = Script Host (Freemode.c) **`*p`**
 
+-IN2Moist-[T]                    = T = Player is Typing (Game Chat box to type chat msg into is currently open) **`*p`**
+
+-IN2Moist-[P]                    = P = Player State is Paused or Player has opened the pause menu  **`*p`**
+
 
 ##### Online Features
 ##### Player Features
 ##### Combat Features
-##### Other Scripts
-##### Options
+##### World Options
+##### Experimental Features
+##### Moists Script Loader
+##### MoistScript Options
 
 ### Online Player Script Features
 ** Inside Moist Script Parent **
-#### Spawn Options 
-**`This Section is empty until you turn on the Show & Load SpawnOptions
-in the Main Options Section under Local Script Features!`**
-##### Ped Spawns
-- Ped List
-##### Ped + Weapon / Ped + Vehicle
-- Weapon list / Vehicle list
-##### Selected Weapon / Vehicle
 
-#### Ped + Weapon Features
-- Send Attacker via Parachute
-`Spawns in the air above Player Parachutes down
-to kill the player with selected weapon`
-- Spawn Attacker & Task
-`Spawns nearby on foot with Weapon & Attacks Player`
-- Spawn Support Ped
-Can sometimes attack player, but should attack enemy players/peds
+#### Spawn Options
+#### Ped Spawn Options
 
-#### Ped + Selected Vehicle Options
-- Spawn as Escort & Task
-`Spawns Ped in Selected Vehicle Behind Player & follows,
-will attack player sometimes if they fire weapons.
-Certain Vehicles have Multiple Peds`
+- Modals
 
-- Spawn as Attacker & Task
-`Spawns Ped in Selected Vehicle Behind Player & Attacks,
-will follow player until they are dead.
-Ped's may attack each other if too many
-are spawned and they shoot in each others direction`
+- Spawn Ped
+
+- Select Ped Weapon Type
+
+- Select Ped Weapon
+
+- Amount to Spawn
+
+- Show Vehicles Starting
+
+- Spawn
+
+- <Send via Parachute>-<Spawn & Attack>-<Spawn as Support Ped>-<Spawn Vehicle Attacker>
+
+
 
 #### Player Tools
 Save Players Current POS to file (Output is compatible for copy & Paste to your Config for menu use) `C:\Users\IN2Moist\AppData\Roaming\PopstarDevs\2Take1Menu\cfg\tele.cfg`
