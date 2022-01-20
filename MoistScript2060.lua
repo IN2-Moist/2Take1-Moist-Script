@@ -4927,13 +4927,11 @@ function Recent_Player(pid, spid)
 			if feat.value == 0 then
 				AddScid(scid, name)
 				LoadBlacklist()
-				AddTokenID(token, name)
-				Load_Blacklist()
+
 				elseif feat.value == 1 then
 				RemoveScid(scid)
 				LoadBlacklist()
-				RemoveTokenID(token)
-				Load_Blacklist()
+
 			end
 			
 			return HANDLER_POP
@@ -19204,14 +19202,14 @@ if utils.time() - YieldCount > 9 then
 	--TODO: **********Remove Personal Script Execution from Public**************
 	
 	RunMain()
-	Load_Module("Moist_Blacklist.lua")
+
 	startup.hidden = true
 	startup.on = false
 end
 elseif feat.value == 1 then
 RunMain()
 --TODO: **********Remove Personal Script Execution from Public**************
-Load_Module("Moist_Blacklist.lua")
+
 startup.hidden = true
 startup.on = false
 end

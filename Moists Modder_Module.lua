@@ -181,6 +181,9 @@ PlayerSpawnNetHook = function(b, c, d)
             Players[b].PedSpawned = true
             return false
         elseif d == 43 then
+            local e, f
+            e = player.get_player_name(b)
+            f = player.get_player_name(c)
         moist_notify("NetEvent[" .. tostring(d) .. "] " .. tostring(NetEvents[d]) .. "\n" .. tostring(b) .. " : " .. tostring(e) .. " ->:-> " .. tostring(c) .. " | " .. tostring(f) .. "\n", "Network Clear Task Blocked\nMoists Modder Module")
        -- ModderAudio_notify()
         return true
