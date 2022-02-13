@@ -1,4 +1,5 @@
 
+
 local NetEvents = {}
 NetEvents[0] = "OBJECT_ID_FREED_EVENT"
 NetEvents[1] = "OBJECT_ID_REQUEST_EVENT"
@@ -95,45 +96,42 @@ NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
 Modder_threads = {}
 
 
+local notifyspawn = menu.add_feature("spawn nofify", "toggle", 0, nil)
+notifyspawn.on = false
+notifyspawn.hidden = true
+function notifyspawns(pid)
+    if notifyspawn.on then
+        moist_notify(pid .. " : " .. tostring(player.get_player_name(pid)) .. "\nSpawned")
+    end
+end
 
 God_Check_pid_thread = function(pid)
     while true do
-        if player.is_player_valid(pid) ~= false and pid ~= player.player_id()then
             local pped, plyveh, name
+    pped = player.get_player_ped(pid)
+    name = player.get_player_name(pid)
+    plyveh = player.get_player_vehicle(pid)
+        --if player.is_player_valid(pid) ~= false and pid ~= player.player_id()then
             if player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
-                system.wait(12000)
-                local Entity = ""
-                pped = player.get_player_ped(pid)
-                name = player.get_player_name(pid)
-                if pped ~= nil or pped ~= 0 then
-                    local pos = v3()
-                    plyveh = player.get_player_vehicle(pid)
-                    if Players[pid].isint then return end
-                    if not Players[pid].PedSpawned then return end
-                    if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and player.is_player_playing(pid) and not entity.is_entity_dead(pped) then
-                        system.wait(12000)
-                        if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(pped) and player.is_player_god(pid) then
-
-                            --if tracking.playerped_speed1[pid + 1] >= 21 then
+                system.wait(8000)
+                    if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not entity.is_entity_dead(pped) then
+                        if ai.is_task_active(pped, 4) or  ai.is_task_active(pped, 290) or  ai.is_task_active(pped, 298) or  ai.is_task_active(pped, 422) then
+                            
                             if Settings["GodCheckNotif"] and not Players[pid].isgod then
                                 Entity = "Player God mode"
 
                                 Players[pid].isgod = true
+                                moist_notify(pid .. " : " .. name .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "God Mode Player Detected\nMoists Modder Module")
 
-                                moist_notify(Entity .. "\n" .. pid .. " : " .. tostring(name), "God Mode Player Detected\nMoists Modder Module")
+                                --moist_notify(Entity .. "\n" .. pid .. " : " .. tostring(name), "God Mode Player Detected\nMoists Modder Module")
                                 ModderAudio_notify()
 
-                            end
-                            --end
+                          --  end
                         end
-
-                        plyveh = player.get_player_vehicle(pid)
-                        if plyveh == nil or plyveh == 0 then return end
-                        if Players[pid].isint then return end
-                    elseif player.is_player_vehicle_god(pid) and player.is_player_playing(pid) and not entity.is_entity_dead(pped) then
-                        if tracking.playerped_speed1[pid + 1] >= 21 then
-                            system.wait(12000)
-                            if player.is_player_vehicle_god(pid) and player.is_player_playing(pid) and not entity.is_entity_dead(pped) and tracking.playerped_speed1[pid + 1] >= 21 then
+                        end
+                       
+                    elseif player.is_player_god(pid) or player.is_player_vehicle_god(pid) and  not entity.is_entity_dead(pped) then
+                    if ai.is_task_active(pped, 200) or  ai.is_task_active(pped, 295) or  ai.is_task_active(pped, 199) then
                                 if Settings["GodCheckNotif"] and not Players[pid].isvgod then
                                     Entity = "Player Vehicle God mode"
                                     Players[pid].isvgod = true
@@ -142,11 +140,8 @@ God_Check_pid_thread = function(pid)
                                 end
                             end
                         end
-                    end
-                end
-
+                
             end
-        end
 
         system.wait(2)
     end
@@ -170,25 +165,25 @@ function spawn_net()
             NetEventHookID1 = 0
         end
 end
-    
-PlayerSpawnNetHook = function(b, c, d)
-        if d == 11 then
+PlayerSpawnNetHook = function(source, target, NetEventID)
+        if NetEventID == 11 then
             local e, f
-            e = player.get_player_name(b)
-            f = player.get_player_name(c)
-            --  Print("\nNetEvent[" .. d .. "]" .. " | " .. b .. " : " .. e .. " : " .. c .. " | " .. f .. "\n")
+            e = player.get_player_name(source)
+            f = player.get_player_name(target)
+            print("\nNetEvent[" .. NetEventID .. "]" .. " | " .. source .. " : " .. tostring(e) .. " : " .. target .. " | " .. tostring(f) .. "\n")
+            notifyspawns(source)
 
-            Players[b].PedSpawned = true
+            Players[source].PedSpawned = true
             return false
-        elseif d == 43 then
+        end
+        if NetEventID == 43 then
             local e, f
-            e = player.get_player_name(b)
-            f = player.get_player_name(c)
-        moist_notify("NetEvent[" .. tostring(d) .. "] " .. tostring(NetEvents[d]) .. "\n" .. tostring(b) .. " : " .. tostring(e) .. " ->:-> " .. tostring(c) .. " | " .. tostring(f) .. "\n", "Network Clear Task Blocked\nMoists Modder Module")
+            e = player.get_player_name(source)
+            f = player.get_player_name(target)
+        moist_notify("NetEvent[" .. tostring(NetEventID) .. "] " .. tostring(NetEvents[NetEventID]) .. "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\n", "Network Clear Task Blocked\nMoists Modder Module")
        -- ModderAudio_notify()
         return true
     end
-
 
             return false
 end
@@ -209,5 +204,5 @@ event.add_event_listener("exit", function()
         menu.delete_thread(Modder_threads[i])
     end
 end)
-players()
+--players()
 Modder_threads[#Modder_threads + 1] = menu.create_thread(SpawnNetEvent, spawn_feat)
