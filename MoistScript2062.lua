@@ -6176,23 +6176,21 @@ delete_cunt = menu.add_feature("Delete Spawned Cunts", "action", globalFeatures.
 end)
 
 --INFO: Player Joins
+	
 joining_players_logger = event.add_event_listener("player_join", function(e)
-	if AFK_Audio.on then
-	ModderAudio_notify_thread.on = true
-	end
 	
     local pid, scid, schx, name
     pid = e.player
 	Players[pid].JoinTime = os.time()
-    scid = player.get_player_scid(pid)
-    schx = string.format("%x", scid)
-    name = tostring(player.get_player_name(pid))
-    netplyhash = network.network_hash_from_player(e.player)
+    local scid = player.get_player_scid(pid)
+    local schx = string.format("%x", scid)
+    local name = tostring(player.get_player_name(pid))
+    local netplyhash = network.network_hash_from_player(e.player)
     local ip, sip, token, tohex, prior
-    token = player.get_player_host_token(pid)
-    tokhex = string.format("%x", token)
-    prior = player.get_player_host_priority(pid)
-	DecIP = player.get_player_ip(pid)
+    local token = player.get_player_host_token(pid)
+    local tokhex = string.format("%x", token)
+    local prior = player.get_player_host_priority(pid)
+	local DecIP = player.get_player_ip(pid)
 	
     if string.len(scid) <= 5 then
 	moist_notify("Joining Player: " .. name .. "\nUsing Very Short scid\n Most likely this is Spoofed!!", "Moists Joining Modder Detection")
@@ -12594,18 +12592,21 @@ OSD_Control_Meter1 = menu.add_feature("Control Input Gauge", "value_str", global
 	if feat.on then
 	local ID = feat.value + 1
 	local value = controls.get_control_normal(-1, controlID[ID])
-	--controls.set_control_normal(-1, controlID[ID], 0.00000001)
-		ui.draw_rect(0.0165, 0.70, 0.030, 0.12, 0, 0, 0, 200)
-	ui.draw_text(tostring(value), v2(0.03, 0.70))
-			--draw_rect(float x, float y, float width, float height, int r, int g, int b, int a)	
-				ui.draw_rect(0.0178, 0.70, 0.0220, tonumber(value / 10), 255, 0, 0, 255)
-				--ui.draw_rect(0.006, 0.70, 0.065, value, barvar01, barvar02, 0, value)
-	
-	
+	ui.draw_rect(0.010, 0.70, 0.015, tonumber(value / 10), 0, 0, 255, 255)
 	return HANDLER_CONTINUE
 	end
 end)
 OSD_Control_Meter1:set_str_data(contrllabel)
+
+OSD_Control_Meter2 = menu.add_feature("Control Input Gauge 2", "value_str", globalFeatures.moist_UI_OSD, function(feat)
+	if feat.on then
+	local ID = feat.value + 1
+	local value = controls.get_control_normal(-1, controlID[ID])
+	ui.draw_rect(0.025, 0.70, 0.015, tonumber(value / 10), 0, 0, 255, 255)
+	return HANDLER_CONTINUE
+	end
+end)
+OSD_Control_Meter2:set_str_data(contrllabel)
 
 
 OSD_Veh_Meter = menu.add_feature("Vehicle RPM Gauge", "toggle", globalFeatures.moist_UI_OSD, function(feat)
