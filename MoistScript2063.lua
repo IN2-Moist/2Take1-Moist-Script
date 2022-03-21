@@ -32,7 +32,7 @@ function SettingsReset()
 	local Root = (utils.get_appdata_path("PopstarDevs", "2Take1Menu") ..  "\\scripts\\MoistsLUA_cfg" .. "\\MoistsScript_settings.ini")
 	local file = io.open(Root, "w+")
 
-		file:write(tostring("MoistScript=2.0.6.2") .. "\n")
+		file:write(tostring("MoistScript=2.0.6.3") .. "\n")
 		todaysdate = os.date("%d-%m-%y")
 		file:write(tostring("DateSettingsSaved=" .. todaysdate) .. "\n")
 		file:write(tostring("PlayerRCHook=false") .. "\n")
@@ -67,7 +67,7 @@ function SettingsReset()
 		file:write(tostring("force_wBPH=false") .. "\n")
 		file:write(tostring("New_Notifys=false") .. "\n")
 		file:write(tostring("no_traffic=false") .. "\n")
-		file:write(tostring("MoistScript=2.0.6.2") .. "\n")
+		file:write(tostring("MoistScript=2.0.6.3") .. "\n")
 		file:write(tostring("NotifyColorGDefault=255") .. "\n")
 		file:write(tostring("Chat_Command=false") .. "\n")
 		file:write(tostring("loop_feat_delay=0") .. "\n")
@@ -106,6 +106,8 @@ function SettingsReset()
 end
 
 
+	
+
 function Load_Moist()
 	local Root = (utils.get_appdata_path("PopstarDevs", "2Take1Menu") ..  "\\scripts\\MoistsLUA_cfg" .. "\\MoistsScript_settings.ini")
 
@@ -122,7 +124,56 @@ Paths, Settings, threads, kick_param, Teleport_Features, tele_presets = {}, {}, 
 local Passive_trackerOUT, Passive_trackerIN, ChatEventID, joining_players_logger, Join_Event_Check
 Modders_DB = {{flag = {}, flags = {}, ismod = {}}}
 SessionPlayers = {{pid = {}, Name = {}, Tags = {}, tags = {}, Scid = {}}}
-Players = {{name = {}, isFriend = {}, orbnotify = {}, orbnotify2 = {}, isHost = {}, isScHost = {}, isTyping = {}, isPaused = {}, JoinTime = {}, ActiveMissile = {}, isRC = {}, isOTR = {}, OTRBlipID = {}, BlipPID = {}, pulse = {}, PedSpawned = {}, bounty = {}, bountyvalue = {}, isUnDead = {}, isPassive = {}, isTalking = {},  flag = {}, flags = {}, ismod = {}, isgod = {}, isvgod = {}, PlayerGodMode = {}, PlayerVehGodMode = {}, isint = {}, Interiorname = {}, isDead = {}, isDamagedbY = {},  isvis = {}, speedK = {}, speedM = {}, InteriorThread = {}, IsGodThread = {}, IsGodThread1 = {}}}
+Players = {
+    {
+        name = {}, 
+        isFriend = {}, 
+        orbnotify = {}, 
+        orbnotify2 = {}, 
+        isHost = {}, 
+        isScHost = {}, 
+        isTyping = {}, 
+        isPaused = {}, 
+        JoinTime = {}, 
+        ActiveMissile = {}, 
+        isRC = {}, 
+        isOTR = {}, 
+        OTRBlipID = {}, 
+        BlipPID = {}, 
+        pulse = {}, 
+        PedSpawned = {}, 
+        bounty = {}, 
+        bountyvalue = {}, 
+        isUnDead = {}, 
+        isPassive = {}, 
+        isTalking = {}, 
+        flag = {}, 
+        flags = {}, 
+        ismod = {}, 
+        isgod = {}, 
+        isKicked = {}, 
+        KickedCount = {}, 
+        isvgod = {}, 
+        PlayerGodMode = {}, 
+        PlayerVehGodMode = {}, 
+        isint = {}, 
+        Interiorname = {}, 
+        isDead = {}, 
+        isDamagedbY = {}, 
+        isvis = {}, 
+        speedK = {}, 
+        speedM = {}, 
+        InteriorThread = {}, 
+        IsGodThread = {}, 
+        IsGodThread1 = {},
+        IsFlagRemNotif = {},
+		intID = {},
+		onlinecheck = {},
+		online_interior = {},
+		onlineintID = {},
+    }
+}
+
 --TODO: Change from function to value before any new dlc
 CurrentMenuVersion = menu.get_version()
 
@@ -139,7 +190,7 @@ end
 function moist_notify2(msg1, msg2, colour)
 
 msg1 = msg1 or "MoistScript Putting Fun and Moisture over GTA ONLINE\nLike a Pussy Dripping ona Hard Cock!\nPenetrating Like a Missile from Lester on Opressor!!"
-msg2 =  msg2 or "MoistScript 2.0.6.2"
+msg2 =  msg2 or "MoistScript 2.0.6.3"
 local color = Settings["NotifyColorDefault"] or colour
 menu.notify(msg1, msg2, 15, color)
 end
@@ -165,7 +216,7 @@ Paths.Spamtxt_Data = Paths.Cfg .. "\\Moists_Spamset.ini"
 Paths.Teleport_Data = Paths.Cfg .. "\\Moists_Teleset.ini"
 Paths.tempchat = Paths.Cfg .. "\\TempChatSpam.ini"
 
-Settings["MoistScript"] = "2.0.6.2"
+Settings["MoistScript"] = "2.0.6.3"
 Settings["DateSettingsSaved"] = ""
 Settings["OSD.modvehspeed_osd"] = false
 Settings["OSD.Player_bar"] = false
@@ -215,7 +266,7 @@ Settings["RagDollHotKey"] = false
 Settings["OTR_Blips"] = false
 Settings["EWO_TRYHARD"] = false
 Settings["RecentPlayer_Notify"] = false
-Settings["Auto_Off_RAC"] = false
+Settings["FriendBypass"] = false
 Settings["orbitalProxyBlip"] = false
 Settings["WeaponFastSwitch"] = false
 Settings["blipGodcheck"] = false
@@ -231,6 +282,14 @@ Settings["missilehook"] = false
 Settings["PlayerTagginghook"] = false
 Settings["PlayerRCHook"] = false
 Settings["ESP_Enhancments"] = false
+Settings["ClearVisNotifDelay"] = 5
+Settings["ClearVisNotif"] = false
+Settings["spam_wait_Modifier"] = 25
+Settings["KickModFlag"] = 0
+Settings["RemoveModFlag"] = 0
+Settings["GodAudVfxNotif_on"] = false
+Settings["GodAudVfxNotif"] = 0
+Settings["KickJoiningKickedPlayers"] = true
 
 function SaveSettings()
 Settings["DateSettingsSaved"] = os.date("%d-%m-%y")
@@ -257,7 +316,6 @@ for line in io.lines(Paths.Settings) do
 	end
 end
 end
-
 
 function Load_Settings()
 	if not utils.file_exists(Paths.Settings) then
@@ -286,9 +344,9 @@ end
 
 function VersionCheck()
 	Load_Settings()
-	if Settings["MoistScript"] ~= "2.0.6.2" then
+	if Settings["MoistScript"] ~= "2.0.6.3" then
 	local saved_version = Settings["MoistScript"]
-	Settings["MoistScript"] = "2.0.6.2"
+	Settings["MoistScript"] = "2.0.6.3"
 	moist_notify2("Saved Version = " ..  saved_version .."\nThis Version = ".. Settings["MoistScript"], "Script Version Out of Date", 0xffffff)
 	moist_notify2("Loading Current Saved Settings\nAdding New Settings\nSaving all", "Script Version Updated", 0xffffff)
 	SaveSettings()
@@ -484,6 +542,7 @@ PlayerArray()
 
 AttachedCunt={}AttachedCunt2={}
 escort, escortveh, spawned_cunts, groupIDs, allpeds, allveh, allobj, allpickups, alkonost, kosatka, scids, spawned_cunt1, spawned_cunt2, spawned_cunt3, spawned_cunt,  EntityHash, EntityHash2, Thread2Id, Thread1Id, Esp_pid, markID, boobs, boobveh = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+SpawnedNPC, SpawnedNPCV = {}, {}
 lesveh, lester, lester_group = {}, {}, {}
 lester, huntv = {}, {}
 local BlipIDs <const> = {}
@@ -546,82 +605,61 @@ end
 --Get Offset to self POS
 local SelfoffsetPos, offsetPos = v3(), v3()
 
-function Self_offsetPos(pos, heading, distance)
-heading = math.rad((heading - 180) * -1)
-return v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
-end
+
 function get_offset2me(dist)
 local pos = player.get_player_coords(player.player_id())
-print(string.format("%s, %s, %s", pos.x, pos.y, pos.z))
-SelfoffsetPos = Self_offsetPos(pos, player.get_player_heading(player.player_id()), dist)
-print(string.format("%s, %s, %s", SelfoffsetPos.x, SelfoffsetPos.y, SelfoffsetPos.z))
-return SelfoffsetPos
+	    local MyPed = player.get_player_ped(player.player_id())
+		local fwdvec = entity.get_entity_forward_vector(MyPed)
+		
+		pos = pos + (fwdvec * dist)
+return pos
 end
+
 --INFO: offset to player calculation
-function OffsetCoords(pos, heading, distance)
-heading = math.rad((heading - 180) * -1)
-return v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
-end
 
 function get_offset(pid, dist)
 local pos = player.get_player_coords(pid)
+	    local pped = player.get_player_ped(pid)
+		local fwdvec = entity.get_entity_forward_vector(pped)
+		
+		pos = pos + (fwdvec * dist)
 
-offsetPos = OffsetCoords(pos, player.get_player_heading(pid), dist)
+return pos
+end
 
-return offsetPos
+function GetDistMag(PosA, PosB)
+	return (PosA:magnitude(PosB))
 end
 
 function Get_Distance(pid)
-local pped = player.get_player_ped(pid)
-local playerCoord = player.get_player_coords(player.player_id())
-local coord = entity.get_entity_coords(pped)
-local xDis = playerCoord.x - coord.x;
-local yDis = playerCoord.y - coord.y;
-local distance = math.sqrt(xDis*xDis+yDis*yDis);
-return distance
+	local playerCoord = player.get_player_coords(player.player_id())
+	local coord = player.get_player_coords(pid)
+	return (playerCoord:magnitude(coord))
 end
 
 function Get_Dist2D_POS2POS(v3pos1, v3pos2)
-    local Coord = v3pos1
-    local coord = v3pos2
-    local xDis = Coord.x - coord.x;
-    local yDis = Coord.y - coord.y;
-    local distance = math.sqrt(xDis*xDis+yDis*yDis);
-    return distance
+	return (v3pos1:magnitude(v3pos2))
 end
 
 
 function Get_Distance2D(pid, v3pos)
-local playerCoord = v3pos
-local coord = player.get_player_coords(pid)
-local xDis = playerCoord.x - coord.x;
-local yDis = playerCoord.y - coord.y;
-local distance = math.sqrt(xDis*xDis+yDis*yDis);
-return distance
+	local playerCoord = player.get_player_coords(pid)
+	return (playerCoord:magnitude(v3pos))
 end
 
 function Get_Distance3D(pid)
-local pped = player.get_player_ped(pid)
-local playerCoord = player.get_player_coords(player.player_id())
-local coord = entity.get_entity_coords(pped)
-local xDis = playerCoord.x - coord.x --PED
-local yDis = playerCoord.y - coord.y	--PED
-local zDis = playerCoord.z - coord.z	--PED
-local distance = math.sqrt(xDis*xDis+yDis*yDis+zDis*zDis);
-return distance
+	local playerCoord = player.get_player_coords(player.player_id())
+	local coord = player.get_player_coords(pid)
+	return (playerCoord:magnitude(coord))
 end
 
 interior_thread = {}
 function Get_Dist3D(pid, v3pos)
-local pped = player.get_player_ped(pid)
-local playerCoord = v3pos
-local coord = entity.get_entity_coords(pped)
-local xDis = playerCoord.x - coord.x
-local yDis = playerCoord.y - coord.y
-local zDis = playerCoord.z - coord.z
-local distance = math.sqrt(xDis * xDis + yDis * yDis + zDis * zDis)
-return distance
+	local playerCoord = v3pos
+	local coord = player.get_player_coords(pid)
+	return (coord:magnitude(playerCoord))
 end
+
 function interiorcheck_old_pid(pid)
 player_id = pid
 pid = player_id
@@ -637,68 +675,97 @@ local interiorr
 pped = player.get_player_ped(context.pid)
 while true do
 	if player.is_player_valid(context.pid) ~= false then
-		-- orbprox = Get_Distance2D(pid, v3(339.379,4836.629,-58.999))
-		-- if orbprox < 18 and not Players[pid].orbnotify then
-			-- if player.get_player_scid(context.pid) ~= 4294967295 then
-				-- moist_notify("Player Close To Orbital Room!\n" .. (Players[pid].name or "PID:" ..pid) .. " is: " .. orbprox .. " Away from entrance", "Possible Orbital User")
-				-- Players[pid].orbnotify = true
-			-- end
-			-- elseif orbprox > 18 and Players[pid].orbnotify then
-			-- Players[pid].orbnotify = false
-		-- end
+
 		if interior.get_interior_at_coords_with_type(player.get_player_coords(context.pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(context.pid)) == 0 then
 			if player.is_player_god(context.pid) or player.is_player_vehicle_god(context.pid) then
                     for i = 1, #interiors do
-					apartmen = Get_Dist3D(context.pid, interiors[i][2])
+					system.yield(5)
+					apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+					--apartmen = Get_Dist3D(context.pid, interiors[i][2])
 					if apartmen < 90 then
 						Players[context.pid].isint = true
 						goto interiorcheckEnd
-						system.yield(0)
+						system.yield(5)
 					end
+					system.yield(5)
 				end
 				
 				Players[context.pid].isint = false
-				-- local zbool, gz = gameplay.get_ground_z(player.get_player_coords(context.pid))
-				-- pos = player.get_player_coords(context.pid)
-				-- if not Players[pid].isint and pos.z < gz then
-				-- Players[pid].isint = true
-				-- elseif not Players[pid].isint and pos.z >= gz then
-				-- Players[pid].isint = false
 			end
 		end
 		::interiorcheckEnd::
 		elseif player.is_player_god(context.pid) and interior.get_interior_at_coords_with_type(player.get_player_coords(context.pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(context.pid)) ~= 0 then
 		Players[context.pid].isint = true
-		elseif interior.get_interior_from_entity(pped) ~= 0 then
-		Players[context.pid].isint = true
+
 	end
 	system.yield(600)
 end
 end
 
 --INFO: Interior Check
-interior_pos_check = function(pid)
-local apartmen, orbprox
-local interiorr, found
-pped = player.get_player_ped(pid)
-orbprox = 0
+
+interior_poscheck = function(pid)
+local apartmen, interiorr, found
+local pped = player.get_player_ped(pid)
 	if player.is_player_valid(pid)then
 
 		if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
 			
                     for i = 1, #interiors do
-					apartmen = Get_Dist3D(pid, interiors[i][2])
+					apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+					--apartmen = Get_Dist3D(pid, interiors[i][2])
 					if apartmen < 90 then
 						found = true
 						elseif not found then
-					systen.yield(0)
+					system.yield(10)
 					end
-										systen.yield(0)
+										system.yield(10)
 					end
 										
 					if found == true then
 						return true
 					else
+					return false
+					end
+						
+				-- local zbool, gz = gameplay.get_ground_z(player.get_player_coords(pid))
+				-- pos = player.get_player_coords(pid)
+				-- if not Players[pid].isint and pos.z < gz then
+				-- Players[pid].isint = true
+				-- elseif not Players[pid].isint and pos.z >= gz then
+				-- Players[pid].isint = false
+		
+
+		elseif  interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 then
+		return false
+		end
+		
+	end
+
+end
+
+interior_pos_check = function(pid)
+local apartmen, interiorr, found
+local pped = player.get_player_ped(pid)
+	if player.is_player_valid(pid)then
+
+		if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
+			
+                    for i = 1, #interiors do
+					--apartmen = Get_Dist3D(pid, interiors[i][2])
+					apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+					system.yield(10)
+					if apartmen < 90 then
+						found = true
+						elseif apartmen > 90 then
+					system.yield(10)
+					end
+										system.yield(10)
+					end
+										
+					if found == true then
+						return true
+						elseif not found then
 					return false
 					end
 						
@@ -755,7 +822,7 @@ function interiorcheckpid(pid, ver)
         local i = pid + 32
 		interior_thread[i] = menu.create_thread(interiorcheck1_thread, pid)
 		
-        interior_thread[pid+1] = menu.create_thread(interiorcheck_1_thread, { pid = player_id } )
+      --  interior_thread[pid+1] = menu.create_thread(interiorcheck_1_thread, { pid = player_id } )
 
         local i = #feat + 1
         feat[i] = menu.add_feature("Delete interior Check Thread: ".. pid, "action", God_Threads_Created.id, delete_God_thread)
@@ -791,6 +858,7 @@ Orbital_Proxy_Thread = function(pid)
 	local orbprox, orbroom
 	while true do
 	if player.is_player_valid(pid) then
+	system.yield(10)
 		orbprox = Get_Distance2D(pid, v3(339.379,4836.629,-58.999))
 		
 		if orbprox < 18 and not Players[pid].orbnotify then
@@ -799,6 +867,7 @@ Orbital_Proxy_Thread = function(pid)
 			elseif orbprox > 18 and Players[pid].orbnotify then
 			Players[pid].orbnotify = false
 			end
+			system.yield(10)
 		orbroom = Get_Distance2D(pid, v3(328.72317504883,4829.0971679688,-58.552871704102))
 			if orbroom < 10 and not Players[pid].orbnotify2 then
 			moist_notify("Player Inside Orbital Room!\n" .. (Players[pid].name or "PID:" ..pid), "Orbital User")
@@ -815,26 +884,68 @@ Orbital_Proxy_Thread = function(pid)
 end
 
 --INFO: Ver1 Check
-interiorcheck1_thread = function(pid)
+-- interiorcheck1_thread = function(pid)
 
-while true do
-	 if player.is_player_valid(pid) then
-		if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0  then
-		system.yield(8000)
-		Players[pid].isint = true
-		--Players[pid].PedSpawned = false
-		end
+-- while true do
+	 -- if player.is_player_valid(pid) then
+		-- if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0  then
+		-- system.yield(8000)
+		-- Players[pid].isint = true
+		-- --Players[pid].PedSpawned = false
+		-- end
 
 
-		Players[pid].isint, Players[pid].Interiorname, Position  = GetPlayerinterior(pid)
-		system.wait(70)
-	end
+		-- Players[pid].isint, Players[pid].Interiorname, Position  = GetPlayerinterior(pid)
+		-- system.wait(70)
+	-- end
 		
 
-	system.yield(6)
+	-- system.yield(6)
+-- end
+	-- system.yield(6)
+-- end
+
+
+interiorcheck1_thread = function(pid)
+    local apartmen, interiorr, found
+    while true do
+        if player.is_player_valid(pid) then
+            if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0  then
+               -- system.yield(8000)
+                Players[pid].isint = true
+                Players[pid].PedSpawned = false
+            elseif interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0  then
+                for i = 1, #interiors do
+				apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+                    --apartmen = Get_Dist3D(pid, interiors[i][2])
+                    system.yield(6)
+                    if apartmen < 60 then
+                        found = true
+                        Players[pid].isint = true
+						Players[pid].PedSpawned = false
+                        if found then
+                            system.yield(8000)
+                        end
+                    end
+
+                    system.yield(6)
+
+                end
+                if found ~= true then
+                    Players[pid].isint = false
+
+                end
+                system.yield(6)
+            end
+            system.yield(6)
+
+
+        end
+        system.yield(6000)
+    end
+    system.yield(6)
 end
-	system.yield(6)
-end
+
 
 
 --INFO: V1 Check
@@ -854,7 +965,8 @@ while true do
 				end
 		elseif interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0  and player.is_player_playing(pid) then
                     for i = 1, #interiors do
-					apartmen = Get_Dist3D(pid, interiors[i][2])
+					apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+--					apartmen = Get_Dist3D(pid, interiors[i][2])
 					if apartmen < 60 then
 					Players[pid].isint = true
 					--Players[pid].PedSpawned = false
@@ -880,16 +992,20 @@ end
 
 --INFO: New Player Interior Check
 
+
 function GetPlayerinterior(pid)
 	
 	local apartmen, interiorr, found
 	for i = 1, #interiors do
-	apartmen = Get_Dist3D(pid, interiors[i][2])
+	
+--	apartmen = Get_Dist3D(pid, interiors[i][2])
+	apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+	system.wait(5)
 	if apartmen < 60 then
 	found = true
 	return true, tostring(interiors[i][1]), tostring(interiors[i][2]), (i)
 end
-
+	system.wait(5)
 end
 if found ~= true then
 --	Players[pid].isint = false
@@ -901,7 +1017,7 @@ function GetPlayer_onlineinterior(pid)
 	
 	local apartmen, interiorr, found
 	for i = 1, #onlineinteriors do
-	apartmen = Get_Dist3D(pid, onlineinteriors[i][2])
+	apartmen = GetDistMag(player.get_player_coords(pid), onlineinteriors[i][2])
 	if apartmen < 60 then
 	found = true
 	return true, tostring(onlineinteriors[i][1]), (i)
@@ -918,11 +1034,12 @@ while true do
 	if player.is_player_valid(pid) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
 	if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 then
 		Players[pid].isint = true
-		--Players[pid].PedSpawned = false
+		Players[pid].PedSpawned = false
 		elseif interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
 		intstate = interior_pos_check(pid)
 		if intstate == true then
 		Players[pid].isint = true
+		Players[pid].PedSpawned = false
 		elseif intstate == false then
 		Players[pid].isint = false
 		--Players[pid].PedSpawned = true
@@ -1105,10 +1222,17 @@ end
 
 --INFO: Preset Data Arrays
 local presets, escort_ped, veh_list, ped_wep, missions, BountyPresets, ssb_wep, StrikeGive, eject, heiststat_setup, decorators, int_flags, ObitalBlip
-local spam_presets, spamm, spammRU = {}, {}, {}
-spamm.var, spammRU.var = {}, {}
+
+spam_presets, spamm, spamPre, spammRU = {}, {}, {}, {}
+spamm.var, spamPre.var, spammRU.var = {}, {}, {}
 local mod, modvalue, pedspawns, Group_Hate, Support_Group
+
 local Ped_Haters, playergroups, playerpeds = {}, {}, {}
+local MoistEntRelHash <const> = {}
+MoistEntRelHash[#MoistEntRelHash + 1] = ped.add_relationship_group("MoistScript_Entities")
+
+MoistEntitiesRelHash = MoistEntRelHash[1]
+
 eject = {0, 1, 16, 64, 256, 4160, 262144, 320, 512, 131072}
 spam_preset={
 	{"Love Me","Love Me"},
@@ -1136,9 +1260,9 @@ missions={"Force to Severe Weather","Force to Half Track","Force to Night Shark 
 ped_wep={"weapon_unarmed","weapon_parachute","weapon_handcuffs","weapon_Garbage Bag","weapon_FIREWORK","weapon_stone_hatchet","weapon_knife","weapon_bat","weapon_machinepistol","weapon_raypistol","weapon_stungun","weapon_gadgetpistol","weapon_raycarbine","weapon_combatmg_mk2","weapon_Special RPG","weapon_Standard RPG","weapon_railgun","weapon_minigun","weapon_Smoke GrenadeLauncher","weapon_REMOTESNIPER","weapon_rayminigun"}
 veh_list={{"buzzard",0x2F03547B,nil,nil},{"savage",0xFB133A17,nil,nil},{"seasparrow",0xD4AE63D9,10,1},{"valkyrie2",0x5BFA5C4B,nil,nil},{"valkyrie",0xA09E15FD,nil,nil},{"boxville5",0x28AD20E1,nil,nil},{"apc",0x2189D250,10,0},{"oppressor2",0x7B54A9D3,10,1},{"oppressor",0x34B82784,10,0},{"ruiner2",0x381E10BD,nil,nil},{"scramjet",0xD9F0503D,10,0},{"stromberg",0x34DBA661},{"tampa3",0xB7D9F7F1},{"khanjali",0xAA6F980A,nil,nil},{"insurgent3",0x8D4B7A8A,nil,nil},{"insurgent",0x9114EADA,nil,nil},{"limo2",0xF92AEC4D,nil,nil},{"mower",0x6A4BD8F6,nil,nil},{"police2",0x9F05F101,nil,nil},{"police3",0x71FA16EA,nil,nil},{"police4",0x8A63C7B9,nil,nil},{"police",0x79FBB0C5,nil,nil},{"policeb",0xFDEFAEC3,nil,nil},{"policeold1",0xA46462F7,nil,nil},{"policeold2",0x95F4C618,nil,nil},{"policet",0x1B38E955,nil,nil},{"polmav",0x1517D4D9,nil,nil},{"sheriff2",0x72935408,nil,nil},{"sheriff",0x9BAA707C,nil,nil},{"phantom2",0x9DAE1398,nil,nil},{"ruiner3",0x2E5AFD37,nil,nil},{"scorcher",0xF4E1AA15,nil,nil},{"bmx",0x43779C54,nil,nil}}
 BountyPresets={0,1,10,50,70,100,250,500,600,750,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000}
-ssb_wep_label={"SNIPERRIFLE","HEAVYSNIPER","REMOTESNIPER","GRENADELAUNCHER","TRAILER_DUALAA","PLAYER_BULLET","PLAYER_LAZER","AIRSTRIKE_ROCKET","SPACE_ROCKET","PLANE_ROCKET","AVENGER_CANNON","AIR_DEFENCE_GUN","EMPLAUNCHER","TRANQUILIZER","stungun"}
-StrikeGive_label={"AIRSTRIKE_ROCKET","AVENGER_CANNON","KHANJALI_CANNON_HEAVY","GRENADELAUNCHER","PLAYER_LAZER","AKULA_BARRAGE","SPACE_ROCKET","PLANE_ROCKET","AIR_DEFENCE_GUN","GRENADELAUNCHER_SMOKE","FIREWORK","RUINER_ROCKET","DELUXO_MISSILE","HOMINGLAUNCHER","STINGER","STICKYBOMB","PROXMINE","EMPLAUNCHER","TRANQUILIZER"}
-ssb_wep={"WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_REMOTESNIPER","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_TRAILER_DUALAA","VEHICLE_WEAPON_PLAYER_BULLET","VEHICLE_WEAPON_PLAYER_LAZER","WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","WEAPON_AIR_DEFENCE_GUN","WEAPON_EMPLAUNCHER","WEAPON_TRANQUILIZER","WEAPON_STUNGUN_MP"}
+ssb_wep_label={"SNIPERRIFLE","HEAVYSNIPER","REMOTESNIPER","GRENADELAUNCHER","TRAILER_DUALAA","PLAYER_BULLET","PLAYER_LAZER","AIRSTRIKE_ROCKET","SPACE_ROCKET","PLANE_ROCKET","AVENGER_CANNON","AIR_DEFENCE_GUN","EMPLAUNCHER"}
+StrikeGive_label={"AIRSTRIKE_ROCKET","AVENGER_CANNON","KHANJALI_CANNON_HEAVY","GRENADELAUNCHER","PLAYER_LAZER","AKULA_BARRAGE","SPACE_ROCKET","PLANE_ROCKET","AIR_DEFENCE_GUN","GRENADELAUNCHER_SMOKE","FIREWORK","RUINER_ROCKET","DELUXO_MISSILE","HOMINGLAUNCHER","STINGER","STICKYBOMB","PROXMINE","EMPLAUNCHER"}
+ssb_wep={"WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_REMOTESNIPER","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_TRAILER_DUALAA","VEHICLE_WEAPON_PLAYER_BULLET","VEHICLE_WEAPON_PLAYER_LAZER","WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","WEAPON_AIR_DEFENCE_GUN","WEAPON_EMPLAUNCHER"}
 StrikeGive={"WEAPON_AIRSTRIKE_ROCKET","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_KHANJALI_CANNON_HEAVY","WEAPON_GRENADELAUNCHER","VEHICLE_WEAPON_PLAYER_LAZER","VEHICLE_WEAPON_AKULA_BARRAGE","VEHICLE_WEAPON_SPACE_ROCKET","VEHICLE_WEAPON_PLANE_ROCKET","WEAPON_AIR_DEFENCE_GUN","WEAPON_GRENADELAUNCHER_SMOKE","WEAPON_FIREWORK","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_DELUXO_MISSILE","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER","WEAPON_STICKYBOMB","WEAPON_PROXMINE","WEAPON_EMPLAUNCHER"}
 heiststat_setup={{"H3_COMPLETEDPOSIX",-1},{"H3OPT_APPROACH",1},{"H3_HARD_APPROACH",3},{"H3OPT_TARGET",3},{"H3OPT_POI",1023},{"H3OPT_ACCESSPOINTS",2047},{"H3OPT_BITSET1",-1},{"H3OPT_CREWWEAP",1},{"H3OPT_CREWDRIVER",1},{"H3OPT_CREWHACKER",5},{"H3OPT_WEAPS",1},{"H3OPT_VEHS",3},{"H3OPT_DISRUPTSHIP",3},{"H3OPT_BODYARMORLVL",3},{"H3OPT_KEYLEVELS",2},{"H3OPT_MASKS",math.ceil(math.random(0,12))},{"H3OPT_BITSET0",-1}}AmmoType={{"FullMetalJacket",1586900444},{"FullMetalJacket",4126262806},{"FullMetalJacket",234717365},{"FullMetalJacket",758230489},{"FullMetalJacket",3162174467},{"Tracer",3101486635},{"Tracer",1226421483},{"Tracer",1569785553},{"Tracer",1184011213},{"HollowPoint",670318226},{"HollowPoint",3458447638},{"HollowPoint",2089185906},{"Explosive",2916183225},{"Explosive",3985664341},{"Incendiary",2878251257},{"Incendiary",1461941360},{"Incendiary",2465278413},{"Incendiary",3685537684},{"Incendiary",3962074599},{"Incendiary",796697766},{"ArmourPiercing",784861712},{"ArmourPiercing",2797387177},{"ArmourPiercing",423744068},{"ArmourPiercing",423744068},{"ArmourPiercing",1923327840}}
 ptfx_dictasset = {{"scr_bike_adversary", "scr_adversary_ped_light_good"},{"scr_bike_adversary", "scr_adversary_ped_light_bad"},{"scr_bike_adversary", "scr_adversary_ped_glow"},{"scr_ojdg4_water_exp", "scr_oddjobtraffickingair"},{"veh_xs_vehicle_mods", "veh_nitrous"},{"scr_xs_celebration", "scr_xs_confetti_burst"},{"scr_xs_celebration", "scr_xs_money_rain"},{"scr_xs_celebration", "scr_xs_money_rain_celeb"},{"proj_indep_firework_v2", "scr_firework_indep_spiral_burst_rwb"},{"proj_indep_firework_v2", "scr_firework_indep_burst_rwb"},{"proj_indep_firework_v2", "scr_firework_indep_ring_burst_rwb"},{"weap_xs_weapons", "muz_xs_sr_raygun"},{"wpn_flare", "proj_heist_flare_trail"},{"wpn_indep_firework", "muz_indep_firework  "},{"proj_indep_firework_v2", "scr_firework_indep_repeat_burst_rwb"},{"proj_indep_firework_v", "scr_xmas_firework_burst_fizzle"},{"scr_indep_fireworks", "scr_indep_firework_fountain"},{"scr_indep_fireworks", "scr_indep_firework_starburst"},{"scr_indep_fireworks", "scr_indep_firework_shotburst"},{"proj_indep_firework", "scr_indep_firework_air_burst"},{"scr_weap_bombs", "scr_bomb_gas"},{"scr_dlc_independence", "proj_indep_flare_trail"},{"scr_bike_adversary", "scr_adversary_foot_flames"},{"scr_bike_adversary", "scr_adversary_slipstream"},{"scr_indep_fireworks", "scr_indep_firework_trailburst"},{"scr_indep_fireworks", "scr_indep_firework_trail_spawn"},}
@@ -1148,6 +1272,73 @@ SH_Events = {-1205085020,1258808115,1757755807}
 events_array = {0x39624029,0xAD63290E,0x7DE8CAC0,0x285DDF33}
 ScriptEvents = {1695663635,-823334279,677240627,704979198,-2113023004,2112408256,-994045023,703680251,-1322571352,1258808115,1228916411,962740265,-1386010354,286609226,1456985457,747270864,-990958325,603406648,1715193475,163598572,-1970125962,-1056683619,1757755807,-786546101,1068259786,1132878564,801199324,1525161016,2020588206,-1704141512,-1205085020,-1715193475}
 SECrash = {1695663635,-823334279,677240627,704979198,-2113023004,2112408256,-994045023,703680251,-1322571352,1258808115,1228916411,962740265,-1386010354,286609226,1456985457,747270864,-990958325,603406648,1715193475,163598572,-1970125962,-1056683619,1757755807,-786546101,1068259786,1132878564,801199324,1525161016,2020588206,-1704141512,677240627,2112408256,-1386010354,962740265,-2113023004,704979198,-1715193475,163598572,-1970125962,-1056683619,1757755807}
+ObjectModel = {
+	0xe1047885,
+	0xac4365dd,
+	0x7405d961,
+	0xd9f07d2b,
+	0x17c1feb4,
+	0x9ae513fc,
+	0x5ca4a9a0,
+	0x8a27cc6b,
+	0x0281a599,
+	0x7ad6375c,
+	0x3e0f343b,
+	0x2c949146,
+	0xa44fe833,
+	0xbb2415db,
+	0xc8c9b126,
+	0xdf86dea0,
+	0xa97d1b39,
+	0x048e514e,
+	0xf2c32db8,
+	0x895092cd,
+	0x4347051f,
+	0x0fdcd44c,
+	0x15fdf42d,
+	0x7ef36f3c,
+	0x21736223,
+	0x66173d84,
+	0x9a923550,
+	0xb1d454fd,
+	0xbff7ca23,
+	0xd2aaef29,
+	0x1d550845,
+	0x7227ae80,
+	0x56909e77,
+	0x0758609d,
+	0x8c9a0a89,
+	0x9723f878,
+	0x9ef48b82,
+	0xae11860f,
+	0xd04cf4c3,
+	0xb7cc841e,
+	0x3683ee4b,
+	0x656e950e,
+}
+
+World_Map = {}
+
+	World_Map["FIB Detailed"] = 3775166597
+	World_Map["FIB Damaged"] = 2890098141
+	World_Map["Stargate"] = 3656416555
+	World_Map["Vinewood"] = 398589620
+	World_Map["Davis_city"] = 2920384015
+	World_Map["City Lowlod"] = 2598704124
+	World_Map["Chiliad Landscape"] = 1554295200
+	World_Map["Broken Bridge"] = 42050969
+	World_Map["ContainerShip Base"] = 2060859228
+	World_Map["invisible Map Base"] = 266130508
+	World_Map["Revolver Gun object"] = 914615883
+	World_Map["Revolver Bullets"] = 1128727839
+	
+Map_Array = {}
+ for k, v in pairs(World_Map) do
+	 Map_Array[#Map_Array+1] = k
+ end
+ 
+	 
+
 VirtualKeyCodes = {
 	{"VK_LBUTTON",0x01},
 	{"VK_RBUTTON",0x02},
@@ -1410,7 +1601,6 @@ EXPLOSION = {}
 
 Weapon_Lists = {}
 Weapon_Lists_type = {"Melee","Handguns","Submachine_Guns","Shotguns","Assault_Rifles","Machine_Guns","Sniper_Rifles","Heavy_Weapons","Throwables","Miscellaneous"}
---Weapon_Lists[1] = {"Melee" = {}, "Handguns" = {}, "Submachine_Guns" = {}, "Shotguns" = {}, "Assault_Rifles" = {}, "Machine" = {}, "Sniper_Rifles" = {}, "Heavy_Weapons" = {}, "Throwables" = {}, "Miscellaneous" = {}}}
 
 Weapon_Lists.Melee = {"unarmed","Cougar","Animal","Antique Cavalry Dagger","Baseball Bat","Broken Bottle","Crowbar","Flashlight","Golf Club","Hammer","Hatchet","Brass Knuckles","Knife","Machete","Switchblade","Nightstick","Pipe Wrench","Battle Axe","Pool Cue","Stone Hatchet"}
 
@@ -1432,135 +1622,16 @@ Weapon_Lists.Throwables = {"Grenade","BZ Gas","Molotov Cocktail","Sticky Bomb","
 
 Weapon_Lists.Miscellaneous = {"Jerry Can","Parachute","Fire Extinguisher","Hazardous Jerry Can"}
 
-Melee = {
-	"weapon_unarmed",
-	"weapon_cougar",
-	"weapon_animal",
-	"weapon_dagger",
-	"weapon_bat",
-	"weapon_bottle",
-	"weapon_crowbar",
-	"weapon_flashlight",
-	"weapon_golfclub",
-	"weapon_hammer",
-	"weapon_hatchet",
-	"weapon_knuckle",
-	"weapon_knife",
-	"weapon_machete",
-	"weapon_switchblade",
-	"weapon_nightstick",
-	"weapon_wrench",
-	"weapon_battleaxe",
-	"weapon_poolcue",
-	"weapon_stone_hatchet",
-}
-
-Handguns = {
-	"weapon_pistol",
-	"weapon_pistol_mk2",
-	"weapon_combatpistol",
-	"weapon_appistol",
-	"weapon_stungun",
-	"weapon_pistol50",
-	"weapon_snspistol",
-	"weapon_snspistol_mk2",
-	"weapon_heavypistol",
-	"weapon_vintagepistol",
-	"weapon_flaregun",
-	"weapon_marksmanpistol",
-	"weapon_revolver",
-	"weapon_revolver_mk2",
-	"weapon_doubleaction",
-	"weapon_raypistol",
-	"weapon_ceramicpistol",
-	"weapon_navyrevolver",
-	"weapon_gadgetpistol",
-}
-
-Submachine_Guns = {
-	"weapon_microsmg",
-	"weapon_smg",
-	"weapon_smg_mk2",
-	"weapon_assaultsmg",
-	"weapon_combatpdw",
-	"weapon_machinepistol",
-	"weapon_minismg",
-	"weapon_raycarbine",
-}
-
-Shotguns = {
-	"weapon_pumpshotgun",
-	"weapon_pumpshotgun_mk2",
-	"weapon_sawnoffshotgun",
-	"weapon_assaultshotgun",
-	"weapon_bullpupshotgun",
-	"weapon_musket",
-	"weapon_heavyshotgun",
-	"weapon_dbshotgun",
-	"weapon_autoshotgun",
-	"weapon_combatshotgun",
-}
-
-Assault_Rifles = {
-	"weapon_assaultrifle",
-	"weapon_assaultrifle_mk2",
-	"weapon_carbinerifle",
-	"weapon_carbinerifle_mk2",
-	"weapon_advancedrifle",
-	"weapon_specialcarbine",
-	"weapon_specialcarbine_mk2",
-	"weapon_bullpuprifle",
-	"weapon_bullpuprifle_mk2",
-	"weapon_compactrifle",
-	"weapon_militaryrifle",
-}
-
-Machine_Guns = {
-	"weapon_mg",
-	"weapon_combatmg",
-	"weapon_combatmg_mk2",
-	"weapon_gusenberg",
-}
-
-Sniper_Rifles = {
-	"weapon_sniperrifle",
-	"weapon_heavysniper",
-	"weapon_heavysniper_mk2",
-	"weapon_marksmanrifle",
-	"weapon_marksmanrifle_mk2",
-}
-
-Heavy_Weapons = {
-	"weapon_rpg",
-	"weapon_grenadelauncher",
-	"weapon_grenadelauncher_smoke",
-	"weapon_minigun",
-	"weapon_firework",
-	"weapon_railgun",
-	"weapon_hominglauncher",
-	"weapon_compactlauncher",
-	"weapon_rayminigun",
-}
-
-Throwables = {
-	"weapon_grenade",
-	"weapon_bzgas",
-	"weapon_molotov",
-	"weapon_stickybomb",
-	"weapon_proxmine",
-	"weapon_snowball",
-	"weapon_pipebomb",
-	"weapon_ball",
-	"weapon_smokegrenade",
-	"weapon_flare",
-}
-
-Miscellaneous = {
-	"weapon_petrolcan",
-	"gadget_parachute",
-	"weapon_fireextinguisher",
-	"weapon_hazardcan"
-}
+Melee={"weapon_unarmed","weapon_cougar","weapon_animal","weapon_dagger","weapon_bat","weapon_bottle","weapon_crowbar","weapon_flashlight","weapon_golfclub","weapon_hammer","weapon_hatchet","weapon_knuckle","weapon_knife","weapon_machete","weapon_switchblade","weapon_nightstick","weapon_wrench","weapon_battleaxe","weapon_poolcue","weapon_stone_hatchet"}
+Handguns={"weapon_pistol","weapon_pistol_mk2","weapon_combatpistol","weapon_appistol","weapon_stungun","weapon_pistol50","weapon_snspistol","weapon_snspistol_mk2","weapon_heavypistol","weapon_vintagepistol","weapon_flaregun","weapon_marksmanpistol","weapon_revolver","weapon_revolver_mk2","weapon_doubleaction","weapon_raypistol","weapon_ceramicpistol","weapon_navyrevolver","weapon_gadgetpistol"}
+Submachine_Guns={"weapon_microsmg","weapon_smg","weapon_smg_mk2","weapon_assaultsmg","weapon_combatpdw","weapon_machinepistol","weapon_minismg","weapon_raycarbine"}
+Shotguns={"weapon_pumpshotgun","weapon_pumpshotgun_mk2","weapon_sawnoffshotgun","weapon_assaultshotgun","weapon_bullpupshotgun","weapon_musket","weapon_heavyshotgun","weapon_dbshotgun","weapon_autoshotgun","weapon_combatshotgun"}
+Assault_Rifles={"weapon_assaultrifle","weapon_assaultrifle_mk2","weapon_carbinerifle","weapon_carbinerifle_mk2","weapon_advancedrifle","weapon_specialcarbine","weapon_specialcarbine_mk2","weapon_bullpuprifle","weapon_bullpuprifle_mk2","weapon_compactrifle","weapon_militaryrifle"}
+Machine_Guns={"weapon_mg","weapon_combatmg","weapon_combatmg_mk2","weapon_gusenberg"}
+Sniper_Rifles={"weapon_sniperrifle","weapon_heavysniper","weapon_heavysniper_mk2","weapon_marksmanrifle","weapon_marksmanrifle_mk2"}
+Heavy_Weapons={"weapon_rpg","weapon_grenadelauncher","weapon_grenadelauncher_smoke","weapon_minigun","weapon_firework","weapon_railgun","weapon_hominglauncher","weapon_compactlauncher","weapon_rayminigun"}
+Throwables={"weapon_grenade","weapon_bzgas","weapon_molotov","weapon_stickybomb","weapon_proxmine","weapon_snowball","weapon_pipebomb","weapon_ball","weapon_smokegrenade","weapon_flare"}
+Miscellaneous={"weapon_petrolcan","gadget_parachute","weapon_fireextinguisher","weapon_hazardcan"}
 
 decorators = {
 	{"RespawnVeh", 3},
@@ -1757,35 +1828,7 @@ Decorators = {
 
 int_flags = {65536, 131072, 262144, 524288, 1048576, 2097152, 4194304}
 
-local boneid = {
-	6286,
-	57597,
-	24818,
-	24817,
-	24816,
-	23553,
-	11816,
-	40269,
-	51826,
-	57005,
-	28252,
-	52301,
-	10706,
-	36864,
-	11816,
-	39317,
-	45509,
-	58271,
-	18905,
-	61163,
-	14201,
-	64729,
-	63931,
-	65068,
-	31086,
-	12844,
-}
-
+local boneid = {6286,57597,24818,24817,24816,23553,11816,40269,51826,57005,28252,52301,10706,36864,11816,39317,45509,58271,18905,61163,14201,64729,63931,65068,31086,12844}
 
 Ped_modals_a = {
     "a_c_boar",
@@ -3239,29 +3282,33 @@ for pid = 0, 31 do
 	Players[pid].flags = nil
 	Players[pid].ismod = false
 	Players[pid].isgod = false
+	Players[pid].IsFlagRemNotif = false
+	Players[pid].isKicked = false
+	Players[pid].KickedCount = 0
 	Players[pid].isvgod = false
 	Players[pid].PlayerGodMode = false
 	Players[pid].PlayerVehGodMode = false
 	Players[pid].isint = false
 	Players[pid].Interiorname = ""
+	Players[pid].intID = nil
+	Players[pid].onlinecheck = false
+	Players[pid].online_interior = ""
+	Players[pid].onlineintID = nil
 	Players[pid].isvis = false
 	Players[pid].speed = 0.00
 end
 end
 modstart()
+
 --INFO: Feature & Variable Arrays
 global_func, globalFeatures,  playerFeatures, playerfeatVars  = {}, {}, {}, {}
-playerFeat = {}
-playerFeatParent = {}
-playerFeatParent2 = {}
-playerFeat1 = {}
-playerFeat2 = {}
-playerFeat3 = {}
-playerFeat4 = {}
+playerFeat, playerFeat1, playerFeat2, playerFeat3, playerFeat4 = {}, {}, {}, {}, {}
+playerFeatParent, playerFeatParent2 = {}, {}
+NamedFeatures = {}
 Active_menu = nil
 local health, infoA, infoAB, infoB
 --local Menu Features
-globalFeatures.parent = menu.add_feature("MoistScript 2.0.6.2", "parent", 0).id
+globalFeatures.parent = menu.add_feature("MoistScript 2.0.6.3", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent, function(feat)
 	if network.network_is_host() then
 	HostOptionsParent.hidden = false
@@ -3365,7 +3412,8 @@ end).id
 --INFO: Spam Shit
 Public_Chat = true
 globalFeatures.Moist_Spam = menu.add_feature("Chat & SMS Features", "parent", globalFeatures.Online_Session).id
-Send_Public_Chat = menu.add_feature("Chat : Public[ON]:Team[OFF]", "toggle", globalFeatures.Moist_Spam, function(feat)
+globalFeatures.Spam_Options = menu.add_feature("Chat & SMS Options", "parent", globalFeatures.Moist_Spam).id
+Send_Public_Chat = menu.add_feature("Chat : Public[ON]:Team[OFF]", "toggle", globalFeatures.Spam_Options, function(feat)
 	if not feat.on then
 		Public_Chat = true
 		return HANDLER_POP
@@ -3378,8 +3426,6 @@ Send_Public_Chat.on = true
 globalFeatures.custom_Chat = menu.add_feature("Custom Presets", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_Chat = menu.add_feature("Preset Spam", "parent", globalFeatures.Moist_Spam).id
 globalFeatures.Preset_RUS = menu.add_feature("Russian Spam", "parent", globalFeatures.Moist_Spam).id
-globalFeatures.Spam_Options = menu.add_feature("Chat & SMS Options", "parent", globalFeatures.Moist_Spam).id
---globalFeatures.Script_loader = menu.add_feature("Script (Auto)Loader", "parent", globalFeatures.parent).id
 globalFeatures.moist_test = menu.add_feature("Experimental Features", "parent", globalFeatures.parent, function(feat)
 
         for pid = 0, 31 do
@@ -3390,11 +3436,25 @@ globalFeatures.moist_test = menu.add_feature("Experimental Features", "parent", 
         end
         RefreshPlayerInterior:set_str_data(Playerz)
         interiorcheckbytype:set_str_data(Playerz)
-        OrbitalStrike_AllEntities:set_str_data(Playerz)
 
 end)
 globalFeatures.moist_test.hidden = false
 
+Map_Extension = menu.add_feature("extend the world", "action", globalFeatures.moist_test.id, function(feat)
+	
+			local pos, rot = v3(-1918.4224853516,-2459.6767578125,-13.626953125),v3(-1.4999982118607,-0.10000106692314,-120.20010375977)
+			local i = #spawned_cunts + 1
+
+			spawned_cunts[i] = object.create_world_object(2920384015, pos, true, true)
+			entity.set_entity_rotation(spawned_cunts[i], rot)
+			entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
+			entity.set_entity_collision(spawned_cunts[i], true, true, true)
+			entity.freeze_entity(spawned_cunts[i], true)
+			system.wait(25)
+end)
+
+
+	
 globalFeatures.Script_loader = menu.add_feature("Moists Script Loader", "parent", globalFeatures.parent).id
 
 --options
@@ -3422,6 +3482,9 @@ globalFeatures.moist_perf = menu.add_feature("Performance Options","parent",glob
 globalFeatures.moist_UI_OSD = menu.add_feature("UI & OnScreen Options","parent",globalFeatures.moistopt).id
 
 ModderShit = menu.add_feature("Modder Shit", "parent", globalFeatures.moistopt).id
+
+ModderFlagShit = menu.add_feature("ModderFlag Shit", "parent", ModderShit).id
+
 logging = menu.add_feature("Logging Shit", "parent", globalFeatures.moistopt).id
 
 ESP_VehGod = menu.add_feature("ESP Player Vehicle God", "toggle", globalFeatures.moist_UI_OSD, function(feat)
@@ -3562,8 +3625,68 @@ globalFeatures.moist_tools.hidden = true
 Test_ScriptMode = false
 TDump, TDeepDump = 0, 0
 
-
 --INFO: -----------------UPDATE FEATURE VISIBILITY-------------------------
+
+
+
+ModderAudio_thread = menu.add_feature("Audio test", "action_value_i", globalFeatures.moist_tools.id, function(feat)
+
+local pos = v3()
+		pos = player.get_player_coords(player.player_id())
+
+		audio.play_sound_from_coord(-1, "CHARACTER_SELECT", pos, "HUD_FRONTEND_DEFAULT_SOUNDSET", true, 1, true)
+
+end)
+ModderAudio_thread.max = 100
+ModderAudio_thread.min = -1
+
+
+ModderAudio_notify_thread = menu.add_feature("Audio Notify God Modders", "value_i", globalFeatures.moist_tools.id, function(feat)
+
+		local Soundz = {{"CHARACTER_SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"MP_WAVE_COMPLETE", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"MP_RANK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"MP_IDLE_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"MP_IDLE_KICK", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"MP_AWARD", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"MP_5_SECOND_TIMER", "HUD_FRONTEND_DEFAULT_SOUNDSET"},{"Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS"}}
+		local pos = v3()
+		if Settings["GodAudVfxNotif_on"] then
+			
+		if Settings["GodAudVfxNotif"] == 0 or Settings["GodAudVfxNotif"] == 1 then
+
+		pos = player.get_player_coords(player.player_id())
+		--audio.play_sound_from_coord(-1, "CHARACTER_SELECT", pos, "HUD_FRONTEND_DEFAULT_SOUNDSET", true, 1, true)
+		audio.play_sound_from_coord(-1, Soundz[feat.value][1], pos, Soundz[feat.value][2], true, 1, true)
+
+		audio.stop_sound(-1)
+		end
+		
+		system.yield(500)
+		if Settings["GodAudVfxNotif"] == 0 or Settings["GodAudVfxNotif"] == 2 then
+		ScreenFX = {"RaceTurbo","LostTimeDay","LostTimeNight"}
+		for i = 1, #ScreenFX do
+		local postfxhash = gameplay.get_hash_key(ScreenFX[i])
+		graphics.animpostfx_play(postfxhash, 20, true)
+		system.wait(1000)
+		graphics.animpostfx_stop_all()
+		system.yield(Settings["loop_feat_delay"])
+		end
+		end
+		
+
+		system.yield(1000)
+		end
+		
+
+		
+		ModderAudio_notify_thread.on = false
+		
+		
+		return HANDLER_POP
+
+end)
+ModderAudio_notify_thread.on = false
+ModderAudio_notify_thread.max = 8
+ModderAudio_notify_thread.min = 1
+
+
+
+
 
 Moist_TestMode = menu.add_feature("Enable TestMode Functions", "toggle", globalFeatures.moistopt, function(feat)
 	local debug_mode
@@ -3736,6 +3859,7 @@ return HANDLER_POP
 end)
 	
 --INFO: Blip Interior Checks
+function BlipGodChecks()
 local Blip_God = {"Normal Radar","Expanded Radar"}
 
 blipcheck = menu.add_feature("Blip Interior Check", "value_str", ModderShit, function(feat)
@@ -3888,7 +4012,7 @@ blipGodcheck = menu.add_feature("God Blip Check 2", "toggle", ModderShit, functi
 			if Settings["GodCheckNotif"] and not Players[pid].isgod then
 				Players[pid].isgod = player.is_player_god(pid)
 				moist_notify(pid .. " : " .. name .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection\nGod Blip Check 2")
-				ModderAudio_notify()
+				ModderAudio_notify_thread.on = true
 			end
 		end
 				
@@ -3910,7 +4034,7 @@ blipGodcheck = menu.add_feature("God Blip Check 2", "toggle", ModderShit, functi
 								--Players[pid].isvgod = player.is_player_vehicle_god(pid)
 							
                                 moist_notify(pid .. " : " .. name .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection\nGod Blip Check 2")
-								ModderAudio_notify()
+								ModderAudio_notify_thread.on = true
 									end
 								Players[pid].PlayerGodMode = player.is_player_god(pid)
 								Players[pid].PlayerVehGodMode = player.is_player_vehicle_god(pid)
@@ -3926,6 +4050,7 @@ blipGodcheck = menu.add_feature("God Blip Check 2", "toggle", ModderShit, functi
 	return HANDLER_POP
 end)
 blipGodcheck.on = Settings["blipGodcheck"]
+end
 
 
 RecentNotify = menu.add_feature("Recent Players Seen Notify", "toggle", globalFeatures.notifyParent, function(feat)
@@ -3955,71 +4080,135 @@ text1, text2, text3, text4, text5 , text6, text7 = "", "", "", "", "", "", "", "
 
 --INFO: *********** Active Script Item Player Info ****************
 
-Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
-	Settings["playerscriptinfo"] = true
-	if feat.on then
-		local pid, intchk, intname, pos, dist2D = Active_menu, "", "", v3(0.0,0.0,0.0), ""
-		local precheck
-		if Active_menu ~= nil then
-			dis = Get_Distance3D(pid)
-			dist = RoundNum(dis, 2)
-			if dist < 1000.00 then
-				dist = "~r~~h~" .. dist
-			end
-			local info = tostring(infoB .. "\nDistance:  " .. dist .. "\n~h~~r~Player Damaged by: ~o~" .. tostring(Players[pid].isDamagedbY))
-			
-			if Players[pid].isint == false then
-				intchk = "~h~~g~False"
-				precheck = false
-			end
-			if Players[pid].isint == true then
-				intchk = "~h~~r~True"
-				precheck = true
-			end
-			Players[pid].isint = precheck
-			Players[pid].isint, Players[pid].Interiorname, Position, id  = GetPlayerinterior(pid)
-			if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
-			realcheck = false
-			elseif interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 then
-			realcheck = true
-			end
-			rchk, Players[pid].Interiorname, Position, id  = GetPlayerinterior(pid)
-			if realcheck == true and id ~= nil then
-			Players[pid].isint = true
-			dist2D = RoundNum(Get_Distance2D(pid, interiors[id][2]), 2)
-			dist3D = RoundNum(Get_Dist3D(pid, interiors[id][2]), 2)
-			-- if interiors[id][1] == "alt" then
-			text5 = "~h~~o~Interior:~w~ " .. tostring(Players[pid].Interiorname) ..  "\t | 2D = " .. tostring(dist2D) .."\t | 3D = " .. tostring(dist3D)
-			-- elseif  interiors[id][1] ~= "alt" then
-			-- text5 = "~h~~o~Interior:~w~ " .. tostring(interiors[id][1]) .. "\t2D = " .. tostring(dist2D) .."\t3D = " .. tostring(dist3D)
+local GetDistanceMag = function(Entity)
+	local MyPos = player.get_player_coords(player.player_id())
+	local EntPos = entity.get_entity_coords(Entity)
+	return (MyPos:magnitude(EntPos))
+end
+
+
+-- Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
+	-- Settings["playerscriptinfo"] = true
+	-- if feat.on then
+		-- local pid, intchk, intname, pos, dist2D = Active_menu, "", "", v3(0.0,0.0,0.0), ""
+		-- local precheck
+		-- if Active_menu ~= nil then
+-- --			dis = Get_Distance3D(pid)
+			-- dis = GetDistanceMag(player.get_player_ped(pid))
+			-- dist = RoundNum(dis, 2)
+			-- if dist < 1000.00 then
+				-- dist = "~r~~h~" .. dist
 			-- end
-			elseif realcheck ~= true then
+			-- local info = tostring(infoB .. "\nDistance:  " .. dist .. "\n~h~~r~Player Damaged by: ~o~" .. tostring(Players[pid].isDamagedbY))
+			
+			-- if Players[pid].isint == false then
+				-- intchk = "~h~~g~False"
+				-- precheck = false
+			-- end
+			-- if Players[pid].isint == true then
+				-- intchk = "~h~~r~True"
+				-- precheck = true
+			-- end
+			-- Players[pid].isint = precheck
+			-- Players[pid].isint, Players[pid].Interiorname, Position, id  = GetPlayerinterior(pid)
+			-- if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
+			-- realcheck = false
+			-- elseif interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 then
+			-- realcheck = true
+			-- end
+			-- rchk, Players[pid].Interiorname, Position, id  = GetPlayerinterior(pid)
+			-- if realcheck == true and id ~= nil then
+			-- Players[pid].isint = true
+			-- dist2D = RoundNum(Get_Distance2D(pid, interiors[id][2]), 2)
+			-- dist3D = RoundNum(Get_Dist3D(pid, interiors[id][2]), 2)
+			-- -- if interiors[id][1] == "alt" then
+			-- text5 = "~h~~o~Interior:~w~ " .. tostring(Players[pid].Interiorname) ..  " | ~o~~h~Dist:~w~  2D = " .. tostring(dist2D) .." | 3D = " .. tostring(dist3D)
+			-- -- elseif  interiors[id][1] ~= "alt" then
+			-- -- text5 = "~h~~o~Interior:~w~ " .. tostring(interiors[id][1]) .. "\t2D = " .. tostring(dist2D) .."\t3D = " .. tostring(dist3D)
+			-- -- end
+			-- elseif realcheck ~= true then
+			-- -- text5 = "~h~~o~Interior =~r~ NoneDetected~w~ "
+			-- -- end
+			-- onlinecheck, online_interior, id2 = GetPlayer_onlineinterior(pid)
+			-- if onlinecheck == true and id2 ~= nil then
+			-- dist2D = RoundNum(Get_Distance2D(pid, onlineinteriors[id2][2]), 2)
+			-- dist3D = RoundNum(Get_Dist3D(pid, onlineinteriors[id2][2]), 2)
+			-- text5 = "~h~~o~Interior:~w~ " .. tostring(online_interior)  .. " | ~o~~h~Dist:~w~ 2D = " .. tostring(dist2D) .." | 3D = " .. tostring(dist3D)
+			-- elseif onlinecheck ~= true then
+			
 			-- text5 = "~h~~o~Interior =~r~ NoneDetected~w~ "
 			-- end
-			onlinecheck, online_interior, id2 = GetPlayer_onlineinterior(pid)
-			if onlinecheck == true and id2 ~= nil then
-			dist2D = RoundNum(Get_Distance2D(pid, onlineinteriors[id2][2]), 2)
-			dist3D = RoundNum(Get_Dist3D(pid, onlineinteriors[id2][2]), 2)
-			text5 = "~h~~o~Interior:~w~ " .. tostring(online_interior)  .. " | 2D = " .. tostring(dist2D) .." | 3D = " .. tostring(dist3D)
-			elseif onlinecheck ~= true then
-			
-			text5 = "~h~~o~Interior =~r~ NoneDetected~w~ "
-			end
-			end
-			text4 = "~h~~b~Interior Check:~w~ " .. intchk .. "\nCheck now: " .. tostring(realcheck)
-			update_osd_text2(health, infoA, info, infoAB)
-			--local spawned = Players[pid].PedSpawned and " ~h~~g~True" or " ~h~~r~False"
-			--text7 = "~h~~b~Ped Spawned: " .. spawned
-		end
-		system.yield(Settings["loop_feat_delay"])
-		return HANDLER_CONTINUE
-	end
-	health, infoA, infoAB, infoB, text1, text2, text3, text4, text5, text6, text7 = "", "", "", "", "", "", "", "", "", "", ""
+			-- end
+			-- text4 = "\n~h~~b~Interior Check:~w~ " .. intchk .. "\nCheck now: " .. tostring(realcheck)
+			-- update_osd_text2(health, infoA, info, infoAB)
+			-- --local spawned = Players[pid].PedSpawned and " ~h~~g~True" or " ~h~~r~False"
+			-- --text7 = "~h~~b~Ped Spawned: " .. spawned
+		-- end
+		-- system.yield(Settings["loop_feat_delay"])
+		-- return HANDLER_CONTINUE
+	-- end
+	-- health, infoA, infoAB, infoB, text1, text2, text3, text4, text5, text6, text7 = "", "", "", "", "", "", "", "", "", "", ""
 	
-		--	Players[pid].isint, Players[pid].Interiorname, Position  = GetPlayerinterior(pid)
+		-- --	Players[pid].isint, Players[pid].Interiorname, Position  = GetPlayerinterior(pid)
 	
-	Settings["playerscriptinfo"] = false
-	return HANDLER_POP
+	-- Settings["playerscriptinfo"] = false
+	-- return HANDLER_POP
+-- end)
+-- Active_scriptmenu.on = Settings["playerscriptinfo"]
+
+Active_scriptmenu = menu.add_feature("Active Script item Player info", "toggle", globalFeatures.moistopt, function(feat)
+    Settings["playerscriptinfo"] = true
+    if feat.on then
+        local pid, intchk, intname, pos, dist2D = Active_menu, "", "", v3(0.0,0.0,0.0), ""
+        local precheck
+        if Active_menu ~= nil then
+            dis = GetDistanceMag(player.get_player_ped(pid))
+            dist = RoundNum(dis, 2)
+            if dist < 1000.00 then
+                dist = "~r~~h~" .. dist
+            end
+            local info = tostring(infoB .. "\nDistance:  " .. dist .. "\n~h~~r~Player Damaged by: ~o~" .. tostring(Players[pid].isDamagedbY))
+            if Players[pid].isint == false then
+                intchk = "~h~~g~False"
+                precheck = false
+            end
+            if Players[pid].isint == true then
+                intchk = "~h~~r~True"
+                precheck = true
+            end
+
+ 
+            if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
+                realcheck = false
+            elseif interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 then
+                realcheck = true
+				Players[pid].isint = true
+            end
+            if realcheck == true and Players[pid].intID ~= nil then
+
+                dist2D = RoundNum(Get_Distance2D(pid, interiors[Players[pid].intID][2]), 2)
+                dist3D = RoundNum(Get_Dist3D(pid, interiors[Players[pid].intID][2]), 2)
+
+                text5 = "~h~~o~Interior:~w~ " .. tostring(Players[pid].Interiorname) ..  " | ~o~~h~Dist:~w~  2D = " .. tostring(dist2D) .." | 3D = " .. tostring(dist3D)
+            elseif realcheck ~= true then
+              
+                if Players[pid].onlinecheck == true and Players[pid].onlineintID ~= nil then
+                    dist2D = RoundNum(Get_Distance2D(pid, onlineinteriors[Players[pid].onlineintID][2]), 2)
+                    dist3D = RoundNum(Get_Dist3D(pid, onlineinteriors[Players[pid].onlineintID][2]), 2)
+                    text5 = "~h~~o~Interior:~w~ " .. tostring(Players[pid].online_interior)  .. " | ~o~~h~Dist:~w~ 2D = " .. tostring(dist2D) .." | 3D = " .. tostring(dist3D)
+                elseif Players[pid].onlinecheck ~= true then
+                    text5 = "~h~~o~Interior =~r~ NoneDetected~w~ "
+                end
+            end
+            text4 = "\n~h~~b~Interior Check:~w~ " .. intchk .. "\nCheck now: " .. tostring(realcheck)
+            update_osd_text2(health, infoA, info, infoAB)
+        end
+        system.yield(Settings["loop_feat_delay"])
+        return HANDLER_CONTINUE
+    end
+    health, infoA, infoAB, infoB, text1, text2, text3, text4, text5, text6, text7 = "", "", "", "", "", "", "", "", "", "", ""
+    Settings["playerscriptinfo"] = false
+    return HANDLER_POP
 end)
 Active_scriptmenu.on = Settings["playerscriptinfo"]
 
@@ -4095,36 +4284,171 @@ moist_tools_hotkey.on = true
 
 --TODO: Modder Flag logs etc
 
-Auto_Off_RAC = menu.add_feature("Auto-Remove RAC-Modder Marking", "toggle", ModderShit, function(feat)
-if not feat.on then
-	Settings["Auto_Off_RAC"] = false
-	return HANDLER_POP
-end
-Settings["Auto_Off_RAC"] = true
-system.wait(500)
-end)
-Auto_Off_RAC.on = Settings["Auto_Off_RAC"]
 
-function RAC_OFF(pid)
-if not Auto_Off_RAC.on then return end
-local flags = player.get_player_modder_flags(pid)
-local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
-local flag_name = player.get_modder_flag_text(flags)
-if flag_name == "RAC" then
-	player.unset_player_as_modder(pid, 128)
+Modder_Event = event.add_event_listener("modder", function(e)
+    if e.player ~= nil then
+        local pid = e.player
+	    local name = tostring(player.get_player_name(pid))
+		local flagtext = Get_ModderFlag_Text(pid)
+        if Players[pid].isFriend then
+            if Settings["FriendBypass"] and player.is_player_modder(pid, Settings["KickModFlag"]) then
+                player.unset_player_as_modder(pid, Settings["KickModFlag"])
+                if not Players[pid].IsFlagRemNotif then
+                    moist_notify("Removed Flag from: " .. name .. "\n" .. flagtext, "Moist Automated Modder Flag Removal")
+                    Players[pid].IsFlagRemNotif = true
+                end
+            elseif not Settings["FriendBypass"] then
+                if player.is_player_modder(pid, Settings["KickModFlag"]) then
+                    CombiKick(pid)
+                end
+            end
+        elseif not Players[pid].isFriend and player.is_player_modder(pid, Settings["KickModFlag"]) then
+            CombiKick(pid)
+        end
+    end
+    return
+end)
+
+Modder_EventLog = event.add_event_listener("modder", function(e)
+    if e.player ~= nil then
+        local pid = e.player
+    local name = player.get_player_name(pid)
+    local flagtext = Get_ModderFlag_Text(pid)
+        if not Players[pid].IsFlagRemNotif then
+            moist_notify("[Modder Detected] " .. tostring(pid) .. " : " .. tostring(name).. "\n" .. flagtext, "Modder Detection", 0xff0000ff)
+            Debug_Out(string.format("[Modder]: " .. tostring(name).. " [Modder Flags]: " .. flagtext))
+            Players[pid].IsFlagRemNotif = true
+		end
+        end
+    return
+end)
+
+
+Modder_EventRem = event.add_event_listener("modder", function(e)
+    if e.player ~= nil then
+        local pid = e.player
+		local name = tostring(player.get_player_name(pid))
+		local flagtext = Get_ModderFlag_Text(pid)
+	if player.is_player_modder(pid, Settings["RemoveModFlag"]) then
+	player.unset_player_as_modder(pid, Settings["RemoveModFlag"])
+    if not Players[pid].IsFlagRemNotif then
+    moist_notify("Removed Flag from: " .. name .. "\n" .. flagtext, "Moist Automated Modder Flag Removal")
+    	Players[pid].IsFlagRemNotif = true
+	end
+	end
+	
+	end
+    return
+end)
+
+
+KickFlagParent = menu.add_feature("Flags to AutoKick", "parent", ModderFlagShit).id
+RemoveFlagParent = menu.add_feature("Flags to AutoRemove", "parent", ModderFlagShit).id
+
+ ExcluFriends = menu.add_feature("Bypass Kick & Remove Flag From Friends", "toggle", KickFlagParent, function(feat)
+ if not feat.on then
+ Settings["FriendBypass"] = false
+ return HANDLER_POP
+ end
+ Settings["FriendBypass"] = true
+ return HANDLER_POP
+ end)
+ ExcluFriends.on = Settings["FriendBypass"]
+ 
+ menu.add_feature("Selected Flags Will Be Removed", "action", RemoveFlagParent)
+
+function KickFlagSetup()
+	local kickflags = 0
+	kickflags = Settings["KickModFlag"]
+	local i = 0
+	repeat
+	local flag <const> = 1 << i    
+    i = i + 1
+
+		NamedFeatures[player.get_modder_flag_text(flag)] = menu.add_feature(player.get_modder_flag_text(flag), "toggle", KickFlagParent, function(feat)
+            if feat.on then
+               -- kickflags = kickflags | flag
+				Settings["KickModFlag"] = tonumber(Settings["KickModFlag"]) | flag
+				--Print(kickflags | flag)
+				
+			--	Print(kickflags)
+            else
+              --  kickflags = kickflags & (kickflags ~ flag)
+				Settings["KickModFlag"] = tonumber(Settings["KickModFlag"]) & (tonumber(Settings["KickModFlag"]) ~ flag)
+			--	Print(kickflags & (kickflags ~ flag))
+				
+				--Print(kickflags)
+            end
+        end)
+		NamedFeatures[player.get_modder_flag_text(flag)].on = false
+	until player.get_modder_flag_ends() == flag
+	
+	for i = 0, 63 do
+	NamedFeat =	tonumber(kickflags) & 1 << i == 1 << i  and player.get_modder_flag_text(1 << i) or nil
+	if NamedFeat ~= nil then
+	NamedFeatures[NamedFeat].on = true
+	end
+	end
 end
+
+function RemoveFlagSetup()
+	local removeflags = 0
+	removeflags = Settings["RemoveModFlag"]
+	local i = 0
+	repeat
+	local flag <const> = 1 << i    
+    i = i + 1
+
+		NamedFeatures[player.get_modder_flag_text(flag)] = menu.add_feature(player.get_modder_flag_text(flag), "toggle", RemoveFlagParent, function(feat)
+            if feat.on then
+               -- removeflags = removeflags | flag
+				Settings["RemoveModFlag"] = tonumber(Settings["RemoveModFlag"]) | flag
+				print(flag)
+				--Print(removeflags | flag)
+				
+			--	Print(removeflags)
+            else
+              --  removeflags = removeflags & (removeflags ~ flag)
+				Settings["RemoveModFlag"] = tonumber(Settings["RemoveModFlag"]) & (tonumber(Settings["RemoveModFlag"]) ~ flag)
+			--	Print(removeflags & (removeflags ~ flag))
+				
+				--Print(removeflags)
+            end
+        end)
+		NamedFeatures[player.get_modder_flag_text(flag)].on = false
+	until player.get_modder_flag_ends() == flag
+	
+	for i = 0, 63 do
+	NamedFeat =	tonumber(removeflags) & 1 << i == 1 << i  and player.get_modder_flag_text(1 << i) or nil
+	if NamedFeat ~= nil then
+	NamedFeatures[NamedFeat].on = true
+	end
+	end
 end
+
 
 --TODO: MODDER NOTIFIES
 
-function ModderAudio_notify()
+-- function ModderAudio_notify()
 	
 
 	
-end
+-- end
 
 --INFO: God Check Thread Shit
 
+
+AudioNotifyGod = menu.add_feature("Notify God: ", "value_str", ModderShit, function(feat)
+if not feat.on then
+	Settings["GodAudVfxNotif_on"] = false
+	Settings["GodAudVfxNotif"] = feat.value
+	return HANDLER_POP
+end
+Settings["GodAudVfxNotif_on"] = true
+Settings["GodAudVfxNotif"] = feat.value
+end)
+AudioNotifyGod.on = Settings["GodAudVfxNotif_on"]
+AudioNotifyGod:set_str_data({"Audio+Visual","Audio Only","Visual Only"})
 
 NotifyGod = menu.add_feature("Notify God Player/Vehicle", "toggle", ModderShit, function(feat)
 if not feat.on then
@@ -4140,6 +4464,7 @@ notifyclear.on = true
 for pid = 0, 31 do
 	Players[pid].isgod = false
 	Players[pid].isvgod = false
+	Players[pid].isKicked = false
 end
 end)
 NotifyGod.on = Settings["GodCheckNotif"]
@@ -4184,6 +4509,7 @@ function clearnotif(pid)
 
 	Players[pid].isvgod = false
 	Players[pid].isgod = false
+	Players[pid].isKicked = false
 	Players[pid].orbnotify = false
 	Players[pid].orbnotify2 = false
 	--Players[pid].isint = false
@@ -4197,8 +4523,8 @@ notifyclear = menu.add_feature("clear Detection notify's", "toggle", ModderShit,
 Settings["GodCheckNotif"] = true
 if feat.on then
 	for pid = 0, 31 do
-		if Players[pid].orbnotify2 or Players[pid].orbnotify or Players[pid].isgod or Players[pid].isvgod then
-			system.wait(50000)
+		if Players[pid].orbnotify2 or Players[pid].orbnotify or Players[pid].isgod or Players[pid].isvgod or Players[pid].isKicked then
+			system.wait(70000)
 			clearnotif(pid)
 		end
 	end
@@ -4212,42 +4538,23 @@ end)
 notifyclear.on = Settings["GodCheckNotif"]
 notifyclear.hidden = false
 
--- notifyclear = menu.add_feature("clear Detection notify's", "toggle", ModderShit, function(feat)
--- Settings["GodCheckNotif"] = true
--- if feat.on then
-	-- clearnotif()
-	-- local delay = 0
-	-- repeat
-		-- delay = delay + 1
-		-- system.wait(25000)
-	-- until delay == 10
-	-- clearnotif()
-	-- return HANDLER_CONTINUE
--- end
--- Settings["GodCheckNotif"] = false
--- return HANDLER_POP
--- end)
--- notifyclear.on = Settings["GodCheckNotif"]
--- notifyclear.hidden = false
-
 --TODO: GOD Check Threads
 
 
 inter_godcheck_thread = function(pid)
 
 while true do
-	--if not player.is_player_valid(pid) then return end
+	if not player.is_player_valid(pid) then return end
 	if  Players[pid].PedSpawned then
 	if  player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
-		if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0  then
-		system.yield(2000)
-		local Is_int, Inter, pos =  GetPlayerinterior(pid)
-		system.wait(1000)
-		if not Is_int and player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
+		system.yield(5000)
+		if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 and not Players[pid].isint then
+		system.wait(8000)
+		if not Players[pid].isint and player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
 			if not Players[pid].isgod and Settings["GodCheckNotif"] then
 			moist_notify(pid .. " : " .. tostring(player.get_player_name(pid)) .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection\nNew God Thread")
 			Players[pid].isgod = true
-			ModderAudio_notify()
+			ModderAudio_notify_thread.on = true
 			end
 			
 	end
@@ -4269,28 +4576,40 @@ end
 --INFO: God Check v1
 
 God_Check1_pid_thread = function(pid)
+	local pped, name
+	local pos = v3()
 	
 	while true do
-	if player.is_player_valid(pid) --[[and pid ~= player.player_id()]] and player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
-	local pped, name
+	if player.is_player_valid(pid) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not Players[pid].isRC then
 	name = player.get_player_name(pid)
 	pped = player.get_player_ped(pid)
-	if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not entity.is_entity_dead(pped) then
-		if ped.is_ped_shooting(pped) and not Players[pid].isRC then
-			--system.wait(2000)
-			if player.is_player_god(pid) or player.is_player_vehicle_god(pid)  and not entity.is_entity_dead(pped) and not Players[pid].isRC then
+	system.yield(3000)
+	if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not entity.is_entity_dead(pped) and not Players[pid].isRC then
+	system.yield(3000)
+	
+	if ai.is_task_active(pped, 4) or  ai.is_task_active(pped, 290) or  ai.is_task_active(pped, 298) or  ai.is_task_active(pped, 422) or ai.is_task_active(pped, 200) or  ai.is_task_active(pped, 295) or  ai.is_task_active(pped, 199) and not Players[pid].isint then
+		system.yield(3000)
+		pos = player.get_player_coords(pid)
+		
+		if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and pos.z > -90.00 and not entity.is_entity_dead(pped) and not Players[pid].isint then
+		if Settings["GodCheckNotif"] and not Players[pid].isgod then
+		moist_notify("God Mode with Active Task Detected: " .. name,  "Modder Detection!")
+		ModderAudio_notify_thread.on = true
+		Players[pid].isgod = true					
+		end
+		end
+	end
+	
+		elseif ped.is_ped_shooting(pped) and not Players[pid].isRC then
 				Players[pid].PlayerGodMode = true
 					if Settings["GodCheckNotif"] and not Players[pid].isgod then
 						moist_notify("Shooting While God Mode: " .. name,  "Modder Detection!")
-						 ModderAudio_notify()	
-						Players[pid].isgod = true
-					end
-					
+						 ModderAudio_notify_thread.on = true
+						Players[pid].isgod = true					
 				end
 			end
 		end
-	end
-	system.yield(0)
+	system.yield(10)
 	end
 
 
@@ -4320,7 +4639,7 @@ end
 								-- Players[pid].isgod = true
 								-- Players[pid].PlayerGodMode = true
 								-- moist_notify(pid .. " : " .. name .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection\nGod Check v1 Thread")
-								 -- ModderAudio_notify()							end
+								 -- ModderAudio_notify_thread.on = true							end
 						-- end
 					-- end
 					
@@ -4335,7 +4654,7 @@ end
 									-- Players[pid].PlayerVehGodMode = true
 										-- Players[pid].isvgod = true
 										-- moist_notify(pid .. " : " .. name .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection\nGod Check v1 Thread")
-									-- ModderAudio_notify()
+									-- ModderAudio_notify_thread.on = true
 									-- end
 								-- end
 							-- --end
@@ -4363,9 +4682,6 @@ while true do
 			if pped ~= nil or pped ~= 0 then
 				local pos = v3()
 				plyveh = player.get_player_vehicle(pid)
-				if Players[pid].isint then return end
-				local test = (Players[pid].JoinTime - os.time())
-				if not test >= 60 then return end
 				if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and player.is_player_playing(pid) and not entity.is_entity_dead(pped) and not Players[pid].isRC then
 					system.wait(2000)
 					if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(pped) and player.is_player_god(pid) and not Players[pid].isRC then
@@ -4377,7 +4693,7 @@ while true do
 								Players[pid].isgod = true
 								
 								moist_notify(Entity .. "\n" .. pid .. " : " .. (Playerz[pid+1]), "God Mode Player Detected")
-								ModderAudio_notify()
+								ModderAudio_notify_thread.on = true
 							end
 						end
 					end
@@ -4393,7 +4709,7 @@ while true do
 										Entity = "Player Vehicle God mode"
 										Players[pid].isvgod = true
 										moist_notify(Entity .. "\n" .. pid .. " : " .. (Playerz[pid+1]), "Player Vehicle God Mode Detected")
-										ModderAudio_notify()
+										ModderAudio_notify_thread.on = true
 									end
 								end
 							end
@@ -4437,7 +4753,7 @@ God_Check2_pid_thread = function(pid)
                                 Players[pid].isgod = true
 
                                 moist_notify(Entity .. "\n" .. pid .. " : " .. name, "GodMode! Player Detected")
-								ModderAudio_notify()
+								ModderAudio_notify_thread.on = true
                             end
                         end
 						end
@@ -4458,7 +4774,7 @@ God_Check2_pid_thread = function(pid)
                                     Entity = "Player Vehicle God mode"
                                     Players[pid].isvgod = true
                                     moist_notify(Entity .. "\n" .. pid .. " : " .. name, "GodMode! Vehicle Detected")
-									 ModderAudio_notify()
+									 ModderAudio_notify_thread.on = true
 									 end
                             end
                         end
@@ -4486,9 +4802,9 @@ God_Check_pid_thread = function(pid)
     name = player.get_player_name(pid)
     plyveh = player.get_player_vehicle(pid)
         --if player.is_player_valid(pid) ~= false and pid ~= player.player_id()then
-            if player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
-              --  system.wait(8000)
-                    if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not entity.is_entity_dead(pped) then
+            if player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not entity.is_entity_dead(pped) then
+                system.wait(8000)
+                    if player.is_player_god(pid) and not player.is_player_vehicle_god(pid) then
                         if ai.is_task_active(pped, 4) or  ai.is_task_active(pped, 290) or  ai.is_task_active(pped, 298) or  ai.is_task_active(pped, 422) then
                             Players[pid].PlayerVehGodMode = player.is_player_vehicle_god(pid)
 							Players[pid].PlayerGodMode = player.is_player_god(pid)
@@ -4498,23 +4814,30 @@ God_Check_pid_thread = function(pid)
                                 Players[pid].isgod = true
                                 moist_notify(pid .. " : " .. name .. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "God Mode Player Detected\nModder Task Checks")
 								
-                                ModderAudio_notify()
+                                ModderAudio_notify_thread.on = true
 
                         end
                         end
                        
-                    elseif player.is_player_god(pid) or player.is_player_vehicle_god(pid) and  not entity.is_entity_dead(pped) then
+                    elseif not player.is_player_god(pid) and player.is_player_vehicle_god(pid) then
                     if ai.is_task_active(pped, 200) or  ai.is_task_active(pped, 295) or  ai.is_task_active(pped, 199) then
                                 if Settings["GodCheckNotif"] and not Players[pid].isvgod then
 							Players[pid].PlayerVehGodMode = player.is_player_vehicle_god(pid)
 							Players[pid].PlayerGodMode = player.is_player_god(pid)
                                     Players[pid].isvgod = true
                                     moist_notify(Entity .. "\n" .. pid .. " : " .. tostring(name), "Player Vehicle God Mode Detected\nModder Task Checks")
-                                    ModderAudio_notify()
+                                    ModderAudio_notify_thread.on = true
                                 end
                             end
-                        end
-                elseif not player.is_player_god(pid) or player.is_player_vehicle_god(pid) and  entity.is_entity_dead(pped) then
+						elseif player.is_player_god(pid) and player.is_player_vehicle_god(pid) then
+						if ai.is_task_active(pped, 4) or  ai.is_task_active(pped, 290) or  ai.is_task_active(pped, 298) or  ai.is_task_active(pped, 422) or ai.is_task_active(pped, 200) or  ai.is_task_active(pped, 295) or  ai.is_task_active(pped, 199) then
+						if Settings["GodCheckNotif"] and not Players[pid].isgod or not Players[pid].isvgod then
+						
+						moist_notify(pid .. " : " .. tostring(name) .. "\nPlayer God = " .. tostring(player.is_player_god(pid)) .. "\nVehicle God = " .. tostring(player.is_player_vehicle_god(pid)), "God Mod Detected\nModder Task Checks")
+						end
+						end
+					end
+				elseif player.is_player_god(pid) or player.is_player_vehicle_god(pid) and  entity.is_entity_dead(pped) then
 				Players[pid].PlayerGodMode = false
 				Players[pid].PlayerVehGodMode = false
 				
@@ -4547,69 +4870,75 @@ function God_Check1_pid(pid)
 	God_thread1[pid] = menu.create_thread(God_Check1_pid_thread, pid)
 end
 
---player.get_modder_flag_text(flag)
---TODO: *************MODDER FLAG LOGS
+--TODO: Combi kick
+function CombiKick(pid)
+	local Kick_Flags = Get_ModderFlag_Text(pid)
+				for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) then
+				Recent_Players[y].WasKicked = true 
+				
+			end
+		end
+
+	 Debug_Out("[Modder Removed]: " .. tostring(player.get_player_name(pid)).. " | " .. Kick_Flags .. " | Flags Match Kick Flags |  ")
+	script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0x39624029, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0xAD63290E, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0x7DE8CAC0, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0x285DDF33, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0x39624029, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0xAD63290E, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0x7DE8CAC0, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+			system.yield(Settings["ScriptEvent_delay"])
+	script.trigger_script_event(0x285DDF33, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+			system.yield(Settings["ScriptEvent_delay"])
+
+			moist_notify("[Modder Removed]: " .. tostring(player.get_player_name(pid)).. "\n" .. Kick_Flags .. "\n| Flags Match Kick Flags |  ")
+		network.force_remove_player(pid)
+
+end
+
+
+function FlagRemove(pid)
+
+	player.unset_player_as_modder(pid, Settings["RemoveModFlag"])
+    if not Players[pid].IsFlagRemNotif then
+    moist_notify("Removed Flag from: " .. tostring(player.get_player_name(pid)), "Moist Automated\nModder Flag Removal")
+    	Players[pid].IsFlagRemNotif = true
+ 
+	end
+end
+
 
 function Get_ModderFlag_Text(pid)
-	local flagtext = ""
-	local texts <const> = {}
-	local flags = player.get_player_modder_flags(pid)
-	for i = 0, 63 do
-	texts[#texts + 1] = flags & 1 << i == 1 << i  and player.get_modder_flag_text(1 << i) or nil
-	end
-	for i = 1, #texts do
-	flagtext = flagtext .. " | " .. tostring(texts[i])
-	end
-	
-	return flagtext
-end
-
-
-function modderflag(pid)
-	
-	
-	
-if not Modders_DB[pid].ismod then
-	local flags = player.get_player_modder_flags(pid)
-	local flaghex = string.format("%x", flags)
-	print(flaghex)
-	local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
-	local flag_name = player.get_modder_flag_text(flags)
-	Modders_DB[pid].flag = flag_name
+    local flagtext = ""
+    local texts <const> = {}
+    local flags = player.get_player_modder_flags(pid)
 	Modders_DB[pid].flags = flags
-	print(Modders_DB[pid].flags)
-	Modders_DB[pid].ismod = true
-	local name = player.get_player_name(pid)
-	local flagtext = Get_ModderFlag_Text(pid)
-	
-	Debug_Out(string.format("[Modder]: " .. tostring(name).. " [Modder Flags]: " .. flagtext))
-	elseif Modders_DB[pid].ismod then
-	test = player.get_player_modder_flags(pid)
-	-- print(test)
-	-- print(Modders_DB[pid].flags)
-	if Modders_DB[pid].flags ~= test then
-		player.unset_player_as_modder(pid, Modders_DB[pid].flags)
-		-- return end
-		local flags = player.get_player_modder_flags(pid)
-		local flaghex = string.format("%x", flags)
-		print(flaghex)
-		local flag_ends = player.get_modder_flag_ends(player.get_player_modder_flags(pid))
-		local flag_name = player.get_modder_flag_text(flags)
-		Modders_DB[pid].flag = flag_name
-		Modders_DB[pid].flags = flags
-		Modders_DB[pid].ismod = true
-		local name = player.get_player_name(pid)
-		Debug_Out(string.format("[Modder]: " .. name .. " [modder Flags]: " ..  flag_name))
+    for i = 0, 63 do
+    texts[#texts + 1] = flags & 1 << i == 1 << i  and player.get_modder_flag_text(1 << i) or nil
 	end
-end
-return HANDLER_POP
+    for i = 1, #texts do
+    flagtext = flagtext .. " | " .. tostring(texts[i])
+    end
+    
+    return flagtext
 end
 
 --INFO: Player Feature Parents
-PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.6.2", "parent", 0).id
+PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.6.3", "parent", 0).id
 spawn_parent = menu.add_player_feature("Spawn Options", "parent", PlayerFeatParent).id
 
 Player_Tools = menu.add_player_feature("Player Tools", "parent", PlayerFeatParent).id
+--vehicle_Tools = menu.add_player_feature("Vehicle Tools", "parent", PlayerFeatParent).id
+
 	
 BountyId = menu.add_player_feature("Bounty Options", "parent", PlayerFeatParent, function(feat)
 	return HANDLER_POP
@@ -4679,9 +5008,6 @@ spam_byline.max = 1
 spam_byline.min = 1
 spam_byline.value = 1
 
-
-
-
 spambyline = menu.add_feature(typeset, "slider", parent1.id, function(feat)
 	if feat.on then
 	if #loaded_text == nil then return end
@@ -4750,7 +5076,6 @@ end
 end
 SpamByFile()
 
-ChatSpamOn = false
 function load_SpamData()
 	if utils.file_exists(Paths.Spamtxt_Data) then
 	for line in io.lines(Paths.Spamtxt_Data) do
@@ -4789,17 +5114,16 @@ end
     for i = 1, #russian_spam do
         spammRU.var[i] =  menu.add_feature(i..": " .. russian_spam[i][1], "value_i", globalFeatures.Preset_RUS, function(feat)
             if feat.on then
-                ChatSpamOn = true
                 text = tostring(russian_spam[i][2])
                 network.send_chat_message(text, Public_Chat)
                 system.wait(feat.value)
                 return HANDLER_CONTINUE
             end
-            ChatSpamOn = false
             return HANDLER_POP
         end)
         spammRU.var[i].max = 1000
         spammRU.var[i].min = 0
+        spammRU.var[i].mod = Settings["spam_wait_Modifier"]
         spammRU.var[i].value = Settings["spam_wait"]
 end
 
@@ -4813,20 +5137,19 @@ end
         end)
 end
     for i = 1, #spam_preset do
-        spamm.var[i] =  menu.add_feature(i..": " .. spam_preset[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
+        spamPre.var[i] =  menu.add_feature(i..": " .. spam_preset[i][1], "value_i", globalFeatures.Preset_Chat, function(feat)
             if feat.on then
-                ChatSpamOn = true
                 text = tostring(spam_preset[i][2])
                 network.send_chat_message(text, Public_Chat)
                 system.wait(feat.value)
                 return HANDLER_CONTINUE
             end
-            ChatSpamOn = false
             return HANDLER_POP
         end)
-        spamm.var[i].max = 1000
-        spamm.var[i].min = 0
-        spamm.var[i].value = Settings["spam_wait"]
+        spamPre.var[i].max = 1000
+        spamPre.var[i].min = 0
+		spamPre.var[i].mod = Settings["spam_wait_Modifier"]
+        spamPre.var[i].value = Settings["spam_wait"]
 end
     for i = 1, #spam_presets do
         ScriptLocals["SMS_spam"][i] = menu.add_player_feature("sms: " .. spam_presets[i][1], "toggle", playerfeatVars.spam_sms, function(feat, pid)
@@ -4843,19 +5166,18 @@ end
         pfeat.hidden = false
         spamm.var[i] = menu.add_feature("Send Chat Spam", "value_i", pfeat.id, function(feat)
             if feat.on then
-                ChatSpamOn = true
                 text = tostring(spam_presets[i][2])
                 network.send_chat_message(text, Public_Chat)
                 system.wait(feat.value)
                 return HANDLER_CONTINUE
             end
-            ChatSpamOn = false
             return HANDLER_POP
         end)
         spamm.var[i].max = 1000
         spamm.var[i].min = 0
+        spamm.var[i].mod = Settings["spam_wait_Modifier"]
         spamm.var[i].value = Settings["spam_wait"]
-        spamm.var[i] = menu.add_feature("Delete Chat Spam", "action", pfeat.id, function(feat)
+       menu.add_feature("Delete Chat Spam", "action", pfeat.id, function(feat)
             spam_presets[i][1] = nil
             spam_presets[i][2] = nil
             moist_notify("Remember to rewrite presets to Finalise Save & Delete\nThis can be Found in Spam Options", "Moists ChatSpam:\nPreset Deleted")
@@ -4879,11 +5201,9 @@ Chat_N_SMS_Spam()
 
 notxtspam = menu.add_feature("no text spam", "toggle", globalFeatures.Moist_Spam, function(feat)
 	if feat.on then
-		ChatSpamOn = true
 		network.send_chat_message(" ", false)
 		return HANDLER_CONTINUE
 	end
-	ChatSpamOn = false
 	return HANDLER_POP
 end)
 notxtspam.on = false
@@ -4900,7 +5220,6 @@ end)
 
 
 chatclipboard = menu.add_feature("Send Clipboard Contents", "action_value_str", globalFeatures.Moist_Spam, function(feat)
-	ChatSpamOn = false
 	if feat.value == 0 then
 	local text = string.format(utils.from_clipboard())
 	network.send_chat_message(text, false)
@@ -4909,35 +5228,11 @@ chatclipboard = menu.add_feature("Send Clipboard Contents", "action_value_str", 
 	network.send_chat_message(text, true)
 	end
 	
-	--ChatSpamOn = false
 	return HANDLER_POP
 end)
 chatclipboard:set_str_data({"Public Chat","Team Chat"})
 
-chatclipboardv2 = menu.add_feature("Send Clipboard Contents", "action_value_str", globalFeatures.Moist_Spam, function(feat)
-    if utils.file_exists(Paths.tempchat) then
-        local file = io.open(Paths.tempchat, "w+")
-        io.output(file)
-        io.write("")
-        io.write(utils.from_clipboard() .. "\n")
-        io.close()
-    end
-    for line in io.lines(Paths.tempchat) do
-        if feat.value == 0 then
-			
-            network.send_chat_message(line, false)
-        elseif feat.value == 1 then
-            network.send_chat_message(line, true)
-        end
-    end
-    --ChatSpamOn = false
-
-    return HANDLER_POP
-end)
-chatclipboardv2:set_str_data({"Public Chat","Team Chat"})
-
 menu.add_feature("String Char randomised spam", "toggle", globalFeatures.Moist_Spam, function(feat)
-	ChatSpamOn = true
 	if feat.on then
 		local a, b, c
 		a = math.random(1, 254)
@@ -4946,12 +5241,10 @@ menu.add_feature("String Char randomised spam", "toggle", globalFeatures.Moist_S
 		network.send_chat_message(text, false)
 		return HANDLER_CONTINUE
 	end
-	ChatSpamOn = false
 	return HANDLER_POP
 end)
 
 menu.add_feature("String Char randomised delayspam", "toggle", globalFeatures.Moist_Spam, function(feat)
-	ChatSpamOn = true
 	if feat.on then
 		local a, b, c
 		a = math.random(1, 254)
@@ -4961,16 +5254,45 @@ menu.add_feature("String Char randomised delayspam", "toggle", globalFeatures.Mo
 		system.wait(100)
 		return HANDLER_CONTINUE
 	end
-	ChatSpamOn = false
 	return HANDLER_POP
 end)
 
-spam_delay = menu.add_feature("Set Delay in ms", "action_value_i", globalFeatures.Spam_Options, function(feat)
+spam_delay_modifier = menu.add_feature("Set Step Modifier: ", "action_value_i", globalFeatures.Spam_Options, function(feat)
+	Settings["spam_wait_Modifier"] = feat.value
+	spam_delay.mod = feat.value
+	for i = 1, #spammRU.var do
+	spammRU.var[i].mod = feat.value
+	end
+	for i = 1, #spamm.var do
+	spamm.var[i].mod = feat.value
+	end
+	for i = 1, #spamPre.var do
+	spamPre.var[i].mod = feat.value
+	end
+
+end)
+spam_delay_modifier.max = 100
+spam_delay_modifier.min = 1
+spam_delay_modifier.value = Settings["spam_wait_Modifier"]
+spam_delay_modifier.mod = 1
+
+spam_delay = menu.add_feature("Update all Delay's|ms:", "action_value_i", globalFeatures.Spam_Options, function(feat)
 	Settings["spam_wait"] = feat.value
+	for i = 1, #spammRU.var do
+	spammRU.var[i].value = feat.value
+	end
+	for i = 1, #spamm.var do
+	spamm.var[i].value = feat.value
+	end
+	for i = 1, #spamPre.var do
+	spamPre.var[i].value = feat.value
+	end
 end)
 spam_delay.max = 1000
 spam_delay.min = 0
+spam_delay.mod = Settings["spam_wait_Modifier"]
 spam_delay.value = Settings["spam_wait"]
+
 
 menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, function(feat)
         local r,s = input.get("Input Spam Preset Text 96 characters max", "", 96, 0)
@@ -4995,19 +5317,18 @@ menu.add_feature("Add Custom Preset", "action", globalFeatures.Spam_Options, fun
             pfeat.hidden = false
             spamm.var[i] = menu.add_feature("Send Chat Spam", "value_i", pfeat.id, function(feat)
                 if feat.on then
-                    ChatSpamOn = true
                     text= tostring(spam_presets[i][2])
                     network.send_chat_message(text, false)
                     system.wait(feat.value)
                     return HANDLER_CONTINUE
                 end
-                ChatSpamOn = false
                 return HANDLER_POP
             end)
             spamm.var[i].max = 1000
             spamm.var[i].min = 0
+            spamm.var[i].mod = Settings["spam_wait_Modifier"]
             spamm.var[i].value = Settings["spam_wait"]
-            spamm.var[i] = menu.add_feature("Delete Chat Spam", "action", pfeat.id, function(feat)
+            menu.add_feature("Delete Chat Spam", "action", pfeat.id, function(feat)
                 spam_presets[i][1] = nil
                 spam_presets[i][2] = nil
                 moist_notify("Remember to rewrite presets to Finalise Save & Delete\nThis can be Found in Spam Options", "Moists ChatSpam:\nPreset Deleted")
@@ -5331,6 +5652,7 @@ function recentplayerslist()
         htoken = {},
         DecIP = {},
 		PartIP = {},
+		WasKicked = {},
     }}
     RecentPlayers = {}
     TempBlacklist = {{
@@ -5351,15 +5673,16 @@ function recentplayerslist()
 		
     }
 
-    Join_Event_Check = event.add_event_listener("player_join", function(e)
-        if e.player ~= nil then
-            playerRDB(e.player)
-            TempBlacklistCheck(e.player)
-        end
-        return
+
+Join_Event_Check = event.add_event_listener("player_join", function(e)
+	if e.player ~= nil then
+		playerRDB(e.player)
+		TempBlacklistCheck(e.player)
+	end
+	return
 end)
 
-    function TempBlacklistCheck(pid)
+function TempBlacklistCheck(pid)
         local scid, name, decip
         scid = player.get_player_scid(pid)
         name = player.get_player_name(pid)
@@ -5379,18 +5702,24 @@ end)
         end
 end
 
-    function TempBlacklist_Kick(pid)
+function TempBlacklist_Kick(pid)
         if pid == player.player_id() then
             return
         end
+		for y = 1, #Recent_Players do
+        if Recent_Players[y].rid == player.get_player_scid(pid) then
+		Recent_Players[y].WasKicked = true
+		end
+		end
+			
         --	system.wait(10)
         if network.network_is_host() then
+        script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 		network.force_remove_player(pid)
-           -- network.network_session_kick_player(pid)
+        network.network_session_kick_player(pid)
         elseif not network.network_is_host() then
+        script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 		network.force_remove_player(pid)
-            script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
-            script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
         end
        -- network.network_session_kick_player(pid)
 end
@@ -5413,13 +5742,19 @@ end
             RecentPlayer[i] = {}
             TempBlacklist[i] = {}
 
-            for y = 1, #Recent_Players do
+           for y = 1, #Recent_Players do
                 if Recent_Players[y].rid == scid then
                     count = Recent_Players[y].count + 1
                     Recent_Players[y].count = count
-                    if count > 2 and Settings["RecentPlayer_Notify"] then
-                        moist_notify("Recently Seen Player:\n" .. tostring(playername) .. "\nSCID: " .. scid .. "\nSeen: " .. count .. " times", "Recently Seen Player Joined")
+                    if count > 1 and Settings["RecentPlayer_Notify"] then
+                        moist_notify("Recently Seen Player:\n" .. tostring(playername) .. "\nSCID: " .. scid .. "\nSeen: " .. count .. " times\nPreviously Kicked: " .. tostring(Recent_Players[y].WasKicked), "Recently Seen Player Joined")
                     end
+					if Recent_Players[y].WasKicked and Settings["KickJoiningKickedPlayers"] then
+					TempBlacklist_Kick(pid)
+					end
+					
+
+					
                     return
                 end
             end
@@ -5431,16 +5766,17 @@ end
 			Recent_Players[i].PartIP = Part_IP			
             Recent_Players[i].nid = network.network_hash_from_player(pid)
             Recent_Players[i].htoken = tokeen
-            TempBlacklist[i].nameON = false
+			TempBlacklist[i].nameON = false
             TempBlacklist[i].scidON = false
             TempBlacklist[i].nameON = false
             TempBlacklist[i].decipON = false
+			Recent_Players[i].WasKicked = false
             TempBlacklist[i].name = playername
             TempBlacklist[i].scid = scid
             TempBlacklist[i].decip = PlyIP
 			TempBlacklist[i].decip2 = Part_IP
-		--serialisedplayer = saveRecentTable(Recent_Players[i])
-			--write_recentfile(serialisedplayer .. "\n")
+			serialisedplayer = saveRecentTable(Recent_Players[i])
+			write_recentfile(serialisedplayer .. "\n")
 			Recent_Player(pid, i)
             count = 0
 		end
@@ -5484,9 +5820,13 @@ end
                 if feat.value == 0 then
                     AddScid(scid, name)
                     LoadBlacklist()
+                    AddTokenID(token, name)
+                    Load_Blacklist()
                 elseif feat.value == 1 then
                     RemoveScid(scid)
                     LoadBlacklist()
+                    RemoveTokenID(token)
+                    Load_Blacklist()
                 end
 
                 return HANDLER_POP
@@ -5584,9 +5924,13 @@ end
                 if feat.value == 0 then
                     AddScid(scid, name)
                     LoadBlacklist()
+                    AddTokenID(token, name)
+                    Load_Blacklist()
                 elseif feat.value == 1 then
                     RemoveScid(scid)
                     LoadBlacklist()
+                    RemoveTokenID(token)
+                    Load_Blacklist()
                 end
 
                 return HANDLER_POP
@@ -5661,6 +6005,7 @@ end
 
 end
 
+
 menu.add_player_feature("Save Players Current POS to file", "action", Player_Tools, function(feat, pid)
     local pos, name, r, s
     pos = v3()
@@ -5673,8 +6018,8 @@ menu.add_player_feature("Save Players Current POS to file", "action", Player_Too
     if r == 2 then
         return HANDLER_POP
     end
-    moist_notify(string.format("%f, %f, %f", pos.x, pos.y, pos.z), "Saved Players Position")
-    savepos(string.format("\nPosition Saved From Player: "..tostring(name).."\n"..s..",	"..'{'..pos.x ..", "..pos.y ..", "..pos.z..'}'))
+    moist_notify(string.format("%f,%f,%f", pos.x, pos.y, pos.z), "Saved Players V3 Coordinates")
+    savepos(string.format("\nV3 Coordinates from Player: "..tostring(name).."\n"..s..",	"..'v3('..pos.x ..","..pos.y ..","..pos.z..')'))
     return HANDLER_POP
 end)
 
@@ -5777,6 +6122,24 @@ notify_A.max = 255
 notify_A.min = 0
 notify_A.value = Settings["NotifyColorADefault"]
 notify_A.hidden = true
+
+
+notify_ClearVisible = menu.add_feature("Clear Visible Notify Loop delay: ", "value_i", globalFeatures.notifyParent, function(feat)
+	if not feat.on then
+	Settings["ClearVisNotif"] = false
+	Settings["ClearVisNotifDelay"] = feat.value
+	return HANDLER_POP
+	end
+	Settings["ClearVisNotif"] = true
+	Settings["ClearVisNotifDelay"] = feat.value
+	menu.clear_visible_notifications()
+	system.yield(feat.value * 1000)
+	return HANDLER_CONTINUE
+end)
+notify_ClearVisible.max = 15
+notify_ClearVisible.min = 0
+notify_ClearVisible.value = Settings["ClearVisNotifDelay"]
+notify_ClearVisible.on = Settings["ClearVisNotif"]
 
 --INFO: Online Features
 Send2Island = menu.add_player_feature("Force Player to Island", "action", 0, function(feat, pid)
@@ -6176,7 +6539,6 @@ delete_cunt = menu.add_feature("Delete Spawned Cunts", "action", globalFeatures.
 end)
 
 --INFO: Player Joins
-	
 joining_players_logger = event.add_event_listener("player_join", function(e)
 	
     local pid, scid, schx, name
@@ -6277,6 +6639,10 @@ function playerDB(pid, ip)
         io.write("\n" .. tokeen .. "|" .. name .. ", " .. scid .. "|" .. name .. ", " .. ip)
         io.close()
 		--TODO: Remove Maybe? 
+        file2 = io.open(Paths.Logs .. "\\IP_LIST.txt", "a")
+        io.output(file2)
+        io.write(ip .. "\n")
+        io.close()
 end
 end
 
@@ -6408,6 +6774,13 @@ end
 
     scid = player.get_player_scid(pid)
     name = (player.get_player_name(pid)) or (SessionPlayers.Name)
+			for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) then
+		Recent_Players[y].WasKicked = true 
+		
+		end
+		end
+	
     -- system.wait(10)
     if network.network_is_host() then
         if not BL_Notify[pid + 1] then
@@ -6590,11 +6963,9 @@ if not player.is_player_valid(e.player) then
 	elseif  player.is_player_valid(e.player) then
 	sender = player.get_player_name(e.player)
 --end
---if not ChatSpamOn then
 	chat(sender, e.body)
 	Console_chat(sender, e.body)
 	Chat_Command(e.player, e.body)
---	elseif ChatSpamOn then
 --	if e.player ~= player.player_id() then
 --		chat(sender, e.body)
 --		Console_chat(sender, e.body)
@@ -6603,10 +6974,6 @@ if not player.is_player_valid(e.player) then
 end
 end)
 
-
-DeathEvent = event.add_event_listener("PlayerDeath", function(e)
-	moist_notify("event" .. e .. "\nPlayerDeath Triggered")
-end)
 
 local comm, playername
 
@@ -6633,11 +7000,17 @@ end
                 if name == playername then
                     if not player.is_player_host(player.player_id()) then
                         player.send_player_sms(playerid, "I'm Not Currently Host Let Me see if i can remove him")
-						network.force_remove_player(i)
                         send_SE_Kick(i)
+						network.force_remove_player(i)
                     end
                     if player.is_player_host(player.player_id()) then
                         player.send_player_sms(playerid, "Sending Kick Now!")
+								for y = 1, #Recent_Players do
+								if Recent_Players[y].rid == player.get_player_scid(pid) then
+								Recent_Players[y].WasKicked = true 
+		
+								end
+								end
 						network.force_remove_player(i)
                        -- network.network_session_kick_player(i)
                     end
@@ -6649,8 +7022,15 @@ end
 end
 
 function SE_KickCrash(pid)
+		for y = 1, #Recent_Players do
+        if Recent_Players[y].rid == player.get_player_scid(pid) then
+		Recent_Players[y].WasKicked = true 
+		
+		end
+		end
 
     for i = 1, #data do
+	system.yield(Settings["ScriptEvent_delay"])
         script.trigger_script_event(data[i], pid, {(math.random(1002039228, 9999993922)), 3, (math.random(827870001, 927870001)), (math.random(1002039228, 2022580431)), (math.random(-938762645, -908761645)), (math.random(175165, 1754244778)), (math.random(827470001, 827870001)), 1754244778, 23135423, 827870001, 23135423})
         system.yield(10)
         script.trigger_script_event(data[i], pid, {pid, (math.random(-1, 1)), 30583, 0, (math.random(-1, 1)), 0, -328966, 1132039228, (math.random(-1, 1))})
@@ -6661,8 +7041,15 @@ function SE_KickCrash(pid)
 end
 
 function SE_KickCrash2(pid)
+		for y = 1, #Recent_Players do
+        if Recent_Players[y].rid == player.get_player_scid(pid) then
+		Recent_Players[y].WasKicked = true 
+		
+		end
+		end
 	local eventdata = {-2084766469,-68354216}
     for i = 1, #eventdata do
+	system.yield(Settings["ScriptEvent_delay"])
 	script.trigger_script_event(eventdata[i], pid, {(math.random(-1, 1)), (math.random(1002039228, 9999993922)), (math.random(-1, 1)), 3, (math.random(827870001, 927870001)), (math.random(1002039228, 2022580431)), (math.random(-1, 1)), (math.random(-938762645, -908761645)), (math.random(175165, 1754244778)), (math.random(827870001, 927870001)), (math.random(1002039228, 2022580431)), (math.random(-1, 1)), (math.random(-938762645, -908761645)), (math.random(175165, 1754244778))})
         system.yield(10)
 	script.trigger_script_event(eventdata[i], pid, {pid, (math.random(827870001, 927870001)), (math.random(1002039228, 2022580431)), (math.random(-1, 1)), (math.random(-938762645, -908761645)), (math.random(175165, 1754244778)), (math.random(-1, 1)), 30583, 0, (math.random(-1, 1)), 0, -328966, 1132039228, (math.random(-1, 1))})
@@ -6673,6 +7060,12 @@ function SE_KickCrash2(pid)
 end
 
 function send_SE_Kick(pid)
+		for y = 1, #Recent_Players do
+        if Recent_Players[y].rid == player.get_player_scid(pid) then
+		Recent_Players[y].WasKicked = true 
+		
+		end
+		end
 
     script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
     script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
@@ -6714,21 +7107,15 @@ chat_console.on = Settings["chat_debug"]
 
 function griefing()
 
-plyfeatkick1 = menu.add_player_feature("Crash ScriptEvent Kick", "action", PlayerFeatParent, function(feat, pid)
-        local SE_ARGS = build_params(20)
-        script.trigger_script_event(0xcbb6ce33, pid, SE_ARGS)
-        script.trigger_script_event(0x12d09136, pid, SE_ARGS)
-        script.trigger_script_event(0xc50f74ca, pid, SE_ARGS)
-        script.trigger_script_event(0x493FC6BB, pid, SE_ARGS)
-
-end)
-for i=0,#plyfeatkick1.feats do
-    plyfeatkick1.feats[i].hidden = NewDLC()	
-end
-
 plyfeatkick2 = menu.add_player_feature("Script Host Crash Kick", "action", PlayerFeatParent, function(feat, pid)
         local SE_ARGS = build_params(20)
 		system.wait(800)
+		for y = 1, #Recent_Players do
+        if Recent_Players[y].rid == player.get_player_scid(pid) then
+		Recent_Players[y].WasKicked = true 
+		
+		end
+		end
 		for i = 1, #SH_Events do
         script.trigger_script_event(SH_Events[i], pid, SE_ARGS)
 		system.yield(0)
@@ -6744,6 +7131,12 @@ end
 
 plyfeatForceRemove = menu.add_player_feature("Force Remove Player", "action", 0, function(feat, pid)
         player.unset_player_as_modder(pid, -1)
+		for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
 		network.force_remove_player(pid)
 
 end)
@@ -6754,6 +7147,13 @@ end
 
 plyfeatBailkick = menu.add_player_feature("Network Bail Kick", "action", 0, function(feat, pid)
         player.unset_player_as_modder(pid, -1)
+		for y = 1, #Recent_Players do
+    if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
+
         script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 
 end)
@@ -6761,13 +7161,13 @@ for i=0,#plyfeatBailkick.feats do
     plyfeatBailkick.feats[i].hidden = NewDLC()
 end
 
-
 plyerCrashkick = menu.add_player_feature("Player Crash Modder Kick", "action", 0, function(feat, pid)
-	
-	
-	
-	
-	
+	for y = 1, #Recent_Players do
+    if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
 
         script.trigger_script_event(0x39624029, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
         script.trigger_script_event(0xAD63290E, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423})
@@ -6805,9 +7205,7 @@ for i=0,#CEOTER.feats do
     CEOTER.feats[i].hidden = NewDLC()
 end
 
-
-
-    for i = 1, #missions do
+for i = 1, #missions do
         local y = #missions - 1
         menu.add_player_feature("Force to Mission" .. missions[i], "action", playerfeatVars.fm.id, function(feat, pid)
             script.trigger_script_event(0x786FBAAE, pid, {y})
@@ -7534,7 +7932,7 @@ end
 end)
 
 
-pos, ImpactPos, BonePos = v3(), v3(), v3()
+local pos, ImpactPos, BonePos = v3(), v3(), v3()
 
 weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", globalFeatures.self_combat_Ped, function(feat)
         while feat.on do
@@ -7542,10 +7940,10 @@ weapon_impact_pos = menu.add_feature("Get last Weapon impact POS", "toggle", glo
             local success, pos = ped.get_ped_last_weapon_impact(pped, v3())
             if success then
                 ImpactPos = pos
-                print(string.format("Impact POS: " .. "%s, %s, %s", pos.x, pos.y, pos.z))
-                print(ImpactPos.x .. "," .. ImpactPos.y .. "," .. ImpactPos.z)
+               -- moist_notify(string.format("Impact POS: " .. "%s, %s, %s", pos.x, pos.y, pos.z))
+                --print(ImpactPos.x .. "," .. ImpactPos.y .. "," .. ImpactPos.z)
             else
-                system.yield(0)
+                
             end
             system.yield(0)
         end
@@ -7553,15 +7951,11 @@ end)
 weapon_impact_pos.on = false
 
 impact_orbstrike = menu.add_feature("Impact Orbital Strike", "toggle", globalFeatures.self_combat_Ped, function(feat)
-    if feat.on then
+   while feat.on do
         weapon_impact_pos.on = true
         myped = player.get_player_ped(player.player_id())
-        if ped.is_ped_shooting(myped) then
-		while ImpactPos == v3(0.0,0.0,0.0) do
-		system.wait(0)
-		return HANDLER_CONTINUE
-		end
-            system.yield(0)
+        if ped.is_ped_shooting(myped) and ImpactPos ~= v3(0.0,0.0,0.0) then
+		 system.yield(15)
            	local pos, exp_pos = v3(), v3()
 			pos = ImpactPos
 
@@ -7588,11 +7982,11 @@ impact_orbstrike = menu.add_feature("Impact Orbital Strike", "toggle", globalFea
 			graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 0.50, false, false, true)
 
 			 audio.play_sound_from_coord(1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
-			graphics.set_next_ptfx_asset("scr_xm_orbital")
-			while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-				graphics.request_named_ptfx_asset("scr_xm_orbital")
-				system.wait(0)
-			end
+			-- graphics.set_next_ptfx_asset("scr_xm_orbital")
+			-- while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+				-- graphics.request_named_ptfx_asset("scr_xm_orbital")
+				-- system.wait(0)
+			-- end
 			gameplay.set_override_weather(3)
 			gameplay.clear_cloud_hat()
 			fire.add_explosion(pos, 59, false, true, 1.5, myped)
@@ -7603,11 +7997,11 @@ impact_orbstrike = menu.add_feature("Impact Orbital Strike", "toggle", globalFea
 			fire.add_explosion(pos, 50, true, false, 1.0, myped)
 			graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 0.75, false, false, true)
 
-			graphics.set_next_ptfx_asset("scr_xm_orbital")
-			while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-				graphics.request_named_ptfx_asset("scr_xm_orbital")
-				system.wait(0)
-			end
+			-- graphics.set_next_ptfx_asset("scr_xm_orbital")
+			-- while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+				-- graphics.request_named_ptfx_asset("scr_xm_orbital")
+				-- system.wait(0)
+			-- end
 			graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 0.80, false, false, true)
 			fire.add_explosion(pos, 59, false, true, 1.5, myped)
 			fire.add_explosion(pos, 60, true, false, 1.8, myped)
@@ -7616,9 +8010,12 @@ impact_orbstrike = menu.add_feature("Impact Orbital Strike", "toggle", globalFea
 			fire.add_explosion(pos, 50, true, false, 1.0, myped)
 			fire.add_explosion(pos, 50, true, false, 1.0, myped)
 			--fire.start_entity_fire(pped)
+			system.yield(15)
 			ImpactPos = v3(0.0,0.0,0.0)
+			pos = v3(0.0,0.0,0.0)
+			
         end
-        return HANDLER_CONTINUE
+        system.yield(0)
 end
     weapon_impact_pos.on = false
     return HANDLER_POP
@@ -7882,7 +8279,7 @@ end
             key:push_str("x")
             if key:is_down() then
                 rag_self.on = not rag_self.on
-			moist_notify("Ragdoll Set for your Ped = " .. tostring(rag_self.on), "Moists Ragdoll Control\nMoist Script 2.0.6.2")
+			moist_notify("Ragdoll Set for your Ped = " .. tostring(rag_self.on), "Moists Ragdoll Control\nMoist Script 2.0.6.3")
                 system.wait(1200)
             end
             return HANDLER_CONTINUE
@@ -8200,6 +8597,11 @@ local peds_2spawn = {"a_f_y_topless_01","ig_lestercrest_2","ig_trafficwarden","m
 local veh_2spawn = {"boxville5","limo2","insurgent","scramjet","Oppressor","monster5","phantom2","mower","tampa3","ruiner2","ruiner3","caddy","caddy2","caddy3","bus","apc","buzzard"}
 
 local parent = menu.add_feature("Moists Escort Service", "parent", globalFeatures.self, function(feat)
+
+	if not ped.does_relationship_group_exist(MoistEntRelHash[1]) then
+	MoistEntitiesRelHash[1] = ped.add_relationship_group("MoistScript_Entities")
+	end
+
 	-- players_pos()
 end)
 
@@ -8246,10 +8648,15 @@ local vehiclepedescort = menu.add_feature("Create Veh set Escort(s) inside", "ac
 end)
 
 local vehiclepedescort = menu.add_feature("task escort to follow", "action", parent.id, function(feat)
+	local pped = player.get_player_ped(player.player_id())
 	local plyveh = player.get_player_vehicle(player.player_id())
 	local i = #boobveh
 	local y = #boobs
+	if plyveh ~= nil or plyveh ~= 0 then
 	task[#task+1] = ai.task_vehicle_follow(boobs[y],boobveh[i], plyveh, 250.00, 262275, 150)
+	else
+	task[#task+1] = ai.task_vehicle_follow(boobs[y],boobveh[i], pped, 250.00, 262275, 150)
+	end
 end)
 
 
@@ -8265,8 +8672,12 @@ ply_seat.max = 14
 ply_seat.min = -1
 ply_seat.value = 0
 
-local setwanderdrive = menu.add_feature("Task Escort Drive around(Wander randomly)", "action", driver.id, function(feat)
-	set_wander()
+local setwanderdrive = menu.add_feature("Task Escort Drive Me around(Wander randomly)", "action", driver.id, function(feat)
+	set_wander(true)
+end)
+
+local setwanderdrive = menu.add_feature("Task Escort Drive around Alone (Wander randomly)", "action", driver.id, function(feat)
+	set_wander(false)
 end)
 
 
@@ -8449,6 +8860,7 @@ function ped_escort(feat)
 	if plyveh == nil then moist_notify("Your Vehicle:\nYou need to be in a vehicle\nBefore Task can be set!!!") end
 	task[#task+1] = ai.task_vehicle_escort(boobs[i], boobveh[y], plyveh, mode, 2200.00, 262144, 2.0, -1, 5.0)
 	for i = 1, #boobs do
+	
 		ped.set_ped_as_group_member(boobs[i], myplygrp)
 		pedgroup = ped.get_ped_group(boobs[i])
 		ped.set_ped_never_leaves_group(boobs[i], true)
@@ -8476,6 +8888,10 @@ function escort_ped()
     local i = #boobs + 1
 	rot = entity.get_entity_rotation(player.get_player_ped(pped))
     boobs[i] = ped.create_ped(26, model, pos + offset, 0, true, false)
+	
+	ped.set_ped_relationship_group_hash(boobs[i], ped.get_ped_relationship_group_hash(pped))
+	ped.set_can_attack_friendly(boobs[i], true, false)
+	
 	print(boobs[i])		
 	entity.set_entity_god_mode(boobs[i], true)
 	BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(boobs[i])
@@ -8595,13 +9011,15 @@ function setdrive_2pos()
 	
 end
 
-function set_wander()
+function set_wander(self)
 	local i = #boobveh
 	
 	local y = #boobs
     ped.set_ped_into_vehicle(boobs[y], boobveh[i], -1)
+	if self == true then
 	local pped = player.get_player_ped(player.player_id())
-    ped.set_ped_into_vehicle(pped, boobveh[i], player_seat)	
+    ped.set_ped_into_vehicle(pped, boobveh[i], player_seat)
+	end
 	task[#task+1] = ai.task_vehicle_drive_wander(boobs[y], boobveh[i], 180, escort_style)
 end
 
@@ -8736,9 +9154,10 @@ end
             local y = #spawn_cunt + 1
 
             spawn_cunt[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
-
-            ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
-            ped.set_ped_never_leaves_group(spawn_cunt[y], true)
+			ped.set_ped_relationship_group_hash(spawn_cunt[y], ped.get_ped_relationship_group_hash(pped))
+			ped.set_can_attack_friendly(spawn_cunt[y], true, false)
+           -- ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
+           -- ped.set_ped_never_leaves_group(spawn_cunt[y], true)
             ped.set_ped_can_switch_weapons(spawn_cunt[y], true)
             ped.set_ped_combat_attributes(spawn_cunt[y], 46, true)
             ped.set_ped_combat_attributes(spawn_cunt[y], 52, true)
@@ -8761,9 +9180,11 @@ end
             local y = #spawn_cunt + 1
 
             spawn_cunt[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+			ped.set_ped_relationship_group_hash(spawn_cunt[y], ped.get_ped_relationship_group_hash(pped))
+			ped.set_can_attack_friendly(spawn_cunt[y], true, false)
 
-            ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
-            ped.set_ped_never_leaves_group(spawn_cunt[y], true)
+            -- ped.set_ped_as_group_member(spawn_cunt[y], myplygrp)
+            -- ped.set_ped_never_leaves_group(spawn_cunt[y], true)
             ped.set_ped_can_switch_weapons(spawn_cunt[y], true)
             ped.set_ped_combat_attributes(spawn_cunt[y], 46, true)
             ped.set_ped_combat_attributes(spawn_cunt[y], 52, true)
@@ -9155,8 +9576,7 @@ end
 
     --INFO: Countermeasure Hotkey
 
-    local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalFeatures.moist_hotkeys,
-        function(feat)
+    local Counter_key = menu.add_feature("Flare Countermeasures", "value_i", globalFeatures.moist_hotkeys, function(feat)
             Settings["counter_Hotkey"] = true
             if feat.on then
                 local key = MenuKey()
@@ -9271,8 +9691,7 @@ end)
     Veh_set_maxgear.value = 0
     Veh_set_maxgear.on = false
 
-    Veh_OVRCTRL_Modifier = menu.add_feature("Function Modifier Value: ", "action_value_f", Vehicle_Control,
-        function(feat)
+    Veh_OVRCTRL_Modifier = menu.add_feature("Function Modifier Value: ", "action_value_f", Vehicle_Control, function(feat)
             local modifier = feat.value
             Veh_set_gear_ratio.mod = modifier
             Veh_set_torq_ratio.mod = modifier
@@ -9363,8 +9782,7 @@ end)
 end)
     Vehicle_Control_SetGear.on = false
 
-    global_func.BailExit = menu.add_feature("Bail/Exit Vehicle", "action_value_i", globalFeatures.self_veh,
-        function(feat)
+    global_func.BailExit = menu.add_feature("Bail/Exit Vehicle", "action_value_i", globalFeatures.self_veh, function(feat)
             pped = player.get_player_ped(player.player_id())
             local eject = {0, 1, 16, 64, 256, 4160, 262144, 320, 512, 131072}
             ai.task_leave_vehicle(pped, player.get_player_vehicle(player.player_id()), eject[feat.value])
@@ -9374,8 +9792,7 @@ end)
     global_func.BailExit.min = 1
     global_func.BailExit.value = 6
 
-    global_func.Veh_no_col = menu.add_feature("Vehicle has no collision", "toggle", globalFeatures.self_veh,
-        function(feat)
+    global_func.Veh_no_col = menu.add_feature("Vehicle has no collision", "toggle", globalFeatures.self_veh, function(feat)
             if not feat.on then
                 local myped = player.get_player_ped(player.player_id())
                 if ped.is_ped_in_any_vehicle(myped) then
@@ -9394,8 +9811,7 @@ end)
             system.yield(Settings["loop_feat_delay"])
             return HANDLER_CONTINUE
         end)
-    global_func.mk1boostrefill = menu.add_feature("VolticBoost Delayed Refill(MK1)", "toggle", globalFeatures.self_veh,
-        function(feat)
+    global_func.mk1boostrefill = menu.add_feature("VolticBoost Delayed Refill(MK1)", "toggle", globalFeatures.self_veh, function(feat)
             Settings["global_func.mk1boostrefill"] = true
             if feat.on then
                 local myped = player.get_player_ped(player.player_id())
@@ -9414,8 +9830,7 @@ end)
             return HANDLER_POP
         end)
     global_func.mk1boostrefill.on = Settings["global_func.mk1boostrefill"]
-    global_func.mk2boostrefill = menu.add_feature("VolticBoost Instant Recharge(MK2)", "toggle",
-        globalFeatures.self_veh, function(feat)
+    global_func.mk2boostrefill = menu.add_feature("VolticBoost Instant Recharge(MK2)", "toggle", globalFeatures.self_veh, function(feat)
             Settings["global_func.mk2boostrefill"] = true
             if feat.on then
                 local myped = player.get_player_ped(player.player_id())
@@ -9430,8 +9845,7 @@ end)
             return HANDLER_POP
         end)
     global_func.mk2boostrefill.on = Settings["global_func.mk2boostrefill"]
-    global_func.veh_rapid_fire = menu.add_feature("RapidFire RepairLoop Glitch", "toggle", globalFeatures.self_veh,
-        function(feat)
+    global_func.veh_rapid_fire = menu.add_feature("RapidFire RepairLoop Glitch", "toggle", globalFeatures.self_veh, function(feat)
             Settings["global_func.veh_rapid_fire"] = true
             if feat.on then
                 local myped = player.get_player_ped(player.player_id())
@@ -9446,8 +9860,7 @@ end)
             return HANDLER_POP
         end)
     global_func.veh_rapid_fire.on = Settings["global_func.veh_rapid_fire"]
-    global_func.rapidfire_hotkey1 = menu.add_feature("RapidFire RepairLoop Hotkey", "toggle",
-        globalFeatures.moist_hotkeys, function(feat)
+    global_func.rapidfire_hotkey1 = menu.add_feature("RapidFire RepairLoop Hotkey", "toggle", globalFeatures.moist_hotkeys, function(feat)
             Settings["global_func.rapidfire_hotkey1"] = true
             if feat.on then
                 local key = MenuKey()
@@ -9467,8 +9880,7 @@ end)
         end)
     global_func.rapidfire_hotkey1.on = Settings["global_func.rapidfire_hotkey1"]
     --INFO: Self Stat Hotkey Switches
-    global_func.thermal_stat_switch_hotkey = menu.add_feature("Switch Thermal/NV Hotkey", "toggle",
-        globalFeatures.moist_hotkeys, function(feat)
+    global_func.thermal_stat_switch_hotkey = menu.add_feature("Switch Thermal/NV Hotkey", "toggle", globalFeatures.moist_hotkeys, function(feat)
             Settings["global_func.thermal_stat_switch_hotkey"] = true
             local stat = Get_Last_MP("HAS_DEACTIVATE_NIGHTVISION")
             local thermalstat_hash = gameplay.get_hash_key(stat)
@@ -9826,7 +10238,7 @@ end
 function Lobby_SE_Features()
 otr_all =  menu.add_feature("Give everyone OTR", "action", globalFeatures.lobby, function(feat)
 for pid = 0, 31 do
-	script.trigger_script_event(0xE8A824A0, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+	script.trigger_script_event(-391633760, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
 	
 end
 end)
@@ -10084,6 +10496,42 @@ end)
 
 --INFO: Session Kicks
 function Session_SE_Kicks()
+local NetBail_SHF_Kick = menu.add_feature("ScriptHost Fuckarino (Friends Excluded)", "toggle", globalFeatures.kick, function(feat)
+if feat.on then
+	for i = 0, 31 do
+		if player.is_player_valid(i) then
+			local fnd = player.is_player_friend(i)
+			if player.player_id() ~= i or fnd ~= i then
+			for y = 1, #Recent_Players do
+    if Recent_Players[y].rid == player.get_player_scid(i) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
+
+				script.trigger_script_event(1258808115, i, {91645, -99683, 1788, 60877, 55085, 72028})
+				script.trigger_script_event(-1205085020, i, {91645, -99683, 1788, 60877, 55085, 72028})
+				
+				script.trigger_script_event(0x493FC6BB, i, {i, script.get_global_i(1630816 + (1 + (i * 597)) + 508)})
+				
+				script.trigger_script_event(1258808115, i, {-1, 500000, 849451549, -1, -1})
+				script.trigger_script_event(-1205085020, i, {-1, 500000, 849451549, -1, -1})
+				script.trigger_script_event(-1205085020, i, {-1139568479, -1, 1, 100099})
+				script.trigger_script_event(1258808115, i, {-1139568479, -1, 1, 100099})
+				script.trigger_script_event(-1205085020, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				script.trigger_script_event(1258808115, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				script.trigger_script_event(-1205085020, i, {-1, -1, -1, -1, -1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				script.trigger_script_event(1258808115, i, {-1139568479, -1, 1, 100099, -1, 500000, 849451549, -1, -1, 91645, -99683, 1788, 60877, 55085, 72028})
+				
+			end
+			system.yield(Settings["ScriptEvent_delay"])
+			
+		end
+	end
+	return HANDLER_CONTINUE
+end
+return HANDLER_POP
+end)
 
 Kick_Session = menu.add_feature("Session Kick (excludes friends)", "toggle", globalFeatures.kick, function(feat)
 if feat.on then
@@ -10091,6 +10539,13 @@ if feat.on then
 		if player.is_player_valid(pid) then
 			local fnd = player.is_player_friend(pid)
 			if player.player_id() ~= pid or fnd ~= pid then
+			for y = 1, #Recent_Players do
+    if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
+
 				script.trigger_script_event(0x09260c0a, pid, {13, math.random(-5139791970, -1139791970)})
 				system.yield(10)
 				script.trigger_script_event(0x445b050e, pid, {13, math.random(-5139791970, -1139791970)})
@@ -10119,6 +10574,34 @@ end
 
 --INFO: **************************************************SESSION KICKS***************************************
 
+local SEC_SESS = menu.add_feature("Script Event Crash Session", "toggle", globalFeatures.kick, function(feat)
+local Params = build_params(120)
+if feat.on then
+	for i = 0, 31 do
+		if player.is_player_valid(i) then
+			local fnd = player.is_player_friend(i)
+			if i ~= player.player_id() or i ~= fnd then
+			for y = 1, #Recent_Players do
+				if Recent_Players[y].rid == player.get_player_scid(i) then
+					Recent_Players[y].WasKicked = true 
+		
+				end
+			end
+
+				for y = 1, #SECrash do
+					script.trigger_script_event(SECrash[y], i, Params)
+					system.wait(1)
+				end
+			end
+		end
+		
+		system.yield(Settings["ScriptEvent_delay"])
+		
+	end
+	return HANDLER_CONTINUE
+end
+return HANDLER_POP
+end)
 --INFO: Force host
 	local hostnow
 HostForce = menu.add_feature("Kick Host until Session host", "toggle", globalFeatures.kick,function(feat)
@@ -10160,6 +10643,13 @@ if feat.on then
 		if player.is_player_valid(i) then
 			local fnd = player.is_player_friend(i)
 			if i ~= player.player_id() or i ~= fnd then
+				for y = 1, #Recent_Players do
+				if Recent_Players[y].rid == player.get_player_scid(i) then
+					Recent_Players[y].WasKicked = true 
+		
+				end
+			end
+
 				script.trigger_script_event(0x493FC6BB, i, {i, script.get_global_i(1893548 + (1 + (i * 600)) + 511)})
 					system.wait(1)
 				script.trigger_script_event(0x493FC6BB, i, {i, script.get_global_i(1893548 + (1 + (i * 600)) + 511)})
@@ -10177,6 +10667,28 @@ end)
 
 --INFO: Update Session Crash Events
 
+local SessionCrash = menu.add_feature("Script Event Crash Session", "action", globalFeatures.kick, function(feat)
+	local Kick_Array1 = {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423}
+	local Kick_Array2 = {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0}
+	
+	for i = 1, #data do
+	for pid = 0, 31 do
+		if not player.is_player_valid(pid) then return end
+		for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) then
+				Recent_Players[y].WasKicked = true 
+		
+			end
+		end
+
+		script.trigger_script_event(data[i], pid, Kick_Array1)
+		system.yield(0)
+		script.trigger_script_event(data[i], pid, Kick_Array2)
+		end
+	end
+end)
+	
+
 --INFO: REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE ! ! ! ! ! ! ! ! ! !! ! 
 
 end
@@ -10187,53 +10699,62 @@ end
 local hostnotify = false
 
 function hostkickall(pid)
-	
+	if player.is_player_valid(pid) and pid ~= player.player_id() then
+	for y = 1, #Recent_Players do
+    if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
+
 	network.network_session_kick_player(pid)
+	end
 end
 
 function ForceRemoveAll(pid)
-	
+	if player.is_player_valid(pid) and pid ~= player.player_id() then
+	for y = 1, #Recent_Players do
+    if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
+
 	network.force_remove_player(pid)
+	end
 
 end
 
-
 local RemoveAllPlayers = menu.add_feature("Remove All Method: ", "value_str", globalFeatures.kick, function(feat)
-if feat.on then
-	if feat.value == 1 then
-	if not network.network_is_host() then
+	if feat.on then
+	if feat.value == 0 and not network.network_is_host() then
 		if not hostnotify then
 			moist_notify("You are not Session Host!\nUsing Force Remove Method Instead!", "Session Wide Kick")
 			hostnotify = true
 		end
 		for i = 0, 31 do
-			if player.is_player_valid(i) and player.player_id() ~= i then
 		ForceRemoveAll(i)
-				end
-			end
-	end	
-	elseif network.network_is_host() then
+		end
+		elseif feat.value == 0 and network.network_is_host() then
 		hostnotify = false
 		for i = 0, 31 do
-			if player.is_player_valid(i) then
-				if player.player_id() ~= i then
-					--	if i ~= player.is_player_friend(i) then
 					hostkickall(i)
 					system.wait(1)
 				--	end
 				end
+			elseif feat.value == 1 then
+			for i = 0, 31 do
+			ForceRemoveAll(i)
 			end
-		end
-		
-		system.yield(Settings["ScriptEvent_delay"])
 	end
+	system.yield(Settings["ScriptEvent_delay"])
 	return HANDLER_CONTINUE
 end
 hostnotify = false
 return HANDLER_POP
 end)
-RemoveAllPlayers:set_str_data({"Force Remove","Host Kick"})
-RemoveAllPlayers.value = 0
+RemoveAllPlayers:set_str_data({"Host Kick","Force Remove"})
+RemoveAllPlayers.value = 1
 
 local all_mod = menu.add_feature("Mark all Players as Modder", "toggle", globalFeatures.protex, function(feat)
 if feat.on then
@@ -10281,7 +10802,7 @@ Players[pid].PedSpawned = false
 Players[pid].isPassive = false
 Players[pid].isPaused = false
 Players[pid].isDamagedbY = nil
-
+Players[pid].IsFlagRemNotif = false
 Players[pid].isFriend = player.is_player_friend(pid)
 
 
@@ -10325,10 +10846,17 @@ Modders_DB[pid].ismod = false
 	Players[pid].ismod = false
 	Players[pid].isgod = false
 	Players[pid].isvgod = false
+    Players[pid].IsFlagRemNotif = false
+	Players[pid].KickedCount = 0
+	Players[pid].isKicked = false
 	Players[pid].PlayerGodMode = false
 	Players[pid].PlayerVehGodMode = false
 	Players[pid].isint = false
 	Players[pid].Interiorname = ""
+	Players[pid].intID = nil
+	Players[pid].onlinecheck = false
+	Players[pid].online_interior = ""
+	Players[pid].onlineintID = nil
 	Players[pid].isvis = false
 	Players[pid].speed = 0.00
 Players[pid].BlipPID = 0
@@ -11153,19 +11681,19 @@ Audio_POS = {v3(-73.31681060791,-820.26013183594,326.17517089844),v3(2784.536,59
 	
 	for i = 1, #Audio_POS do
 
-	audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+	audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 9999, true)
 	pos.z = 2000.00
 	
-	audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+	audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 9999, true)
 		pos.z = -2000.00
 	
-	audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+	audio.play_sound_from_coord(-1, "Air_Defences_Activated", Audio_POS[i], "DLC_sum20_Business_Battle_AC_Sounds", true, 9999, true)
 	
 	
 	end
 				for pid = 0, 31 do
 			local pos =	player.get_player_coords(pid)
-			audio.play_sound_from_coord(-1, "Air_Defences_Activated", pos, "DLC_sum20_Business_Battle_AC_Sounds", true, 999999999, true)
+			audio.play_sound_from_coord(-1, "Air_Defences_Activated", pos, "DLC_sum20_Business_Battle_AC_Sounds", true, 500, true)
 			system.wait(300)
 				end
 			system.wait(3000)
@@ -11433,12 +11961,13 @@ for i = 0, 31 do
 	local scid = player.get_player_scid(i)
 	if (scid ~= -1 or scid ~= -1 and pped ~= 0) then
 		pos = entity.get_entity_coords(pped)
-		audio.play_sound_frontend(-1, Snd, Aud, true)
-		audio.play_sound_from_entity(-1, Snd, pped, Aud)
+		--audio.play_sound_frontend(-1, Snd, Aud, true)
+	--	audio.play_sound_from_entity(-1, Snd, pped, Aud)
+		audio.play_sound_from_coord(-1, Snd, pos, Aud, true, 100, true)
+	
 	end
 end
-		audio.play_sound_from_coord(-1, Snd, v3(-70.019515991211,-817.59228515625,326.17556762695), Aud, true, 10000, true)
---audio.play_sound_from_coord(-1, Snd, pos, Aud, true, 1000, true)
+		--audio.play_sound_from_coord(-1, Snd, v3(-70.019515991211,-817.59228515625,326.17556762695), Aud, true, 1000, true)
 end
 
 for i = 1, #SoundAnnoy do
@@ -11478,7 +12007,7 @@ sndrape_01 = menu.add_feature("all Horn", "action", globalFeatures.troll, functi
 		if (scid ~= -1 or scid ~= -1 and i ~= player.player_id()) then
 			pos = entity.get_entity_coords(pped)
 			audio.play_sound_from_entity(-1,  "HORN", pped, "DLC_Apt_Yacht_Ambient_Soundset", true)
-			audio.play_sound_from_coord(-1, "HORN", pos, "DLC_Apt_Yacht_Ambient_Soundset", true, 1000000, false)
+			audio.play_sound_from_coord(-1, "HORN", pos, "DLC_Apt_Yacht_Ambient_Soundset", true, 100, false)
 		end
 	end
 end)
@@ -11500,7 +12029,7 @@ local sndrape_3 = menu.add_feature("all Explosion Countdown", "action", globalFe
 		if (scid ~= -1 or scid ~= -1 and i ~= player.player_id()) then
 			pped = player.get_player_ped(i)
 			pos = entity.get_entity_coords(pped)
-			audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 1000, false)
+			audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 100, false)
 			audio.play_sound_from_entity(-1, "Explosion_Countdown", pped, "GTAO_FM_Events_Soundset", true)
 		end
 	end
@@ -11663,6 +12192,9 @@ end
 end
 
 function spawn_ped(pid, pedhash, offdist, attack, Posoff)
+	if not ped.does_relationship_group_exist(MoistEntitiesRelHash) then
+	MoistEntitiesRelHash = ped.add_relationship_group("MoistScript_Entities")
+	end
 hash = pedhash
 pped = player.get_player_ped(pid)
 local offset = v3()
@@ -11706,6 +12238,8 @@ ped.set_ped_combat_attributes(escort[p], 2, true)
 ped.set_ped_combat_range(escort[p], 2)
 ped.set_ped_combat_ability(escort[p], 2)
 ped.set_ped_combat_movement(escort[p], 2)
+ped.set_can_attack_friendly(escort[p], true, false)
+
 if not attack == true then
 	ped.set_ped_combat_attributes(escort[p], 1424, false)
 --	ped.set_ped_as_group_member(escort[p], Group_Hate)
@@ -11717,9 +12251,13 @@ return escort[p]
 end
 
 function spawn_ped_v2(pid, pedhash, attack)
+	if not ped.does_relationship_group_exist(MoistEntitiesRelHash) then
+	MoistEntitiesRelHash = ped.add_relationship_group("MoistScript_Entities")
+	end
     local hash, parachute = pedhash, 0xfbab5776
     plygrp = player.get_player_group(pid)
     pped = player.get_player_ped(pid)
+	plyrel = ped.get_ped_relationship_group_hash(pped)
     local pos, offset, offset2, rot = v3(), v3(), v3(), v3()
     pos = player.get_player_coords(pid)
     pos.x = pos.x + 10
@@ -11735,6 +12273,9 @@ function spawn_ped_v2(pid, pedhash, attack)
 end
     local p = #escort + 1
     escort[p] = ped.create_ped(26, hash, pos + offset, 0, true, false)
+	ped.set_ped_relationship_group_hash(escort[p], MoistEntitiesRelHash)
+	
+	
     print(escort[p])
     entity.set_entity_god_mode(escort[p], true)
     BlipIDs[#BlipIDs + 1] = ui.add_blip_for_entity(escort[p])
@@ -11755,7 +12296,9 @@ end
     ped.set_ped_combat_movement(escort[p], 2)
     ped.set_ped_can_switch_weapons(escort[p], true)
     weapon.give_delayed_weapon_to_ped(escort[p], parachute, 1, 0)
+	ped.set_can_attack_friendly(escort[p], true, false)
     if not attack == true then
+	
         ped.set_ped_combat_attributes(escort[p], 1424, false)
         pedgroup = ped.get_ped_group(escort[p])
         ped.set_ped_as_group_member(escort[p], plygrp)
@@ -11848,48 +12391,115 @@ end
 end)
 
 
-local pedveh_cleanup = menu.add_feature("Delete Ped Spawns + Vehicles", "action", globalFeatures.cleanup, function(feat)
+local pedveh_cleanup = menu.add_feature("Delete All Spawns", "action", globalFeatures.cleanup, function(feat)
 spawn_cleanup()
 end)
 
 function spawn_cleanup()
-if #escort == 0 or nil then return end
-local pos = v3()
-pos.x = presets[1][2]
-pos.y = presets[1][3]
-pos.z = presets[1][4]
-for i = 1, #escort do
-	network.request_control_of_entity(escort[i])
-	ped.clear_ped_tasks_immediately(escort[i])
-	entity.set_entity_coords_no_offset(escort[i], pos)
-	entity.set_entity_as_no_longer_needed(escort[i])
-	entity.delete_entity(escort[i])
-end
-if #escortveh == 0 or nil then return end
-for y = 1, #escortveh do
-	network.request_control_of_entity(escortveh[y])
-	entity.detach_entity(escortveh[y])
-	entity.set_entity_coords_no_offset(escortveh[y], pos)
-	entity.set_entity_as_no_longer_needed(escortveh[y])
-	entity.delete_entity(escortveh[y])
-end
-if #lester == 0 or nil then return end
-for i = 1, #lester do
-	network.request_control_of_entity(lester[i])
-	ped.clear_ped_tasks_immediately(lester[i])
-	entity.set_entity_coords_no_offset(lester[i], pos)
-	entity.set_entity_as_no_longer_needed(lester[i])
-	entity.delete_entity(lester[i])
-end
-if #lesveh == 0 or nil then return end
-for y = 1, #lesveh do
-	network.request_control_of_entity(lesveh[y])
-	entity.detach_entity(lesveh[y])
-	entity.set_entity_coords_no_offset(lesveh[y], pos)
-	entity.set_entity_as_no_longer_needed(lesveh[y])
-	entity.delete_entity(lesveh[y])
-end
 
+    if #escort == 0 or #escort == nil then return end
+    local pos = v3()
+    pos.x = presets[1][2]
+    pos.y = presets[1][3]
+    pos.z = presets[1][4]
+
+    for i = 1, #escort do
+        network.request_control_of_entity(escort[i])
+        ped.clear_ped_tasks_immediately(escort[i])
+        entity.set_entity_coords_no_offset(escort[i], pos)
+        entity.set_entity_as_no_longer_needed(escort[i])
+        entity.delete_entity(escort[i])
+    end
+    if #escortveh == 0 or #escortveh == nil then return end
+    for y = 1, #escortveh do
+        network.request_control_of_entity(escortveh[y])
+        entity.detach_entity(escortveh[y])
+        entity.set_entity_coords_no_offset(escortveh[y], pos)
+        entity.set_entity_as_no_longer_needed(escortveh[y])
+        entity.delete_entity(escortveh[y])
+    end
+    if #boobs == 0 or #boobs == nil then return end
+    for i = 1, #boobs do
+        network.request_control_of_entity(boobs[i])
+        ped.clear_ped_tasks_immediately(boobs[i])
+        entity.set_entity_coords_no_offset(boobs[i], pos)
+        entity.set_entity_as_no_longer_needed(boobs[i])
+        entity.delete_entity(boobs[i])
+    end
+    if #boobveh == 0 or #boobveh == nil then return end
+    for y = 1, #boobveh do
+        network.request_control_of_entity(boobveh[y])
+        entity.detach_entity(boobveh[y])
+        entity.set_entity_coords_no_offset(boobveh[y], pos)
+        entity.set_entity_as_no_longer_needed(boobveh[y])
+        entity.delete_entity(boobveh[y])
+    end
+
+    if #lester == 0 or #lester == nil then return end
+    for i = 1, #lester do
+        network.request_control_of_entity(lester[i])
+        ped.clear_ped_tasks_immediately(lester[i])
+        entity.set_entity_coords_no_offset(lester[i], pos)
+        entity.set_entity_as_no_longer_needed(lester[i])
+        entity.delete_entity(lester[i])
+    end
+    if #lesveh == 0 or #lesveh == nil then return end
+    for y = 1, #lesveh do
+        network.request_control_of_entity(lesveh[y])
+        entity.detach_entity(lesveh[y])
+        entity.set_entity_coords_no_offset(lesveh[y], pos)
+        entity.set_entity_as_no_longer_needed(lesveh[y])
+        entity.delete_entity(lesveh[y])
+    end
+    if #SpawnedNPC == 0 or #SpawnedNPC == nil then return end
+    for i = 1, #SpawnedNPC do
+        network.request_control_of_entity(SpawnedNPC[i])
+        ped.clear_ped_tasks_immediately(SpawnedNPC[i])
+        entity.set_entity_coords_no_offset(SpawnedNPC[i], pos)
+        entity.set_entity_as_no_longer_needed(SpawnedNPC[i])
+        entity.delete_entity(SpawnedNPC[i])
+    end
+    if #SpawnedNPCV == 0 or #SpawnedNPCV == nil then return end
+    for y = 1, #SpawnedNPCV do
+        network.request_control_of_entity(SpawnedNPCV[y])
+        entity.detach_entity(SpawnedNPCV[y])
+        entity.set_entity_coords_no_offset(SpawnedNPCV[y], pos)
+        entity.set_entity_as_no_longer_needed(SpawnedNPCV[y])
+        entity.delete_entity(SpawnedNPCV[y])
+    end
+
+    for i = 1, #alkonost do
+        entity.set_entity_as_no_longer_needed(alkonost[i])
+        entity.delete_entity(alkonost[i])
+    end
+    for i = 1, #spawned_cunts do
+        entity.set_entity_as_no_longer_needed(spawned_cunts[i])
+        entity.delete_entity(spawned_cunts[i])
+    end
+    for i = 1, #spawned_cunt do
+        entity.set_entity_as_no_longer_needed(spawned_cunt[i])
+        entity.delete_entity(spawned_cunt[i])
+    end
+    for i = 1, #spawned_cunt1 do
+        entity.set_entity_as_no_longer_needed(spawned_cunt1[i])
+        entity.delete_entity(spawned_cunt1[i])
+    end
+    for i = 1, #spawned_cunt2 do
+        entity.set_entity_as_no_longer_needed(spawned_cunt2[i])
+        entity.delete_entity(spawned_cunt2[i])
+    end
+    for i = 1, #spawned_cunt3 do
+        entity.set_entity_as_no_longer_needed(spawned_cunt3[i])
+        entity.delete_entity(spawned_cunt3[i])
+    end
+    for i = 1, #lester do
+        entity.set_entity_as_no_longer_needed(spawned_cunt3[i])
+        entity.delete_entity(spawned_cunt3[i])
+    end
+    for i = 1, #huntv do
+        entity.set_entity_as_no_longer_needed(huntv[i])
+        entity.delete_entity(huntv[i])
+    end
 
 end
 
@@ -12207,7 +12817,7 @@ function GetKiller(pid)
                 Players[pid2].PlayerGodMode = true
             end
             if pid == pid2 then
-                text = tostring("Player: " .. name2 .. "\n" .. femped1)
+                text = tostring("Player: " .. name2 .. " | " .. femped1)
                 if Settings["Combat_Tracker_Notify"] and not Settings["Combat_Tracker_DebugLog"] then
                     if Settings["Combat_Tracker_ON"] and Settings["Combat_Tracker_Notify"] then
                     menu.notify("Player: " .. name2 .. "\n" .. femped1, "Session Combat Tracker", 6, 0xffff00ff)
@@ -12224,7 +12834,7 @@ function GetKiller(pid)
                     system.wait(0)
                     end
                 elseif pid ~= pid2 then
-                    text = tostring("Player: " .. name2 .. "\nKilled: " .. name1)
+                    text = tostring("Player: " .. name2 .. " | Killed: " .. name1)
                     if Settings["Combat_Tracker_Notify"] and not Settings["Combat_Tracker_DebugLog"] then
                         if Settings["Combat_Tracker_ON"] and Settings["Combat_Tracker_Notify"] then
                         menu.notify("Player: " .. name2 .. "\nKilled: " .. name1, "Session Combat Tracker", 6, 0xffff00ff)
@@ -12269,6 +12879,7 @@ PlyTrackCombat.value = Settings["Combat_Tracker_Value"]
 
 
 
+
 PlyTrackDamage = menu.add_feature("Track all Players Damage", "toggle", globalFeatures.moistopt, function(feat)
 	if feat.on then
 	for pid1 = 0, 31 do
@@ -12291,6 +12902,18 @@ end
 end)
 PlyTrackDamage.on = true
 
+Kicked_JoinKick = menu.add_feature("Kick Previously Kicked Players", "toggle", globalFeatures.moistopt, function(feat)
+	if feat.on then
+	Settings["KickJoiningKickedPlayers"] = true
+	return HANDLER_POP
+	end
+	Settings["KickJoiningKickedPlayers"] = false
+	return HANDLER_POP
+end)
+Kicked_JoinKick.on = Settings["KickJoiningKickedPlayers"]
+	
+	
+	
 PlyTracker.track_all = menu.add_feature("Track all Players Speed", "toggle", globalFeatures.moistopt, function(feat)
 	if feat.on then
 		for i = 0, 31 do
@@ -12325,7 +12948,7 @@ spec_osd = menu.add_feature("Modded Spectate OSD", "toggle", globalFeatures.mois
 	
 	for pid = 0, 31 do
 	if --[[pid ~= player.player_id() and]] player.is_player_valid(pid) then
-	if player.is_player_spectating(pid) and player.is_player_playing(pid) and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then
+	if player.is_player_spectating(pid) and player.is_player_playing(pid) and Players[pid].isint ~= true then
 	local target = network.get_player_player_is_spectating(pid)
 	local name, targetname
 	name = ("~r~~h~" .. (tostring(player.get_player_name(pid))))
@@ -12336,30 +12959,30 @@ spec_osd = menu.add_feature("Modded Spectate OSD", "toggle", globalFeatures.mois
 	end
 	pos.y = pos.y + 0.05
 	if Players[pid].isint == true then
-	ui.set_text_scale(0.255)
+	ui.set_text_scale(0.20)
 	ui.set_text_font(0)
 	ui.set_text_color(255, 255, 255, 255)
 	ui.set_text_centre(0)
 	ui.set_text_outline(1)
 	
-	ui.draw_text("~h~~r~Modded~y~ Specate:", pos)
-		ui.set_text_scale(0.255)
+	ui.draw_text("~h~~r~Modded~y~Specate: ", pos)
+		ui.set_text_scale(0.20)
 	ui.set_text_font(0)
 	ui.set_text_color(255, 255, 255, 255)
 	ui.set_text_centre(0)
 	ui.set_text_outline(1)
 	pos.x = 0.30
-	ui.draw_text(" ~b~ " ..(tostring(name)) .. " ~w~Spectating: ", pos)
-		ui.set_text_scale(0.255)
+	ui.draw_text("~b~" ..(tostring(name)) .. " ~w~Spectating:", pos)
+		ui.set_text_scale(0.20)
 	ui.set_text_font(0)
 	ui.set_text_color(255, 255, 255, 255)
 	ui.set_text_centre(0)
 	ui.set_text_outline(1)
 	pos.x = 0.50
 	
-	ui.draw_text(" " .. (tostring(targetname)), pos)
+	ui.draw_text(tostring(targetname), pos)
 	elseif Players[pid].isint ~= true then
-	ui.set_text_scale(0.255)
+	ui.set_text_scale(0.20)
 	ui.set_text_font(0)
 	ui.set_text_color(255, 255, 255, 255)
 	ui.set_text_centre(0)
@@ -12460,7 +13083,21 @@ interiorcheckbytype:set_str_data(Playerz)
 -- toilet = 0
 -- update_ent =  menu.add_feature("Update Toiler", "toggle",  globalFeatures.moist_test.id, function(feat)
 
+vectorshit = menu.add_feature("Fwd Vector Teleport Multiplier:* ", "action_value_i", globalFeatures.moist_test.id, function(feat)
+	local pos = v3()
+	pos = player.get_player_coords(player.player_id())
+	    local MyPed = player.get_player_ped(player.player_id())
+		local fwdvec = entity.get_entity_forward_vector(MyPed)
+		
+		pos = pos + (fwdvec * feat.value)
 
+		
+		entity.set_entity_coords_no_offset(MyPed, pos)
+end)
+vectorshit.max = 100
+vectorshit.min = -100
+vectorshit.value = 1
+	
 function Toilet_Stalker_Clone(pid)
 	local pped = player.get_player_ped(pid)
 	local pos, offset, rot = v3(0.0,0.0,0.0), v3(0.0,-0.21,-0.10), v3(0.0,0.0,180.0)
@@ -12523,11 +13160,9 @@ Control_POS = menu.add_feature("Control Input Position", "toggle", globalFeature
 	local pid = player.player_id()
 	local x, y, z
 	local Entity
-	-- if player.is_player_in_any_vehicle(player.player_id()) then
-	-- Entity = player.get_player_vehicle(player.player_id())
-	-- else 
+
 	Entity = player.get_player_ped(player.player_id())
-	--end
+
 	local camrot = cam.get_gameplay_cam_rot()
 	if controls.get_control_normal(-1, controlID[1]) ~= 0.0 then
 	x = tostring(controls.get_control_normal(-1, controlID[1]) or 0.01)
@@ -12539,10 +13174,9 @@ Control_POS = menu.add_feature("Control Input Position", "toggle", globalFeature
 	
 	pos = get_ctrl_coords(pid, tonumber(x), 90)
 	entity.set_entity_coords_no_offset(Entity, pos)
-	-- if player.is_player_in_any_vehicle(player.player_id()) then
-	-- vehicle.set_vehicle_on_ground_properly(Entity)
+
 	 end
-	--end
+
 	if controls.get_control_normal(-1, controlID[2]) ~= 0.0 then
 	y = tostring(controls.get_control_normal(-1, controlID[2]) or 0.01)
 	if y:sub(1, 1) == "-" then
@@ -12553,11 +13187,9 @@ Control_POS = menu.add_feature("Control Input Position", "toggle", globalFeature
 	
 	pos = get_ctrl_coords(pid, tonumber(y), 180)
 	entity.set_entity_coords_no_offset(Entity, pos)
-	-- if player.is_player_in_any_vehicle(player.player_id()) then
-	-- vehicle.set_vehicle_on_ground_properly(Entity)
-	-- end
+
 	end
-	--if not player.is_player_in_any_vehicle(player.player_id()) then
+
 	if controls.get_control_normal(-1, controlID[5]) ~= 0.0 then
 	z = tonumber("-" ..controls.get_control_normal(-1, controlID[5]))
 	pos = player.get_player_coords(pid)
@@ -12569,22 +13201,16 @@ Control_POS = menu.add_feature("Control Input Position", "toggle", globalFeature
 	pos.z = pos.z + z
 	entity.set_entity_coords_no_offset(Entity, pos)
 	end
-	--end
-	--if not player.is_player_in_any_vehicle(player.player_id()) then
+
 	entity.set_entity_rotation(Entity, camrot)
-	-- if player.is_player_in_any_vehicle(player.player_id()) then
-	-- vehicle.set_vehicle_on_ground_properly(Entity)
-	-- end
-	--end
+
 
 
 	return HANDLER_CONTINUE
 	end
 end)
 Control_POS.on = false
--- Control_POS.max = 100
--- Control_POS.min = 1
--- Control_POS.value = 1
+
 
 	
 
@@ -12592,7 +13218,7 @@ OSD_Control_Meter1 = menu.add_feature("Control Input Gauge", "value_str", global
 	if feat.on then
 	local ID = feat.value + 1
 	local value = controls.get_control_normal(-1, controlID[ID])
-	ui.draw_rect(0.010, 0.70, 0.015, tonumber(value / 10), 0, 0, 255, 255)
+				ui.draw_rect(0.010, 0.70, 0.015, tonumber(value / 10), 0, 0, 255, 255)
 	return HANDLER_CONTINUE
 	end
 end)
@@ -12602,7 +13228,8 @@ OSD_Control_Meter2 = menu.add_feature("Control Input Gauge 2", "value_str", glob
 	if feat.on then
 	local ID = feat.value + 1
 	local value = controls.get_control_normal(-1, controlID[ID])
-	ui.draw_rect(0.025, 0.70, 0.015, tonumber(value / 10), 0, 0, 255, 255)
+				ui.draw_rect(0.025, 0.70, 0.015, tonumber(value / 10), 0, 0, 255, 255)
+	
 	return HANDLER_CONTINUE
 	end
 end)
@@ -12654,7 +13281,7 @@ OSD_Veh_Meter.hidden = false
 OSD.modvehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globalFeatures.moist_UI_OSD, function(feat)
 	Settings["OSD.modvehspeed_osd"] = true
 	if feat.on then
-		for i = 1, 31 do
+		for i = 0, 31 do
 			if tracking.playerped_speed1[i + 1] > 325 then
 				OSD.mod_vehspeed_osd.on = true
 				system.yield(13000)
@@ -12670,31 +13297,31 @@ end)
 OSD.modvehspeed_osd.on = Settings["OSD.modvehspeed_osd"]
 
 OSD.mod_vehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globalFeatures.moist_UI_OSD, function(feat)
-	if feat.on then
+	while feat.on do
 		local pos = v2()
 		pos.x = 0.001
-		pos.y = .0300
+		pos.y = .040
 		local name
 		for i = 0, 31 do
 			if player.get_player_ped(i) ~= 0 and not Players[i].isint then
 				pos.x = 0.001
 				if tracking.playerped_speed1[i + 1] > 325 then
 					name = player.get_player_name(i)
-					ui.set_text_scale(0.235)
+					ui.set_text_scale(0.18)
 					ui.set_text_font(0)
 					ui.set_text_color(255, 0, 0, 255)
 					ui.set_text_centre(false)
 					ui.set_text_outline(true)
 					ui.draw_text("HighSpeed: ", pos)
-					pos.x = 0.035
-					ui.set_text_scale(0.235)
+					pos.x = 0.040
+					ui.set_text_scale(0.18)
 					ui.set_text_font(0)
 					ui.set_text_color(255, 255, 255, 255)
 					ui.set_text_centre(false)
 					ui.set_text_outline(true)
 					ui.draw_text(name, pos)
-					pos.x = 0.089
-					ui.set_text_scale(0.235)
+					pos.x = 0.080
+					ui.set_text_scale(0.18)
 					ui.set_text_font(0)
 					ui.set_text_color(0, 255, 255, 255)
 					ui.set_text_centre(false)
@@ -12704,7 +13331,7 @@ OSD.mod_vehspeed_osd = menu.add_feature("High Player Speed OSD", "toggle", globa
 				end
 			end
 		end
-		return HANDLER_CONTINUE
+		system.yield(0)
 	end
 	return HANDLER_POP
 end)
@@ -12719,7 +13346,8 @@ POS_OSD = menu.add_feature("My v3 OSD Info", "toggle", globalFeatures.moist_UI_O
 		pos.x = 0.001
 		pos.y = .0450
         local MyPed, MyDir, MyPos, MyRot, Myheading
-        MyPed = player.get_player_ped(player.player_id()) 
+        MyPed = player.get_player_ped(player.player_id())
+		fwdvec = entity.get_entity_forward_vector(MyPed)
         MyRot = entity.get_entity_rotation(MyPed)
         MyPos = player.get_player_coords(player.player_id())
         Myheading = player.get_player_heading(player.player_id())
@@ -12752,7 +13380,7 @@ POS_OSD = menu.add_feature("My v3 OSD Info", "toggle", globalFeatures.moist_UI_O
 					ui.set_text_color(255, 255, 255, 255)
 					ui.set_text_centre(false)
 					ui.set_text_outline(true)
-					ui.draw_text("Heading: " .. tostring(Myheading), pos)
+					ui.draw_text("Heading: " .. tostring(Myheading) .."\tFwdVec: " .. tostring(fwdvec), pos)
                     pos.x = 0.001
                     pos.y = .1050
                     ui.set_text_scale(0.20)
@@ -12817,72 +13445,70 @@ playerpulse.value = 15
 
 
 notifysent = {}
---TODO:**********  PLAYER BAR ***************
+
+--TODO: **********  PLAYER BAR ***************
+
 OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moist_UI_OSD, function(feat)
 	Settings["OSD.Player_bar"] = true
-	if feat.on then
-		ui.draw_rect(0.001, 0.001, 2.5, 0.075, 0, 0, 0, 225)
+	while feat.on do
+    ui.draw_rect(0.001, 0.001, 2.5, 0.085, 0, 0, 0, 210)
 		local pos = v2()
 		pos.x = 0.0001
-		pos.y = 0.000001
+		pos.y = 0.0001
 		for pid = 0, 31 do
-			pped = player.get_player_ped(pid)
-			local i = pid
+		local pped = player.get_player_ped(pid)
 			local name, scid = SessionPlayers[pid].Name, SessionPlayers[pid].Scid
 			if scid ~= -1 and name ~= nil then
+			local PlayerName1 = SessionPlayers[pid].Name
 				local PlayerName = SessionPlayers[pid].Name
 				PCR, PCG, PCB, PCA = 255, 255, 255, 255
-				if player.is_player_god(i) and player.is_player_vehicle_god(i) and Players[pid].isint == true then
+				if player.is_player_god(pid) and player.is_player_vehicle_god(pid) and Players[pid].isint == true then
 					if  Players[pid].pulse then
 						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, Pulse_RGB_R, 185
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 255, 185
 					end
 				end
-				if player.is_player_god(i) and player.is_player_vehicle_god(i) and Players[pid].isint == false then
+				if player.is_player_god(pid) and player.is_player_vehicle_god(pid) and Players[pid].isint == false then
 					if  Players[pid].pulse then
+					PlayerName = "~o~~h~" .. PlayerName
 						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, Pulse_RGB_R, 255
+						
 						else
+						PlayerName = "~r~~h~" .. PlayerName
 						PCR, PCG, PCB, PCA = 255, 0, 255, 200
+						
 					end
 				end
-				if player.is_player_vehicle_god(i) and not player.is_player_god(i) and Players[pid].isint == true then
+				if player.is_player_vehicle_god(pid) and not player.is_player_god(pid) and Players[pid].isint == true then
+					PlayerName = "~o~" .. PlayerName
+				end
+				if player.is_player_vehicle_god(pid) and not player.is_player_god(pid) and Players[pid].isint == false then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA =  Pulse_RGB_R, Pulse_RGB_G, 0, 185
-						else
-						PCR, PCG, PCB, PCA = 255, 170, 0, 185
+					PlayerName = "~o~~h~" .. PlayerName
+					else
+						PlayerName = "~o~" .. PlayerName
 					end
 				end
-				if player.is_player_vehicle_god(i) and not player.is_player_god(i) and Players[pid].isint == false then
-					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA =  Pulse_RGB_R, Pulse_RGB_G, 0, 255
-						else
-						PCR, PCG, PCB, PCA = 255, 170, 0, 200
-					end
+				if player.is_player_god(pid) and not player.is_player_vehicle_god(pid) and Players[pid].isint == true then
+						PlayerName = "~r~" .. PlayerName
 				end
-				if player.is_player_god(i) and not player.is_player_vehicle_god(i) and Players[pid].isint == true then
+				if player.is_player_god(pid) and not player.is_player_vehicle_god(pid) and Players[pid].isint == false then
 					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, 0, 185
+					PlayerName = "~r~~h~" .. PlayerName
 						else
-						PCR, PCG, PCB, PCA = 255, 0, 0, 185
-					end
-				end
-				if player.is_player_god(i) and not player.is_player_vehicle_god(i) and Players[pid].isint == false then
-					if  Players[pid].pulse then
-						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, 0, 255
-						else
-						PCR, PCG, PCB, PCA = 255, 0, 0, 200
+						PlayerName = "~r~" .. PlayerName
 					end
 				end
 				if not NewDLC() then
-				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == true and player.is_player_god(i) then
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == true and player.is_player_god(pid) then
 					if  Players[pid].pulse then
 						PCR, PCG, PCB, PCA = Pulse_RGB_B, Pulse_RGB_R, Pulse_RGB_B, 200
 						else
 						PCR, PCG, PCB, PCA = 255, 0, 0, 200
 					end
 				end
-				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == false and player.is_player_god(i) then
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == false and player.is_player_god(pid) then
 					if  Players[pid].pulse then
 						PCR, PCG, PCB, PCA = Pulse_RGB_B, Pulse_RGB_R, Pulse_RGB_B, 255
 						else
@@ -12896,9 +13522,9 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 						PCR, PCG, PCB, PCA = 255, 255, 255, 255
 					end
 				end
-				if Players[i].isPassive then
+				if Players[pid].isPassive then
 					PCA = 150
-				elseif not Players[i].isPassive then
+				elseif not Players[pid].isPassive then
 				PCA = 255
 				end
 				end
@@ -12910,22 +13536,28 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 				elseif not entity.is_entity_dead(pped) then
 				PCA = 255
 				end
-				if pos.x > 0.95 then
-					pos.y = .015
+				if pos.x >= 0.92 and pos.y < 0.001 then
+					pos.y = pos.y + 0.015
+					pos.x = 0.0001
+				elseif pos.x >= 0.92 and pos.y >= 0.015 then
+					pos.y = pos.y + 0.015
 					pos.x = 0.0001
 				end
+                ui.set_text_scale(0.172)
+                ui.set_text_color(0,0,0,255)
+				ui.set_text_font(0)
+				ui.set_text_centre(false)
+				ui.set_text_outline(true)
+				ui.draw_text(PlayerName1 .. " ", pos)
+				ui.set_text_scale(0.170)
 				ui.set_text_color(PCR, PCG, PCB, PCA)
-				if pos.x > 0.95 then
-					pos.y = .015
-					pos.x = 0.0001
-					else
-				end
-				ui.set_text_scale(0.175)
 				ui.set_text_font(0)
 				ui.set_text_centre(false)
 				ui.set_text_outline(true)
 				ui.draw_text(PlayerName .. " ", pos)
-				pos.x = pos.x + 0.0652
+                
+				pos.x = pos.x + 0.085
+                
 			end
 		end
 		return HANDLER_CONTINUE
@@ -12934,6 +13566,136 @@ OSD.Player_bar = menu.add_feature("Player Bar OSD", "toggle", globalFeatures.moi
 	return HANDLER_POP
 end)
 OSD.Player_bar.on = Settings["OSD.Player_bar"]
+
+OSD.Player_bar2 = menu.add_feature("Player Bar OSD Layout Test", "toggle", globalFeatures.moist_UI_OSD, function(feat)
+	Settings["OSD.Player_bar"] = true
+	local pped, name, scid, PlayerName1, PlayerName
+	while feat.on do
+    ui.draw_rect(0.001, 0.001, 2.5, 0.085, 0, 0, 0, 210)
+		local pos = v2()
+		pos.x = 0.0001
+		pos.y = 0.0001
+		for pid = 0, 31 do
+		pped = player.get_player_ped(pid)
+		name, scid = SessionPlayers[pid].Name, SessionPlayers[pid].Scid
+			--if scid ~= -1 and name ~= nil then
+			PlayerName1 = SessionPlayers[pid].Name 
+			if PlayerName1 == "nil" then
+			PlayerName1 = "~h~HHHHHHHHHHHHHHHH"
+			end
+			PlayerName = SessionPlayers[pid].Name
+			if PlayerName == "nil" then
+			PlayerName = "~h~HHHHHHHHHHHHHHHH"
+			end
+				PCR, PCG, PCB, PCA = 255, 255, 255, 255
+				if player.is_player_god(pid) and player.is_player_vehicle_god(pid) and Players[pid].isint == true then
+					if  Players[pid].pulse then
+						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, Pulse_RGB_R, 185
+						else
+						PCR, PCG, PCB, PCA = 255, 0, 255, 185
+					end
+				end
+				if player.is_player_god(pid) and player.is_player_vehicle_god(pid) and Players[pid].isint == false then
+					if  Players[pid].pulse then
+					PlayerName = "~o~~h~" .. PlayerName
+						PCR, PCG, PCB, PCA = Pulse_RGB_R, 0, Pulse_RGB_R, 255
+						
+						else
+						PlayerName = "~r~~h~" .. PlayerName
+						PCR, PCG, PCB, PCA = 255, 0, 255, 200
+						
+					end
+				end
+				if player.is_player_vehicle_god(pid) and not player.is_player_god(pid) and Players[pid].isint == true then
+					PlayerName = "~o~" .. PlayerName
+				end
+				if player.is_player_vehicle_god(pid) and not player.is_player_god(pid) and Players[pid].isint == false then
+					if  Players[pid].pulse then
+					PlayerName = "~o~~h~" .. PlayerName
+						else
+						PlayerName = "~o~" .. PlayerName
+
+					end
+				end
+				if player.is_player_god(pid) and not player.is_player_vehicle_god(pid) and Players[pid].isint == true then
+						PlayerName = "~r~" .. PlayerName
+
+				end
+				if player.is_player_god(pid) and not player.is_player_vehicle_god(pid) and Players[pid].isint == false then
+					if  Players[pid].pulse then
+					PlayerName = "~r~~h~" .. PlayerName
+						else
+						PlayerName = "~r~" .. PlayerName
+
+					end
+				end
+				if not NewDLC() then
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == true and player.is_player_god(pid) then
+					if  Players[pid].pulse then
+						PCR, PCG, PCB, PCA = Pulse_RGB_B, Pulse_RGB_R, Pulse_RGB_B, 200
+						else
+						PCR, PCG, PCB, PCA = 255, 0, 0, 200
+					end
+				end
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == false and player.is_player_god(pid) then
+					if  Players[pid].pulse then
+						PCR, PCG, PCB, PCA = Pulse_RGB_B, Pulse_RGB_R, Pulse_RGB_B, 255
+						else
+						PCR, PCG, PCB, PCA = 255, 0, 0, 255
+					end
+				end
+				if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1) and Players[pid].isint == false then
+					if  Players[pid].pulse then
+						PCR, PCG, PCB, PCA = 0, Pulse_RGB_R, 0, 255
+						else
+						PCR, PCG, PCB, PCA = 255, 255, 255, 255
+					end
+				end
+				if Players[pid].isPassive then
+					PCA = 150
+				elseif not Players[pid].isPassive then
+				PCA = 255
+				end
+				end
+				if player.is_player_friend(pid) then
+					PCR, PCG, PCB, PCA = 255, 255, 0, 255
+				end
+				if entity.is_entity_dead(pped) then
+				PCR, PCG, PCB, PCA = 100, 50, 50, 200
+				elseif not entity.is_entity_dead(pped) then
+				PCA = 255
+				end
+				if pos.x >= 0.92 and pos.y < 0.001 then
+					pos.y = pos.y + 0.015
+					pos.x = 0.0001
+				elseif pos.x >= 0.92 and pos.y >= 0.015 then
+					pos.y = pos.y + 0.015
+					pos.x = 0.0001
+				end
+                ui.set_text_scale(0.172)
+                ui.set_text_color(0,0,0,255)
+				ui.set_text_font(0)
+				ui.set_text_centre(false)
+				ui.set_text_outline(true)
+				ui.draw_text(PlayerName1 .. " ", pos)
+				ui.set_text_scale(0.170)
+				ui.set_text_color(PCR, PCG, PCB, PCA)
+				ui.set_text_font(0)
+				ui.set_text_centre(false)
+				ui.set_text_outline(true)
+				ui.draw_text(PlayerName .. " ", pos)
+                
+				pos.x = pos.x + 0.085
+                
+			end
+		--end
+		return HANDLER_CONTINUE
+	end
+	Settings["OSD.Player_bar"] = false
+	return HANDLER_POP
+end)
+OSD.Player_bar2.on = false
+OSD.Player_bar2.hidden = true
 
 --INFO: -------- Moist Tools
 
@@ -12998,33 +13760,34 @@ OSD_Debug.hidden = false
 OSD.date_time_OSD = menu.add_feature("Date & Time OSD", "toggle", globalFeatures.moist_UI_OSD, function(feat)
 	Settings["osd_date_time"] = true
 	while feat.on do
+	ui.draw_rect(.9220, 0.0345, 0.125, 0.0150, 0, 0, 0, 255)
 		local pos = v2()
 		local d = os.date()
 		local dtime = string.match(d, "%d%d:%d%d:%d%d")
 		local dt = os.date("%d/%m/%y%y")
-		pos.x = .5
-		pos.y =  0.0395
+		pos.x = .865
+		pos.y =  0.0295
 		local d = os.date()
 		local dtime = os.date("%a %d %b %I:%M:%S: %p")
 		-- local dtime = string.match(d, "%d%d:%d%d:%d%d")
 		local dt = os.date("%d/%m/%y%y")
-		local osd_Cur_Time = (string.format(dtime))
-		ui.set_text_scale(0.175)
+		local osd_Cur_Time = "~h~" .. (string.format(dtime))
+		ui.set_text_scale(0.182)
 		ui.set_text_font(0)
 		ui.set_text_color(0, 0, 0, 255)
-		ui.set_text_centre(true)
+		ui.set_text_centre(false)
 		ui.set_text_outline(1)
 		ui.draw_text(osd_Cur_Time, pos)
-		pos.x = .5
-		pos.y =  0.0375
+		pos.x = .865
+		pos.y =  0.0275
 		local d = os.date()
 		--    local dtime = string.match(d, "%d%d:%d%d:%d%d")
 		local dtime = os.date("%a %d %b %I:%M:%S: %p")
-		local osd_Cur_Time = (string.format(dtime))
+		local osd_Cur_Time = "~h~" .. (string.format(dtime))
 		ui.set_text_scale(0.18)
 		ui.set_text_font(0)
 		ui.set_text_color(255, 255, 255, 255)
-		ui.set_text_centre(true)
+		ui.set_text_centre(false)
 		ui.set_text_outline(1)
 		ui.draw_text(osd_Cur_Time, pos)
 		return HANDLER_CONTINUE
@@ -13038,38 +13801,37 @@ OSD.osd_My_speed1 = menu.add_feature("Show My Speed in Kmph", "toggle", globalFe
 	Settings["osd_My_speed1"] = true
 	while feat.on do
 		local pos = v2()
-		pos.x = .950
-		pos.y =  0.0600001
-		local ent, estmax, vehmax, veh_max
-		veh_max = "00.00"
+		pos.x = .9345
+		pos.y =  0.0295
+		local ent, estmax, vehmax
+		vehmax = RoundNum(0.00, 1)
 		local ent1 = player.get_player_ped(player.player_id())
 		local ent2 = ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id()))
 		if ped.is_ped_in_any_vehicle(ent1) then ent = ent2 else ent = ent1 end
 		local speed = entity.get_entity_speed(ent)
 		local speedcalc = speed * 3.6 --kmph
 		local speedcalcm =  speed * 2.236936 --mph
-		myspeed1 = RoundNum(speedcalc, 2)
+		myspeed1 = RoundNum(speedcalc, 1)
 		myspeed2 = math.ceil(speedcalcm)
 		
 		if player.is_player_in_any_vehicle(player.player_id()) then
 		estmax = vehicle.get_vehicle_estimated_max_speed(player.get_player_vehicle(player.player_id()))
 		vehmax = RoundNum(estmax * 2.236936, 2)
 		end
-		vehmax = vehmax or veh_max
-		ui.set_text_scale(0.22)
+		ui.set_text_scale(0.175)
 		ui.set_text_font(0)
 		ui.set_text_color(0, 0, 0, 255)
 		ui.set_text_centre(false)
 		ui.set_text_outline(1)
-		ui.draw_text(myspeed1   .. " / " ..  vehmax .."\nkmph" , pos)
-		pos.x = .951
-		pos.y =  0.060002
-		ui.set_text_scale(0.22)
+		ui.draw_text("~h~" .. myspeed1   .. " / " ..  vehmax .." KmPH" , pos)
+		pos.x = .9344
+		pos.y =  0.0275
+		ui.set_text_scale(0.18)
 		ui.set_text_font(0)
-		ui.set_text_color(255, 255, 255, 255)
+		ui.set_text_color(100, 100, 255, 255)
 		ui.set_text_centre(false)
 		ui.set_text_outline(1)
-		ui.draw_text(myspeed1   .. " / " ..  vehmax .."\nkmph" , pos)
+		ui.draw_text("~h~" .. myspeed1   .. " / " ..  vehmax .." KmPH" , pos)
 		return HANDLER_CONTINUE
 	end
 	Settings["osd_My_speed1"] = false
@@ -13077,28 +13839,15 @@ OSD.osd_My_speed1 = menu.add_feature("Show My Speed in Kmph", "toggle", globalFe
 end)
 OSD.osd_My_speed1.on = Settings["osd_My_speed1"]
 
-function frames()
-	local fps1, fps2
-	 
-	fps1 = gameplay.get_frame_count()
-	local time = utils.time_ms() + 1000
-	if time >= utils.time_ms() then
-	 fps2 = gameplay.get_frame_count()
-	end
-
-	return  tonumber(fps2 - fps1)
-end
-
-
 --INFO: MyVeh OSD!
-OSD.osd_My_speed2 = menu.add_feature("Show My Speed in Mph", "toggle", globalFeatures.moist_UI_OSD, function(feat)
+OSD.osd_My_speed2 = menu.add_feature("Show My Speed in MPH", "toggle", globalFeatures.moist_UI_OSD, function(feat)
 	Settings["osd_My_speed2"] = true
 	while feat.on do
 		local pos = v2()
-		pos.x = .945
-		pos.y =  0.0600001
+		pos.x = .9345
+		pos.y =  0.0295
 		local ent, estmax, vehmax
-		vehmax = RoundNum(0.0, 2)
+		vehmax = RoundNum(0.00, 1)
 		local ent1 = player.get_player_ped(player.player_id())
 		local ent2 = ped.get_vehicle_ped_is_using(player.get_player_ped(player.player_id()))
 		if ped.is_ped_in_any_vehicle(ent1) then ent = ent2 else ent = ent1 end
@@ -13106,25 +13855,25 @@ OSD.osd_My_speed2 = menu.add_feature("Show My Speed in Mph", "toggle", globalFea
 		local speedcalc = speed * 3.6 --kmph
 		local speedcalcm =  speed * 2.236936 --mph
 		myspeed1 = math.ceil(speedcalc)
-		myspeed2 = RoundNum(speedcalcm, 2)
+		myspeed2 = RoundNum(speedcalcm, 1)
 		if player.is_player_in_any_vehicle(player.player_id()) then
 		estmax = vehicle.get_vehicle_estimated_max_speed(player.get_player_vehicle(player.player_id()))
-		vehmax = RoundNum(estmax * 2.236936, 2)
+		vehmax = RoundNum(estmax * 2.236936, 1)
 		end		
-		ui.set_text_scale(0.22)
+		ui.set_text_scale(0.175)
 		ui.set_text_font(0)
 		ui.set_text_color(0, 0, 0, 255)
-		ui.set_text_centre(1)
+		ui.set_text_centre(false)
 		ui.set_text_outline(1)	
-		ui.draw_text(myspeed2 .. " / " ..  vehmax .."\nmph", pos)
-		pos.x = .946
-		pos.y =  0.0600002
-		ui.set_text_scale(0.22)
+		ui.draw_text("~h~" .. myspeed2 .. " / " ..  vehmax .." MPH", pos)
+		pos.x = .9344
+		pos.y =  0.0275
+		ui.set_text_scale(0.18)
 		ui.set_text_font(0)
-		ui.set_text_color(255, 255, 255, 255)
-		ui.set_text_centre(1)
+		ui.set_text_color(100, 100, 255, 255)
+		ui.set_text_centre(false)
 		ui.set_text_outline(1)
-		ui.draw_text(myspeed2 .. " / " ..  vehmax .."\nmph", pos)
+		ui.draw_text("~h~" .. myspeed2 .. " / " ..  vehmax .." MPH", pos)
 
 		return HANDLER_CONTINUE
 	end
@@ -13924,58 +14673,89 @@ Weapon_is_set = false
 Amount_is_set = false
 vehicle_is_set = false
 
-	
-
 function AttackPed_Vehicle(hash, pid, modal, attack)
 	
+	local isveh_plane = false
+	local isveh_heli = false
 	
-	pped = player.get_player_ped(pid)
+	local pped = player.get_player_ped(pid)
 	local bid = ped.get_ped_bone_index(pped, 17916)
-	local rot, offset, pos = v3(0.0, 0.0, 0.0), v3(15.0, 0.0, 0.0), v3()
+	local rot, offset, pos, offset2 = v3(0.0,0.0,0.0), v3(15.0,0.0,0.0), v3(), v3(120.0,110.0,200.00)
 	local head = player.get_player_heading(pid)
 	pos = player.get_player_coords(pid)
 	pos.x = pos.x + 10.0
-	local i = #spawned_cunts + 1
+	local i = #SpawnedNPCV + 1
 	local plygrp = ped.create_group()
 	local model = modal
 	streaming.request_model(hash)
 	while (not streaming.has_model_loaded(hash)) do
 		system.wait(10)
 	end
+	if streaming.is_model_a_plane(hash) then
+	isveh_plane = true
+	elseif streaming.is_model_a_heli(hash) then
+	isveh_heli = true
+	end	
 
-	spawned_cunts[i] = vehicle.create_vehicle(hash, pos, head, true, false)
-	decorator.decor_set_int(spawned_cunts[i], "MPBitset", 1 << 10)
-	vehicle.set_vehicle_mod_kit_type(spawned_cunts[i], 0)
-	vehicle.get_vehicle_mod(spawned_cunts[i], 10)
-	vehicle.set_vehicle_mod(spawned_cunts[i], 10, 1, false)
-	local y = #escort + 1
+	
+	if isveh_plane or isveh_heli then
+	SpawnedNPCV[i] = vehicle.create_vehicle(hash, pos + offset2, head, true, false)
+	entity.set_entity_god_mode(SpawnedNPCV[i], true)
+	BlipIDs[#BlipIDs +1] = ui.add_blip_for_entity(SpawnedNPCV[i])
+	elseif not isveh_plane or not isveh_heli then
+	SpawnedNPCV[i] = vehicle.create_vehicle(hash, pos, head, true, false)
+	entity.set_entity_god_mode(SpawnedNPCV[i], true)
+	BlipIDs[#BlipIDs +1] = ui.add_blip_for_entity(SpawnedNPCV[i])
+	end
+	
+	decorator.decor_set_int(SpawnedNPCV[i], "MPBitset", 1 << 10)
+	vehicle.set_vehicle_mod_kit_type(SpawnedNPCV[i], 0)
+	vehicle.get_vehicle_mod(SpawnedNPCV[i], 10)
+	vehicle.set_vehicle_mod(SpawnedNPCV[i], 10, 1, false)
+	local y = #SpawnedNPC + 1
 
 
-	escort[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+	SpawnedNPC[y] = ped.create_ped(26, model, pos + offset, 0, true, false)
+	entity.set_entity_god_mode(SpawnedNPC[y], true)
 
-	ped.set_ped_can_switch_weapons(escort[y], true)
-	ped.set_ped_combat_attributes(escort[y], 46, true)
-	ped.set_ped_combat_attributes(escort[y], 52, true)
-	ped.set_ped_combat_attributes(escort[y], 1, true)
-	ped.set_ped_combat_attributes(escort[y], 2, true)
-	ped.set_ped_combat_range(escort[y], 2)
-	ped.set_ped_combat_ability(escort[y], 2)
-	ped.set_ped_combat_movement(escort[y], 2)
-	ped.set_ped_into_vehicle(escort[y], spawned_cunts[i], -1)
+	ped.set_ped_can_switch_weapons(SpawnedNPC[y], true)
+	ped.set_ped_combat_attributes(SpawnedNPC[y], 46, true)
+	ped.set_ped_combat_attributes(SpawnedNPC[y], 52, true)
+	ped.set_ped_combat_attributes(SpawnedNPC[y], 1, true)
+	ped.set_ped_combat_attributes(SpawnedNPC[y], 2, true)
+	ped.set_ped_combat_range(SpawnedNPC[y], 2)
+	ped.set_ped_combat_ability(SpawnedNPC[y], 2)
+	ped.set_ped_combat_movement(SpawnedNPC[y], 2)
+	ped.set_ped_into_vehicle(SpawnedNPC[y], SpawnedNPCV[i], -1)
+		vehicle.set_vehicle_doors_locked(SpawnedNPCV[i], 6)
+		vehicle.set_vehicle_doors_locked(SpawnedNPCV[i], 2)
+	if isveh_plane or isveh_heli then
+	vehicle.control_landing_gear(SpawnedNPCV[i] , 3)
+	if isveh_heli then
+		vehicle.set_heli_blades_full_speed(SpawnedNPCV[i])
+	end
+	vehicle.set_vehicle_forward_speed(SpawnedNPCV[i], 25.00)
+	end
 
 		if attack == true then
-		ped.set_ped_as_group_member(escort[y], plygrp)
-		ped.set_ped_never_leaves_group(escort[y], true)
+		ped.set_ped_relationship_group_hash(SpawnedNPC[y], MoistEntitiesRelHash)
+		ped.set_can_attack_friendly(SpawnedNPC[y], true, false)
+		ped.set_ped_as_group_member(SpawnedNPC[y], plygrp)
+		ped.set_ped_never_leaves_group(SpawnedNPC[y], true)
 			ped.set_relationship_between_groups(5, player.get_player_group(pid), plygrp)
 			ped.set_relationship_between_groups(5, plygrp, player.get_player_group(pid))
-			ai.task_combat_ped(escort[y], pped, 0, 16)
+			ai.task_combat_ped(SpawnedNPC[y], pped, 0, 16)
+			Death_Retask.feats[pid].hidden = false
+			Death_Retask.feats[pid].on = true
+			
+			
 		elseif attack == false then
-		ped.set_ped_as_group_member(escort[y], player.get_player_group(pid))
-		ped.set_ped_never_leaves_group(escort[y], true)
-		vehicle.set_vehicle_doors_locked(escortveh[y], 6)
-		vehicle.set_vehicle_doors_locked(escortveh[y], 2)
-		entity.set_entity_coords_no_offset(escortveh[y], pose)
-		ai.task_vehicle_follow(spawned_cunts[y], spawned_cunts[i], pped, 220, 262144, 25)
+		PlyRelHash = ped.get_ped_relationship_group_hash(pped)
+		ped.set_ped_relationship_group_hash(SpawnedNPC[y], PlyRelHash)
+		ped.set_ped_as_group_member(SpawnedNPC[y], player.get_player_group(pid))
+		ped.set_ped_never_leaves_group(SpawnedNPC[y], true)
+		--entity.set_entity_coords_no_offset(SpawnedNPCV[i], pose)
+		ai.task_vehicle_follow(SpawnedNPCV[y], SpawnedNPCV[i], pped, 220, 262144, 25)
 		for PlayerID = 0, 31 do
 		if player.is_player_valid(PlayerID) then
 
@@ -13987,7 +14767,7 @@ function AttackPed_Vehicle(hash, pid, modal, attack)
 	end
 	
 end
-return escort[y]
+return SpawnedNPC[y]
 end
 
 
@@ -14004,6 +14784,52 @@ Online_Spawn_options = menu.add_player_feature("Ped Spawn Options", "parent", sp
 
 	
 end)
+
+Death_Retask = menu.add_player_feature("Retask Attackers On Death", "toggle", Online_Spawn_options.id, function(feat, pid)
+    pped = player.get_player_ped(pid)
+    ai.task_combat_ped(SpawnedNPC[#SpawnedNPC], pped, 0, 16)
+    ai.task_goto_entity(SpawnedNPC[#SpawnedNPC], pped, 999999999999, 100, 1000.00)
+
+    if feat.on then
+
+
+
+
+        system.wait(4000)
+        if not entity.is_entity_dead(pped) then return HANDLER_CONTINUE end
+        for i = 1, #SpawnedNPC do
+            -- if #SpawnedNPCveh == nil or 0 then
+            -- goto next
+            -- end
+            ped.set_ped_into_vehicle(SpawnedNPC[i], SpawnedNPCV[i], -1)
+            -- ::next::
+            ai.task_combat_ped(SpawnedNPC[i], pped, 0, 16)
+        end
+        return HANDLER_CONTINUE
+    end
+	
+    for i = 1, #SpawnedNPCV do
+        entity.set_entity_as_no_longer_needed(SpawnedNPCV[i])
+        entity.delete_entity(SpawnedNPCV[i])
+    end
+    for i = 1, #SpawnedNPC do
+        entity.set_entity_as_no_longer_needed(SpawnedNPC[i])
+        entity.delete_entity(SpawnedNPC[i])
+    end
+	Death_Retask.feats[pid].hidden = true
+	Death_Retask.feats[pid].on = false
+    return HANDLER_POP
+
+
+end)
+for i =0, #Death_Retask.feats do
+Death_Retask.feats[i].hidden = true
+Death_Retask.feats[i].on = false
+end
+
+
+	
+	
 
 PedSpawnList = menu.add_player_feature("Modals:", "autoaction_value_str", Online_Spawn_options.id, function(feat, pid)
 	
@@ -14446,31 +15272,31 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 			attacker[v] = spawn_ped_v2(pid, Attacker, true)
 			
 			system.wait(10)
-			local i = #escort
-			entity.set_entity_god_mode(escort[i], true)
-			ped.set_ped_combat_attributes(escort[i], 52, true)
-			ped.set_ped_combat_attributes(escort[i], 1, true)
-			ped.set_ped_combat_attributes(escort[i], 46, true)
-			ped.set_ped_combat_attributes(escort[i], 2, true)
-			ped.set_ped_combat_range(escort[i], 2)
-			ped.set_ped_combat_ability(escort[i], 2)
-			ped.set_ped_combat_movement(escort[i], 2)
+			local i = #SpawnedNPC
+			entity.set_entity_god_mode(SpawnedNPC[i], true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 52, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 1, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 46, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 2, true)
+			ped.set_ped_combat_range(SpawnedNPC[i], 2)
+			ped.set_ped_combat_ability(SpawnedNPC[i], 2)
+			ped.set_ped_combat_movement(SpawnedNPC[i], 2)
 			
 			
 			local pos = v3()
 			pos = player.get_player_coords(pid)
-			ai.task_parachute_to_target(escort[i], pos)
+			ai.task_parachute_to_target(SpawnedNPC[i], pos)
 			system.wait(12000)
-			weapon.give_delayed_weapon_to_ped(escort[i], wephash, 0, 1)
+			weapon.give_delayed_weapon_to_ped(SpawnedNPC[i], wephash, 0, 1)
 			ped.set_relationship_between_groups(5, Support_Group, Group_Hate)
 			ped.set_relationship_between_groups(5, Group_Hate, Support_Group)
-			ped.set_ped_as_group_member(escort[i], Group_Hate)
+			ped.set_ped_as_group_member(SpawnedNPC[i], Group_Hate)
 			
-			weapon.give_delayed_weapon_to_ped(escort[i], wephash, 0, 1)
-			weapon.set_ped_ammo(escort[i], wephash, 1000000)
+			weapon.give_delayed_weapon_to_ped(SpawnedNPC[i], wephash, 0, 1)
+			weapon.set_ped_ammo(SpawnedNPC[i], wephash, 1000000)
 			
 			
-			ai.task_combat_ped(escort[i], pped, 0, 16)
+			ai.task_combat_ped(SpawnedNPC[i], pped, 0, 16)
 			
 			
 			elseif feat.value  == 1 then
@@ -14483,30 +15309,32 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 				else
 				attacker[v] = spawn_ped(pid, Attacker, -8, true, nil)
 			end
-			local i = #escort
-			entity.set_entity_god_mode(escort[i], true)
-			ped.set_ped_combat_attributes(escort[i], 52, true)
-			ped.set_ped_combat_attributes(escort[i], 1, true)
-			ped.set_ped_combat_attributes(escort[i], 46, true)
-			ped.set_ped_combat_attributes(escort[i], 2, true)
-			ped.set_ped_combat_range(escort[i], 2)
-			ped.set_ped_combat_ability(escort[i], 2)
-			ped.set_ped_combat_movement(escort[i], 2)
-			weapon.give_delayed_weapon_to_ped(escort[i], wephash, 1, 1)
-			weapon.set_ped_ammo(escort[i], wephash, 1000000)
-			ped.set_ped_can_switch_weapons(escort[i], true)
+			local i = #SpawnedNPC
+			entity.set_entity_god_mode(SpawnedNPC[i], true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 52, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 1, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 46, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 2, true)
+			ped.set_ped_combat_range(SpawnedNPC[i], 2)
+			ped.set_ped_combat_ability(SpawnedNPC[i], 2)
+			ped.set_ped_combat_movement(SpawnedNPC[i], 2)
+			weapon.give_delayed_weapon_to_ped(SpawnedNPC[i], wephash, 1, 1)
+			weapon.set_ped_ammo(SpawnedNPC[i], wephash, 1000000)
+			ped.set_ped_can_switch_weapons(SpawnedNPC[i], true)
 			
 			plygrp =  player.get_player_group(pid)
-			pedgroup = ped.get_ped_group(escort[i])
-			--ped.set_ped_as_group_member(escort[i], plygrp)
+			pedgroup = ped.get_ped_group(SpawnedNPC[i])
+			--ped.set_ped_as_group_member(SpawnedNPC[i], plygrp)
 			ped.set_relationship_between_groups(5, plygrp, pedgroup)
 			ped.set_relationship_between_groups(5, pedgroup, plygrp)
-			-- ped.set_ped_as_group_member(escort[i], plygrp)
-			-- ped.set_ped_never_leaves_group(escort[i], true)
-			weapon.give_delayed_weapon_to_ped(escort[i], wephash, 0, 1)
-			weapon.set_ped_ammo(escort[i], wephash, 1000000)
+			-- ped.set_ped_as_group_member(SpawnedNPC[i], plygrp)
+			-- ped.set_ped_never_leaves_group(SpawnedNPC[i], true)
+			weapon.give_delayed_weapon_to_ped(SpawnedNPC[i], wephash, 0, 1)
+			weapon.set_ped_ammo(SpawnedNPC[i], wephash, 1000000)
 			pped = player.get_player_ped(pid)
-			ai.task_combat_ped(escort[i], pped, 0, 16)
+			ai.task_combat_ped(SpawnedNPC[i], pped, 0, 16)
+			Death_Retask.feats[pid].hidden = false
+			Death_Retask.feats[pid].on = true
 			
 			elseif feat.value == 2 then
 			--"Spawn as Support Ped"
@@ -14520,31 +15348,31 @@ Send_Attacker = menu.add_player_feature("", "action_value_str", Online_Spawn_opt
 				attacker[v] = spawn_ped(pid, Attacker, -8, true, nil)
 			end
 			system.wait(100)
-			local i = #escort
-			entity.set_entity_god_mode(escort[i], true)
-			ped.set_ped_combat_attributes(escort[i], 52, true)
-			ped.set_ped_combat_attributes(escort[i], 1, true)
-			ped.set_ped_combat_attributes(escort[i], 46, true)
-			ped.set_ped_combat_attributes(escort[i], 2, true)
-			ped.set_ped_combat_range(escort[i], 2)
-			ped.set_ped_combat_ability(escort[i], 2)
-			ped.set_ped_combat_movement(escort[i], 2)
-			weapon.give_delayed_weapon_to_ped(escort[i], wephash, 0, 1)
-			weapon.set_ped_ammo(escort[i], wephash, 1000000)
-			ped.set_ped_can_switch_weapons(escort[i], true)
+			local i = #SpawnedNPC
+			entity.set_entity_god_mode(SpawnedNPC[i], true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 52, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 1, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 46, true)
+			ped.set_ped_combat_attributes(SpawnedNPC[i], 2, true)
+			ped.set_ped_combat_range(SpawnedNPC[i], 2)
+			ped.set_ped_combat_ability(SpawnedNPC[i], 2)
+			ped.set_ped_combat_movement(SpawnedNPC[i], 2)
+			weapon.give_delayed_weapon_to_ped(SpawnedNPC[i], wephash, 0, 1)
+			weapon.set_ped_ammo(SpawnedNPC[i], wephash, 1000000)
+			ped.set_ped_can_switch_weapons(SpawnedNPC[i], true)
 			supportgroup = ped.create_group()
 			plygrp =  player.get_player_group(pid)
-			pedgroup = ped.get_ped_group(escort[i])
-			ped.set_ped_as_group_member(escort[i], plygrp)
-			pedgroup = ped.get_ped_group(escort[i])
+			pedgroup = ped.get_ped_group(SpawnedNPC[i])
+			ped.set_ped_as_group_member(SpawnedNPC[i], plygrp)
+			pedgroup = ped.get_ped_group(SpawnedNPC[i])
 			ped.set_relationship_between_groups(0, plygrp, pedgroup)
 			ped.set_relationship_between_groups(0, pedgroup, plygrp)
-			ped.set_ped_as_group_member(escort[i], plygrp)
-			ped.set_ped_never_leaves_group(escort[i], true)
+			ped.set_ped_as_group_member(SpawnedNPC[i], plygrp)
+			ped.set_ped_never_leaves_group(SpawnedNPC[i], true)
 			spawn_groups()
 			for Pi = 0, 31 do
 				if Pi ~= pid then
-					pedgroup = ped.get_ped_group(escort[i])
+					pedgroup = ped.get_ped_group(SpawnedNPC[i])
 					ped.set_relationship_between_groups(5, pedgroup, playergroups[Pi + 1])
 					ped.set_relationship_between_groups(5, playergroups[Pi + 1], pedgroup)
 				end
@@ -14690,7 +15518,6 @@ function ped_groups()
 	ped.set_relationship_between_groups(0, groupIDs[b], groupIDs[a])
 end
 
---INFO: Player list
 
 function PlayerInfo(pid)
 	while OSD_Debug2.on do
@@ -14721,2740 +15548,2806 @@ PedWeapLabel()
 
  PlayerThreads = {{pid = {}, thread = {}}}
  
+--INFO: Player list
+
 ScriptLocals["playerlist"] = function()
-	PlyImpactPos = {}
-	local pos, offset, ply_veh, ply_ped, name = v3(), v3(), {}, {}, {}
-	checkstart = {{pid = {}, thread = {}}}
-	God_thread = {}
-		ScriptLocals["featureVars"] = featureVars
-		featureVars = {}
- 
-	 for pid = 0, 31 do
+
+
+PlyImpactPos = {}
+local pos, offset, ply_veh, ply_ped, name = v3(), v3(), {}, {}, {}
+checkstart = {{pid = {}, thread = {}}}
+God_thread = {}
+ScriptLocals["featureVars"] = featureVars
+featureVars = {}
+
+for pid = 0, 31 do
 	checkstart[pid] = {}
 	checkstart[pid].thread = false
-		OSD_Debug2.on = false
-		featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature, function(feat)
+	OSD_Debug2.on = false
+	featureVars.f = menu.add_feature("Player " .. pid, "parent", playersFeature, function(feat)
 		Active_menu = pid
+		health, infoA, infoAB, infoB, text1, text2, text3, text4, text5, text6, text7 = "", "", "", "", "", "", "", "", "", "", ""
+		playerFeatures[pid].features["interiortest"].feat.on = not playerFeatures[pid].features["interiortest"].feat.on
 		health, infoA, infoAB, infoB = Player_Check(pid)
 		OSD_Debug2.on = true
 		ply_veh[pid+1] = player.get_player_vehicle(pid)
 		ply_ped[pid+1] = player.get_player_ped(pid)
-
-end)
-		featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
-		featureVars.k.hidden = NewDLC()		
-		featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id, function(feat)
-		end)
-        featureVars.exp = menu.add_feature("Experimental Shit!", "parent", featureVars.v.id)
-		featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id, function(feat)
-			playerFeatures[pid].features["blamer"].feat:set_str_data(Playerz)
-			playerFeatures[pid].features["blamedorbital"].feat:set_str_data(Playerz)
-			playerFeatures[pid].features["blamer"].feat.value = 32
-			playerFeatures[pid].features["blamedorbital"].feat.value = 32
-			
-		end)		
-		featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
-		featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)
-		featureVars.vd = menu.add_feature("Experimental Decor's", "parent", featureVars.v.id, function(feat)
-end)
-
-		featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function(feat)
-			if not highlight_set[pid+1] then
-				markID.z[pid+5] = 1.0
-				markID.s[pid+5] = 1.0
-				markID.ROT[pid+5] = true
-				markID.BOB[pid+5] = true
-				markID.z[pid+4] = 1.0
-				markID.s[pid+4] = 1.0
-				markID.BOB[pid+4] = true
-				markID.ROT[pid+4] = true
-				markID.z[pid+2] = -2.0
-				markID.s[pid+2] = 2.5
-				markID.BOB[pid+2] = true
-				markID.ROT[pid+2] = true
-				markID.z[pid+3] = 1.0
-				markID.s[pid+3] = 1.0
-				markID.BOB[pid+3] = true
-				markID.ROT[pid+3] = true
-				markID.z[pid+6] = 1.0
-				markID.s[pid+6] = 1.0
-				markID.BOB[pid+6] = true
-				markID.ROT[pid+6] = true
-				highlight_set[pid+1] = true
-			end
-end)
-		featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
-		featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
-		featureVars.str = menu.add_feature("Sound Features", "parent", featureVars.tr.id)
-
-			
-			featureVars.lgr = menu.add_feature("Lester Griefer", "parent", featureVars.g.id, function(feat)
-				ped_group_setup()
-			end)
-		featureVars.gr = menu.add_feature("Lester Ramjet", "parent", featureVars.lgr.id)
-		featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
-
+	
+	end)
+	featureVars.k = menu.add_feature("Remove Player Options", "parent", featureVars.f.id)
+	featureVars.k.hidden = NewDLC()		
+	featureVars.v = menu.add_feature("Vehicle Options", "parent", featureVars.f.id, function(feat)
+	end)
+	featureVars.exp = menu.add_feature("Experimental Shit!", "parent", featureVars.v.id)
+	featureVars.g = menu.add_feature("Griefing Options", "parent", featureVars.f.id, function(feat)
+		playerFeatures[pid].features["blamer"].feat:set_str_data(Playerz)
+		playerFeatures[pid].features["blamedorbital"].feat:set_str_data(Playerz)
+		playerFeatures[pid].features["blamer"].feat.value = 32
+		playerFeatures[pid].features["blamedorbital"].feat.value = 32
+		
+	end)		
+	featureVars.tr = menu.add_feature("Troll Options", "parent", featureVars.f.id)
+	featureVars.t = menu.add_feature("Teleport Options", "parent", featureVars.f.id)
+	featureVars.vd = menu.add_feature("Experimental Decor's", "parent", featureVars.v.id, function(feat)
+	end)
+	featureVars.h = menu.add_feature("Highlight Options", "parent", featureVars.f.id, function(feat)
+		if not highlight_set[pid+1] then
+			markID.z[pid+5] = 1.0
+			markID.s[pid+5] = 1.0
+			markID.ROT[pid+5] = true
+			markID.BOB[pid+5] = true
+			markID.z[pid+4] = 1.0
+			markID.s[pid+4] = 1.0
+			markID.BOB[pid+4] = true
+			markID.ROT[pid+4] = true
+			markID.z[pid+2] = -2.0
+			markID.s[pid+2] = 2.5
+			markID.BOB[pid+2] = true
+			markID.ROT[pid+2] = true
+			markID.z[pid+3] = 1.0
+			markID.s[pid+3] = 1.0
+			markID.BOB[pid+3] = true
+			markID.ROT[pid+3] = true
+			markID.z[pid+6] = 1.0
+			markID.s[pid+6] = 1.0
+			markID.BOB[pid+6] = true
+			markID.ROT[pid+6] = true
+			highlight_set[pid+1] = true
+		end
+	end)
+	featureVars.ch = menu.add_feature("Custom Options", "parent", featureVars.h.id)
+	featureVars.chc = menu.add_feature("Custom Color Change", "parent", featureVars.ch.id)
+	featureVars.str = menu.add_feature("Sound Features", "parent", featureVars.tr.id)
+	
+	
+	featureVars.lgr = menu.add_feature("Lester Griefer", "parent", featureVars.g.id, function(feat)
+		ped_group_setup()
+	end)
+	featureVars.gr = menu.add_feature("Lester Ramjet", "parent", featureVars.lgr.id)
+	featureVars.n = menu.add_feature("Info Options", "parent", featureVars.f.id)
+	
 	features = {}
-local killengine = false
-    features["disableveh"] = {feat = menu.add_feature("Disable Players Vehicle", "toggle", featureVars.exp.id, function(feat)
-        if not feat.on then
-            playerFeatures[pid].features["tog_godvehoff"].feat.on = false
-			 killengine = false
-            return HANDLER_POP
-        end
-           playerFeatures[pid].features["tog_godvehoff"].feat.on = true
-            local PlyVeh = player.get_player_vehicle(pid)
-            vehicle.set_vehicle_undriveable(PlyVeh, true)
-			vehicle.set_vehicle_engine_on(PlyVeh, false, true, true)
-			if vehicle.is_vehicle_engine_running(PlyVeh) and killengine == false then
+	local killengine = false
+	features["disableveh"] = {feat = menu.add_feature("Disable Players Vehicle", "toggle", featureVars.exp.id, function(feat)
+		if not feat.on then
+			playerFeatures[pid].features["tog_godvehoff"].feat.on = false
+			killengine = false
+			return HANDLER_POP
+		end
+		playerFeatures[pid].features["tog_godvehoff"].feat.on = true
+		local PlyVeh = player.get_player_vehicle(pid)
+		vehicle.set_vehicle_undriveable(PlyVeh, true)
+		vehicle.set_vehicle_engine_on(PlyVeh, false, true, true)
+		if vehicle.is_vehicle_engine_running(PlyVeh) and killengine == false then
 			vehicle.set_vehicle_engine_health(PlyVeh, 0.00001)
-			 killengine = true
-			end			
-            return HANDLER_CONTINUE
-    end), type = "toggle", callback = function()
-    end}
-features["disableveh"].feat.on = false
-
-
-
-features["info_notif"] = {feat = menu.add_feature("Get Player infos", "action", featureVars.n.id, function(feat)
+			killengine = true
+		end			
+		return HANDLER_CONTINUE
+	end), type = "toggle", callback = function()
+	end}
+	features["disableveh"].feat.on = false
 	
-	local test = "Time Joined: " .. tostring(Players[pid].JoinTime) .. "\nJoined time: " .. tostring(os.time() - Players[pid].JoinTime)
 	
-	moist_notify(test)
-	system.wait(1000)
 	
-	test = "spawned: " .. tostring(Players[pid].PedSpawned) .. "\nundead: " .. tostring(Players[pid].isUnDead)
+	features["info_notif"] = {feat = menu.add_feature("Get Player infos", "action", featureVars.n.id, function(feat)
+		
+		local test = "Time Joined: " .. tostring(Players[pid].JoinTime) .. "\nJoined time: " .. tostring(os.time() - Players[pid].JoinTime)
+		
 		moist_notify(test)
-	system.wait(1000)
-    end), type = "action", callback = function()
-end}
-	
-features["SetSpawned"] = {feat = menu.add_feature("Set/unset Player Ped Spawned", "action", featureVars.n.id, function(feat)
-	
-Players[pid].PedSpawned = not Players[pid].PedSpawned
-moist_notify("Ped Spawned = " .. tostring(Players[pid].PedSpawned))
-    end), type = "action", callback = function()
-end}
-	
-features["sendlestermtk"] = {feat = menu.add_feature("minitank Lester", "action_value_str", featureVars.lgr.id, function(feat)
-	
-	local attack = feat.value
-	local pped = player.get_player_ped(pid)
-	local pos = get_offset(pid, -8)
-	local e = #lester * 3
-	local d = 15
-	local c = d + e
-	pos.x = pos.x + c
-	local heading = player.get_player_heading(pid)
-	local model = gameplay.get_hash_key("ig_lestercrest_2")
-	
-	local vehhash = gameplay.get_hash_key("minitank")
-	streaming.request_model(model)
-	while (not streaming.has_model_loaded(model)) do
-		system.wait(10)
-	end
-	
-	local i = #lester + 1
-	lester[i] = ped.create_ped(6, model, pos, heading, true, false)
-	if #groupIDs == nil then
-		ped_group_setup()
-		else
-	end
-	if #lester >= 8 then
+		system.wait(1000)
 		
-		local t = #lester / 8
+		test = "spawned: " .. tostring(Players[pid].PedSpawned) .. "\nundead: " .. tostring(Players[pid].isUnDead)
+		moist_notify(test)
+		system.wait(1000)
+	end), type = "action", callback = function()
+	end}
+	
+	features["SetSpawned"] = {feat = menu.add_feature("Set/unset Player Ped Spawned", "action", featureVars.n.id, function(feat)
 		
-		local j = #groupIDs
-		if  t > j then
+		Players[pid].PedSpawned = not Players[pid].PedSpawned
+		moist_notify("Ped Spawned = " .. tostring(Players[pid].PedSpawned))
+	end), type = "action", callback = function()
+	end}
+	
+	features["sendlestermtk"] = {feat = menu.add_feature("minitank Lester", "action_value_str", featureVars.lgr.id, function(feat)
+		
+		local attack = feat.value
+		local pped = player.get_player_ped(pid)
+		local pos = get_offset(pid, -8)
+		local e = #lester * 3
+		local d = 15
+		local c = d + e
+		pos.x = pos.x + c
+		local heading = player.get_player_heading(pid)
+		local model = gameplay.get_hash_key("ig_lestercrest_2")
+		
+		local vehhash = gameplay.get_hash_key("minitank")
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		
+		local i = #lester + 1
+		lester[i] = ped.create_ped(6, model, pos, heading, true, false)
+		ped.set_ped_relationship_group_hash(lester[i], MoistEntRelHash[1])
+		ped.set_can_attack_friendly(lester[i], true, false)
+		if #groupIDs == nil then
 			ped_group_setup()
-			
-			local j = #groupIDs
-			
-			local lester_group = groupIDs[j]		
 			else
 		end
-		
-		local lester_group = groupIDs[j]
-		else
-		
-		local j = #groupIDs - 1
-		
-		local lester_group = groupIDs[j]
-		ped.set_ped_as_group_member(lester[i], lester_group)
-		ped.set_ped_never_leaves_group(lester[i], true)
-		if i == 1 or 9 then
-			if i == 1 then ped.set_ped_as_group_leader(lester[i], groupIDs[1])
-			end
-			elseif i == 9 then ped.set_ped_as_group_leader(lester[i], groupIDs[2])
-		end
-	end
-	entity.set_entity_god_mode(lester[i], true)
-	streaming.request_model(vehhash)
-	while (not streaming.has_model_loaded(vehhash)) do
-		system.wait(10)
-	end
-	
-	local y = #lesveh + 1
-	lesveh[y] = vehicle.create_vehicle(vehhash, pos, heading, true, false)
-	BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(lesveh[y])
-	ui.set_blip_sprite(BlipIDs[#BlipIDs], 742)
-	ped.set_ped_into_vehicle(lester[i], lesveh[y], -1)
-	vehicle.set_vehicle_on_ground_properly(lesveh[y])
-	entity.set_entity_god_mode(lesveh[y], true)
-	vehicle.set_vehicle_doors_locked(lesveh[y], 5)
-	vehicle.get_vehicle_mod(lesveh[y], 10)
-	vehicle.set_vehicle_mod(lesveh[y], 10, 2, false)
-	network.request_control_of_entity(lesveh[y])
-	ped.set_ped_combat_attributes(lester[i], 46, true)
-	ped.set_ped_combat_attributes(lester[i], 52, true)
-	ped.set_ped_combat_attributes(lester[i], 1, true)
-	ped.set_ped_combat_attributes(lester[i], 2, true)
-	ped.set_ped_combat_range(lester[i], 2)
-	ped.set_ped_combat_ability(lester[i], 2)
-	ped.set_ped_combat_movement(lester[i], 2)
-	if ai.task_vehicle_drive_wander(lester[i], lesveh[y], 180, 262144) then
-		return HANDLER_CONTINUE
-	end
-	vehicle.set_vehicle_doors_locked(lesveh[y], 6)
-	pos = player.get_player_coords(pid)
-	pos.x = pos.x + 8
-	pos.y = pos.y + 8
-	vehicle.set_vehicle_doors_locked(lesveh[y], 2)
-	entity.set_entity_coords_no_offset(lesveh[y], pos)
-	vehicle.set_vehicle_on_ground_properly(lesveh[y])
-	if attack == 1 then
-		ai.task_combat_ped(lester[i], pped, 0, 16)
-		else
-		if attack == 2 then
-			ai.task_vehicle_follow(lester[i], lesveh[y], pped, 220, 262144, 25)
-		end
-	end
-	streaming.set_model_as_no_longer_needed(vehhash)
-	streaming.set_model_as_no_longer_needed(model)
-end), type = "action_value_str"}
-features["sendlestermtk"].feat:set_str_data({"Send Wandering","Send to Attack!","Send Stalker"})
-
-features["sendlesterapc"] = {feat = menu.add_feature("APC Lester", "action_value_str", featureVars.lgr.id, function(feat)
-	
-	local attack = feat.value
-	local pped = player.get_player_ped(pid)
-	local pos =  get_offset(pid, -8)
-	local e = #lester * 3
-	local d = 15
-	local c = d + e
-	pos.x = pos.x + c
-	local heading = player.get_player_heading(pid)
-	local model = gameplay.get_hash_key("ig_lestercrest_2")
-	
-	local vehhash = gameplay.get_hash_key("apc")
-	streaming.request_model(model)
-	while (not streaming.has_model_loaded(model)) do
-		system.wait(10)
-	end
-	
-	local i = #lester + 1
-	lester[i] = ped.create_ped(6, model, pos, heading, true, false)
-	if #groupIDs == nil then
-		ped_group_setup()
-		else
-	end
-	if #lester >= 8 then
-		
-		local t = #lester / 8
-		
-		local j = #groupIDs
-		if  t > j then
-			ped_group_setup()
+		if #lester >= 8 then
+			
+			local t = #lester / 8
 			
 			local j = #groupIDs
+			if  t > j then
+				ped_group_setup()
+				
+				local j = #groupIDs
+				
+				local lester_group = groupIDs[j]		
+				else
+			end
 			
-			local lester_group = groupIDs[j]		
+			local lester_group = groupIDs[j]
+			else
+			
+			local j = #groupIDs - 1
+			
+			local lester_group = groupIDs[j]
+			ped.set_ped_as_group_member(lester[i], lester_group)
+			ped.set_ped_never_leaves_group(lester[i], true)
+			if i == 1 or 9 then
+				if i == 1 then ped.set_ped_as_group_leader(lester[i], groupIDs[1])
+				end
+				elseif i == 9 then ped.set_ped_as_group_leader(lester[i], groupIDs[2])
+			end
+		end
+		entity.set_entity_god_mode(lester[i], true)
+		streaming.request_model(vehhash)
+		while (not streaming.has_model_loaded(vehhash)) do
+			system.wait(10)
+		end
+		
+		local y = #lesveh + 1
+		lesveh[y] = vehicle.create_vehicle(vehhash, pos, heading, true, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(lesveh[y])
+		ui.set_blip_sprite(BlipIDs[#BlipIDs], 742)
+		ped.set_ped_into_vehicle(lester[i], lesveh[y], -1)
+		vehicle.set_vehicle_on_ground_properly(lesveh[y])
+		entity.set_entity_god_mode(lesveh[y], true)
+		vehicle.set_vehicle_doors_locked(lesveh[y], 5)
+		vehicle.get_vehicle_mod(lesveh[y], 10)
+		vehicle.set_vehicle_mod(lesveh[y], 10, 2, false)
+		network.request_control_of_entity(lesveh[y])
+		ped.set_ped_combat_attributes(lester[i], 46, true)
+		ped.set_ped_combat_attributes(lester[i], 52, true)
+		ped.set_ped_combat_attributes(lester[i], 1, true)
+		ped.set_ped_combat_attributes(lester[i], 2, true)
+		ped.set_ped_combat_range(lester[i], 2)
+		ped.set_ped_combat_ability(lester[i], 2)
+		ped.set_ped_combat_movement(lester[i], 2)
+		if ai.task_vehicle_drive_wander(lester[i], lesveh[y], 180, 262144) then
+			return HANDLER_CONTINUE
+		end
+		vehicle.set_vehicle_doors_locked(lesveh[y], 6)
+		pos = player.get_player_coords(pid)
+		pos.x = pos.x + 8
+		pos.y = pos.y + 8
+		vehicle.set_vehicle_doors_locked(lesveh[y], 2)
+		entity.set_entity_coords_no_offset(lesveh[y], pos)
+		vehicle.set_vehicle_on_ground_properly(lesveh[y])
+		if attack == 1 then
+			ai.task_combat_ped(lester[i], pped, 0, 16)
+			else
+			if attack == 2 then
+				ai.task_vehicle_follow(lester[i], lesveh[y], pped, 220, 262144, 25)
+			end
+		end
+		streaming.set_model_as_no_longer_needed(vehhash)
+		streaming.set_model_as_no_longer_needed(model)
+	end), type = "action_value_str"}
+	features["sendlestermtk"].feat:set_str_data({"Send Wandering","Send to Attack!","Send Stalker"})
+	
+	features["sendlesterapc"] = {feat = menu.add_feature("APC Lester", "action_value_str", featureVars.lgr.id, function(feat)
+		
+		local attack = feat.value
+		local pped = player.get_player_ped(pid)
+		local pos =  get_offset(pid, -8)
+		local e = #lester * 3
+		local d = 15
+		local c = d + e
+		pos.x = pos.x + c
+		local heading = player.get_player_heading(pid)
+		local model = gameplay.get_hash_key("ig_lestercrest_2")
+		
+		local vehhash = gameplay.get_hash_key("apc")
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		
+		local i = #lester + 1
+		lester[i] = ped.create_ped(6, model, pos, heading, true, false)
+		ped.set_ped_relationship_group_hash(lester[i], MoistEntRelHash[1])
+		ped.set_can_attack_friendly(lester[i], true, false)
+		
+		if #groupIDs == nil then
+			ped_group_setup()
 			else
 		end
-		
-		local lester_group = groupIDs[j]
-		else
-		
-		local j = #groupIDs - 1
-		
-		local lester_group = groupIDs[j]
-		ped.set_ped_as_group_member(lester[i], lester_group)
-		ped.set_ped_never_leaves_group(lester[i], true)
-		if i == 1 or 9 then
-			if i == 1 then ped.set_ped_as_group_leader(lester[i], groupIDs[1])
-			end
-			elseif i == 9 then ped.set_ped_as_group_leader(lester[i], groupIDs[2])
-		end
-	end
-	entity.set_entity_god_mode(lester[i], true)
-	streaming.request_model(vehhash)
-	while (not streaming.has_model_loaded(vehhash)) do
-		system.wait(10)
-	end
-	
-	local y = #lesveh + 1
-	lesveh[y] = vehicle.create_vehicle(vehhash, pos, heading, true, false)
-	BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(lesveh[y])
-	ui.set_blip_sprite(BlipIDs[#BlipIDs], 558)
-	ped.set_ped_into_vehicle(lester[i], lesveh[y], -1)
-	vehicle.set_vehicle_on_ground_properly(lesveh[y])
-	entity.set_entity_god_mode(lesveh[y], true)
-	vehicle.set_vehicle_doors_locked(lesveh[y], 5)
-	vehicle.get_vehicle_mod(lesveh[y], 10)
-	vehicle.set_vehicle_mod(lesveh[y], 10, 0, false)
-	network.request_control_of_entity(lesveh[y])
-	ped.set_ped_combat_attributes(lester[i], 46, true)
-	ped.set_ped_combat_attributes(lester[i], 52, true)
-	ped.set_ped_combat_attributes(lester[i], 1, true)
-	ped.set_ped_combat_attributes(lester[i], 2, true)
-	ped.set_ped_combat_range(lester[i], 2)
-	ped.set_ped_combat_ability(lester[i], 2)
-	ped.set_ped_combat_movement(lester[i], 2)
-	if ai.task_vehicle_drive_wander(lester[i], lesveh[y], 180, 262144) then
-		system.wait(10)
-	end
-	
-	local i = #lester + 1
-	lester[i] = ped.create_ped(6, model, pos, heading, true, false)
-	if #groupIDs == nil then
-		ped_group_setup()
-		else
-	end
-	if #lester >= 8 then
-		
-		local t = #lester / 8
-		
-		local j = #groupIDs
-		if  t > j then
-			ped_group_setup()
+		if #lester >= 8 then
+			
+			local t = #lester / 8
 			
 			local j = #groupIDs
+			if  t > j then
+				ped_group_setup()
+				
+				local j = #groupIDs
+				
+				local lester_group = groupIDs[j]		
+				else
+			end
 			
-			local lester_group = groupIDs[j]		
+			local lester_group = groupIDs[j]
+			else
+			
+			local j = #groupIDs - 1
+			
+			local lester_group = groupIDs[j]
+			ped.set_ped_as_group_member(lester[i], lester_group)
+			ped.set_ped_never_leaves_group(lester[i], true)
+			if i == 1 or 9 then
+				if i == 1 then ped.set_ped_as_group_leader(lester[i], groupIDs[1])
+				end
+				elseif i == 9 then ped.set_ped_as_group_leader(lester[i], groupIDs[2])
+			end
+		end
+		entity.set_entity_god_mode(lester[i], true)
+		streaming.request_model(vehhash)
+		while (not streaming.has_model_loaded(vehhash)) do
+			system.wait(10)
+		end
+		
+		local y = #lesveh + 1
+		lesveh[y] = vehicle.create_vehicle(vehhash, pos, heading, true, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(lesveh[y])
+		ui.set_blip_sprite(BlipIDs[#BlipIDs], 558)
+		ped.set_ped_into_vehicle(lester[i], lesveh[y], -1)
+		vehicle.set_vehicle_on_ground_properly(lesveh[y])
+		entity.set_entity_god_mode(lesveh[y], true)
+		vehicle.set_vehicle_doors_locked(lesveh[y], 5)
+		vehicle.get_vehicle_mod(lesveh[y], 10)
+		vehicle.set_vehicle_mod(lesveh[y], 10, 0, false)
+		network.request_control_of_entity(lesveh[y])
+		ped.set_ped_combat_attributes(lester[i], 46, true)
+		ped.set_ped_combat_attributes(lester[i], 52, true)
+		ped.set_ped_combat_attributes(lester[i], 1, true)
+		ped.set_ped_combat_attributes(lester[i], 2, true)
+		ped.set_ped_combat_range(lester[i], 2)
+		ped.set_ped_combat_ability(lester[i], 2)
+		ped.set_ped_combat_movement(lester[i], 2)
+		if ai.task_vehicle_drive_wander(lester[i], lesveh[y], 180, 262144) then
+			system.wait(10)
+		end
+		
+		local i = #lester + 1
+		lester[i] = ped.create_ped(6, model, pos, heading, true, false)
+		if #groupIDs == nil then
+			ped_group_setup()
 			else
 		end
-		
-		local lester_group = groupIDs[j]
-		else
-		
-		local j = #groupIDs - 1
-		
-		local lester_group = groupIDs[j]
-		ped.set_ped_as_group_member(lester[i], lester_group)
-		ped.set_ped_never_leaves_group(lester[i], true)
-		if i == 1 or 9 then
-			if i == 1 then ped.set_ped_as_group_leader(lester[i], groupIDs[1])
-			end
-			elseif i == 9 then ped.set_ped_as_group_leader(lester[i], groupIDs[2])
-		end
-	end
-	entity.set_entity_god_mode(lester[i], true)
-	ped.set_ped_combat_attributes(lester[i], 52, true)
-	ped.set_ped_combat_attributes(lester[i], 1, true)
-	ped.set_ped_combat_attributes(lester[i], 46, true)
-	ped.set_ped_combat_attributes(lester[i], 2, true)
-	ped.set_ped_combat_range(lester[i], 2)
-	ped.set_ped_combat_ability(lester[i], 2)
-	ped.set_ped_combat_movement(lester[i], 2)
-	ped.set_ped_into_vehicle(lester[i], lesveh[y], 0)
-	vehicle.set_vehicle_doors_locked(lesveh[y], 6)
-	pos = player.get_player_coords(pid)
-	pos.x = pos.x + 8
-	pos.y = pos.y + 8
-	vehicle.set_vehicle_doors_locked(lesveh[y], 2)
-	entity.set_entity_coords_no_offset(lesveh[y], pos)
-	if attack == 1 then
-		ai.task_combat_ped(lester[i], pped, 0, 16)
-		else
-		if attack == 2 then
+		if #lester >= 8 then
 			
-			local i = #lester - 1
-			ai.task_vehicle_follow(lester[i], lesveh[y], pped, 220, 262144, 25)
-		end
-	end
-	streaming.set_model_as_no_longer_needed(vehhash)
-	streaming.set_model_as_no_longer_needed(model)
-end), type = "action_value_str"}
-features["sendlesterapc"].feat:set_str_data({"Send Wandering","Send to Attack!","Send Stalker"})
-
-	
-features["moneytroll2"] = {feat = menu.add_feature("ped money drop", "toggle", featureVars.tr.id, function(feat)
-	local Plypos, offset, offset2, Offset, pped = v3(), v3(0.0,0.0,1.80), v3(1.10,2.10,1.10), v3(), player.get_player_ped(pid)
-	if feat.on then
-	Plypos = player.get_player_coords(pid)
-	allpeds = ped.get_all_peds()
-	system.wait(100)
-	for i = 1, #allpeds do
-	if not ped.is_ped_a_player(allpeds[i]) and not entity.is_entity_dead(allpeds[i]) then
-
-	-- decorator.decor_remove(allpeds[i], "cashondeadbody")
-	-- --Print("decor on")
-	-- system.wait(250)
-	-- network.request_control_of_entity(allpeds[i])
-	-- system.wait(250)
-				decorator.decor_register("cashondeadbody", 3)
-	system.wait(250)
-						network.request_control_of_entity(allpeds[i])
-				system.wait(250)
-				decorator.decor_set_int(allpeds[i], "cashondeadbody", 500)
-		system.wait(250)
+			local t = #lester / 8
+			
+			local j = #groupIDs
+			if  t > j then
+				ped_group_setup()
 				
-				-- --Print("decor not on")
-				-- --	system.wait(250)
-		-- network.request_control_of_entity(allpeds[i])
-		-- system.wait(250)
-				-- decorator.decor_register("cashondeadbody", 3)
-				-- system.wait(250)
-						-- network.request_control_of_entity(allpeds[i])
-		-- system.wait(250)
-				-- decorator.decor_set_int(allpeds[i], "cashondeadbody", 500)
+				local j = #groupIDs
 				
-
-		network.request_control_of_entity(allpeds[i])
-	system.wait(100)		
-	entity.set_entity_coords_no_offset(allpeds[i], Plypos + offset)
-	system.wait(0)
-	spawned_cunts[#spawned_cunts + 1] = ped.clone_ped(allpeds[i])
-		-- system.wait(250)
-	
-	
-
-	ped.set_ped_health(allpeds[i], 0.0)
-	system.wait(5)
-	ped.set_ped_health(spawned_cunts[#spawned_cunts], 0.0)
-	end
-	--system.wait(1000)
-	-- ped.set_ped_health(spawned_cunts[y], 0.0)
-
-	end
-	system.wait(100)
-	--end
-	for i = 1, #allpeds do
-	if not ped.is_ped_a_player(allpeds[i]) and entity.is_entity_dead(allpeds[i]) then
-	entity.delete_entity(allpeds[i])
-	end
-	
-	system.wait(10)
-	end
-	--entity.set_entity_as_no_longer_needed(allpeds[i])
-	-- entity.delete_entity(allpeds[i])
-	-- entity.set_entity_as_no_longer_needed(spawned_cunts[y])
-	--entity.delete_entity(spawned_cunts[y])
-	
-	--end
-	
-	system.wait(10)
-	return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-	
-end),  type = "toggle", callback = function()
-end}
-features["moneytroll2"].feat.on = false
-
---INFO: God Check Auto Function
-pulsecount = 0
-features["PBPulse"] = {feat = menu.add_feature("Pulse Playerbar", "toggle", featureVars.f.id, function(feat)
-	if feat.on then
-	
-	Players[pid].pulse = true
-	system.wait(1000)
-	repeat
-	pulsecount = pulsecount + 1	
-	 until pulsecount == 1000
-	 pulsecount = 0
-	 Players[pid].pulse = false
-	 system.wait(1000)
-	 return HANDLER_CONTINUE
-	end
-end),  type = "toggle", callback = function()
-
-end}
-features["PBPulse"].feat.on = false
-features["PBPulse"].feat.hidden = true
---TODO: Missile check feature
-
-features["Find_Missiles"] = {feat = menu.add_feature("Find Missiles", "toggle", globalFeatures.moist_tools.id, function(feat)	
-	if feat.on then
-	Get_Missile_Entity(pid)
-		system.yield(25)
-		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end),  type = "toggle", callback = function()
-
-end}
-features["Find_Missiles"].feat.on = false
-
-features["MissileCheck"] = {feat = menu.add_feature("Check Missiles", "toggle", featureVars.f.id, function(feat)
-	if not feat.on then
-	BruteForce_RemoveBlips()
-	playerFeatures[pid].features["Find_Missiles"].feat.on = false
-	playerFeatures[pid].features["MissileCheck"].feat.on = false
-	for pid = 0, 31 do
-	if Players[pid].ActiveMissile then
-	Players[pid].ActiveMissile = false
-	end
-	end
-	for i = 1, #BlipIDs do
-	ui.remove_blip(BlipIDs[i])
-	end
-	
-	return HANDLER_POP
-	end	
-	if not ai.is_task_active(player.get_player_ped(pid), 135) then
-	playerFeatures[pid].features["Find_Missiles"].feat.on = false
-	BruteForce_RemoveBlips()
-	MissileBlip[pid+1] = nil
-	playerFeatures[pid].features["MissileCheck"].feat.on = false
-	
-	end
-	playerFeatures[pid].features["Find_Missiles"].feat.on = true
-		return HANDLER_CONTINUE
-	
-end),  type = "toggle", callback = function()
-
-end}
-features["MissileCheck"].feat.on = false
-features["MissileCheck"].feat.hidden = false
-
-
-features["GodCheck"] = {feat = menu.add_feature("God Mode Check", "toggle", featureVars.f.id, function(feat)
-	local name = player.get_player_name(pid)
-	local check, pos1, pos2 = 0, v3(), v3()
-    if feat.on then
-	--playerFeatures[pid].features["spawntest"].feat.on = true
-	--	if Players[pid].PedSpawned then
-        system.wait(15000)
-        if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid)  --[[and Players[pid].PedSpawned == true]]  then
-           d = os.date()
-		   stdtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
-
-             pos1 = player.get_player_coords(pid)
-		end
-             system.wait(1000)
-			if pos1 == v3(0.0,0.0,0.0) then return end
-            if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) --[[and Players[pid].PedSpawned == true]] then
-			   d = os.date()
-		  enddtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
-                 pos2 = player.get_player_coords(pid)
-                 check = Get_Dist2D_POS2POS(pos1, pos2)
-			--print(check)
+				local lester_group = groupIDs[j]		
+				else
 			end
-                if check > 11.00 and Players[pid].isint ~= true and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) --[[and Players[pid].PedSpawned == true]] then
-					 ModderAudio_notify()
-                    moist_notify("Player Failed Position to Position Check:\n" .. pid .. " : " .. name.. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection")
-				
-			--	Debug_Out(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1))
-				
-			--	Debug_Out(name.. "End Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
-				--moist_notify(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
-					
-					 ModderAudio_notify()
-					end
-		elseif  not Players[pid].PedSpawned then
-        system.wait(8000)
-		elseif not Players[pid].PedSpawned then
-		 system.wait(45000)
-
-    return HANDLER_CONTINUE
+			
+			local lester_group = groupIDs[j]
+			else
+			
+			local j = #groupIDs - 1
+			
+			local lester_group = groupIDs[j]
+			ped.set_ped_as_group_member(lester[i], lester_group)
+			ped.set_ped_never_leaves_group(lester[i], true)
+			if i == 1 or 9 then
+				if i == 1 then ped.set_ped_as_group_leader(lester[i], groupIDs[1])
+				end
+				elseif i == 9 then ped.set_ped_as_group_leader(lester[i], groupIDs[2])
+			end
 		end
-end),  type = "toggle", callback = function()
-
-end}
-features["GodCheck"].feat.on = false
-features["GodCheck"].feat.hidden = false
-
-local loopcnt = 0
-features["pos2pos"] = {feat = menu.add_feature("Point to Point Test", "toggle", featureVars.f.id, function(feat)
-	if not feat.on then
-	return HANDLER_POP
-	end
-	local name = player.get_player_name(pid)
-	local check, pos1, pos2 = 0, v3(), v3()
-    if feat.on then
-		-- if Players[pid].PedSpawned then
-        -- system.wait(15000)
-        -- if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid)  --[[and Players[pid].PedSpawned == true]] then
-           d = os.date()
-		   stdtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
-
-             pos1 = player.get_player_coords(pid)
-		--end
-            system.wait(1000)
-			if pos1 == v3(0.0,0.0,0.0) then return end
-           -- if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) --[[and Players[pid].PedSpawned == true]] then
-			   d = os.date()
-		  enddtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
-                 pos2 = player.get_player_coords(pid)
-                 check = Get_Dist2D_POS2POS(pos1, pos2)
-			--print(check)
-			--end
-               -- if check > 69.00 and Players[pid].isint ~= true and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) --[[and Players[pid].PedSpawned == true]] then
-               -- moist_notify("Player Position to Position Check:\n" .. pid .. " : " .. name, "Point To Point Position Test")
+		entity.set_entity_god_mode(lester[i], true)
+		ped.set_ped_combat_attributes(lester[i], 52, true)
+		ped.set_ped_combat_attributes(lester[i], 1, true)
+		ped.set_ped_combat_attributes(lester[i], 46, true)
+		ped.set_ped_combat_attributes(lester[i], 2, true)
+		ped.set_ped_combat_range(lester[i], 2)
+		ped.set_ped_combat_ability(lester[i], 2)
+		ped.set_ped_combat_movement(lester[i], 2)
+		ped.set_ped_into_vehicle(lester[i], lesveh[y], 0)
+		vehicle.set_vehicle_doors_locked(lesveh[y], 6)
+		pos = player.get_player_coords(pid)
+		pos.x = pos.x + 8
+		pos.y = pos.y + 8
+		vehicle.set_vehicle_doors_locked(lesveh[y], 2)
+		entity.set_entity_coords_no_offset(lesveh[y], pos)
+		if attack == 1 then
+			ai.task_combat_ped(lester[i], pped, 0, 16)
+			else
+			if attack == 2 then
 				
-			--	Debug_Out(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1))
-				
-			--	Debug_Out(name.. "End Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
-			--	moist_notify(name.. "\nStart Time : " .. stdtime .. "\nCheck Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " :\nCheck end Postion = " .. tostring(pos2) .."\nDistance: " .. check, "Point To Point Position Test")
-					
-					-- ModderAudio_notify()
-				--	end
-		-- elseif  not Players[pid].PedSpawned then
-        -- system.wait(8000)
-		-- elseif not Players[pid].PedSpawned then
-		repeat
-			loopcnt = loopcnt + 1
-		if not feat.on then
-		loopcnt = 45000
+				local i = #lester - 1
+				ai.task_vehicle_follow(lester[i], lesveh[y], pped, 220, 262144, 25)
+			end
 		end
-		system.yield(0)
-		until loopcnt == 45000
-		loopcnt = 0
-		
-		
-		--end
-    return HANDLER_CONTINUE
-		end
-end),  type = "toggle", callback = function()
-
-
-end}
-features["pos2pos"].feat.on = false
-features["pos2pos"].feat.hidden = false
-
-features["spawntest"] = {feat = menu.add_feature("God Test", "toggle", featureVars.f.id, function(feat)
-		local name = player.get_player_name(pid)
+		streaming.set_model_as_no_longer_needed(vehhash)
+		streaming.set_model_as_no_longer_needed(model)
+	end), type = "action_value_str"}
+	features["sendlesterapc"].feat:set_str_data({"Send Wandering","Send to Attack!","Send Stalker"})
+	
+	
+	features["moneytroll2"] = {feat = menu.add_feature("ped money drop", "toggle", featureVars.tr.id, function(feat)
+		local Plypos, offset, offset2, Offset, pped = v3(), v3(0.0,0.0,1.80), v3(1.10,2.10,1.10), v3(), player.get_player_ped(pid)
 		if feat.on then
-	--	if not Players[pid].isint and player.is_player_god(pid) or player.is_player_vehicle_god(pid) then
-		for i = 0, 31 do
-		if player.is_player_valid(i) then 
-		local col = entity.has_entity_been_damaged_by_entity(player.get_player_ped(i), player.get_player_ped(pid))
-				if col == true and note == false then
-					moist_notify(name.. "\nHas Damaged Player: " .. tostring(player.get_player_name(i)) ..  "\nWhile God Mode", "Modder test")
-					note = true
-		--		end
+			Plypos = player.get_player_coords(pid)
+			allpeds = ped.get_all_peds()
+			system.wait(100)
+			for i = 1, #allpeds do
+				if not ped.is_ped_a_player(allpeds[i]) and not entity.is_entity_dead(allpeds[i]) then
+					
+					-- decorator.decor_remove(allpeds[i], "cashondeadbody")
+					-- --Print("decor on")
+					-- system.wait(250)
+					-- network.request_control_of_entity(allpeds[i])
+					-- system.wait(250)
+					decorator.decor_register("cashondeadbody", 3)
+					system.wait(250)
+					network.request_control_of_entity(allpeds[i])
+					system.wait(250)
+					decorator.decor_set_int(allpeds[i], "cashondeadbody", 500)
+					system.wait(250)
+					
+					-- --Print("decor not on")
+					-- --	system.wait(250)
+					-- network.request_control_of_entity(allpeds[i])
+					-- system.wait(250)
+					-- decorator.decor_register("cashondeadbody", 3)
+					-- system.wait(250)
+					-- network.request_control_of_entity(allpeds[i])
+					-- system.wait(250)
+					-- decorator.decor_set_int(allpeds[i], "cashondeadbody", 500)
+					
+					
+					network.request_control_of_entity(allpeds[i])
+					system.wait(100)		
+					entity.set_entity_coords_no_offset(allpeds[i], Plypos + offset)
+					system.wait(0)
+					spawned_cunts[#spawned_cunts + 1] = ped.clone_ped(allpeds[i])
+					-- system.wait(250)
+					
+					
+					
+					ped.set_ped_health(allpeds[i], 0.0)
+					system.wait(5)
+					ped.set_ped_health(spawned_cunts[#spawned_cunts], 0.0)
+				end
+				--system.wait(1000)
+				-- ped.set_ped_health(spawned_cunts[y], 0.0)
+				
+			end
+			system.wait(100)
+			--end
+			for i = 1, #allpeds do
+				if not ped.is_ped_a_player(allpeds[i]) and entity.is_entity_dead(allpeds[i]) then
+					entity.delete_entity(allpeds[i])
+				end
+				
+				system.wait(10)
+			end
+			--entity.set_entity_as_no_longer_needed(allpeds[i])
+			-- entity.delete_entity(allpeds[i])
+			-- entity.set_entity_as_no_longer_needed(spawned_cunts[y])
+			--entity.delete_entity(spawned_cunts[y])
+			
+			--end
+			
+			system.wait(10)
+			return HANDLER_CONTINUE
 		end
-		end
-		end
+		return HANDLER_POP
 		
-	-- if not playerFeatures[pid].features["GodCheck"].feat.on then
-	-- feat.on = false
-	-- end
-    return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	features["moneytroll2"].feat.on = false
 	
+	--INFO: God Check Auto Function
+	pulsecount = 0
+	features["PBPulse"] = {feat = menu.add_feature("Pulse Playerbar", "toggle", featureVars.f.id, function(feat)
+		if feat.on then
+			
+			Players[pid].pulse = true
+			system.wait(1000)
+			repeat
+				pulsecount = pulsecount + 1	
+			until pulsecount == 1000
+			pulsecount = 0
+			Players[pid].pulse = false
+			system.wait(1000)
+			return HANDLER_CONTINUE
 		end
+	end),  type = "toggle", callback = function()
+	
+	end}
+	features["PBPulse"].feat.on = false
+	features["PBPulse"].feat.hidden = true
+	--TODO: Missile check feature
+	
+	features["Find_Missiles"] = {feat = menu.add_feature("Find Missiles", "toggle", featureVars.f.id, function(feat)	
+		if feat.on then
+			Get_Missile_Entity(pid)
+			system.yield(25)
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	
+	end}
+	features["Find_Missiles"].feat.on = false
+	
+	features["MissileCheck"] = {feat = menu.add_feature("Check Missiles", "toggle", featureVars.f.id, function(feat)
 		if not feat.on then
-		note = false
+			BruteForce_RemoveBlips()
+			playerFeatures[pid].features["Find_Missiles"].feat.on = false
+			playerFeatures[pid].features["MissileCheck"].feat.on = false
+			for pid = 0, 31 do
+				if Players[pid].ActiveMissile then
+					Players[pid].ActiveMissile = false
+				end
+			end
+			for i = 1, #BlipIDs do
+				ui.remove_blip(BlipIDs[i])
+			end
+			
+			return HANDLER_POP
+		end	
+		if not ai.is_task_active(player.get_player_ped(pid), 135) then
+			playerFeatures[pid].features["Find_Missiles"].feat.on = false
+			BruteForce_RemoveBlips()
+			MissileBlip[pid+1] = nil
+			playerFeatures[pid].features["MissileCheck"].feat.on = false
+			
+		end
+		playerFeatures[pid].features["Find_Missiles"].feat.on = true
+		return HANDLER_CONTINUE
+		
+	end),  type = "toggle", callback = function()
+	
+	end}
+	features["MissileCheck"].feat.on = false
+	features["MissileCheck"].feat.hidden = false
+	
+	
+	features["GodCheck"] = {feat = menu.add_feature("God Mode Check", "toggle", featureVars.f.id, function(feat)
+		local name = player.get_player_name(pid)
+		local check, pos1, pos2 = 0, v3(), v3()
+		if feat.on then
+
+			--	if Players[pid].PedSpawned then
+			system.wait(15000)
+			if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) and not Players[pid].isRC --[[and Players[pid].PedSpawned == true]]  then
+				d = os.date()
+				stdtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
+				
+				pos1 = player.get_player_coords(pid)
+			end
+			system.wait(1000)
+			if pos1 == v3(0.0,0.0,0.0) then return end
+			if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) --[[and Players[pid].PedSpawned == true]] then
+				d = os.date()
+				enddtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
+				pos2 = player.get_player_coords(pid)
+				check = Get_Dist2D_POS2POS(pos1, pos2)
+				--print(check)
+			end
+			if check > 11.00 and Players[pid].isint ~= true and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and not Players[pid].isRC --[[and Players[pid].PedSpawned == true]] then
+				ModderAudio_notify_thread.on = true
+				moist_notify("Player Failed Position to Position Check:\n" .. pid .. " : " .. name.. "\nPlayer God: " .. tostring(player.is_player_god(pid)) .. "\nVehicle God: " .. tostring(player.is_player_vehicle_god(pid)), "Modder Detection")
+				
+				--	Debug_Out(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1))
+				
+				--	Debug_Out(name.. "End Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
+				--moist_notify(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
+				
+				
+			end
+			elseif  not Players[pid].PedSpawned then
+			system.wait(8000)
+			elseif not Players[pid].PedSpawned then
+			system.wait(45000)
+			
+			return HANDLER_CONTINUE
+		end
+	end),  type = "toggle", callback = function()
+	
+	end}
+	features["GodCheck"].feat.on = false
+	features["GodCheck"].feat.hidden = false
+		
+features["GodDamageCheck"] = {feat = menu.add_feature("God Mode Damage Check", "toggle", featureVars.f.id, function(feat)
+		local name = player.get_player_name(pid)
+		local pped = player.get_player_ped(pid)
+		if not feat.on then
 		return HANDLER_POP
 		end
+		
+			if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and not player.is_player_god(pid) and not player.is_player_vehicle_god(pid) and Players[pid].PedSpawned == true then
+			local a = player.get_player_health(pid)
+			fire.start_entity_fire(pped)
+			system.yield(8)
+			fire.stop_entity_fire(pped)
+			local b = player.get_player_health(pid)
+			if b < a then
+			moist_notify("Player Took Damage")
+			playerFeatures[pid].features["GodDamageCheck"].feat.on = false
+			elseif b == a then
+			moist_notify("Player did not Take any Damage", "Possibly God Mode")
+			playerFeatures[pid].features["GodDamageCheck"].feat.on = false
+			end
+			
+			elseif Players[pid].isint or player.is_player_god(pid) or player.is_player_vehicle_god(pid) or Players[pid].PedSpawned ~= true then
+			moist_notify("Player does not meet Requirements for check or is already confirmed as Godmode")
+			playerFeatures[pid].features["GodDamageCheck"].feat.on = false
+			return HANDLER_CONTINUE
+			end
+			return HANDLER_POP
 end),  type = "toggle", callback = function()
-
+	
 end}
+features["GodDamageCheck"].feat.on = false
+features["GodDamageCheck"].feat.hidden = false
 
-features["spawntest"].feat.on = false
-features["spawntest"].feat.hidden = false
+	local loopcnt = 0
+	features["pos2pos"] = {feat = menu.add_feature("Point to Point Test", "toggle", featureVars.f.id, function(feat)
+		if not feat.on then
+			return HANDLER_POP
+		end
+		local name = player.get_player_name(pid)
+		local check, pos1, pos2 = 0, v3(), v3()
+		if feat.on then
+			-- if Players[pid].PedSpawned then
+			-- system.wait(15000)
+			-- if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid)  --[[and Players[pid].PedSpawned == true]] then
+			d = os.date()
+			stdtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
+			
+			pos1 = player.get_player_coords(pid)
+			--end
+			system.wait(3000)
+			if pos1 == v3(0.0,0.0,0.0) then return end
+			-- if not Players[pid].isint and player.is_player_playing(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) and player.is_player_god(pid) or player.is_player_vehicle_god(pid) --[[and Players[pid].PedSpawned == true]] then
+			d = os.date()
+			enddtime = string.match(d, "%d%d:%d%d:%d%d") .. " : " .. utils.time_ms()
+			pos2 = player.get_player_coords(pid)
+			check = Get_Dist2D_POS2POS(pos1, pos2)
+			--print(check)
+			--end
+			-- if check > 69.00 and Players[pid].isint ~= true and player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) --[[and Players[pid].PedSpawned == true]] then
+			-- moist_notify("Player Position to Position Check:\n" .. pid .. " : " .. name, "Point To Point Position Test")
+			
+			--	Debug_Out(name.. " Start Time : " .. stdtime .. " Check Start Postion = " .. tostring(pos1))
+			
+			--	Debug_Out(name.. "End Time : " .. enddtime .. " : Check end Postion = " .. tostring(pos2) .."\nDistance: " .. check)
+			--	moist_notify(name.. "\nStart Time : " .. stdtime .. "\nCheck Start Postion = " .. tostring(pos1) .. "\nEnd Time : " .. enddtime .. " :\nCheck end Postion = " .. tostring(pos2) .."\nDistance: " .. check, "Point To Point Position Test")
+			
+			-- ModderAudio_notify_thread.on = true
+			--	end
+			-- elseif  not Players[pid].PedSpawned then
+			-- system.wait(8000)
+			-- elseif not Players[pid].PedSpawned then
+			repeat
+				loopcnt = loopcnt + 1
+				if not feat.on then
+					loopcnt = 45000
+				end
+				system.yield(0)
+			until loopcnt == 45000
+			loopcnt = 0
+			
+			
+			--end
+			return HANDLER_CONTINUE
+		end
+	end),  type = "toggle", callback = function()
+	
+	
+	end}
+	features["pos2pos"].feat.on = false
+	features["pos2pos"].feat.hidden = false
+	
+	features["interiortest"] = {feat = menu.add_feature("Interior Test", "toggle", featureVars.f.id, function(feat)
+		local name = player.get_player_name(pid)
+        local apartmen, interiorr, found
+		if feat.on then
+		           for i = 1, #interiors do
+                apartmen = GetDistMag(player.get_player_coords(pid), interiors[i][2])
+                system.yield(5)
+                if apartmen < 60 then
+                    found = true
+                    Players[pid].isint, Players[pid].Interiorname, Position, Players[pid].intID  =  true, tostring(interiors[i][1]), tostring(interiors[i][2]), (i)
+                end
+                system.yield(5)
+            end
+            if found ~= true then
+				
+                Players[pid].isint, Players[pid].Interiorname, Players[pid].intID  =  false, "", nil
+            end
+			system.yield(5)
 
-		--INFO: Vehicle Options
-local decorator_typetable = {"DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
-local DecorAddFeat, DecorFeat, Bool_Value, Bool_Bool = {}, {}, {"true","false"},  {true, false}
-local function vehdecor()
-	for i = 1, #decorators do
-		local decor_typetable = decorator_typetable
-		local decor_type = {"float","bool","int","unk","time"}
-		local DecorType, typenum = decoratorType[decorators[i][2]], decorators[i][2]
-		local decor = tostring(decorators[i][1])
-		local y = #DecorFeat + 1
-		local Decor_feat = DecorFeat[y]
-		Decor_feat = menu.add_feature(i ..": " .. decor, "parent", featureVars.vd.id)
-		
-		local DecorCheckCustype = menu.add_feature("Check for Decorator", "action_value_str", Decor_feat.id, function(feat)
-			local decor, Type, exists, decorval
-			local plyveh = player.get_player_vehicle(pid)
-			if plyveh ~= nil or plyveh ~= 0 then
-				decor = tostring(decorators[i][1])
-				Type = {"float","bool","int","unk","time"}
-				exists = decorator.decor_exists_on(plyveh, decor)
-				local decorget = {}
-				decorget[1] = decorator.decor_get_float
-				decorget[2] = decorator.decor_get_bool
-				decorget[3] = decorator.decor_get_int
-				decorget[4] = decorator.decor_get_int
-				decorget[5] = decorator.decor_get_int
-				if exists then
-					decorval = decorget[feat.value + 1](plyveh, decor)
-					moist_notify(decor .." Exists\n" .. string.lower(Type[feat.value + 1]) .." Value is: " .. tostring(decorval), "Decorator Check")
-					elseif not exists then
-					moist_notify(decor .." Does not Exist", "Decorator Check")
-				end
-			end		
-end)
-DecorCheckCustype:set_str_data(decor_typetable)
-		
-		--  if decorators[i][2] == 2 then
-		local f = menu.add_feature("Set BOOL Decor on Vehicle as: ", "action_value_str", Decor_feat.id, function(feat)
-			local decor, Type, exists, decorval, nplyhash, plyveh
-			plyveh = player.get_player_vehicle(pid)
-			if plyveh ~= nil or plyveh ~= 0 then
-				decor = tostring(decorators[i][1])
-				Type = decoratorType[decorators[i][2]]
-				nplyhash = network.network_hash_from_player(pid)
-				while not network.has_control_of_entity(plyveh) do
-					network.request_control_of_entity(plyveh)
-					system.wait(10)
-				end
-				decorator.decor_register(decor, 2)
-				network.request_control_of_entity(plyveh)
-				decorator.decor_set_bool(plyveh, decor, Bool_Bool[feat.value + 1])
-				decorval = tostring(decorator.decor_get_bool(plyveh, decor))
-				moist_notify(decor .." Exists on Vehicle\n", decorval, "Decorator Check")
-			end
-end)
-		f:set_str_data(Bool_Value)
-		menu.add_feature("Remove Decorator from Vehicle", "action", Decor_feat.id, function(feat)
-			local plyveh, decor
-			decor = decorators[i][1]
-			plyveh = player.get_player_vehicle(pid)
-			while not network.has_control_of_entity(plyveh) do
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-			end
-			decorator.decor_remove(plyveh, decor)
-			moist_notify("Decorator Removed", decor)
-end)
-		
-local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_value_str", Decor_feat.id, function(feat)
-			local decor, Type, exists, decorval, nplyhash, plyveh, InputType, InputPreset, val
+
+                for i = 1, #onlineinteriors do
+					system.yield(5)
+                    apartmen = GetDistMag(player.get_player_coords(pid), onlineinteriors[i][2])
+					system.yield(5)
+                    if apartmen < 60 then
+                        found = true
+                        Players[pid].onlinecheck, Players[pid].online_interior, Players[pid].onlineintID = true, tostring(onlineinteriors[i][1]), (i)
+                    end
+					system.yield(5)
+                end
+                if found ~= true then
+                     Players[pid].onlinecheck, Players[pid].online_interior, Players[pid].onlineintID = false, "", nil
+                end
+				system.yield(1000)
+			
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	
+	end}
+	features["interiortest"].feat.on = false
+	features["interiortest"].feat.hidden = true
+	
+	--INFO: Vehicle Options
+	local decorator_typetable = {"DECOR_TYPE_FLOAT","DECOR_TYPE_BOOL","DECOR_TYPE_INT","DECOR_TYPE_UNK","DECOR_TYPE_TIME"}
+	local DecorAddFeat, DecorFeat, Bool_Value, Bool_Bool = {}, {}, {"true","false"},  {true, false}
+	local function vehdecor()
+		for i = 1, #decorators do
+			local decor_typetable = decorator_typetable
 			local decor_type = {"float","bool","int","unk","time"}
+			local DecorType, typenum = decoratorType[decorators[i][2]], decorators[i][2]
+			local decor = tostring(decorators[i][1])
+			local y = #DecorFeat + 1
+			local Decor_feat = DecorFeat[y]
+			Decor_feat = menu.add_feature(i ..": " .. decor, "parent", featureVars.vd.id)
 			
-			local decorset = {}
-			decorset[1] = decorator.decor_set_float
-			decorset[2] = decorator.decor_set_bool
-			decorset[3] = decorator.decor_set_int 
-			decorset[4] = decorator.decor_set_int
-			decorset[5] = decorator.decor_set_time
-			plyveh = player.get_player_vehicle(pid)
-			if plyveh ~= nil or plyveh ~= 0 then
-				decor = tostring(decorators[i][1])
-				Type = decoratorType[feat.value + 1]
-				if feat.value + 1 == 1 then
-					InputType = 5
-					InputPreset = tonumber(321.445)
-					elseif feat.value + 1 == 2 then
-					InputType = 1
-					InputPreset = "true"
-					elseif feat.value + 1 == 3 then
-					InputType = 3
-					InputPreset = network.network_hash_from_player(pid)
-					elseif feat.value + 1 == 4 then
-					InputType = 3
-					InputPreset = math.random(0, 65535)
-					elseif feat.value + 1 == 5 then
-					InputType = 2
-					InputPreset = utils.time()
+			local DecorCheckCustype = menu.add_feature("Check for Decorator", "action_value_str", Decor_feat.id, function(feat)
+				local decor, Type, exists, decorval
+				local plyveh = player.get_player_vehicle(pid)
+				if plyveh ~= nil or plyveh ~= 0 then
+					decor = tostring(decorators[i][1])
+					Type = {"float","bool","int","unk","time"}
+					exists = decorator.decor_exists_on(plyveh, decor)
+					local decorget = {}
+					decorget[1] = decorator.decor_get_float
+					decorget[2] = decorator.decor_get_bool
+					decorget[3] = decorator.decor_get_int
+					decorget[4] = decorator.decor_get_int
+					decorget[5] = decorator.decor_get_int
+					if exists then
+						decorval = decorget[feat.value + 1](plyveh, decor)
+						moist_notify(decor .." Exists\n" .. string.lower(Type[feat.value + 1]) .." Value is: " .. tostring(decorval), "Decorator Check")
+						elseif not exists then
+						moist_notify(decor .." Does not Exist", "Decorator Check")
+					end
+				end		
+			end)
+			DecorCheckCustype:set_str_data(decor_typetable)
+			
+			--  if decorators[i][2] == 2 then
+			local f = menu.add_feature("Set BOOL Decor on Vehicle as: ", "action_value_str", Decor_feat.id, function(feat)
+				local decor, Type, exists, decorval, nplyhash, plyveh
+				plyveh = player.get_player_vehicle(pid)
+				if plyveh ~= nil or plyveh ~= 0 then
+					decor = tostring(decorators[i][1])
+					Type = decoratorType[decorators[i][2]]
+					nplyhash = network.network_hash_from_player(pid)
+					while not network.has_control_of_entity(plyveh) do
+						network.request_control_of_entity(plyveh)
+						system.wait(10)
+					end
+					decorator.decor_register(decor, 2)
+					network.request_control_of_entity(plyveh)
+					decorator.decor_set_bool(plyveh, decor, Bool_Bool[feat.value + 1])
+					decorval = tostring(decorator.decor_get_bool(plyveh, decor))
+					moist_notify(decor .." Exists on Vehicle\n", decorval, "Decorator Check")
 				end
-				Decor_example = {"float:NumDot(1234.5678)","Bool:(<true|false>)","INT:Num(1234)","UNK:Unavailable","Time: " .. utils.time()}
-				Type_input = string.format(Decor_example[feat.value + 1])
-				nplyhash = network.network_hash_from_player(pid)
-				local r,s = input.get("Input DecorValue:" .. Type_input, InputPreset, 96, InputType)
-				if r == 1 then
-					return HANDLER_CONTINUE
-				end
-				if r == 2 then
-					return HANDLER_POP
-				end
-				network.request_control_of_entity(plyveh)
-				decorator.decor_register(decor, 1)
-				if feat.value + 1 == 2 and s == "true" then
-					val = true
-					elseif feat.value + 1 == 2 and s == "false" then
-					val = false
-					else
-					val = s
-				end
+			end)
+			f:set_str_data(Bool_Value)
+			menu.add_feature("Remove Decorator from Vehicle", "action", Decor_feat.id, function(feat)
+				local plyveh, decor
+				decor = decorators[i][1]
+				plyveh = player.get_player_vehicle(pid)
 				while not network.has_control_of_entity(plyveh) do
 					network.request_control_of_entity(plyveh)
 					system.wait(10)
 				end
-				decorset[feat.value + 1](plyveh, decor, val)
-			end
+				decorator.decor_remove(plyveh, decor)
+				moist_notify("Decorator Removed", decor)
+			end)
 			
-end)
-add_decor_custype:set_str_data(decoratorType)
-
-	end
-end
-vehdecor()
-	
-features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			while not network.has_control_of_entity(plyveh) do
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-			end
-			entity.set_entity_god_mode(plyveh, true)
-			return HANDLER_POP
-end),  type = "action", callback = function()
-end}
-
-	
-features["godvehoff"] = {feat = menu.add_feature("Player Vehicle God Mode OFF", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			while not network.has_control_of_entity(plyveh) do
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-			end
-			entity.set_entity_god_mode(plyveh, false)
-			return HANDLER_POP
-			
-end),  type = "action", callback = function()
-end}
-		
-
-local achieved, count = false, 0
-		
-features["tog_godvehoff"] = {feat = menu.add_feature("Force Control & God Mode OFF", "toggle", featureVars.v.id, function(feat)
-			if feat.on then
+			local add_decor_custype = menu.add_feature("Add Decorator to Vehicle", "action_value_str", Decor_feat.id, function(feat)
+				local decor, Type, exists, decorval, nplyhash, plyveh, InputType, InputPreset, val
+				local decor_type = {"float","bool","int","unk","time"}
+				
+				local decorset = {}
+				decorset[1] = decorator.decor_set_float
+				decorset[2] = decorator.decor_set_bool
+				decorset[3] = decorator.decor_set_int 
+				decorset[4] = decorator.decor_set_int
+				decorset[5] = decorator.decor_set_time
 				plyveh = player.get_player_vehicle(pid)
+				if plyveh ~= nil or plyveh ~= 0 then
+					decor = tostring(decorators[i][1])
+					Type = decoratorType[feat.value + 1]
+					if feat.value + 1 == 1 then
+						InputType = 5
+						InputPreset = tonumber(321.445)
+						elseif feat.value + 1 == 2 then
+						InputType = 1
+						InputPreset = "true"
+						elseif feat.value + 1 == 3 then
+						InputType = 3
+						InputPreset = network.network_hash_from_player(pid)
+						elseif feat.value + 1 == 4 then
+						InputType = 3
+						InputPreset = math.random(0, 65535)
+						elseif feat.value + 1 == 5 then
+						InputType = 2
+						InputPreset = utils.time()
+					end
+					Decor_example = {"float:NumDot(1234.5678)","Bool:(<true|false>)","INT:Num(1234)","UNK:Unavailable","Time: " .. utils.time()}
+					Type_input = string.format(Decor_example[feat.value + 1])
+					nplyhash = network.network_hash_from_player(pid)
+					local r,s = input.get("Input DecorValue:" .. Type_input, InputPreset, 96, InputType)
+					if r == 1 then
+						return HANDLER_CONTINUE
+					end
+					if r == 2 then
+						return HANDLER_POP
+					end
+					network.request_control_of_entity(plyveh)
+					decorator.decor_register(decor, 1)
+					if feat.value + 1 == 2 and s == "true" then
+						val = true
+						elseif feat.value + 1 == 2 and s == "false" then
+						val = false
+						else
+						val = s
+					end
+					while not network.has_control_of_entity(plyveh) do
+						network.request_control_of_entity(plyveh)
+						system.wait(10)
+					end
+					decorset[feat.value + 1](plyveh, decor, val)
+				end
+				
+			end)
+			add_decor_custype:set_str_data(decoratorType)
+			
+		end
+	end
+	vehdecor()
+
+	features["godvehon"] = {feat = menu.add_feature("Player Vehicle God Mode ON", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		while not network.has_control_of_entity(plyveh) do
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+		end
+		entity.set_entity_god_mode(plyveh, true)
+		return HANDLER_POP
+	end),  type = "action", callback = function()
+	end}
+	
+	
+	features["godvehoff"] = {feat = menu.add_feature("Player Vehicle God Mode OFF", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		while not network.has_control_of_entity(plyveh) do
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+		end
+		entity.set_entity_god_mode(plyveh, false)
+		return HANDLER_POP
+		
+	end),  type = "action", callback = function()
+	end}
+	
+	
+	local achieved, count = false, 0
+	
+	features["tog_godvehoff"] = {feat = menu.add_feature("Force Control & God Mode OFF", "toggle", featureVars.v.id, function(feat)
+		if feat.on then
+			plyveh = player.get_player_vehicle(pid)
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+			if not network.has_control_of_entity(plyveh) then
 				network.request_control_of_entity(plyveh)
 				system.wait(10)
-				if not network.has_control_of_entity(plyveh) then
-					network.request_control_of_entity(plyveh)
-					system.wait(10)
-					entity.set_entity_god_mode(plyveh, false)
+				entity.set_entity_god_mode(plyveh, false)
 				elseif network.has_control_of_entity(plyveh) then
 				achieved = true
 				entity.set_entity_god_mode(plyveh, false)
 				if count <= 1 then
-				moist_notify("Control achieved", "Vehicle Control Request")
+					moist_notify("Control achieved", "Vehicle Control Request")
 				end
-				end
+			end
 			if achieved == true and count >= 20000 then
 				count = 0
-			elseif achieved == true and count < 20000 then
+				elseif achieved == true and count < 20000 then
 				count = count + 1
 			end
-				return HANDLER_CONTINUE
-			end
-			achieved = false
-			count = 0
-			
-			return HANDLER_POP
-			
-end),  type = "toggle", callback = function()
-end}
-features["tog_godvehoff"].feat.on = false
-			
-features["LockOn"] = {feat = menu.add_feature("Vehicle Targetable", "action",  featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			while not network.has_control_of_entity(plyveh) do
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-			end
-			vehicle.set_vehicle_can_be_locked_on(plyveh,true, true)
-			return HANDLER_POP
-end), type = "action", callback = function()
-end}
-features["LockOFF"] = {feat = menu.add_feature("Vehicle Not Targetable", "action",  featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			while not network.has_control_of_entity(plyveh) do
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-			end
-			vehicle.set_vehicle_can_be_locked_on(plyveh, false, false)
-			return HANDLER_POP
-end), type = "action", callback = function()
-end}
-features["set_Boost"] = {feat = menu.add_feature("Set Boost & Forward Speed", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			if plyveh ~= nil then
-				network.request_control_of_entity(plyveh)
-				vehicle.set_vehicle_rocket_boost_active(plyveh, true)
-				vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
-			end
+			return HANDLER_CONTINUE
+		end
+		achieved = false
+		count = 0
+		
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["tog_godvehoff"].feat.on = false
+	
+	features["LockOn"] = {feat = menu.add_feature("Vehicle Targetable", "action",  featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		while not network.has_control_of_entity(plyveh) do
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+		end
+		vehicle.set_vehicle_can_be_locked_on(plyveh,true, true)
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["LockOFF"] = {feat = menu.add_feature("Vehicle Not Targetable", "action",  featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		while not network.has_control_of_entity(plyveh) do
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+		end
+		vehicle.set_vehicle_can_be_locked_on(plyveh, false, false)
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["set_Boost"] = {feat = menu.add_feature("Set Boost & Forward Speed", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		if plyveh ~= nil then
 			network.request_control_of_entity(plyveh)
 			vehicle.set_vehicle_rocket_boost_active(plyveh, true)
 			vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
-end), type = "action"}
-features["set_Boost2"] = {feat = menu.add_feature("Set Boost & Forward Speed v2", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			if plyveh ~= nil then
-				network.request_control_of_entity(plyveh)
-				vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
-			end
+		end
+		network.request_control_of_entity(plyveh)
+		vehicle.set_vehicle_rocket_boost_active(plyveh, true)
+		vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
+	end), type = "action"}
+	features["set_Boost2"] = {feat = menu.add_feature("Set Boost & Forward Speed v2", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		if plyveh ~= nil then
 			network.request_control_of_entity(plyveh)
 			vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
-end), type = "action"}
-features["set_speed"] = {feat = menu.add_feature("Force Forward Speed: 90000", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			if plyveh ~= nil then
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-				vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
-				vehicle.set_vehicle_forward_speed(plyveh, 90000.00)
-				vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
-				--
-				vehicle.set_vehicle_forward_speed(plyveh, 9000.00)
-			end
+		end
+		network.request_control_of_entity(plyveh)
+		vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
+	end), type = "action"}
+	features["set_speed"] = {feat = menu.add_feature("Force Forward Speed: 90000", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		if plyveh ~= nil then
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
+			vehicle.set_vehicle_forward_speed(plyveh, 90000.00)
+			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
+			--
 			vehicle.set_vehicle_forward_speed(plyveh, 9000.00)
-end), type = "action"}
-features["vehicleexplode1"] = {feat = menu.add_feature("Vehicle Explode OnImpact", "toggle", featureVars.v.id, function(feat)
-			if feat.on then
-				pped = player.get_player_ped(pid)
-				plyveh = player.get_player_vehicle(pid)
-				if plyveh ~= nil then
-					network.request_control_of_entity(plyveh)
-					vehicle.set_vehicle_out_of_control(plyveh, false, true)
-				end
-				network.request_control_of_entity(plyveh)
-				vehicle.set_vehicle_rocket_boost_percentage(plyveh, 100)
-				vehicle.set_vehicle_rocket_boost_active(plyveh, true)
-				vehicle.set_vehicle_out_of_control(plyveh, false, true)
-				vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
-			end
-			return HANDLER_CONTINUE
-end),  type = "toggle", callback = function()
-end}
-features["vehicleexplode2"] = {feat = menu.add_feature("Vehicle Explode OnImpact v2", "toggle", featureVars.v.id, function(feat)
-			if feat.on then
-				pped = player.get_player_ped(pid)
-				plyveh = player.get_player_vehicle(pid)
-				if plyveh ~= nil then
-					network.request_control_of_entity(plyveh)
-					vehicle.set_vehicle_out_of_control(plyveh, false, true)
-				end
-				network.request_control_of_entity(plyveh)
-				vehicle.set_vehicle_out_of_control(plyveh, false, true)
-				vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
-			end
-			return HANDLER_CONTINUE
-end),  type = "toggle", callback = function()
-end}
-features["vehspdslow"] = {feat = menu.add_feature("Set Max Speed 5", "action", featureVars.v.id, function(feat)
-			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
-			playervehspd(pid, 5.0)
-			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
-end), type = "action"}
-features["vehspdcust"] = {feat = menu.add_feature("Input Custom Max Speed", "action", featureVars.v.id, function(feat)
-			local r,s = input.get("Enter a Speed value:", "0.0001", 64, 5)
-			if r == 1 then
-				return HANDLER_CONTINUE
-			end
-			if r == 2 then
-				return HANDLER_POP
-			end
-			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
-			playervehspd(pid, s)
-			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
-end), type = "action"}
-features["vehspdfast"] = {feat = menu.add_feature("Reset Max Speed", "action", featureVars.v.id, function(feat)
-			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
-			playervehspd(pid, 9000000.0)
-			vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
-end), type = "action"}
-features["vehaddexpl"] = {feat = menu.add_feature("Add Explosive Device", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			if plyveh == 0 or nil then
-				return
-			end
-			while not (network.has_control_of_entity(plyveh)) do
-				network.request_control_of_entity(plyveh)
-				system.wait(10)
-			end
-			vehicle.add_vehicle_phone_explosive_device(plyveh)
-end), type = "action"}
-		
-features["vehdetonate"] = {feat = menu.add_feature("Detonate Explosive Device (named)", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
-			network.request_control_of_entity(plyveh)
-			print(vehicle.has_vehicle_phone_explosive_device())
-			if vehicle.has_vehicle_phone_explosive_device() then
-				vehicle.detonate_vehicle_phone_explosive_device()
-			end
-end), type = "action"}
-		
-features["timedexp"] = {feat = menu.add_feature("Set Vehicle Timed Explosion", "action", featureVars.v.id, function(feat)
-			pos = v3()
-			pos = player.get_player_coords(pid)
+		end
+		vehicle.set_vehicle_forward_speed(plyveh, 9000.00)
+	end), type = "action"}
+	features["vehicleexplode1"] = {feat = menu.add_feature("Vehicle Explode OnImpact", "toggle", featureVars.v.id, function(feat)
+		if feat.on then
 			pped = player.get_player_ped(pid)
 			plyveh = player.get_player_vehicle(pid)
-			audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 10000, false)
-			audio.play_sound_from_entity(-1, "Explosion_Countdown", pped, "GTAO_FM_Events_Soundset")
-			while not network.has_control_of_entity(plyveh) do
+			if plyveh ~= nil then
 				network.request_control_of_entity(plyveh)
-				system.wait(10)
+				vehicle.set_vehicle_out_of_control(plyveh, false, true)
 			end
-			vehicle.set_vehicle_timed_explosion(plyveh, pped, true)
-end), type = "action"}
-features["boostlag"] = {feat = menu.add_feature("Lag Vehicle Boost Refill", "action", featureVars.v.id, function(feat)
-			plyveh = player.get_player_vehicle(pid)
 			network.request_control_of_entity(plyveh)
+			vehicle.set_vehicle_rocket_boost_percentage(plyveh, 100)
 			vehicle.set_vehicle_rocket_boost_active(plyveh, true)
-			vehicle.set_vehicle_rocket_boost_refill_time(plyveh, 999999.999999999999)
-end), type = "action"}
-features["boostrefill"] = {feat = menu.add_feature("Fast Vehicle Boost Refill", "action", featureVars.v.id, function(feat)
+			vehicle.set_vehicle_out_of_control(plyveh, false, true)
+			vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
+		end
+		return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	features["vehicleexplode2"] = {feat = menu.add_feature("Vehicle Explode OnImpact v2", "toggle", featureVars.v.id, function(feat)
+		if feat.on then
+			pped = player.get_player_ped(pid)
 			plyveh = player.get_player_vehicle(pid)
+			if plyveh ~= nil then
+				network.request_control_of_entity(plyveh)
+				vehicle.set_vehicle_out_of_control(plyveh, false, true)
+			end
 			network.request_control_of_entity(plyveh)
-			vehicle.set_vehicle_rocket_boost_refill_time(plyveh, 0.0000010)
-end), type = "action"}
-features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "action", featureVars.v.id, function(feat)
+			vehicle.set_vehicle_out_of_control(plyveh, false, true)
+			vehicle.set_vehicle_forward_speed(plyveh, 200000.00)
+		end
+		return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	features["vehspdslow"] = {feat = menu.add_feature("Set Max Speed 5", "action", featureVars.v.id, function(feat)
+		vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
+		playervehspd(pid, 5.0)
+		vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
+	end), type = "action"}
+	features["vehspdcust"] = {feat = menu.add_feature("Input Custom Max Speed", "action", featureVars.v.id, function(feat)
+		local r,s = input.get("Enter a Speed value:", "0.0001", 64, 5)
+		if r == 1 then
+			return HANDLER_CONTINUE
+		end
+		if r == 2 then
+			return HANDLER_POP
+		end
+		vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
+		playervehspd(pid, s)
+		vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
+	end), type = "action"}
+	features["vehspdfast"] = {feat = menu.add_feature("Reset Max Speed", "action", featureVars.v.id, function(feat)
+		vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), true)
+		playervehspd(pid, 9000000.0)
+		vehicle.set_vehicle_undriveable(player.get_player_vehicle(pid), false)
+	end), type = "action"}
+	features["vehaddexpl"] = {feat = menu.add_feature("Add Explosive Device", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		if plyveh == 0 or nil then
+			return
+		end
+		while not (network.has_control_of_entity(plyveh)) do
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+		end
+		vehicle.add_vehicle_phone_explosive_device(plyveh)
+	end), type = "action"}
+	
+	features["vehdetonate"] = {feat = menu.add_feature("Detonate Explosive Device (named)", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		network.request_control_of_entity(plyveh)
+		print(vehicle.has_vehicle_phone_explosive_device())
+		if vehicle.has_vehicle_phone_explosive_device() then
+			vehicle.detonate_vehicle_phone_explosive_device()
+		end
+	end), type = "action"}
+	
+	features["timedexp"] = {feat = menu.add_feature("Set Vehicle Timed Explosion", "action", featureVars.v.id, function(feat)
+		pos = v3()
+		pos = player.get_player_coords(pid)
+		pped = player.get_player_ped(pid)
+		plyveh = player.get_player_vehicle(pid)
+		audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 10000, false)
+		audio.play_sound_from_entity(-1, "Explosion_Countdown", pped, "GTAO_FM_Events_Soundset")
+		while not network.has_control_of_entity(plyveh) do
+			network.request_control_of_entity(plyveh)
+			system.wait(10)
+		end
+		vehicle.set_vehicle_timed_explosion(plyveh, pped, true)
+	end), type = "action"}
+	features["boostlag"] = {feat = menu.add_feature("Lag Vehicle Boost Refill", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		network.request_control_of_entity(plyveh)
+		vehicle.set_vehicle_rocket_boost_active(plyveh, true)
+		vehicle.set_vehicle_rocket_boost_refill_time(plyveh, 999999.999999999999)
+	end), type = "action"}
+	features["boostrefill"] = {feat = menu.add_feature("Fast Vehicle Boost Refill", "action", featureVars.v.id, function(feat)
+		plyveh = player.get_player_vehicle(pid)
+		network.request_control_of_entity(plyveh)
+		vehicle.set_vehicle_rocket_boost_refill_time(plyveh, 0.0000010)
+	end), type = "action"}
+	features["nomissmk2"] = {feat = menu.add_feature("Set MK2 Machineguns Only", "action", featureVars.v.id, function(feat)
+		pped = player.get_player_ped(pid)
+		plyveh = player.get_player_vehicle(pid)
+		if plyveh ~= nil then
+			network.request_control_of_entity(plyveh)
+		end
+		network.request_control_of_entity(plyveh)
+		vehicle.set_vehicle_mod_kit_type(plyveh, 0)
+		vehicle.get_vehicle_mod(plyveh, 10)
+		vehicle.set_vehicle_mod(plyveh, 10, -1, false)
+	end), type = "action"}
+	features["rapidmk2"] = {feat = menu.add_feature("MK2 Rapid fire", "toggle", featureVars.v.id, function(feat)
+		if feat.on then
 			pped = player.get_player_ped(pid)
 			plyveh = player.get_player_vehicle(pid)
 			if plyveh ~= nil then
 				network.request_control_of_entity(plyveh)
 			end
-			network.request_control_of_entity(plyveh)
-			vehicle.set_vehicle_mod_kit_type(plyveh, 0)
-			vehicle.get_vehicle_mod(plyveh, 10)
-			vehicle.set_vehicle_mod(plyveh, 10, -1, false)
-end), type = "action"}
-features["rapidmk2"] = {feat = menu.add_feature("MK2 Rapid fire", "toggle", featureVars.v.id, function(feat)
-			if feat.on then
-				pped = player.get_player_ped(pid)
-				plyveh = player.get_player_vehicle(pid)
-				if plyveh ~= nil then
-					network.request_control_of_entity(plyveh)
-				end
-				vehicle.set_vehicle_fixed(plyveh)
-				vehicle.set_vehicle_deformation_fixed(plyveh)
+			vehicle.set_vehicle_fixed(plyveh)
+			vehicle.set_vehicle_deformation_fixed(plyveh)
+		end
+		return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	--INFO: Highight Controls
+	features["RGB1"] = {feat = menu.add_feature("fading red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
+		changRGB.on = not changRGB.on
+	end), type = "action"}
+	features["RGB1"].feat.on = false
+	features["RGB2"] = {feat = menu.add_feature("flash red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
+		chang_RGBA.on = not chang_RGBA.on
+	end), type = "action"}
+	features["RGB2"].feat.on = false
+	features["RGB3"] = {feat = menu.add_feature("multi fading colors Marker 1 2 5 on/off", "action", featureVars.chc.id, function(feat)
+		changRGBA.on = not changRGBA.on
+	end), type = "action"}
+	features["RGB3"].feat.on = false
+	features["RGB4"] = {feat = menu.add_feature("Marker 1 2 5 RGB on/off", "action", featureVars.chc.id, function(feat)
+		changeRGB.on = not changeRGB.on
+	end), type = "action"}
+	features["RGB4"].feat.on = false
+	features["RGB5"] = {feat = menu.add_feature("Marker 1 2 5 RGB2 on/off", "action", featureVars.chc.id, function(feat)
+		change_RGBA.on = not change_RGBA.on
+	end), type = "action"}
+	features["RGB5"].feat.on = false
+	features["RGB6"] = {feat = menu.add_feature("Marker3 RGBA on/off", "action", featureVars.chc.id, function(feat)
+		changeRGBA.on = not changeRGBA.on
+	end), type = "action"}
+	features["RGB6"].feat.on = false
+	features["RGB7"] = {feat = menu.add_feature("rand rgb Marker3 on/off", "action", featureVars.chc.id, function(feat)
+		rgb_rand.on = not rgb_rand.on
+	end), type = "action"}
+	features["RGB7"].feat.on = false
+	features["RGB8"] = {feat = menu.add_feature("rand rgb Marker4 on/off", "action", featureVars.chc.id, function(feat)
+		rgb_rand1.on = not rgb_rand1.on
+	end), type = "action"}
+	features["RGB8"].feat.on = false
+	features["RGB9"] = {feat = menu.add_feature("RGB Marker4 on/off", "action", featureVars.chc.id, function(feat)
+		marker1_rgbd.on = not marker1_rgbd.on
+	end), type = "action"}
+	features["RGB9"].feat.on = false
+	--INFO: active marker
+	features["Mark_Control"] = {feat = menu.add_feature("Marker ID  to Control", "value_i", featureVars.ch.id, function(feat)
+		if feat.on then
+			actM = feat.value + pid + 1
+			return HANDLER_CONTINUE
+		end
+	end), type = "toggle"}
+	features["Mark_Control"].feat.on = false
+	features["Mark_Control"].feat.max = 5
+	features["Mark_Control"].feat.min = 1
+	features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "action", featureVars.h.id, function(feat)
+		changeRGBA.on = false
+		change_RGBA.on = false
+		changeRGB.on = false
+		changRGBA.on = false
+		chang_RGBA.on = false
+		changRGB.on = false
+	end), type = "action"}
+	features["cprecision"] = {feat = menu.add_feature("Precision Multipliers", "toggle", featureVars.ch.id, function(feat) end), type = "toggle"}
+	features["MarkSize"] = {feat = menu.add_feature("Marker Size Muliplier", "action_value_i", featureVars.ch.id, function(feat)
+		if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
+		if features["cprecision"].feat.on then
+			size_marker = tonumber(feat.value / 100)
+			markID.s[actM] = size_marker
+			else
+			size_marker = tonumber(feat.value / 2)
+			markID.s[actM] = size_marker
+		end
+	end), type = "action_value_i"}
+	features["MarkSize"].feat.max = 30000
+	features["MarkSize"].feat.min = 1
+	features["MarkSize"].feat.value = 2
+	features["MarkZoff"] = {feat = menu.add_feature("Marker Z Offset Multiplier", "action_value_i", featureVars.ch.id, function(feat)
+		if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
+		if features["cprecision"].feat.on then
+			offsetz_marker = tonumber(feat.value / 100)
+			markID.z[actM] = offsetz_marker
+			else
+			offsetz_marker = tonumber(feat.value / 2)
+			markID.z[actM] = offsetz_marker
+		end
+	end), type = "action_value_i"}
+	features["MarkZoff"].feat.max = 30000
+	features["MarkZoff"].feat.min = -30000
+	features["MarkZoff"].feat.value = 1
+	features["BOB_Marker"] = {feat = menu.add_feature("Bob Marker Up & Down", "toggle", featureVars.ch.id, function(feat)
+		if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
+		BobUPnDown = true
+		local i = actM
+		markID.BOB[i]  = BobUPnDown
+		if feat.on then
+			return HANDLER_CONTINUE
+		end BobUPnDown = false
+		markID.BOB[i] = BobUPnDown
+		return HANDLER_POP
+	end), type = "toggle"}
+	features["ROT_Marker"] = {feat = menu.add_feature("Rotate Marker", "toggle", featureVars.ch.id, function(feat)
+		if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
+		ROTMRK = true
+		local i = actM
+		markID.ROT[i] = ROTMRK
+		if feat.on then
+			return HANDLER_CONTINUE
+		end ROTMRK = false
+		markID.ROT[i] = ROTMRK
+		return HANDLER_POP
+	end)}
+	featureVars.blip = menu.add_feature("Radar Blips", "parent", featureVars.h.id)
+	features["Blipcol"] = {feat =  menu.add_feature("Update Current Blip Colour", "autoaction_value_i", featureVars.blip.id, function(feat)
+		local pped = player.get_player_ped(pid)
+		local oldblip = ui.get_blip_from_entity(pped)
+		ui.set_blip_colour(oldblip, feat.value)
+	end), type = "autoaction_value_i"}
+	features["Blipcol"].feat.max = 85
+	features["Blipcol"].feat.min = 1
+	features["Blipcol"].feat.value = 1
+	features["Blip2col"] = {feat =  menu.add_feature("Add Coloured Blip", "action_value_i", featureVars.blip.id, function(feat)
+		local pped = player.get_player_ped(pid)
+		local oldblip = ui.get_blip_from_entity(pped)
+		ui.set_blip_colour(oldblip, 85)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
+		ui.set_blip_colour(BlipIDs[#BlipIDs], feat.value)
+	end), type = "action_value_i"}
+	features["Blip2col"].feat.max = 85
+	features["Blip2col"].feat.min = 1
+	features["Blip2col"].feat.value = 1
+	
+	features["Blip"] = {feat =  menu.add_feature("Add Radar Blip", "action", featureVars.blip.id, function(feat)
+		pped = player.get_player_ped(pid)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
+	end), type = "action"}
+	
+	
+	features["Blip01"] = {feat =  menu.add_feature("Add Radar Blip", "value_i", featureVars.blip.id, function(feat)
+		pped = player.get_player_ped(pid)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
+		ui.set_blip_colour(BlipIDs[#BlipIDs], feat.value)
+		
+	end), type = "value_i"}
+	features["Blip01"].feat.max = 85
+	features["Blip01"].feat.min = 1
+	features["Blip01"].feat.value = 1
+	
+	local blip
+	features["Blipv2"] = {feat =  menu.add_feature("Radial Radar Blip", "action_value_i", featureVars.blip.id, function(feat)
+		if blip ~= nil then
+			ui.remove_blip(blip)
+			blip = nil
+		end
+		local bliprad = tonumber(feat.value) + 0.001
+		blip = ui.add_blip_for_radius(player.get_player_coords(pid), bliprad)
+		BlipIDs[#BlipIDs+1] = blip
+		ui.set_blip_colour(blip, 79)
+		playerFeatures[pid].features["RadBlipUpdate"].feat.on = true
+		return HANDLER_POP
+	end), type = "action"}
+	features["Blipv2"].feat.max = 1000
+	features["Blipv2"].feat.min = 1
+	features["Blipv2"].feat.value = 25
+	
+	features["Blip_v2"] = {feat =  menu.add_feature("Radial Radar Blip v2", "action_value_i", featureVars.blip.id, function(feat)
+		local bliprad = tonumber(feat.value) + 0.001
+		blip = ui.add_blip_for_radius(player.get_player_coords(pid), bliprad)
+		BlipIDs[#BlipIDs+1] = blip
+		ui.set_blip_colour(BlipIDs[#BlipIDs], 79)
+		playerFeatures[pid].features["RadBlipUpdate"].feat.on = true
+		return HANDLER_POP
+	end), type = "action"}
+	features["Blip_v2"].feat.max = 1000
+	features["Blip_v2"].feat.min = 1
+	features["Blip_v2"].feat.value = 1
+	
+	features["Blip_v3"] = {feat =  menu.add_feature("Radial Blip v3 Vehicle", "action_value_i", featureVars.blip.id, function(feat)
+		local bliprad = tonumber(feat.value) + 0.001
+		plyveh = player.get_player_vehicle(pid)
+		blip = ui.add_blip_for_radius(entity.get_entity_coords(plyveh), bliprad)
+		BlipIDs[#BlipIDs+1] = blip
+		ui.set_blip_colour(BlipIDs[#BlipIDs], 79)
+		return HANDLER_POP
+	end), type = "action"}
+	features["Blip_v3"].feat.max = 10000
+	features["Blip_v3"].feat.min = 1
+	features["Blip_v3"].feat.value = 3500
+	features["Blip_v3"].feat.mod = 1
+	
+	features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour", "action_value_i", featureVars.blip.id, function(feat)
+		if blip ~= nil then
+			for i = 1, #BlipIDs do
+				ui.set_blip_colour(BlipIDs[i], feat.value)
+			end
+		end
+	end), type = "action_value_i"}
+	features["Blipv2col"].feat.max = 120
+	features["Blipv2col"].feat.min = 1
+	features["Blipv2col"].feat.value = 1
+	features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour v2", "autoaction_value_i", featureVars.blip.id, function(feat)
+		if blip ~= nil then
+			ui.set_blip_colour(blip, feat.value)
+		end
+	end), type = "autoaction_value_i"}
+	features["Blipv2col"].feat.max = 85
+	features["Blipv2col"].feat.min = 1
+	features["Blipv2col"].feat.value = 1
+	
+	features["RadBlipUpdate"] = {feat = menu.add_feature("Update Blip v2 Pos", "toggle", featureVars.blip.id, function(feat)
+		if feat.on then
+			if blip ~= nil then
+				ui.set_blip_coord(blip, entity.get_entity_coords(player.get_player_vehicle(pid)))
 			end
 			return HANDLER_CONTINUE
-end),  type = "toggle", callback = function()
-end}
-		--INFO: Highight Controls
-features["RGB1"] = {feat = menu.add_feature("fading red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
-			changRGB.on = not changRGB.on
-end), type = "action"}
-features["RGB1"].feat.on = false
-features["RGB2"] = {feat = menu.add_feature("flash red white Marker3 on/off", "action", featureVars.chc.id, function(feat)
-			chang_RGBA.on = not chang_RGBA.on
-end), type = "action"}
-features["RGB2"].feat.on = false
-features["RGB3"] = {feat = menu.add_feature("multi fading colors Marker 1 2 5 on/off", "action", featureVars.chc.id, function(feat)
-			changRGBA.on = not changRGBA.on
-end), type = "action"}
-features["RGB3"].feat.on = false
-features["RGB4"] = {feat = menu.add_feature("Marker 1 2 5 RGB on/off", "action", featureVars.chc.id, function(feat)
-			changeRGB.on = not changeRGB.on
-end), type = "action"}
-features["RGB4"].feat.on = false
-features["RGB5"] = {feat = menu.add_feature("Marker 1 2 5 RGB2 on/off", "action", featureVars.chc.id, function(feat)
-			change_RGBA.on = not change_RGBA.on
-end), type = "action"}
-features["RGB5"].feat.on = false
-features["RGB6"] = {feat = menu.add_feature("Marker3 RGBA on/off", "action", featureVars.chc.id, function(feat)
-			changeRGBA.on = not changeRGBA.on
-end), type = "action"}
-features["RGB6"].feat.on = false
-features["RGB7"] = {feat = menu.add_feature("rand rgb Marker3 on/off", "action", featureVars.chc.id, function(feat)
-			rgb_rand.on = not rgb_rand.on
-end), type = "action"}
-features["RGB7"].feat.on = false
-features["RGB8"] = {feat = menu.add_feature("rand rgb Marker4 on/off", "action", featureVars.chc.id, function(feat)
-			rgb_rand1.on = not rgb_rand1.on
-end), type = "action"}
-features["RGB8"].feat.on = false
-features["RGB9"] = {feat = menu.add_feature("RGB Marker4 on/off", "action", featureVars.chc.id, function(feat)
-			marker1_rgbd.on = not marker1_rgbd.on
-end), type = "action"}
-features["RGB9"].feat.on = false
-		--INFO: active marker
-features["Mark_Control"] = {feat = menu.add_feature("Marker ID  to Control", "value_i", featureVars.ch.id, function(feat)
-			if feat.on then
-				actM = feat.value + pid + 1
-				return HANDLER_CONTINUE
+		end
+		if blip ~= nil then
+			ui.remove_blip(blip)
+			blip = nil
+		end
+		return HANDLER_POP
+	end), type = "toggle"}
+	features["RadBlipUpdate"].feat.on = false
+	features["RadBlipvehUpdate"] = {feat = menu.add_feature("Update Blip v2 Pos", "toggle", featureVars.blip.id, function(feat)
+		if feat.on then
+			if blip ~= nil then
+				ui.set_blip_coord(blip, player.get_player_coords(pid))
 			end
-end), type = "toggle"}
-features["Mark_Control"].feat.on = false
-features["Mark_Control"].feat.max = 5
-features["Mark_Control"].feat.min = 1
-features["RGB_OFF"] = {feat = menu.add_feature("Turn off all RGB Changers", "action", featureVars.h.id, function(feat)
-			changeRGBA.on = false
-			change_RGBA.on = false
-			changeRGB.on = false
-			changRGBA.on = false
-			chang_RGBA.on = false
-			changRGB.on = false
-end), type = "action"}
-features["cprecision"] = {feat = menu.add_feature("Precision Multipliers", "toggle", featureVars.ch.id, function(feat) end), type = "toggle"}
-features["MarkSize"] = {feat = menu.add_feature("Marker Size Muliplier", "action_value_i", featureVars.ch.id, function(feat)
-			if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
-			if features["cprecision"].feat.on then
-				size_marker = tonumber(feat.value / 100)
-				markID.s[actM] = size_marker
-				else
-				size_marker = tonumber(feat.value / 2)
-				markID.s[actM] = size_marker
-			end
-end), type = "action_value_i"}
-features["MarkSize"].feat.max = 30000
-features["MarkSize"].feat.min = 1
-features["MarkSize"].feat.value = 2
-features["MarkZoff"] = {feat = menu.add_feature("Marker Z Offset Multiplier", "action_value_i", featureVars.ch.id, function(feat)
-			if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
-			if features["cprecision"].feat.on then
-				offsetz_marker = tonumber(feat.value / 100)
-				markID.z[actM] = offsetz_marker
-				else
-				offsetz_marker = tonumber(feat.value / 2)
-				markID.z[actM] = offsetz_marker
-			end
-end), type = "action_value_i"}
-features["MarkZoff"].feat.max = 30000
-features["MarkZoff"].feat.min = -30000
-features["MarkZoff"].feat.value = 1
-features["BOB_Marker"] = {feat = menu.add_feature("Bob Marker Up & Down", "toggle", featureVars.ch.id, function(feat)
-			if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
-			BobUPnDown = true
-			local i = actM
-			markID.BOB[i]  = BobUPnDown
-			if feat.on then
-				return HANDLER_CONTINUE
-			end BobUPnDown = false
-			markID.BOB[i] = BobUPnDown
-			return HANDLER_POP
-end), type = "toggle"}
-features["ROT_Marker"] = {feat = menu.add_feature("Rotate Marker", "toggle", featureVars.ch.id, function(feat)
-			if not playerFeatures[pid].features["Mark_Control"].feat.on then return end
-			ROTMRK = true
-			local i = actM
-			markID.ROT[i] = ROTMRK
-			if feat.on then
-				return HANDLER_CONTINUE
-			end ROTMRK = false
-			markID.ROT[i] = ROTMRK
-			return HANDLER_POP
-end)}
-		featureVars.blip = menu.add_feature("Radar Blips", "parent", featureVars.h.id)
-features["Blipcol"] = {feat =  menu.add_feature("Update Current Blip Colour", "autoaction_value_i", featureVars.blip.id, function(feat)
-			local pped = player.get_player_ped(pid)
-			local oldblip = ui.get_blip_from_entity(pped)
-			ui.set_blip_colour(oldblip, feat.value)
-end), type = "autoaction_value_i"}
-features["Blipcol"].feat.max = 85
-features["Blipcol"].feat.min = 1
-features["Blipcol"].feat.value = 1
-features["Blip2col"] = {feat =  menu.add_feature("Add Coloured Blip", "action_value_i", featureVars.blip.id, function(feat)
-			local pped = player.get_player_ped(pid)
-			local oldblip = ui.get_blip_from_entity(pped)
-			ui.set_blip_colour(oldblip, 85)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
-			ui.set_blip_colour(BlipIDs[#BlipIDs], feat.value)
-end), type = "action_value_i"}
-features["Blip2col"].feat.max = 85
-features["Blip2col"].feat.min = 1
-features["Blip2col"].feat.value = 1
-
-features["Blip"] = {feat =  menu.add_feature("Add Radar Blip", "action", featureVars.blip.id, function(feat)
+			return HANDLER_CONTINUE
+		end
+		if blip ~= nil then
+			ui.remove_blip(blip)
+			blip = nil
+		end
+		return HANDLER_POP
+	end), type = "toggle"}
+	features["RadBlipvehUpdate"].feat.on = false
+	features["marker_active1"] = {feat =  menu.add_feature("Marker 1 Type:", "value_i", featureVars.h.id, function(feat)
+		if feat.on then
+			local offset, pos = v3(), v3()
+			offset.z = markID.z[pid+2]
+			local size = markID.s[pid+2]
+			local posbool, pped
 			pped = player.get_player_ped(pid)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
-end), type = "action"}
-
-
-features["Blip01"] = {feat =  menu.add_feature("Add Radar Blip", "value_i", featureVars.blip.id, function(feat)
+			offset = v3(0.0,0.0,0.0)
+			posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
+			graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			return HANDLER_CONTINUE
+		end
+	end), type = "value_i"}
+	features["marker_active1"].feat.max = 44
+	features["marker_active1"].feat.min = 0
+	features["marker_active1"].feat.value = 1
+	features["marker_active1"].feat.on = false
+	features["marker_active2"] = {feat =  menu.add_feature("Marker 2 Type:", "value_i", featureVars.h.id, function(feat)
+		if feat.on then
+			local offset = v3(0.0,0.0,0.0)
+			offset.z = markID.z[pid+3]
+			local size = markID.s[pid+3]
+			local pos = v3()
+			local posbool, pped
 			pped = player.get_player_ped(pid)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(pped)
-			ui.set_blip_colour(BlipIDs[#BlipIDs], feat.value)
+			posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
+			graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			return HANDLER_CONTINUE
+		end
+	end), type = "value_i"}
+	features["marker_active2"].feat.max = 44
+	features["marker_active2"].feat.min = 0
+	features["marker_active2"].feat.value = 43
+	features["marker_active2"].feat.on = false
+	features["marker_active3"] = {feat =  menu.add_feature("Marker 3 Type:", "value_i", featureVars.h.id, function(feat)
+		if feat.on then
+			local offset = v3(0.0,0.0,0.0)
+			offset.z = markID.z[pid+4]
+			local size = markID.s[pid+4]
+			local pos = v3()
+			local posbool, pped
+			pped = player.get_player_ped(pid)
+			posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
+			graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			return HANDLER_CONTINUE
+		end
+	end), type = "value_i"}
+	features["marker_active3"].feat.max = 44
+	features["marker_active3"].feat.min = 0
+	features["marker_active3"].feat.value = 0
+	features["marker_active3"].feat.on = false
+	features["marker_active4"] = {feat =  menu.add_feature("Marker 4 Type:", "value_i", featureVars.h.id, function(feat)
+		if feat.on then
+			local offset = v3(0.0,0.0,0.0)
+			offset.z = markID.z[pid+5]
+			local size = markID.s[pid+5]
+			local pos = v3()
+			local posbool, pped
+			pped = player.get_player_ped(pid)
+			posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
+			graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), RGB_A_R, RGB_A_G, RGB_A_B, RGB_A_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
+			return HANDLER_CONTINUE
+		end
+	end), type = "value_i"}
+	features["marker_active4"].feat.max = 44
+	features["marker_active4"].feat.min = 0
+	features["marker_active4"].feat.value = 29
+	features["marker_active4"].feat.on = false
+	features["marker_active5"] = {feat =  menu.add_feature("Marker 5 (Drawn on Entity) Type:", "value_i", featureVars.h.id, function(feat)
+		if feat.on then
+			local offset = v3(0.0,0.0,0.0)
+			offset.z = markID.z[pid+6]
+			local size = markID.s[pid+6]
+			local pos = v3()
+			local posbool, pped
+			pped = player.get_player_ped(pid)
+			posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
+			graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, true)
+			return HANDLER_CONTINUE
+		end
+	end), type = "value_i"}
+	features["marker_active5"].feat.max = 44
+	features["marker_active5"].feat.min = 0
+	features["marker_active5"].feat.value = 28
+	features["marker_active5"].feat.on = false
+	--INFO: CEO Money
+	featureVars.ceo = menu.add_feature("CEO Money Shit", "parent", featureVars.f.id)
+	featureVars.ceo.hidden = NewDLC()
+	
+	features["ceo_money1"] = {feat = menu.add_feature("10k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			print("Money Trigger loop")
+			print(os.date())
 			
-end), type = "value_i"}
-features["Blip01"].feat.max = 85
-features["Blip01"].feat.min = 1
-features["Blip01"].feat.value = 1
-
-local blip
-features["Blipv2"] = {feat =  menu.add_feature("Radial Radar Blip", "action_value_i", featureVars.blip.id, function(feat)
-			if blip ~= nil then
-				ui.remove_blip(blip)
-				blip = nil
-			end
-			local bliprad = tonumber(feat.value) + 0.001
-			blip = ui.add_blip_for_radius(player.get_player_coords(pid), bliprad)
-			BlipIDs[#BlipIDs+1] = blip
-			ui.set_blip_colour(blip, 79)
-			playerFeatures[pid].features["RadBlipUpdate"].feat.on = true
-			return HANDLER_POP
-end), type = "action"}
-features["Blipv2"].feat.max = 1000
-features["Blipv2"].feat.min = 1
-features["Blipv2"].feat.value = 25
-
-features["Blip_v2"] = {feat =  menu.add_feature("Radial Radar Blip v2", "action_value_i", featureVars.blip.id, function(feat)
-			local bliprad = tonumber(feat.value) + 0.001
-			blip = ui.add_blip_for_radius(player.get_player_coords(pid), bliprad)
-			BlipIDs[#BlipIDs+1] = blip
-			ui.set_blip_colour(BlipIDs[#BlipIDs], 79)
-			playerFeatures[pid].features["RadBlipUpdate"].feat.on = true
-			return HANDLER_POP
-end), type = "action"}
-features["Blip_v2"].feat.max = 1000
-features["Blip_v2"].feat.min = 1
-features["Blip_v2"].feat.value = 1
+			script.trigger_script_event(0x70AB59D5, pid, {pid, 10000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(16000)
+			print(os.date())
+			return HANDLER_CONTINUE
+		end
+		print("loop end")
 		
-features["Blip_v3"] = {feat =  menu.add_feature("Radial Blip v3 Vehicle", "action_value_i", featureVars.blip.id, function(feat)
-			local bliprad = tonumber(feat.value) + 0.001
-			plyveh = player.get_player_vehicle(pid)
-			blip = ui.add_blip_for_radius(entity.get_entity_coords(plyveh), bliprad)
-			BlipIDs[#BlipIDs+1] = blip
-			ui.set_blip_colour(BlipIDs[#BlipIDs], 79)
-			return HANDLER_POP
-end), type = "action"}
-features["Blip_v3"].feat.max = 10000
-features["Blip_v3"].feat.min = 1
-features["Blip_v3"].feat.value = 3500
-features["Blip_v3"].feat.mod = 1
-		
-features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour", "action_value_i", featureVars.blip.id, function(feat)
-			if blip ~= nil then
-				for i = 1, #BlipIDs do
-					ui.set_blip_colour(BlipIDs[i], feat.value)
-				end
-			end
-end), type = "action_value_i"}
-features["Blipv2col"].feat.max = 120
-features["Blipv2col"].feat.min = 1
-features["Blipv2col"].feat.value = 1
-features["Blipv2col"] = {feat =  menu.add_feature("Update Radial Blip Colour v2", "autoaction_value_i", featureVars.blip.id, function(feat)
-			if blip ~= nil then
-				ui.set_blip_colour(blip, feat.value)
-			end
-end), type = "autoaction_value_i"}
-features["Blipv2col"].feat.max = 85
-features["Blipv2col"].feat.min = 1
-features["Blipv2col"].feat.value = 1
-		
-features["RadBlipUpdate"] = {feat = menu.add_feature("Update Blip v2 Pos", "toggle", featureVars.blip.id, function(feat)
-			if feat.on then
-				if blip ~= nil then
-					ui.set_blip_coord(blip, entity.get_entity_coords(player.get_player_vehicle(pid)))
-				end
-				return HANDLER_CONTINUE
-			end
-			if blip ~= nil then
-				ui.remove_blip(blip)
-				blip = nil
-			end
-			return HANDLER_POP
-end), type = "toggle"}
-features["RadBlipUpdate"].feat.on = false
-features["RadBlipvehUpdate"] = {feat = menu.add_feature("Update Blip v2 Pos", "toggle", featureVars.blip.id, function(feat)
-			if feat.on then
-				if blip ~= nil then
-					ui.set_blip_coord(blip, player.get_player_coords(pid))
-				end
-				return HANDLER_CONTINUE
-			end
-			if blip ~= nil then
-				ui.remove_blip(blip)
-				blip = nil
-			end
-			return HANDLER_POP
-end), type = "toggle"}
-features["RadBlipvehUpdate"].feat.on = false
-features["marker_active1"] = {feat =  menu.add_feature("Marker 1 Type:", "value_i", featureVars.h.id, function(feat)
-			if feat.on then
-				local offset, pos = v3(), v3()
-				offset.z = markID.z[pid+2]
-				local size = markID.s[pid+2]
-				local posbool, pped
-				pped = player.get_player_ped(pid)
-				offset = v3(0.0,0.0,0.0)
-				posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
-				graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-				return HANDLER_CONTINUE
-			end
-end), type = "value_i"}
-features["marker_active1"].feat.max = 44
-features["marker_active1"].feat.min = 0
-features["marker_active1"].feat.value = 1
-features["marker_active1"].feat.on = false
-features["marker_active2"] = {feat =  menu.add_feature("Marker 2 Type:", "value_i", featureVars.h.id, function(feat)
-			if feat.on then
-				local offset = v3(0.0,0.0,0.0)
-				offset.z = markID.z[pid+3]
-				local size = markID.s[pid+3]
-				local pos = v3()
-				local posbool, pped
-				pped = player.get_player_ped(pid)
-				posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
-				graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-				return HANDLER_CONTINUE
-			end
-end), type = "value_i"}
-features["marker_active2"].feat.max = 44
-features["marker_active2"].feat.min = 0
-features["marker_active2"].feat.value = 43
-features["marker_active2"].feat.on = false
-features["marker_active3"] = {feat =  menu.add_feature("Marker 3 Type:", "value_i", featureVars.h.id, function(feat)
-			if feat.on then
-				local offset = v3(0.0,0.0,0.0)
-				offset.z = markID.z[pid+4]
-				local size = markID.s[pid+4]
-				local pos = v3()
-				local posbool, pped
-				pped = player.get_player_ped(pid)
-				posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
-				graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), RGBA_R, RGBA_G, RGBA_B, RGBA_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-				return HANDLER_CONTINUE
-			end
-end), type = "value_i"}
-features["marker_active3"].feat.max = 44
-features["marker_active3"].feat.min = 0
-features["marker_active3"].feat.value = 0
-features["marker_active3"].feat.on = false
-features["marker_active4"] = {feat =  menu.add_feature("Marker 4 Type:", "value_i", featureVars.h.id, function(feat)
-			if feat.on then
-				local offset = v3(0.0,0.0,0.0)
-				offset.z = markID.z[pid+5]
-				local size = markID.s[pid+5]
-				local pos = v3()
-				local posbool, pped
-				pped = player.get_player_ped(pid)
-				posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
-				graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), RGB_A_R, RGB_A_G, RGB_A_B, RGB_A_A,  BobUPnDown, true, 2, ROTMRK, nil, nil, false)
-				return HANDLER_CONTINUE
-			end
-end), type = "value_i"}
-features["marker_active4"].feat.max = 44
-features["marker_active4"].feat.min = 0
-features["marker_active4"].feat.value = 29
-features["marker_active4"].feat.on = false
-features["marker_active5"] = {feat =  menu.add_feature("Marker 5 (Drawn on Entity) Type:", "value_i", featureVars.h.id, function(feat)
-			if feat.on then
-				local offset = v3(0.0,0.0,0.0)
-				offset.z = markID.z[pid+6]
-				local size = markID.s[pid+6]
-				local pos = v3()
-				local posbool, pped
-				pped = player.get_player_ped(pid)
-				posbool, pos = ped.get_ped_bone_coords(pped, 31086, offset)
-				graphics.draw_marker(feat.value, pos + offset, v3(), v3(), v3(size), changeR, changeG, changeB, changeA,  BobUPnDown, true, 2, ROTMRK, nil, nil, true)
-				return HANDLER_CONTINUE
-			end
-end), type = "value_i"}
-features["marker_active5"].feat.max = 44
-features["marker_active5"].feat.min = 0
-features["marker_active5"].feat.value = 28
-features["marker_active5"].feat.on = false
-		--INFO: CEO Money
-		featureVars.ceo = menu.add_feature("CEO Money Shit", "parent", featureVars.f.id)
-		featureVars.ceo.hidden = NewDLC()
-		
-features["ceo_money1"] = {feat = menu.add_feature("10k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
-				print("Money Trigger loop")
-				print(os.date())
-				
-				script.trigger_script_event(0x70AB59D5, pid, {pid, 10000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-				system.wait(16000)
-				print(os.date())
-				return HANDLER_CONTINUE
-			end
-			print("loop end")
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["ceo_money1"].feat.on = false
+	features["ceo_money1"].feat.hidden = NewDLC()
+	
+	features["ceo_money15"] = {feat = menu.add_feature("15k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			print("Money Trigger loop")
+			print(os.date())
 			
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money1"].feat.on = false
-features["ceo_money1"].feat.hidden = NewDLC()
+			script.trigger_script_event(0x70AB59D5, pid, {pid, 15000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(16000)
+			print(os.date())
+			return HANDLER_CONTINUE
+		end
+		print("loop end")
 		
-features["ceo_money15"] = {feat = menu.add_feature("15k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
-				print("Money Trigger loop")
-				print(os.date())
-				
-				script.trigger_script_event(0x70AB59D5, pid, {pid, 15000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-				system.wait(16000)
-				print(os.date())
-				return HANDLER_CONTINUE
-			end
-			print("loop end")
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["ceo_money15"].feat.on = false
+	features["ceo_money15"].feat.hidden = NewDLC()
+	
+	features["ceo_money2"] = {feat = menu.add_feature("20k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			print("Money Trigger loop")
+			print(os.date())
 			
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money15"].feat.on = false
-features["ceo_money15"].feat.hidden = NewDLC()
+			script.trigger_script_event(0x70AB59D5, pid, {pid, 20000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(121000)
+			print(os.date())
+			return HANDLER_CONTINUE
+		end
+		print("loop end")
 		
-features["ceo_money2"] = {feat = menu.add_feature("20k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
-				print("Money Trigger loop")
-				print(os.date())
-				
-				script.trigger_script_event(0x70AB59D5, pid, {pid, 20000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-				system.wait(121000)
-				print(os.date())
-				return HANDLER_CONTINUE
-			end
-			print("loop end")
-			
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money2"].feat.on = false
-features["ceo_money2"].feat.hidden = NewDLC()
-		
-features["ceo_money3"] = {feat = menu.add_feature("30k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["ceo_money2"].feat.on = false
+	features["ceo_money2"].feat.hidden = NewDLC()
+	
+	features["ceo_money3"] = {feat = menu.add_feature("30k money loop (Their Current CEO)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
 			
 			script.trigger_script_event(0x70AB59D5, pid, {pid, 30000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
 			system.wait(121000)
-
-				return HANDLER_CONTINUE
+			
+			return HANDLER_CONTINUE
+		end
+		
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["ceo_money3"].feat.on = false
+	features["ceo_money3"].feat.hidden = NewDLC()
+	
+	features["Yceo_money3"] = {feat = menu.add_feature("10k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(16000)
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["Yceo_money3"].feat.on = false
+	features["Yceo_money3"].feat.hidden = NewDLC()
+	
+	features["Yceo_money35"] = {feat = menu.add_feature("15k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 15000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(16000)
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["Yceo_money35"].feat.on = false
+	features["Yceo_money35"].feat.hidden = NewDLC()
+	
+	features["Yceo_money4"] = {feat = menu.add_feature("20k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(121000)
+			return HANDLER_CONTINUE
+		end			
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["Yceo_money4"].feat.on = false
+	features["Yceo_money4"].feat.hidden = NewDLC()
+	
+	
+	features["Yceo_money5"] = {feat = menu.add_feature("30k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
+		while feat.on do
+			script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 30000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
+			system.wait(121000)
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["Yceo_money5"].feat.on = false
+	features["Yceo_money5"].feat.hidden = NewDLC()
+	
+	features["ceo_otr"] = {feat = menu.add_feature("OTR", "toggle", featureVars.f.id, function(feat)
+		while feat.on do
+			script.trigger_script_event(-391633760, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+			system.yield(0)
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["ceo_otr"].feat.hidden = NewDLC()
+	
+	features["give_nocops"] = {feat = menu.add_feature("Give Long Cop Bribe", "action", featureVars.f.id, function(feat)
+		script.trigger_script_event(0x66B0F59A, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2810287 + 4628), 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["give_nocops"].feat.hidden = NewDLC()
+	
+	--INFO: teleport
+	features["TeleportPlayernext2me"] = {feat = menu.add_feature("Teleport Next 2 Me(old Version)", "toggle", featureVars.t.id, function(feat)
+		if feat.on then
+			local plyveh
+			pped = player.get_player_ped(pid)
+			local pos = v3()
+			pos = player.get_player_coords(player.player_id())
+			pos.x = pos.x + 3
+			if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
+				plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(plyveh)
+				entity.set_entity_coords_no_offset(plyveh, pos)
+				--vehicle.set_vehicle_on_ground_properly(plyveh)
 			end
-		
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_money3"].feat.on = false
-features["ceo_money3"].feat.hidden = NewDLC()
-		
-features["Yceo_money3"] = {feat = menu.add_feature("10k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
-				script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 10000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-				system.wait(16000)
-				return HANDLER_CONTINUE
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["TeleportPlayernext2me"].feat.on = false
+	
+	features["TeleportPlayerinfront"] = {feat = menu.add_feature("Teleport in front of Me", "toggle", featureVars.t.id, function(feat)
+		if feat.on then
+			local plyveh, pped, pos, me
+			pped = player.get_player_ped(pid)
+			me = player.player_id()
+			get_offset2me(player.player_id(), 3)
+			pos = SelfoffsetPos
+			if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
+				plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(plyveh)
+				entity.set_entity_coords_no_offset(plyveh, pos)
+				vehicle.set_vehicle_on_ground_properly(plyveh)
 			end
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["Yceo_money3"].feat.on = false
-features["Yceo_money3"].feat.hidden = NewDLC()
-		
-features["Yceo_money35"] = {feat = menu.add_feature("15k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
-				script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 15000, -1292453789, 0, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-				system.wait(16000)
-				return HANDLER_CONTINUE
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["TeleportPlayerinfront"].feat.on = false
+	
+	features["TeleportPlayerBeyondLimits"] = {feat = menu.add_feature("Teleport Beyond World Limits", "toggle", featureVars.t.id, function(feat)
+		if feat.on then
+			local plyveh, pped
+			local pos = v3()
+			pos.x = presets[1][2]
+			pos.y = presets[1][3]
+			pos.z = presets[1][4]
+			pped = player.get_player_ped(pid)
+			if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
+				plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(plyveh)
+				entity.set_entity_coords_no_offset(plyveh, pos)
 			end
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["Yceo_money35"].feat.on = false
-features["Yceo_money35"].feat.hidden = NewDLC()
-		
-features["Yceo_money4"] = {feat = menu.add_feature("20k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
-			while feat.on do
-				script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 20000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-				system.wait(121000)
-				return HANDLER_CONTINUE
-			end			
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["Yceo_money4"].feat.on = false
-features["Yceo_money4"].feat.hidden = NewDLC()
-		
-		
-features["Yceo_money5"] = {feat = menu.add_feature("30k money loop (Your CEO As Assosiate)", "toggle", featureVars.ceo.id, function(feat)
-	while feat.on do
-		script.trigger_script_event(0x70AB59D5, pid, {player.player_id(), 30000, 198210293, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511), script.get_global_i(1921036 + 9), script.get_global_i(1921036 + 10)})
-		system.wait(121000)
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["TeleportPlayerBeyondLimits"].feat.on = false
+	
+	features["Teleport_God-mode_Death"] = {feat = menu.add_feature("Teleport to Death (Ocean Out of World Limits)", "toggle", featureVars.t.id, function(feat)
+		if feat.on then
+			local plyveh, pped
+			local pos = v3()
+			pos.x = presets[3][2]
+			pos.y = presets[3][3]
+			pos.z = presets[3][4]
+			pped = player.get_player_ped(pid)
+			if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
+				plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(plyveh)
+				entity.set_entity_coords_no_offset(plyveh, pos)
+			end
+		end
 		return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["Yceo_money5"].feat.on = false
-features["Yceo_money5"].feat.hidden = NewDLC()
-		
-features["ceo_otr"] = {feat = menu.add_feature("OTR", "action", featureVars.f.id, function(feat)
-			
-			script.trigger_script_event(0xE8A824A0, pid, {pid, utils.time() - 60, utils.time(), 1, 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["ceo_otr"].feat.hidden = NewDLC()
-		
-features["give_nocops"] = {feat = menu.add_feature("Give Long Cop Bribe", "action", featureVars.f.id, function(feat)
-			script.trigger_script_event(0x66B0F59A, pid, {pid, utils.time() - 60, utils.time(), script.get_global_i(2810287 + 4628), 1, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
-			return HANDLER_POP
-end), type = "action", callback = function()
-end}
-features["give_nocops"].feat.hidden = NewDLC()
-
-		--INFO: teleport
-features["TeleportPlayernext2me"] = {feat = menu.add_feature("Teleport Next 2 Me(old Version)", "toggle", featureVars.t.id, function(feat)
-			if feat.on then
-				local plyveh
-				pped = player.get_player_ped(pid)
-				local pos = v3()
-				pos = player.get_player_coords(player.player_id())
-				pos.x = pos.x + 3
-				if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
-					plyveh = player.get_player_vehicle(pid)
-					network.request_control_of_entity(plyveh)
-					entity.set_entity_coords_no_offset(plyveh, pos)
-					--vehicle.set_vehicle_on_ground_properly(plyveh)
-				end
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["TeleportPlayernext2me"].feat.on = false
-
-features["TeleportPlayerinfront"] = {feat = menu.add_feature("Teleport in front of Me", "toggle", featureVars.t.id, function(feat)
-			if feat.on then
-				local plyveh, pped, pos, me
-				pped = player.get_player_ped(pid)
-				me = player.player_id()
-				get_offset2me(player.player_id(), 3)
-				pos = SelfoffsetPos
-				if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
-					plyveh = player.get_player_vehicle(pid)
-					network.request_control_of_entity(plyveh)
-					entity.set_entity_coords_no_offset(plyveh, pos)
-					vehicle.set_vehicle_on_ground_properly(plyveh)
-				end
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["TeleportPlayerinfront"].feat.on = false
-
-features["TeleportPlayerBeyondLimits"] = {feat = menu.add_feature("Teleport Beyond World Limits", "toggle", featureVars.t.id, function(feat)
-			if feat.on then
-				local plyveh, pped
-				local pos = v3()
-				pos.x = presets[1][2]
-				pos.y = presets[1][3]
-				pos.z = presets[1][4]
-				pped = player.get_player_ped(pid)
-				if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
-					plyveh = player.get_player_vehicle(pid)
-					network.request_control_of_entity(plyveh)
-					entity.set_entity_coords_no_offset(plyveh, pos)
-				end
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["TeleportPlayerBeyondLimits"].feat.on = false
-
-features["Teleport_God-mode_Death"] = {feat = menu.add_feature("Teleport to Death (Ocean Out of World Limits)", "toggle", featureVars.t.id, function(feat)
-			if feat.on then
-				local plyveh, pped
-				local pos = v3()
-				pos.x = presets[3][2]
-				pos.y = presets[3][3]
-				pos.z = presets[3][4]
-				pped = player.get_player_ped(pid)
-				if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
-					plyveh = player.get_player_vehicle(pid)
-					network.request_control_of_entity(plyveh)
-					entity.set_entity_coords_no_offset(plyveh, pos)
-				end
-			end
-			return HANDLER_CONTINUE
-end),  type = "toggle", callback = function()
-end}
-features["Teleport_God-mode_Death"].feat.on = false
-features["Teleport_God-mode_Death_2"] = {feat = menu.add_feature("Teleport to Death (KillBarrier)", "toggle", featureVars.t.id, function(feat)
-			if feat.on then
-				local plyveh, pped
-				local pos = v3()
-				pos.x = presets[2][2]
-				pos.y = presets[2][3]
-				pos.z = presets[2][4]
-				pped = player.get_player_ped(pid)
-				if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
-					plyveh = player.get_player_vehicle(pid)
-					network.request_control_of_entity(plyveh)
-					entity.set_entity_coords_no_offset(plyveh, pos)
-				end
-			end
-			return HANDLER_CONTINUE
-end),  type = "toggle", callback = function()
-end}
-features["Teleport_God-mode_Death_2"].feat.on = false
-		--INFO: Sound Troll
-features["sound_troll1"] = {feat = menu.add_feature("Annoy With Air Drop Sounds", "action", featureVars.str.id, function(feat)
+	end),  type = "toggle", callback = function()
+	end}
+	features["Teleport_God-mode_Death"].feat.on = false
+	features["Teleport_God-mode_Death_2"] = {feat = menu.add_feature("Teleport to Death (KillBarrier)", "toggle", featureVars.t.id, function(feat)
+		if feat.on then
+			local plyveh, pped
 			local pos = v3()
-			pos = entity.get_entity_coords(player.get_player_ped(pid))
+			pos.x = presets[2][2]
+			pos.y = presets[2][3]
+			pos.z = presets[2][4]
 			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "Air_Drop_Package", pped, "DLC_SM_Generic_Mission_Sounds", true)
-end), type = "action"}
-features["sound_troll2"] = {feat = menu.add_feature("Annoy With Countdown sound", "action", featureVars.str.id, function(feat)
-			local pos = v3()
-			pos = entity.get_entity_coords(player.get_player_ped(pid))
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 1000, false)
-			audio.play_sound_from_entity(-1, "Explosion_Countdown", pped, "GTAO_FM_Events_Soundset", true)
-end), type = "action"}
-features["sound_troll3"] = {feat = menu.add_feature("Annoy With Yacht Horn Sound", "action", featureVars.str.id, function(feat)
-			local pos = v3()
-			pos = entity.get_entity_coords(player.get_player_ped(pid))
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1,  "HORN", pped, "DLC_Apt_Yacht_Ambient_Soundset", true)
-			audio.play_sound_from_coord(-1, "HORN", pos, "DLC_Apt_Yacht_Ambient_Soundset", true, 1000000, false)
-end), type = "action"}
-features["sound_troll4"] = {feat = menu.add_feature("Annoy With Chaff Sound", "action", featureVars.str.id, function(feat)
-			local pos = v3()
-			pos = entity.get_entity_coords(player.get_player_ped(pid))
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "chaff_released", pped, "DLC_SM_Countermeasures_Sounds", true)
-end), type = "action"}
-features["sound_troll5"] = {feat = menu.add_feature("Annoy With Flare sound", "action", featureVars.str.id, function(feat)
-			local pos = v3()
-			pos = entity.get_entity_coords(player.get_player_ped(pid))
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "flares_released", pped, "DLC_SM_Countermeasures_Sounds", true)
-end), type = "action"}
-features["sound_troll6"] = {feat = menu.add_feature("Annoy With Remote KeyFob Sound", "action", featureVars.str.id, function(feat)
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "Remote_Control_Fob", pped, "PI_Menu_Sounds", true)
-end), type = "action"}
-features["sound_troll7"] = {feat = menu.add_feature("Annoy With Remote Close Sound", "action", featureVars.str.id, function(feat)
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "Remote_Control_Close", pped, "PI_Menu_Sounds", true)
-end), type = "action"}
-features["sound_troll8"] = {feat = menu.add_feature("Annoy With Remote Open Sound", "action", featureVars.str.id, function(feat)
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "Remote_Control_Open", pped, "PI_Menu_Sounds", true)
-end), type = "action"}
-features["sound_troll9"] = {feat = menu.add_feature("Annoy With Light Toggle Sound", "action", featureVars.str.id, function(feat)
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "Toggle_Lights", pped, "PI_Menu_Sounds", true)
-end), type = "action"}
-features["sound_troll10"] = {feat = menu.add_feature("Annoy With Water Sounds", "action", featureVars.str.id, function(feat)
-			pped = player.get_player_ped(pid)
-			audio.play_sound_from_entity(-1, "FallingInWaterSmall", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
-			system.wait(120)
-			audio.play_sound_from_entity(-1, "FallingInWaterMedium", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
-			system.wait(120)
-			audio.play_sound_from_entity(-1, "FallingInWaterHeavy", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
-			system.wait(120)
-			audio.play_sound_from_entity(-1, "DiveInWater", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
-			system.wait(120)
-end), type = "action"}
-features["arrowindicator"] = {feat = menu.add_feature("Bouncing Arrow above Player", "action", featureVars.tr.id, function(feat)
-			if playerFeatures[pid].features["arrow_indicator2"].feat.on then
-				playerFeatures[pid].features["arrow_indicator2"].feat.on = false
-				system.wait(1000)
+			if player.get_player_vehicle(pid) ~= 0 or player.get_player_vehicle(pid) ~= nil then
+				plyveh = player.get_player_vehicle(pid)
+				network.request_control_of_entity(plyveh)
+				entity.set_entity_coords_no_offset(plyveh, pos)
 			end
-			local hash = gameplay.get_hash_key("prop_mk_arrow_flat")
-			AttachedCunt[pid+1], AttachedCunt2[pid+1] = spawn_object_onp(hash, pid)
-			spawned_cunts[#spawned_cunts + 1] = AttachedCunt[pid+1]
-			spawned_cunts[#spawned_cunts + 1] = AttachedCunt2[pid+1]
-			system.wait(100)
-			playerFeatures[pid].features["arrow_indicator"].feat.hidden = false
-			playerFeatures[pid].features["arrow_indicator"].feat.on = true
-			return HANDLER_POP
-end), type = "action", callback = function()
-end}
-features["arrowindicator"].feat.hidden = false
-features["arrow_indicator"] = {feat = menu.add_feature("Arrow move & Bounce with Player", "toggle", featureVars.tr.id, function(feat)
-			playerFeatures[pid].features["arrowindicator"].feat.hidden = true
-			if feat.on then
-				local pos, offset
-				pos = v3()
-				pos = player.get_player_coords(pid)
-				offset = v3(0.0,0.0,2.0)
-				local z = 0
-				local ent = AttachedCunt[pid+1]
-				repeat
-					z = z + 1
-					pos = player.get_player_coords(pid)
-					network.request_control_of_entity(ent)
-					entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
-					system.wait(1)
-					network.request_control_of_entity(ent)
-				until z == 10
-				z = 0
-				offset.z = 3.0
-				repeat
-					z = z + 1
-					network.request_control_of_entity(ent)
-					pos = player.get_player_coords(pid)
-					entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
-					system.wait(1)
-					network.request_control_of_entity(ent)
-				until z == 10
-				z = 0
-				offset.z = 4.0
-				repeat
-					z = z + 1
-					network.request_control_of_entity(ent)
-					pos = player.get_player_coords(pid)
-					entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
-					system.wait(1)
-					network.request_control_of_entity(ent)
-				until z == 10
-				z = 0
-				return HANDLER_CONTINUE
-			end
-			playerFeatures[pid].features["arrowindicator"].feat.hidden = false
-			playerFeatures[pid].features["arrow_indicator"].feat.hidden = true
-			network.request_control_of_entity(AttachedCunt[pid+1])
-			entity.delete_entity(AttachedCunt[pid+1])
-			network.request_control_of_entity(AttachedCunt2[pid+1])
-			entity.delete_entity(AttachedCunt2[pid+1])
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["arrow_indicator"].feat.on = false
-features["arrow_indicator"].feat.hidden = true
-features["arrowindicator2"] = {feat = menu.add_feature("Arrow Indicator above Player", "action", featureVars.tr.id, function(feat)
-			if playerFeatures[pid].features["arrow_indicator"].feat.on then
-				playerFeatures[pid].features["arrow_indicator"].feat.on = false
-				system.wait(1000)
-			end
-			local hash = gameplay.get_hash_key("prop_mk_arrow_flat")
-			AttachedCunt[pid+1], AttachedCunt2[pid+1] = spawn_object_onp(hash, pid)
-			spawned_cunts[#spawned_cunts + 1] = AttachedCunt[pid+1]
-			spawned_cunts[#spawned_cunts + 1] = AttachedCunt2[pid+1]
-			system.wait(100)
-			playerFeatures[pid].features["arrow_indicator2"].feat.hidden = false
-			playerFeatures[pid].features["arrow_indicator2"].feat.on = true
-			return HANDLER_POP
-end), type = "action", callback = function()
-end}
-features["arrowindicator2"].feat.hidden = false
-features["arrow_indicator2"] = {feat = menu.add_feature("Arrow update move with Player", "toggle", featureVars.tr.id, function(feat)
-			playerFeatures[pid].features["arrowindicator2"].feat.hidden = true
-			if feat.on then
-				local pos, offset
-				pos = v3()
-				pos = player.get_player_coords(pid)
-				offset = v3(0.0,0.0,5.0)
-				network.request_control_of_entity(AttachedCunt[pid+1])
-				entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
-				return HANDLER_CONTINUE
-			end
-			playerFeatures[pid].features["arrowindicator2"].feat.hidden = false
-			playerFeatures[pid].features["arrow_indicator2"].feat.hidden = true
-			network.request_control_of_entity(AttachedCunt[pid+1])
-			entity.delete_entity(AttachedCunt[pid+1])
-			network.request_control_of_entity(AttachedCunt2[pid+1])
-			entity.delete_entity(AttachedCunt2[pid+1])
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["arrow_indicator2"].feat.on = false
-features["arrow_indicator2"].feat.hidden = true
-		
-features["LightPOS1way"] = {feat = menu.add_feature("Lights v2 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
-			if feat.on then
-				local i, y, t = #spawned_cunt, (#spawned_cunt - 1), #spawned_cunt3
-				if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
-					--	playerFeatures[pid].features["LightPOS1way"].feat.on = false
-				return end
-				local pos, offset, offset2, offset3
-				pos = v3()
-				pos = player.get_player_coords(pid)
-				offset = v3()
-				offset2 = v3()
-				offset3 = v3()
-				offset.x = 23.2
-				offset.y = 0.5
-				offset.z = 12.0
-				entity.set_entity_coords_no_offset(spawned_cunt[i], pos + offset)
-				offset2.x = 1.0
-				offset2.y = 0.3
-				offset2.z = 19.0
-				entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
-				offset3.x = -10.0
-				offset3.y = -09.3
-				offset3.z = 15.0
-				entity.set_entity_coords_no_offset(spawned_cunt3[t], pos + offset3)
-				return HANDLER_CONTINUE
-			end
-			for i = 1, #spawned_cunt do
-				network.request_control_of_entity(spawned_cunt[i])
-				entity.delete_entity(spawned_cunt[i])
-			end
-			for i = 1, #spawned_cunt1 do
-				network.request_control_of_entity(spawned_cunt3[i])
-				entity.delete_entity(spawned_cunt3[i])
-			end
-			
-			playerFeatures[pid].features["LightPOS1way"].feat.hidden = true
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["LightPOS1way"].feat.on = false
-features["LightPOS1way"].feat.hidden = true
-
-local Toilet_Cloned, starttime, resettime = false, 0.0, 0.0
-local toilet1, clone1, toilet2, clone2
---task_play_anim(Ped ped, string dict, string anim, float speed, float speedMult, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ) 0.1, 0.01, 999999999, 1, 0.01,
-features["ToiletClone"] = {feat = menu.add_feature("ToiletClone", "toggle", featureVars.tr.id, function(feat)
-    if feat.on then
-        if not Toilet_Cloned then
-			starttime = os.clock()
-            toilet1, clone1 = Toilet_Stalker_Clone(pid)
-            spawned_cunts[#spawned_cunts+1] = toilet1
-            spawned_cunts[#spawned_cunts+1] = clone1
-            toilet2, clone2 = Toilet_Stalker_Clone(pid)
-            spawned_cunts[#spawned_cunts+1] = toilet2
-            spawned_cunts[#spawned_cunts+1] = clone2
-            Toilet_Cloned = true
-
-            entity.set_entity_collision(clone2, false, false, true)
-           -- entity.set_entity_collision(toilet2, false, false, true)
-            entity.set_entity_collision(clone1, false, false, true)
-           -- entity.set_entity_collision(toilet1, false, false, true)
-        end
-        local pos, offset, offset2
-        pos = v3()
-        pos = player.get_player_coords(pid)
-        offset = v3()
-        offset2 = v3()
-        local heading, heading2
-        heading = player.get_player_heading(pid)
-        heading = math.rad((heading - 90) * -1)
-        offset = v3(pos.x + (math.sin(heading) * -3.1), pos.y + (math.cos(heading) * -3.1), pos.z)
-		entity.set_entity_coords_no_offset(clone1, offset)
-		entity.set_entity_heading(clone1, player.get_player_heading(pid))
-        heading2 = player.get_player_heading(pid)
-        heading2 = math.rad((heading2 - 90) * -1)
-        offset2 = v3(pos.x + (math.sin(heading2) * 3.1), pos.y + (math.cos(heading2) * 3.1), pos.z)
-        entity.set_entity_coords_no_offset(clone2, offset2)
-		entity.set_entity_heading(clone2, player.get_player_heading(pid))
-		check = os.clock()
-		if check >= (starttime + 20.0) then
-		RequestAnimDict("rcmpaparazzo_2ig_3", 10)
-		system.wait(10)
-		local AnimDictReguested = RequestAnimDict("rcmpaparazzo_2ig_3", 10)
+		end
+		return HANDLER_CONTINUE
+	end),  type = "toggle", callback = function()
+	end}
+	features["Teleport_God-mode_Death_2"].feat.on = false
+	--INFO: Sound Troll
+	features["sound_troll1"] = {feat = menu.add_feature("Annoy With Air Drop Sounds", "action", featureVars.str.id, function(feat)
+		local pos = v3()
+		pos = entity.get_entity_coords(player.get_player_ped(pid))
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "Air_Drop_Package", pped, "DLC_SM_Generic_Mission_Sounds", true)
+	end), type = "action"}
+	features["sound_troll2"] = {feat = menu.add_feature("Annoy With Countdown sound", "action", featureVars.str.id, function(feat)
+		local pos = v3()
+		pos = entity.get_entity_coords(player.get_player_ped(pid))
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_coord(-1, "Explosion_Countdown", pos, "GTAO_FM_Events_Soundset", true, 1000, false)
+		audio.play_sound_from_entity(-1, "Explosion_Countdown", pped, "GTAO_FM_Events_Soundset", true)
+	end), type = "action"}
+	features["sound_troll3"] = {feat = menu.add_feature("Annoy With Yacht Horn Sound", "action", featureVars.str.id, function(feat)
+		local pos = v3()
+		pos = entity.get_entity_coords(player.get_player_ped(pid))
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1,  "HORN", pped, "DLC_Apt_Yacht_Ambient_Soundset", true)
+		audio.play_sound_from_coord(-1, "HORN", pos, "DLC_Apt_Yacht_Ambient_Soundset", true, 1000000, false)
+	end), type = "action"}
+	features["sound_troll4"] = {feat = menu.add_feature("Annoy With Chaff Sound", "action", featureVars.str.id, function(feat)
+		local pos = v3()
+		pos = entity.get_entity_coords(player.get_player_ped(pid))
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "chaff_released", pped, "DLC_SM_Countermeasures_Sounds", true)
+	end), type = "action"}
+	features["sound_troll5"] = {feat = menu.add_feature("Annoy With Flare sound", "action", featureVars.str.id, function(feat)
+		local pos = v3()
+		pos = entity.get_entity_coords(player.get_player_ped(pid))
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "flares_released", pped, "DLC_SM_Countermeasures_Sounds", true)
+	end), type = "action"}
+	features["sound_troll6"] = {feat = menu.add_feature("Annoy With Remote KeyFob Sound", "action", featureVars.str.id, function(feat)
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "Remote_Control_Fob", pped, "PI_Menu_Sounds", true)
+	end), type = "action"}
+	features["sound_troll7"] = {feat = menu.add_feature("Annoy With Remote Close Sound", "action", featureVars.str.id, function(feat)
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "Remote_Control_Close", pped, "PI_Menu_Sounds", true)
+	end), type = "action"}
+	features["sound_troll8"] = {feat = menu.add_feature("Annoy With Remote Open Sound", "action", featureVars.str.id, function(feat)
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "Remote_Control_Open", pped, "PI_Menu_Sounds", true)
+	end), type = "action"}
+	features["sound_troll9"] = {feat = menu.add_feature("Annoy With Light Toggle Sound", "action", featureVars.str.id, function(feat)
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "Toggle_Lights", pped, "PI_Menu_Sounds", true)
+	end), type = "action"}
+	features["sound_troll10"] = {feat = menu.add_feature("Annoy With Water Sounds", "action", featureVars.str.id, function(feat)
+		pped = player.get_player_ped(pid)
+		audio.play_sound_from_entity(-1, "FallingInWaterSmall", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		audio.play_sound_from_entity(-1, "FallingInWaterMedium", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		audio.play_sound_from_entity(-1, "FallingInWaterHeavy", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+		audio.play_sound_from_entity(-1, "DiveInWater", pped, "GTAO_Hot_Tub_PED_INSIDE_WATER", true)
+		system.wait(120)
+	end), type = "action"}
+	features["arrowindicator"] = {feat = menu.add_feature("Bouncing Arrow above Player", "action", featureVars.tr.id, function(feat)
+		if playerFeatures[pid].features["arrow_indicator2"].feat.on then
+			playerFeatures[pid].features["arrow_indicator2"].feat.on = false
+			system.wait(1000)
+		end
+		local hash = gameplay.get_hash_key("prop_mk_arrow_flat")
+		AttachedCunt[pid+1], AttachedCunt2[pid+1] = spawn_object_onp(hash, pid)
+		spawned_cunts[#spawned_cunts + 1] = AttachedCunt[pid+1]
+		spawned_cunts[#spawned_cunts + 1] = AttachedCunt2[pid+1]
 		system.wait(100)
-		AnimDictReguested = RequestAnimDict("rcmpaparazzo_2ig_3", 10)
-		if AnimDictReguested then
-		RequestAnimSet("pm_incar_notdoinanythin", 10)
-		system.wait(10)
-		RequestAnimSet("pm_incar_notdoinanythin", 10)
-		end
-		system.wait(1)
-		RequestAnimSet("pm_incar_notdoinanythin", 10)
-		network.request_control_of_entity(clone1)
-		ped.clear_ped_tasks_immediately(clone1)
-		ai.task_play_anim(clone1, "rcmpaparazzo_2ig_3", "pm_incar_notdoinanythin", 1.9, 12.0, 999999999, 1, 12.9, false, false, false)
-		network.request_control_of_entity(clone2)
-		ped.clear_ped_tasks_immediately(clone2)
-		ai.task_play_anim(clone2, "rcmpaparazzo_2ig_3", "pm_incar_notdoinanythin", 1.9, 12.0, 999999999, 1, 12.9, false, false, false)
-		
-		starttime = os.clock() 
-		end
-        return HANDLER_CONTINUE
-    end
-    Toilet_Cloned = false
-    network.request_control_of_entity(toilet1)
-    system.wait(10)
-    entity.delete_entity(toilet1)
-    network.request_control_of_entity(clone1)
-    system.wait(10)
-    entity.delete_entity(clone1)
-    network.request_control_of_entity(toilet2)
-    system.wait(10)
-    entity.delete_entity(toilet2)
-    network.request_control_of_entity(clone2)
-    system.wait(10)
-    entity.delete_entity(clone2)
-    return HANDLER_POP
-
-end),  type = "toggle", callback = function()
-end}
-features["ToiletClone"].feat.on = false
-features["ToiletClone"].feat.hidden = false
-
-
-features["LightPOSway"] = {feat = menu.add_feature("Lights v2 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
-			if feat.on then
-				local pos, offset, offset2
-				pos = v3()
-				pos = player.get_player_coords(pid)
-				offset = v3()
-				offset2 = v3()
-				local heading, heading2
-				heading = player.get_player_heading(pid)
-				heading = math.rad((heading - 180) * -1)
-				offset = v3(pos.x + (math.sin(heading) * -0.8), pos.y + (math.cos(heading) * -0.8), pos.z)
-				offset.z = offset.z + 13.0
-				offset.x = offset.x + 16.0
-				for i = 1, #spawned_cunt1 do
-					entity.set_entity_coords_no_offset(spawned_cunt1[i], offset)
-				end
-				heading2 = player.get_player_heading(pid)
-				heading2 = math.rad((heading2 - 180) * -1)
-				offset2 = v3(pos.x + (math.sin(heading2) * -(-1.8)), pos.y + (math.cos(heading2) * -(-1.8)), pos.z)
-				offset2.z = offset2.z + 13.0
-				offset2.x = offset2.x - 16.0
-				for y = 1, #spawned_cunt2 do
-					entity.set_entity_coords_no_offset(spawned_cunt2[y], offset2)
-				end
-				return HANDLER_CONTINUE
-			end
-			for i = 1, #spawned_cunt2 do
-				network.request_control_of_entity(spawned_cunt2[i])
-				entity.delete_entity(spawned_cunt2[i])
-			end
-			for i = 1, #spawned_cunt1 do
-				network.request_control_of_entity(spawned_cunt1[i])
-				entity.delete_entity(spawned_cunt1[i])
-			end
-			playerFeatures[pid].features["LightPOSway"].feat.hidden = true
-			return HANDLER_POP
-			
-end),  type = "toggle", callback = function()
-end}
-features["LightPOSway"].feat.on = false
-features["LightPOSway"].feat.hidden = true
-		--INFO: Light
-features["Light_POS1way"] = {feat = menu.add_feature("Lights v1 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
-			if feat.on then
-				local i = #spawned_cunt
-				local y = (#spawned_cunt - 1)
-				local t = #spawned_cunt3
-				if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
-					--	features["Light_POS1way"].feat.on = false
-				return end
-				local pos = v3()
-				pos = player.get_player_coords(pid)
-				local offset = v3()
-				local offset2 = v3()
-				local offset3 = v3()
-				offset.x = 0.2
-				offset.y = 0.5
-				offset.z = 0.0
-				
-				entity.set_entity_coords_no_offset(spawned_cunt[i], pos + offset)
-				offset2.x = 1.0
-				offset2.y = 0.3
-				offset2.z = 0.0
-				
-				entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
-				offset3.x = -1.0
-				offset3.y = -0.3
-				offset3.z = -0.0
-				
-				entity.set_entity_coords_no_offset(spawned_cunt3[t], pos + offset3)
-				
-				return HANDLER_CONTINUE
-			end
-			for i = 1, #spawned_cunt do
-				network.request_control_of_entity(spawned_cunt[i])
-				entity.delete_entity(spawned_cunt[i])
-			end
-			for i = 1, #spawned_cunt1 do
-				network.request_control_of_entity(spawned_cunt3[i])
-				entity.delete_entity(spawned_cunt3[i])
-			end
-			
-			playerFeatures[pid].features["Light_POS1way"].feat.hidden = true
-			return HANDLER_POP
-			
-end),  type = "toggle", callback = function()
-end}
-features["Light_POS1way"].feat.on = false
-features["Light_POS1way"].feat.hidden = true
-features["Light_POSway"] = {feat = menu.add_feature("Lights v1 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
-			if feat.on then
-				local pos = v3()
-				pos = player.get_player_coords(pid)
-				local heading
-				local heading2
-				
-				local offset = v3()
-				local offset2 = v3()	
-				heading = player.get_player_heading(pid)
-				heading = math.rad((heading - 180) * -1)			
-				offset = v3(pos.x + (math.sin(heading) * -0.8), pos.y + (math.cos(heading) * -0.8), pos.z)
-				offset.z = offset.z + 1.0
-				offset.x = offset.x + 1.0
-				for i = 1, #spawned_cunt1 do
-					
-					entity.set_entity_coords_no_offset(spawned_cunt1[i], offset)
-					
-				end
-				heading2 = player.get_player_heading(pid)
-				heading2 = math.rad((heading2 - 180) * -1)
-				offset2 = v3(pos.x + (math.sin(heading2) * -(-1.8)), pos.y + (math.cos(heading2) * -(-1.8)), pos.z)
-				offset2.z = offset2.z + 1.2
-				offset2.x = offset2.x - 3.0
-				for y = 1, #spawned_cunt2 do
-					
-					entity.set_entity_coords_no_offset(spawned_cunt2[y], offset2)
-				end
-				return HANDLER_CONTINUE
-			end
-			for i = 1, #spawned_cunt2 do
-				network.request_control_of_entity(spawned_cunt2[i])
-				entity.delete_entity(spawned_cunt2[i])
-			end
-			for i = 1, #spawned_cunt1 do
-				network.request_control_of_entity(spawned_cunt1[i])
-				entity.delete_entity(spawned_cunt1[i])
-			end
-			playerFeatures[pid].features["Light_POSway"].feat.hidden = true
-			return HANDLER_POP
-			
-end),  type = "toggle", callback = function()
-end}
-features["Light_POSway"].feat.on = false
-features["Light_POSway"].feat.hidden = true
-		
-features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "action", featureVars.tr.id, function(feat)
-			local offset, pos
-			offset = v3()
+		playerFeatures[pid].features["arrow_indicator"].feat.hidden = false
+		playerFeatures[pid].features["arrow_indicator"].feat.on = true
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["arrowindicator"].feat.hidden = false
+	features["arrow_indicator"] = {feat = menu.add_feature("Arrow move & Bounce with Player", "toggle", featureVars.tr.id, function(feat)
+		playerFeatures[pid].features["arrowindicator"].feat.hidden = true
+		if feat.on then
+			local pos, offset
 			pos = v3()
 			pos = player.get_player_coords(pid)
-			object.create_object(2906806882, pos, true, true)
-			spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(2906806882, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, false)
-			spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(2906806882, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, false)
-			spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(2906806882, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, false)
-			spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
-			spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
-			entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
-			playerFeatures[pid].features["Light_POS1way"].feat.on = true
-			playerFeatures[pid].features["Light_POSway"].feat.on = true
-			playerFeatures[pid].features["Light_POS1way"].feat.hidden = false
-			playerFeatures[pid].features["Light_POSway"].feat.hidden = false
-end),  type = "action"}
-		
-features["Lightway2"] = {feat = menu.add_feature("Set Lights around player v2", "action", featureVars.tr.id, function(feat)
-			local offset, pos
-			offset = v3()
+			offset = v3(0.0,0.0,2.0)
+			local z = 0
+			local ent = AttachedCunt[pid+1]
+			repeat
+				z = z + 1
+				pos = player.get_player_coords(pid)
+				network.request_control_of_entity(ent)
+				entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
+				system.wait(1)
+				network.request_control_of_entity(ent)
+			until z == 10
+			z = 0
+			offset.z = 3.0
+			repeat
+				z = z + 1
+				network.request_control_of_entity(ent)
+				pos = player.get_player_coords(pid)
+				entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
+				system.wait(1)
+				network.request_control_of_entity(ent)
+			until z == 10
+			z = 0
+			offset.z = 4.0
+			repeat
+				z = z + 1
+				network.request_control_of_entity(ent)
+				pos = player.get_player_coords(pid)
+				entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
+				system.wait(1)
+				network.request_control_of_entity(ent)
+			until z == 10
+			z = 0
+			return HANDLER_CONTINUE
+		end
+		playerFeatures[pid].features["arrowindicator"].feat.hidden = false
+		playerFeatures[pid].features["arrow_indicator"].feat.hidden = true
+		network.request_control_of_entity(AttachedCunt[pid+1])
+		entity.delete_entity(AttachedCunt[pid+1])
+		network.request_control_of_entity(AttachedCunt2[pid+1])
+		entity.delete_entity(AttachedCunt2[pid+1])
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["arrow_indicator"].feat.on = false
+	features["arrow_indicator"].feat.hidden = true
+	features["arrowindicator2"] = {feat = menu.add_feature("Arrow Indicator above Player", "action", featureVars.tr.id, function(feat)
+		if playerFeatures[pid].features["arrow_indicator"].feat.on then
+			playerFeatures[pid].features["arrow_indicator"].feat.on = false
+			system.wait(1000)
+		end
+		local hash = gameplay.get_hash_key("prop_mk_arrow_flat")
+		AttachedCunt[pid+1], AttachedCunt2[pid+1] = spawn_object_onp(hash, pid)
+		spawned_cunts[#spawned_cunts + 1] = AttachedCunt[pid+1]
+		spawned_cunts[#spawned_cunts + 1] = AttachedCunt2[pid+1]
+		system.wait(100)
+		playerFeatures[pid].features["arrow_indicator2"].feat.hidden = false
+		playerFeatures[pid].features["arrow_indicator2"].feat.on = true
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["arrowindicator2"].feat.hidden = false
+	features["arrow_indicator2"] = {feat = menu.add_feature("Arrow update move with Player", "toggle", featureVars.tr.id, function(feat)
+		playerFeatures[pid].features["arrowindicator2"].feat.hidden = true
+		if feat.on then
+			local pos, offset
 			pos = v3()
 			pos = player.get_player_coords(pid)
-			spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(1031052499, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, false)
-			spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(1031052499, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, false)
-			spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(1031052499, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, false)
-			spawned_cunt[#spawned_cunt + 1]  = object.create_object(1031052499, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
-			spawned_cunt[#spawned_cunt + 1]  = object.create_object(1031052499, pos, true, true)
-			entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
-			playerFeatures[pid].features["LightPOS1way"].feat.hidden = false
-			playerFeatures[pid].features["LightPOS1way"].feat.on = true
-			playerFeatures[pid].features["LightPOSway"].feat.on = true
-			playerFeatures[pid].features["LightPOSway"].feat.hidden = false
-end),  type = "action"}
-		
-features["RotatingLights"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
-			if Thread2Id[pid + 1] then
-				menu.delete_thread(Thread2Id[pid + 1])
-				Thread2Id[pid + 1] = nil
-			end
-			if EntityHash.pid then
-				for i = 1, #EntityHash.pid do
-					entity.delete_entity(EntityHash.pid[i])
-					EntityHash.pid[i] = nil
-				end
-			end
-			if feat.on then
-				orbit_pid = pid
-				Thread2Id[pid + 1] = menu.create_thread(Orbit2, feat.value)
-			end
-end), type = "toggle", callback = function()
-end}
-features["RotatingLights"].feat.min = 1
-features["RotatingLights"].feat.max = 10
-features["RotatingLights"].feat.mod = 1
-features["RotatingLights"].feat.value = 1
-features["RotatingLights2"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
-			if Thread1Id[pid + 1] then
-				menu.delete_thread(Thread1Id[pid + 1])
-				Thread1Id[pid + 1] = nil
-			end
-			if EntityHash2.pid then
-				for i = 1, #EntityHash2.pid do
-					entity.delete_entity(EntityHash2.pid[i])
-					EntityHash2.pid[i] = nil
-				end
-			end
-			if feat.on then
-				orbit_pid = pid
-				Thread1Id[pid + 1] = menu.create_thread(Orbit1, feat.value)
-			end
-end), type = "toggle", callback = function()
-end}
-features["RotatingLights2"].feat.min = 1
-features["RotatingLights2"].feat.max = 20
-features["RotatingLights2"].feat.mod = 1
-features["RotatingLights2"].feat.value = 6
-
-features["scramdeer"] = {feat = menu.add_feature("scramjet Deer", "action", featureVars.tr.id, function(feat)
-			pped = player.get_player_ped(pid)
-			local pos, heading, blipid, i, y, vehhash
+			offset = v3(0.0,0.0,5.0)
+			network.request_control_of_entity(AttachedCunt[pid+1])
+			entity.set_entity_coords_no_offset(AttachedCunt[pid+1], pos + offset)
+			return HANDLER_CONTINUE
+		end
+		playerFeatures[pid].features["arrowindicator2"].feat.hidden = false
+		playerFeatures[pid].features["arrow_indicator2"].feat.hidden = true
+		network.request_control_of_entity(AttachedCunt[pid+1])
+		entity.delete_entity(AttachedCunt[pid+1])
+		network.request_control_of_entity(AttachedCunt2[pid+1])
+		entity.delete_entity(AttachedCunt2[pid+1])
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["arrow_indicator2"].feat.on = false
+	features["arrow_indicator2"].feat.hidden = true
+	
+	features["LightPOS1way"] = {feat = menu.add_feature("Lights v2 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
+		if feat.on then
+			local i, y, t = #spawned_cunt, (#spawned_cunt - 1), #spawned_cunt3
+			if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
+				--	playerFeatures[pid].features["LightPOS1way"].feat.on = false
+			return end
+			local pos, offset, offset2, offset3
 			pos = v3()
-			heading = v3()
+			pos = player.get_player_coords(pid)
+			offset = v3()
+			offset2 = v3()
+			offset3 = v3()
+			offset.x = 23.2
+			offset.y = 0.5
+			offset.z = 12.0
+			entity.set_entity_coords_no_offset(spawned_cunt[i], pos + offset)
+			offset2.x = 1.0
+			offset2.y = 0.3
+			offset2.z = 19.0
+			entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
+			offset3.x = -10.0
+			offset3.y = -09.3
+			offset3.z = 15.0
+			entity.set_entity_coords_no_offset(spawned_cunt3[t], pos + offset3)
+			return HANDLER_CONTINUE
+		end
+		for i = 1, #spawned_cunt do
+			network.request_control_of_entity(spawned_cunt[i])
+			entity.delete_entity(spawned_cunt[i])
+		end
+		for i = 1, #spawned_cunt1 do
+			network.request_control_of_entity(spawned_cunt3[i])
+			entity.delete_entity(spawned_cunt3[i])
+		end
+		
+		playerFeatures[pid].features["LightPOS1way"].feat.hidden = true
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["LightPOS1way"].feat.on = false
+	features["LightPOS1way"].feat.hidden = true
+	
+	local Toilet_Cloned, starttime, resettime = false, 0.0, 0.0
+	local toilet1, clone1, toilet2, clone2
+	--task_play_anim(Ped ped, string dict, string anim, float speed, float speedMult, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ) 0.1, 0.01, 999999999, 1, 0.01,
+	features["ToiletClone"] = {feat = menu.add_feature("ToiletClone", "toggle", featureVars.tr.id, function(feat)
+		if feat.on then
+			if not Toilet_Cloned then
+				starttime = os.clock()
+				toilet1, clone1 = Toilet_Stalker_Clone(pid)
+				spawned_cunts[#spawned_cunts+1] = toilet1
+				spawned_cunts[#spawned_cunts+1] = clone1
+				toilet2, clone2 = Toilet_Stalker_Clone(pid)
+				spawned_cunts[#spawned_cunts+1] = toilet2
+				spawned_cunts[#spawned_cunts+1] = clone2
+				Toilet_Cloned = true
+				
+				entity.set_entity_collision(clone2, false, false, true)
+				-- entity.set_entity_collision(toilet2, false, false, true)
+				entity.set_entity_collision(clone1, false, false, true)
+				-- entity.set_entity_collision(toilet1, false, false, true)
+			end
+			local pos, offset, offset2
+			pos = v3()
+			pos = player.get_player_coords(pid)
+			offset = v3()
+			offset2 = v3()
+			local heading, heading2
 			heading = player.get_player_heading(pid)
+			heading = math.rad((heading - 90) * -1)
+			offset = v3(pos.x + (math.sin(heading) * -3.1), pos.y + (math.cos(heading) * -3.1), pos.z)
+			entity.set_entity_coords_no_offset(clone1, offset)
+			entity.set_entity_heading(clone1, player.get_player_heading(pid))
+			heading2 = player.get_player_heading(pid)
+			heading2 = math.rad((heading2 - 90) * -1)
+			offset2 = v3(pos.x + (math.sin(heading2) * 3.1), pos.y + (math.cos(heading2) * 3.1), pos.z)
+			entity.set_entity_coords_no_offset(clone2, offset2)
+			entity.set_entity_heading(clone2, player.get_player_heading(pid))
+			check = os.clock()
+			if check >= (starttime + 20.0) then
+				RequestAnimDict("rcmpaparazzo_2ig_3", 10)
+				system.wait(10)
+				local AnimDictReguested = RequestAnimDict("rcmpaparazzo_2ig_3", 10)
+				system.wait(100)
+				AnimDictReguested = RequestAnimDict("rcmpaparazzo_2ig_3", 10)
+				if AnimDictReguested then
+					RequestAnimSet("pm_incar_notdoinanythin", 10)
+					system.wait(10)
+					RequestAnimSet("pm_incar_notdoinanythin", 10)
+				end
+				system.wait(1)
+				RequestAnimSet("pm_incar_notdoinanythin", 10)
+				network.request_control_of_entity(clone1)
+				ped.clear_ped_tasks_immediately(clone1)
+				ai.task_play_anim(clone1, "rcmpaparazzo_2ig_3", "pm_incar_notdoinanythin", 1.9, 12.0, 999999999, 1, 12.9, false, false, false)
+				network.request_control_of_entity(clone2)
+				ped.clear_ped_tasks_immediately(clone2)
+				ai.task_play_anim(clone2, "rcmpaparazzo_2ig_3", "pm_incar_notdoinanythin", 1.9, 12.0, 999999999, 1, 12.9, false, false, false)
+				
+				starttime = os.clock() 
+			end
+			return HANDLER_CONTINUE
+		end
+		Toilet_Cloned = false
+		network.request_control_of_entity(toilet1)
+		system.wait(10)
+		entity.delete_entity(toilet1)
+		network.request_control_of_entity(clone1)
+		system.wait(10)
+		entity.delete_entity(clone1)
+		network.request_control_of_entity(toilet2)
+		system.wait(10)
+		entity.delete_entity(toilet2)
+		network.request_control_of_entity(clone2)
+		system.wait(10)
+		entity.delete_entity(clone2)
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["ToiletClone"].feat.on = false
+	features["ToiletClone"].feat.hidden = false
+	
+	
+	features["LightPOSway"] = {feat = menu.add_feature("Lights v2 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
+		if feat.on then
+			local pos, offset, offset2
+			pos = v3()
 			pos = player.get_player_coords(pid)
-			distance = -5
+			offset = v3()
+			offset2 = v3()
+			local heading, heading2
+			heading = player.get_player_heading(pid)
 			heading = math.rad((heading - 180) * -1)
-			pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
-			model = 0xD86B5A95
-			streaming.request_model(model)
-			while (not streaming.has_model_loaded(model)) do
-				system.wait(10)
+			offset = v3(pos.x + (math.sin(heading) * -0.8), pos.y + (math.cos(heading) * -0.8), pos.z)
+			offset.z = offset.z + 13.0
+			offset.x = offset.x + 16.0
+			for i = 1, #spawned_cunt1 do
+				entity.set_entity_coords_no_offset(spawned_cunt1[i], offset)
 			end
-			i = #escort + 1
-			escort[i] = ped.create_ped(6, model, pose, heading, true, false)
-			entity.set_entity_god_mode(escort[i], true)
-			streaming.set_model_as_no_longer_needed(model)
-			vehhash = gameplay.get_hash_key("scramjet")
-			streaming.request_model(vehhash)
-			while (not streaming.has_model_loaded(vehhash)) do
-				system.wait(10)
+			heading2 = player.get_player_heading(pid)
+			heading2 = math.rad((heading2 - 180) * -1)
+			offset2 = v3(pos.x + (math.sin(heading2) * -(-1.8)), pos.y + (math.cos(heading2) * -(-1.8)), pos.z)
+			offset2.z = offset2.z + 13.0
+			offset2.x = offset2.x - 16.0
+			for y = 1, #spawned_cunt2 do
+				entity.set_entity_coords_no_offset(spawned_cunt2[y], offset2)
 			end
-			y = #escortveh + 1
-			escortveh[y] = vehicle.create_vehicle(vehhash, pose, heading, true, false)
-			network.request_control_of_entity(escortveh[y])
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 10)
-			vehicle.set_vehicle_mod(escortveh[y], 10, 0, false)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[y])
-			blipid = ui.get_blip_from_entity(escortveh[y])
-			ui.set_blip_sprite(blipid, 634)
-			vehicle.set_vehicle_on_ground_properly(escortveh[y])
-			entity.set_entity_god_mode(escortveh[y], true)
-			vehicle.set_vehicle_doors_locked(escortveh[y], 5)
-			ped.set_ped_into_vehicle(escort[i], escortveh[y], -1)
-			if ai.task_vehicle_drive_wander(escort[i], escortveh[y], 180, 262144) then
-				system.wait(10)
-			end
-			vehicle.set_vehicle_doors_locked(escortveh[y], 6)
-			vehicle.set_vehicle_doors_locked(escortveh[y], 2)
-			entity.set_entity_coords_no_offset(escortveh[y], pose)
-			ai.task_vehicle_follow(escort[i], escortveh[y], pped, 220, 262144, 25)
-			streaming.set_model_as_no_longer_needed(vehhash)
-end), type = "action"}
---INFO: Lester Ramjet
-features["Ram_Jet_cleanup"] = {feat = menu.add_feature("Run Delayed Cleanup?", "toggle", featureVars.gr.id, function(feat)
-	features["RamJet_cleanup"].feat.on = true
-end),  type = "toggle", callback = function()
-features["RamJet_cleanup"].feat.on = false
-end}
-features["Ram_Jet_cleanup"].feat.on = false
-features["RamJet2"] = {feat = menu.add_feature("Lester RamJet Attack Player", "action_value_i", featureVars.gr.id, function(feat)
-			pped = player.get_player_ped(pid)
+			return HANDLER_CONTINUE
+		end
+		for i = 1, #spawned_cunt2 do
+			network.request_control_of_entity(spawned_cunt2[i])
+			entity.delete_entity(spawned_cunt2[i])
+		end
+		for i = 1, #spawned_cunt1 do
+			network.request_control_of_entity(spawned_cunt1[i])
+			entity.delete_entity(spawned_cunt1[i])
+		end
+		playerFeatures[pid].features["LightPOSway"].feat.hidden = true
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["LightPOSway"].feat.on = false
+	features["LightPOSway"].feat.hidden = true
+	--INFO: Light
+	features["Light_POS1way"] = {feat = menu.add_feature("Lights v1 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
+		if feat.on then
+			local i = #spawned_cunt
+			local y = (#spawned_cunt - 1)
+			local t = #spawned_cunt3
+			if not entity.is_an_entity(spawned_cunt[i]) or entity.is_an_entity(spawned_cunt[y]) then
+				--	features["Light_POS1way"].feat.on = false
+			return end
 			local pos = v3()
-			local heading, heading2 = player.get_player_heading(pid), player.get_player_heading(pid)
 			pos = player.get_player_coords(pid)
-			distance = tonumber(feat.value)
-			heading = math.rad((heading - 180) * -1)
-			pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
-			model = 0x6E42FD26
-			streaming.request_model(model)
-			while (not streaming.has_model_loaded(model)) do
-				system.wait(10)
-			end
-			escort[#escort + 1] = ped.create_ped(29, model, pos, heading2, true, false)
-			entity.set_entity_god_mode(#escort, true)
-			ped.set_ped_can_switch_weapons(escort[#escort], true)
-			ped.set_ped_combat_attributes(escort[#escort], 46, true)
-			ped.set_ped_combat_attributes(escort[#escort], 52, true)
-			ped.set_ped_combat_attributes(escort[#escort], 1, true)
-			ped.set_ped_combat_attributes(escort[#escort], 2, true)
-			ped.set_ped_combat_range(escort[#escort], 2)
-			ped.set_ped_combat_ability(escort[#escort], 2)
-			ped.set_ped_combat_movement(escort[#escort], 2)
-			ai.task_combat_ped(escort[#escort], pped, 0, 16)
-			streaming.set_model_as_no_longer_needed(model)
-			vehhash = gameplay.get_hash_key("scramjet")
-			streaming.request_model(vehhash)
-			while (not streaming.has_model_loaded(vehhash)) do
-				system.wait(10)
-			end
-			escortveh[#escortveh + 1] = vehicle.create_vehicle(vehhash, pose, heading2, true, false)
-			network.request_control_of_entity(escortveh[#escortveh])
-			entity.set_entity_god_mode(escortveh[#escortveh], true)
-			network.request_control_of_entity(escortveh[#escortveh])
-			vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 5)
-			ped.set_ped_into_vehicle(escort[#escort], escortveh[#escortveh], -1)
-			vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 6)
-			vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 2)
-			vehicle.set_vehicle_mod_kit_type(escortveh[#escortveh], 0)
-			vehicle.get_vehicle_mod(escortveh[#escortveh], 10)
-			vehicle.set_vehicle_mod(escortveh[#escortveh], 10, 0, false)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[#escortveh])
-			local blipid = ui.get_blip_from_entity(escortveh[#escortveh])
-			ui.set_blip_sprite(blipid, 634)
-			ai.task_vehicle_aim_at_ped(escort[#escort], pped)
-			ai.task_combat_ped(escort[#escort], pped, 0, 16)
-			vehicle.set_vehicle_rocket_boost_active(escortveh[#escortveh], true)
-			return HANDLER_POP
-end), type = "action"}
-features["RamJet2"].feat.max = -10
-features["RamJet2"].feat.min = -200
-features["RamJet2"].feat.value = -20
-features["RamJet3"] = {feat = menu.add_feature("Lester RamJet Impact Player", "action_value_i",featureVars.gr.id, function(feat)
-			pped = player.get_player_ped(pid)
+			local offset = v3()
+			local offset2 = v3()
+			local offset3 = v3()
+			offset.x = 0.2
+			offset.y = 0.5
+			offset.z = 0.0
+			
+			entity.set_entity_coords_no_offset(spawned_cunt[i], pos + offset)
+			offset2.x = 1.0
+			offset2.y = 0.3
+			offset2.z = 0.0
+			
+			entity.set_entity_coords_no_offset(spawned_cunt[y], pos + offset2)
+			offset3.x = -1.0
+			offset3.y = -0.3
+			offset3.z = -0.0
+			
+			entity.set_entity_coords_no_offset(spawned_cunt3[t], pos + offset3)
+			
+			return HANDLER_CONTINUE
+		end
+		for i = 1, #spawned_cunt do
+			network.request_control_of_entity(spawned_cunt[i])
+			entity.delete_entity(spawned_cunt[i])
+		end
+		for i = 1, #spawned_cunt1 do
+			network.request_control_of_entity(spawned_cunt3[i])
+			entity.delete_entity(spawned_cunt3[i])
+		end
+		
+		playerFeatures[pid].features["Light_POS1way"].feat.hidden = true
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["Light_POS1way"].feat.on = false
+	features["Light_POS1way"].feat.hidden = true
+	features["Light_POSway"] = {feat = menu.add_feature("Lights v1 Move with Player (off=Del)", "toggle", featureVars.tr.id, function(feat)
+		if feat.on then
 			local pos = v3()
-			local heading, heading2 = player.get_player_heading(pid), player.get_player_heading(pid)
 			pos = player.get_player_coords(pid)
-			local distance = tonumber(feat.value)
-			heading = math.rad((heading - 180) * -1)
-			local pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
-			local model = 0x6E42FD26
-			streaming.request_model(model)
-			while (not streaming.has_model_loaded(model)) do
-				system.wait(10)
+			local heading
+			local heading2
+			
+			local offset = v3()
+			local offset2 = v3()	
+			heading = player.get_player_heading(pid)
+			heading = math.rad((heading - 180) * -1)			
+			offset = v3(pos.x + (math.sin(heading) * -0.8), pos.y + (math.cos(heading) * -0.8), pos.z)
+			offset.z = offset.z + 1.0
+			offset.x = offset.x + 1.0
+			for i = 1, #spawned_cunt1 do
+				
+				entity.set_entity_coords_no_offset(spawned_cunt1[i], offset)
+				
 			end
-			local i = #escort + 1
-			escort[i] = ped.create_ped(29, model, pos, heading2, true, false)
-			--entity.set_entity_god_mode(escort[i], true)
-			ped.set_ped_can_switch_weapons(escort[i], true)
-			ped.set_ped_combat_attributes(escort[i], 46, true)
-			ped.set_ped_combat_attributes(escort[i], 52, true)
-			ped.set_ped_combat_attributes(escort[i], 1, true)
-			ped.set_ped_combat_attributes(escort[i], 2, true)
-			ped.set_ped_combat_range(escort[i], 2)
-			ped.set_ped_combat_ability(escort[i], 2)
-			ped.set_ped_combat_movement(escort[i], 2)
-			ai.task_combat_ped(escort[i], pped, 0, 16)
-			-- streaming.set_model_as_no_longer_needed(model)
-			local vehhash = gameplay.get_hash_key("scramjet")
-			streaming.request_model(vehhash)
-			while (not streaming.has_model_loaded(vehhash)) do
-				system.wait(10)
+			heading2 = player.get_player_heading(pid)
+			heading2 = math.rad((heading2 - 180) * -1)
+			offset2 = v3(pos.x + (math.sin(heading2) * -(-1.8)), pos.y + (math.cos(heading2) * -(-1.8)), pos.z)
+			offset2.z = offset2.z + 1.2
+			offset2.x = offset2.x - 3.0
+			for y = 1, #spawned_cunt2 do
+				
+				entity.set_entity_coords_no_offset(spawned_cunt2[y], offset2)
 			end
-			escortveh[#escortveh + 1] = vehicle.create_vehicle(vehhash, pose, heading2, true, false)
-			ped.set_ped_into_vehicle(escort[i], escortveh[#escortveh], -1)
-			network.request_control_of_entity(escortveh[#escortveh])
-			--entity.set_entity_god_mode(escortveh[#escortveh], true)
-			vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 5)
-			vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 6)
-			vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 2)
-			vehicle.set_vehicle_mod_kit_type(escortveh[#escortveh], 0)
-			vehicle.get_vehicle_mod(escortveh[#escortveh], 10)
-			vehicle.set_vehicle_mod(escortveh[#escortveh], 10, 0, false)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[#escortveh])
-			local blipid = ui.get_blip_from_entity(escortveh[#escortveh])
-			ui.set_blip_sprite(blipid, 634)
-			ai.task_vehicle_aim_at_ped(escort[i], pped)
-			ai.task_combat_ped(escort[i], pped, 0, 16)
-			vehicle.set_vehicle_out_of_control(escortveh[#escortveh], true, true)
-			vehicle.set_vehicle_rocket_boost_active(escortveh[#escortveh], true)
-			return HANDLER_POP
-end), type = "action"}
-features["RamJet3"].feat.max = -10
-features["RamJet3"].feat.min = -200
-features["RamJet3"].feat.value = -20
-features["Ramjet_Attach"] = {feat = menu.add_feature("Remove All RamJets in Range", "toggle", featureVars.gr.id, function(feat)
-			if feat.on then
+			return HANDLER_CONTINUE
+		end
+		for i = 1, #spawned_cunt2 do
+			network.request_control_of_entity(spawned_cunt2[i])
+			entity.delete_entity(spawned_cunt2[i])
+		end
+		for i = 1, #spawned_cunt1 do
+			network.request_control_of_entity(spawned_cunt1[i])
+			entity.delete_entity(spawned_cunt1[i])
+		end
+		playerFeatures[pid].features["Light_POSway"].feat.hidden = true
+		return HANDLER_POP
+		
+	end),  type = "toggle", callback = function()
+	end}
+	features["Light_POSway"].feat.on = false
+	features["Light_POSway"].feat.hidden = true
+	
+	features["Lightway"] = {feat = menu.add_feature("Set Lights around player", "action", featureVars.tr.id, function(feat)
+		local offset, pos
+		offset = v3()
+		pos = v3()
+		pos = player.get_player_coords(pid)
+		object.create_object(2906806882, pos, true, true)
+		spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, false)
+		spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, false)
+		spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, false)
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(2906806882, pos, true, false)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		playerFeatures[pid].features["Light_POS1way"].feat.on = true
+		playerFeatures[pid].features["Light_POSway"].feat.on = true
+		playerFeatures[pid].features["Light_POS1way"].feat.hidden = false
+		playerFeatures[pid].features["Light_POSway"].feat.hidden = false
+	end),  type = "action"}
+	
+	features["Lightway2"] = {feat = menu.add_feature("Set Lights around player v2", "action", featureVars.tr.id, function(feat)
+		local offset, pos
+		offset = v3()
+		pos = v3()
+		pos = player.get_player_coords(pid)
+		spawned_cunt1[#spawned_cunt1 + 1]  = object.create_object(1031052499, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt1[#spawned_cunt1], true, false)
+		spawned_cunt2[#spawned_cunt2 + 1]  = object.create_object(1031052499, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt2[#spawned_cunt2], true, false)
+		spawned_cunt3[#spawned_cunt3 + 1]  = object.create_object(1031052499, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt3[#spawned_cunt3], true, false)
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(1031052499, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		spawned_cunt[#spawned_cunt + 1]  = object.create_object(1031052499, pos, true, true)
+		entity.set_entity_as_mission_entity(spawned_cunt[#spawned_cunt], true, false)
+		playerFeatures[pid].features["LightPOS1way"].feat.hidden = false
+		playerFeatures[pid].features["LightPOS1way"].feat.on = true
+		playerFeatures[pid].features["LightPOSway"].feat.on = true
+		playerFeatures[pid].features["LightPOSway"].feat.hidden = false
+	end),  type = "action"}
+	
+	features["RotatingLights"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
+		if Thread2Id[pid + 1] then
+			menu.delete_thread(Thread2Id[pid + 1])
+			Thread2Id[pid + 1] = nil
+		end
+		if EntityHash.pid then
+			for i = 1, #EntityHash.pid do
+				entity.delete_entity(EntityHash.pid[i])
+				EntityHash.pid[i] = nil
+			end
+		end
+		if feat.on then
+			orbit_pid = pid
+			Thread2Id[pid + 1] = menu.create_thread(Orbit2, feat.value)
+		end
+	end), type = "toggle", callback = function()
+	end}
+	features["RotatingLights"].feat.min = 1
+	features["RotatingLights"].feat.max = 10
+	features["RotatingLights"].feat.mod = 1
+	features["RotatingLights"].feat.value = 1
+	features["RotatingLights2"] = {feat = menu.add_feature("Rotating Lights", "value_i", featureVars.tr.id, function(feat)
+		if Thread1Id[pid + 1] then
+			menu.delete_thread(Thread1Id[pid + 1])
+			Thread1Id[pid + 1] = nil
+		end
+		if EntityHash2.pid then
+			for i = 1, #EntityHash2.pid do
+				entity.delete_entity(EntityHash2.pid[i])
+				EntityHash2.pid[i] = nil
+			end
+		end
+		if feat.on then
+			orbit_pid = pid
+			Thread1Id[pid + 1] = menu.create_thread(Orbit1, feat.value)
+		end
+	end), type = "toggle", callback = function()
+	end}
+	features["RotatingLights2"].feat.min = 1
+	features["RotatingLights2"].feat.max = 20
+	features["RotatingLights2"].feat.mod = 1
+	features["RotatingLights2"].feat.value = 6
+	
+	features["scramdeer"] = {feat = menu.add_feature("scramjet Deer", "action", featureVars.tr.id, function(feat)
+		pped = player.get_player_ped(pid)
+		local pos, heading, blipid, i, y, vehhash
+		pos = v3()
+		heading = v3()
+		heading = player.get_player_heading(pid)
+		pos = player.get_player_coords(pid)
+		distance = -5
+		heading = math.rad((heading - 180) * -1)
+		pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
+		model = 0xD86B5A95
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		i = #escort + 1
+		escort[i] = ped.create_ped(6, model, pose, heading, true, false)
+		entity.set_entity_god_mode(escort[i], true)
+		streaming.set_model_as_no_longer_needed(model)
+		vehhash = gameplay.get_hash_key("scramjet")
+		streaming.request_model(vehhash)
+		while (not streaming.has_model_loaded(vehhash)) do
+			system.wait(10)
+		end
+		y = #escortveh + 1
+		escortveh[y] = vehicle.create_vehicle(vehhash, pose, heading, true, false)
+		network.request_control_of_entity(escortveh[y])
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 10)
+		vehicle.set_vehicle_mod(escortveh[y], 10, 0, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[y])
+		blipid = ui.get_blip_from_entity(escortveh[y])
+		ui.set_blip_sprite(blipid, 634)
+		vehicle.set_vehicle_on_ground_properly(escortveh[y])
+		entity.set_entity_god_mode(escortveh[y], true)
+		vehicle.set_vehicle_doors_locked(escortveh[y], 5)
+		ped.set_ped_into_vehicle(escort[i], escortveh[y], -1)
+		if ai.task_vehicle_drive_wander(escort[i], escortveh[y], 180, 262144) then
+			system.wait(10)
+		end
+		vehicle.set_vehicle_doors_locked(escortveh[y], 6)
+		vehicle.set_vehicle_doors_locked(escortveh[y], 2)
+		entity.set_entity_coords_no_offset(escortveh[y], pose)
+		ai.task_vehicle_follow(escort[i], escortveh[y], pped, 220, 262144, 25)
+		streaming.set_model_as_no_longer_needed(vehhash)
+	end), type = "action"}
+	
+	
+features["Build_World"] = {feat = menu.add_feature("SpawnMap Part: ", "action_value_str", featureVars.tr.id, function(feat)
+	
+			local pos, rot, offset = v3(), v3(-14.599995613098,-1.7075473124351e-06,0.0), v3(0.0,0.0,0.0)
+			local pos = player.get_player_coords(pid)
+			local i = #spawned_cunts + 1
+			Mapname = Map_Array[feat.value+1]
+
+			spawned_cunts[i] = object.create_world_object(World_Map[Mapname], pos, true, true)
+			entity.set_entity_as_mission_entity(spawned_cunts[i], true, true)
+			entity.set_entity_collision(spawned_cunts[i], true, true, true)
+			entity.freeze_entity(spawned_cunts[i], true)
+			system.wait(25)
+
+
+end),  type = "action_value_i"}
+features["Build_World"].feat:set_str_data(Map_Array)
+features["Build_World"].feat.value = 0
+
+	
+	--INFO: Lester Ramjet
+	features["Ram_Jet_cleanup"] = {feat = menu.add_feature("Run Delayed Cleanup?", "toggle", featureVars.gr.id, function(feat)
+		features["RamJet_cleanup"].feat.on = true
+	end),  type = "toggle", callback = function()
+	features["RamJet_cleanup"].feat.on = false
+	end}
+	features["Ram_Jet_cleanup"].feat.on = false
+	features["RamJet2"] = {feat = menu.add_feature("Lester RamJet Attack Player", "action_value_i", featureVars.gr.id, function(feat)
+		pped = player.get_player_ped(pid)
+		local pos = v3()
+		local heading, heading2 = player.get_player_heading(pid), player.get_player_heading(pid)
+		pos = player.get_player_coords(pid)
+		distance = tonumber(feat.value)
+		heading = math.rad((heading - 180) * -1)
+		pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
+		model = 0x6E42FD26
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		escort[#escort + 1] = ped.create_ped(29, model, pos, heading2, true, false)
+		entity.set_entity_god_mode(escort[#escort], true)
+		ped.set_ped_relationship_group_hash(escort[#escort], MoistEntRelHash[1])
+		ped.set_can_attack_friendly(escort[#escort], true, false)
+		ped.set_ped_can_switch_weapons(escort[#escort], true)
+		ped.set_ped_combat_attributes(escort[#escort], 46, true)
+		ped.set_ped_combat_attributes(escort[#escort], 52, true)
+		ped.set_ped_combat_attributes(escort[#escort], 1, true)
+		ped.set_ped_combat_attributes(escort[#escort], 2, true)
+		ped.set_ped_combat_range(escort[#escort], 2)
+		ped.set_ped_combat_ability(escort[#escort], 2)
+		ped.set_ped_combat_movement(escort[#escort], 2)
+		ai.task_combat_ped(escort[#escort], pped, 0, 16)
+		streaming.set_model_as_no_longer_needed(model)
+		vehhash = gameplay.get_hash_key("scramjet")
+		streaming.request_model(vehhash)
+		while (not streaming.has_model_loaded(vehhash)) do
+			system.wait(10)
+		end
+		escortveh[#escortveh + 1] = vehicle.create_vehicle(vehhash, pose, heading2, true, false)
+		network.request_control_of_entity(escortveh[#escortveh])
+		entity.set_entity_god_mode(escortveh[#escortveh], true)
+		network.request_control_of_entity(escortveh[#escortveh])
+		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 5)
+		ped.set_ped_into_vehicle(escort[#escort], escortveh[#escortveh], -1)
+		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 6)
+		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 2)
+		vehicle.set_vehicle_mod_kit_type(escortveh[#escortveh], 0)
+		vehicle.get_vehicle_mod(escortveh[#escortveh], 10)
+		vehicle.set_vehicle_mod(escortveh[#escortveh], 10, 0, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[#escortveh])
+		local blipid = ui.get_blip_from_entity(escortveh[#escortveh])
+		ui.set_blip_sprite(blipid, 634)
+		ai.task_vehicle_aim_at_ped(escort[#escort], pped)
+		ai.task_combat_ped(escort[#escort], pped, 0, 16)
+		vehicle.set_vehicle_rocket_boost_active(escortveh[#escortveh], true)
+		return HANDLER_POP
+	end), type = "action"}
+	features["RamJet2"].feat.max = -10
+	features["RamJet2"].feat.min = -200
+	features["RamJet2"].feat.value = -20
+	features["RamJet3"] = {feat = menu.add_feature("Lester RamJet Impact Player", "action_value_i",featureVars.gr.id, function(feat)
+		pped = player.get_player_ped(pid)
+		local pos = v3()
+		local heading, heading2 = player.get_player_heading(pid), player.get_player_heading(pid)
+		pos = player.get_player_coords(pid)
+		local distance = tonumber(feat.value)
+		heading = math.rad((heading - 180) * -1)
+		local pose = v3(pos.x + (math.sin(heading) * -distance), pos.y + (math.cos(heading) * -distance), pos.z)
+		local model = 0x6E42FD26
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		local i = #escort + 1
+		escort[i] = ped.create_ped(29, model, pos, heading2, true, false)
+		ped.set_ped_relationship_group_hash(escort[i], MoistEntRelHash[1])
+		ped.set_can_attack_friendly(escort[i], true, false)
+		
+		--entity.set_entity_god_mode(escort[i], true)
+		ped.set_ped_can_switch_weapons(escort[i], true)
+		ped.set_ped_combat_attributes(escort[i], 46, true)
+		ped.set_ped_combat_attributes(escort[i], 52, true)
+		ped.set_ped_combat_attributes(escort[i], 1, true)
+		ped.set_ped_combat_attributes(escort[i], 2, true)
+		ped.set_ped_combat_range(escort[i], 2)
+		ped.set_ped_combat_ability(escort[i], 2)
+		ped.set_ped_combat_movement(escort[i], 2)
+		ai.task_combat_ped(escort[i], pped, 0, 16)
+		-- streaming.set_model_as_no_longer_needed(model)
+		local vehhash = gameplay.get_hash_key("scramjet")
+		streaming.request_model(vehhash)
+		while (not streaming.has_model_loaded(vehhash)) do
+			system.wait(10)
+		end
+		escortveh[#escortveh + 1] = vehicle.create_vehicle(vehhash, pose, heading2, true, false)
+		ped.set_ped_into_vehicle(escort[i], escortveh[#escortveh], -1)
+		network.request_control_of_entity(escortveh[#escortveh])
+		--entity.set_entity_god_mode(escortveh[#escortveh], true)
+		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 5)
+		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 6)
+		vehicle.set_vehicle_doors_locked(escortveh[#escortveh], 2)
+		vehicle.set_vehicle_mod_kit_type(escortveh[#escortveh], 0)
+		vehicle.get_vehicle_mod(escortveh[#escortveh], 10)
+		vehicle.set_vehicle_mod(escortveh[#escortveh], 10, 0, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[#escortveh])
+		local blipid = ui.get_blip_from_entity(escortveh[#escortveh])
+		ui.set_blip_sprite(blipid, 634)
+		ai.task_vehicle_aim_at_ped(escort[i], pped)
+		ai.task_combat_ped(escort[i], pped, 0, 16)
+		vehicle.set_vehicle_out_of_control(escortveh[#escortveh], true, true)
+		vehicle.set_vehicle_rocket_boost_active(escortveh[#escortveh], true)
+		return HANDLER_POP
+	end), type = "action"}
+	features["RamJet3"].feat.max = -10
+	features["RamJet3"].feat.min = -200
+	features["RamJet3"].feat.value = -20
+	features["Ramjet_Attach"] = {feat = menu.add_feature("Remove All RamJets in Range", "toggle", featureVars.gr.id, function(feat)
+		if feat.on then
 			for i = 1, #escortveh do
 				if #escortveh ~= nil or #escortveh ~= 0 then
-				entity.set_entity_as_no_longer_needed(escortveh[i])
-				entity.delete_entity(escortveh[i])
-
+					entity.set_entity_as_no_longer_needed(escortveh[i])
+					entity.delete_entity(escortveh[i])
+					
 				end
 			end
 			for i = 1, #escort do
 				if #escort ~= nil or #escort ~= 0 then
-				entity.set_entity_as_no_longer_needed(escort[i])
-				entity.delete_entity(escort[i])
+					entity.set_entity_as_no_longer_needed(escort[i])
+					entity.delete_entity(escort[i])
 				end
 			end
-			end		
-			feat.on = false
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Ramjet_Attach"].feat.on = false
-features["RamJet_cleanup"] = {feat = menu.add_feature("Run Delayed Ramjet Cleanup", "toggle", featureVars.gr.id, function(feat)
-			if feat.on then
-				system.wait(10000)
-				delayed_spawn_cleanup()
-				return HANDLER_CONTINUE
-			end
-end),  type = "toggle", callback = function()
-end}
-features["RamJet_cleanup"].feat.on = false
-features["RamJet_cleanup"].feat.hidden = true
-features["sendlesmonster"] = {feat = menu.add_feature("Arenawar Monster Lester", "action_value_str", featureVars.lgr.id, function(feat)
+		end		
+		feat.on = false
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["Ramjet_Attach"].feat.on = false
+	features["RamJet_cleanup"] = {feat = menu.add_feature("Run Delayed Ramjet Cleanup", "toggle", featureVars.gr.id, function(feat)
+		if feat.on then
+			system.wait(10000)
+			delayed_spawn_cleanup()
+			return HANDLER_CONTINUE
+		end
+	end),  type = "toggle", callback = function()
+	end}
+	features["RamJet_cleanup"].feat.on = false
+	features["RamJet_cleanup"].feat.hidden = true
+	features["sendlesmonster"] = {feat = menu.add_feature("Arenawar Monster Lester", "action_value_str", featureVars.lgr.id, function(feat)
+		ped_groups()
+		local attack, modd, pped, e, d, c
+		local pos = v3()
+		attack = feat.value
+		modd = 1
+		pped = player.get_player_ped(pid)
+		pos = player.get_player_coords(pid)
+		e = #escort * 3
+		d = 15
+		c = d + e
+		pos.x = pos.x + c
+		pos.y = pos.y + 10
+		ground, pos.z = gameplay.get_ground_z(pos)
+		local model = gameplay.get_hash_key("ig_lestercrest_2")
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		local i = #escort + 1
+		escort[i] = ped.create_ped(6, model, pos, pos.z, true, false)
+		ped.set_ped_relationship_group_hash(escort[i], MoistEntRelHash[1])
+		ped.set_can_attack_friendly(escort[i], true, false)
+		if #groupIDs == nil then
 			ped_groups()
-			local attack, modd, pped, e, d, c
-			local pos = v3()
-			attack = feat.value
-			modd = 1
-			pped = player.get_player_ped(pid)
-			pos = player.get_player_coords(pid)
-			e = #escort * 3
-			d = 15
-			c = d + e
-			pos.x = pos.x + c
-			pos.y = pos.y + 10
-			ground, pos.z = gameplay.get_ground_z(pos)
-			local model = gameplay.get_hash_key("ig_lestercrest_2")
-			streaming.request_model(model)
-			while (not streaming.has_model_loaded(model)) do
-				system.wait(10)
-			end
-			local i = #escort + 1
-			escort[i] = ped.create_ped(6, model, pos, pos.z, true, false)
-			if #groupIDs == nil then
+			else
+		end
+		if #escort >= 8 then
+			local t = #escort / 8
+			local j = #groupIDs
+			if  t > j then
 				ped_groups()
-				else
-			end
-			if #escort >= 8 then
-				local t = #escort / 8
 				local j = #groupIDs
-				if  t > j then
-					ped_groups()
-					local j = #groupIDs
-					local escort_group = groupIDs[j]
-					else
-				end
 				local escort_group = groupIDs[j]
 				else
-				local j = #groupIDs - 1
-				local escort_group = groupIDs[j]
-				ped.set_ped_as_group_member(escort[i], escort_group)
-				ped.set_ped_never_leaves_group(escort[i], true)
-				if i == 1 or 9 then
-					if i == 1 then ped.set_ped_as_group_leader(escort[i], groupIDs[#groupIDs - 1])
-					end
-					elseif i == 9 then ped.set_ped_as_group_leader(escort[i], groupIDs[#groupIDs])
+			end
+			local escort_group = groupIDs[j]
+			else
+			local j = #groupIDs - 1
+			local escort_group = groupIDs[j]
+			ped.set_ped_as_group_member(escort[i], escort_group)
+			ped.set_ped_never_leaves_group(escort[i], true)
+			if i == 1 or 9 then
+				if i == 1 then ped.set_ped_as_group_leader(escort[i], groupIDs[#groupIDs - 1])
 				end
+				elseif i == 9 then ped.set_ped_as_group_leader(escort[i], groupIDs[#groupIDs])
 			end
-			entity.set_entity_god_mode(escort[i], true)
-			streaming.set_model_as_no_longer_needed(model)
-			local vehhash = 1721676810
-			streaming.request_model(vehhash)
-			while (not streaming.has_model_loaded(vehhash)) do
-				system.wait(10)
+		end
+		entity.set_entity_god_mode(escort[i], true)
+		streaming.set_model_as_no_longer_needed(model)
+		local vehhash = 1721676810
+		streaming.request_model(vehhash)
+		while (not streaming.has_model_loaded(vehhash)) do
+			system.wait(10)
+		end
+		local y = #escortveh + 1
+		escortveh[y] = vehicle.create_vehicle(vehhash, pos, pos.z, true, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[y])
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 42)
+		vehicle.set_vehicle_mod(escortveh[y], 42, 1, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 45)
+		vehicle.set_vehicle_mod(escortveh[y], 45, 0, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 34)
+		vehicle.set_vehicle_mod(escortveh[y], 34, -1, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 48)
+		vehicle.set_vehicle_mod(escortveh[y], 48, 1, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 40)
+		vehicle.set_vehicle_mod(escortveh[y], 40, 2, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 41)
+		vehicle.set_vehicle_mod(escortveh[y], 41, 2, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 11)
+		vehicle.set_vehicle_mod(escortveh[y], 11, 3, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 9)
+		vehicle.set_vehicle_mod(escortveh[y], 9, 0, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 11)
+		vehicle.set_vehicle_mod(escortveh[y], 11, 3, false)
+		vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
+		vehicle.get_vehicle_mod(escortveh[y], 16)
+		vehicle.set_vehicle_mod(escortveh[y], 16, 4, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[y])
+		ui.set_blip_sprite(BlipIDs[#BlipIDs] , 666)
+		vehicle.set_vehicle_on_ground_properly(escortveh[y])
+		entity.set_entity_god_mode(escortveh[y], true)
+		vehicle.set_vehicle_doors_locked(escortveh[y], 5)
+		network.request_control_of_entity(escortveh[y])
+		ped.set_ped_combat_attributes(escort[i], 46, true)
+		ped.set_ped_combat_attributes(escort[i], 52, true)
+		ped.set_ped_combat_attributes(escort[i], 1, true)
+		ped.set_ped_combat_attributes(escort[i], 2, true)
+		ped.set_ped_combat_range(escort[i], 2)
+		ped.set_ped_combat_ability(escort[i], 2)
+		ped.set_ped_combat_movement(escort[i], 2)
+		ped.set_ped_into_vehicle(escort[i], escortveh[y], -1)
+		if ai.task_vehicle_drive_wander(escort[i], escortveh[y], 180, 262144) then
+			system.wait(10)
+		end
+		vehicle.set_vehicle_doors_locked(escortveh[y], 6)
+		vehicle.set_vehicle_doors_locked(escortveh[y], 2)
+		entity.set_entity_coords_no_offset(escortveh[y], pos)
+		if attack == 1 then
+			ai.task_combat_ped(escort[i], pped, 0, 16)
+			else
+			if attack == 2 then
+				playerFeatures[pid].features["hunter_taskloop"].feat.on = true
+				ai.task_vehicle_follow(escort[i], escortveh[y], pped, 220, 262144, 25)
 			end
-			local y = #escortveh + 1
-			escortveh[y] = vehicle.create_vehicle(vehhash, pos, pos.z, true, false)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[y])
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 42)
-			vehicle.set_vehicle_mod(escortveh[y], 42, 1, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 45)
-			vehicle.set_vehicle_mod(escortveh[y], 45, 0, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 34)
-			vehicle.set_vehicle_mod(escortveh[y], 34, -1, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 48)
-			vehicle.set_vehicle_mod(escortveh[y], 48, 1, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 40)
-			vehicle.set_vehicle_mod(escortveh[y], 40, 2, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 41)
-			vehicle.set_vehicle_mod(escortveh[y], 41, 2, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 11)
-			vehicle.set_vehicle_mod(escortveh[y], 11, 3, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 9)
-			vehicle.set_vehicle_mod(escortveh[y], 9, 0, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 11)
-			vehicle.set_vehicle_mod(escortveh[y], 11, 3, false)
-			vehicle.set_vehicle_mod_kit_type(escortveh[y], 0)
-			vehicle.get_vehicle_mod(escortveh[y], 16)
-			vehicle.set_vehicle_mod(escortveh[y], 16, 4, false)
-			BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escortveh[y])
-			ui.set_blip_sprite(BlipIDs[#BlipIDs] , 666)
-			vehicle.set_vehicle_on_ground_properly(escortveh[y])
-			entity.set_entity_god_mode(escortveh[y], true)
-			vehicle.set_vehicle_doors_locked(escortveh[y], 5)
-			network.request_control_of_entity(escortveh[y])
-			ped.set_ped_combat_attributes(escort[i], 46, true)
-			ped.set_ped_combat_attributes(escort[i], 52, true)
-			ped.set_ped_combat_attributes(escort[i], 1, true)
-			ped.set_ped_combat_attributes(escort[i], 2, true)
-			ped.set_ped_combat_range(escort[i], 2)
-			ped.set_ped_combat_ability(escort[i], 2)
-			ped.set_ped_combat_movement(escort[i], 2)
-			ped.set_ped_into_vehicle(escort[i], escortveh[y], -1)
-			if ai.task_vehicle_drive_wander(escort[i], escortveh[y], 180, 262144) then
-				system.wait(10)
-			end
-			vehicle.set_vehicle_doors_locked(escortveh[y], 6)
-			vehicle.set_vehicle_doors_locked(escortveh[y], 2)
-			entity.set_entity_coords_no_offset(escortveh[y], pos)
-			if attack == 1 then
-				ai.task_combat_ped(escort[i], pped, 0, 16)
-				else
-				if attack == 2 then
-					playerFeatures[pid].features["hunter_taskloop"].feat.on = true
-					ai.task_vehicle_follow(escort[i], escortveh[y], pped, 220, 262144, 25)
-				end
-			end
-			streaming.set_model_as_no_longer_needed(vehhash)
-end), type = "action_value_i"}
-features["sendlesmonster"].feat:set_str_data({"Send Wandering","Send to Attack!","Send Stalker"})
-
-PlyImpactPos[pid+1] = v3()
-features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
-			if feat.on then
-				pped = player.get_player_ped(pid)
-				
-				
-				local success, pos = ped.get_ped_last_weapon_impact(pped, v3())
-				if success then
+		end
+		streaming.set_model_as_no_longer_needed(vehhash)
+	end), type = "action_value_i"}
+	features["sendlesmonster"].feat:set_str_data({"Send Wandering","Send to Attack!","Send Stalker"})
+	
+	PlyImpactPos[pid+1] = v3()
+	features["weapon_impact"] = {feat = menu.add_feature("Get last Weapon impact POS", "toggle", featureVars.f.id, function(feat)
+		if feat.on then
+			pped = player.get_player_ped(pid)
+			
+			
+			local success, pos = ped.get_ped_last_weapon_impact(pped, v3())
+			if success then
 				Print(pos)
 				PlyImpactPos[pid+1] = pos
-					else
-				end
-				return HANDLER_CONTINUE
+				else
 			end
-end),  type = "toggle", callback = function()
-end}
-features["weapon_impact"].feat.on = false
-features["weapon_impact"].feat.hidden = false
-		--INFO: Weapon strike
-		local current_loop_delay
-		current_loop_delay = Settings["playerlist_loop"]
-features["Give_Airstrike"] = {feat = menu.add_feature("Give WeaponStrike:", "value_str", featureVars.f.id, function(feat)
-			playerFeatures[pid].features["weapon_impact"].feat.on = true
-			local posm, playerz, zPos, hash
-			if feat.on then
-				pped = player.get_player_ped(pid)
-				Settings["playerlist_loop"] = 0
-				if not notify_sent then
-					moist_notify(StrikeGive[feat.value+1], "Weapon Projectile Selected")
-					notify_sent = true
-				end
-				if not ped.is_ped_shooting(pped) then
-				return HANDLER_CONTINUE end
-				posm = v3()
-				posm = player.get_player_coords(pid)
-				if feat.value == 6 then
-					posm.z = posm.z + 10
-					else
-					posm.z = posm.z + 100
-				end
-				hash = gameplay.get_hash_key(StrikeGive[feat.value + 1])
-				pos_off = v3()
-				pos_off.x = PlyImpactPos[pid+1].x + math.random(1, 5)
-				pos_off.y = PlyImpactPos[pid+1].y + math.random(1, 8)
-			--	playerz, zPos = gameplay.get_ground_z(pos)
-				--pos_off.z = zPos
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 1000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x + 5
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y - 5
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x - 6
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y + 6
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 1000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x + 5
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y - 5
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x - 4
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y + 4
-				gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
-				system.wait(50)
-				-- print(PlyImpactPos[pid+1])
-				return HANDLER_CONTINUE
-			end
-			playerFeatures[pid].features["weapon_impact"].feat.on = false
-			notify_sent = false
-			Settings["playerlist_loop"] = current_loop_delay
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Give_Airstrike"].feat.on = false
-features["Give_Airstrike"].feat:set_str_data(StrikeGive_label)
---INFO: *** **** Sticky Bomb Back **** ***	
-features["StickyBack"] = {feat = menu.add_feature("Stickbomb on Back of this cunt!", "action", featureVars.tr.id, function(feat)
-	local PosBool, pos, offset, Tpos = false, v3(), v3(), v3()
-	local pped = player.get_player_ped(pid)
-	local BoneID = entity.get_entity_bone_index_by_name(pped, "SKEL_Spine_Root")
-	local hash = gameplay.get_hash_key("WEAPON_STICKYBOMB")
-	PosBool, pos = ped.get_ped_bone_coords(pped, 11816, offset)
-	Tpos = get_offset(pid, -0.19)
-	offset = v3(0.0,0.0,1.250)
-	myped = player.get_player_ped(player.player_id())
-			gameplay.shoot_single_bullet_between_coords(Tpos + offset, pos, 10000.00, hash, myped, true, false, 10.0)
-	PosBool, pos = ped.get_ped_bone_coords(pped, 57597, offset)
-	Tpos = get_offset(pid, 0.05)
-		gameplay.shoot_single_bullet_between_coords(Tpos + offset, pos, 10000.00, hash, myped, true, false, 10.0)
-			
-				
-end), type = "action"}
-
-features["StickyBombBack"] = {feat = menu.add_feature("Sticky Bomb on Back of this cunt!", "action", featureVars.tr.id, function(feat)
-	local PosBool, pos, offset, Tpos = false, v3(), v3(), v3()
-	local pped = player.get_player_ped(pid)
-	local hash = gameplay.get_hash_key("WEAPON_STICKYBOMB")
-	PosBool, pos = ped.get_ped_bone_coords(pped, 57597, offset)
-	Pos1Bool, pos1 = ped.get_ped_bone_coords(pped, 64729, offset)
-	
-	Tpos = get_offset(pid, -0.05)
-	offset = v3(0.0,0.0,0.12)
-	myped = player.get_player_ped(player.player_id())
-			gameplay.shoot_single_bullet_between_coords(pos1, pos, 10000200, hash, myped, true, false, 0.001)
-
-	PosBool, pos = ped.get_ped_bone_coords(pped, 57597, offset)
-
-	system.wait(5)
-	
-		gameplay.shoot_single_bullet_between_coords(pos, pos1, 100000, hash, myped, true, false, 0.001)
-			
-				
-end), type = "action"}
-
-		
-features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.tr.id, function(feat)
-			if world_dumped then
-				local pos = v3()
-				pos = player.get_player_coords(pid)
-				dump_pickups_onplayer(pid, pos)
-			end
-			return HANDLER_POP
-end), type = "action"}
-
-features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
-			script.trigger_script_event(0x4267b065, pid, {1, 1})
-			local scid = player.get_player_scid(pid)
-			local name = tostring(player.get_player_name(pid))
-			Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
-end), type = "action"}
-features["Block Passive"].feat.hidden = NewDLC()
-
-features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
-			script.trigger_script_event(0x4267b065, pid, {2, 0})
-			scid = player.get_player_scid(pid)
-			name = tostring(player.get_player_name(pid))
-			Debug_Out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
-end), type = "action"}
-features["Unblock Passive"].feat.hidden = NewDLC()
-
-		--INFO: Grief
-		featureVars.lag = menu.add_feature("Entity Area Lag", "parent", featureVars.g.id)
-		menu.add_feature("Value = Spawn Amount", "action", featureVars.lag.id)
-
-local attack_peds2 = {"u_m_y_juggernaut_01","a_f_y_topless_01","ig_lestercrest_2","ig_lestercrest_3","ig_trafficwarden","mp_f_deadhooker","s_m_m_pilot_01","s_m_m_pilot_02","s_m_y_pilot_01","s_m_y_robber_01","u_m_m_jewelthief","u_m_y_fibmugger_01","a_f_y_juggalo_01","mp_g_m_pros_01",}
-features["attacker2"] = {feat = menu.add_feature("Send Attacker", "action_value_str", featureVars.g.id, function(feat)
-
-        local pped = player.get_player_ped(pid)
-
-        local pos = get_offset(pid, -6)
-
-        local model = gameplay.get_hash_key(attack_peds2[feat.value + 1])
-        streaming.request_model(model)
-        while (not streaming.has_model_loaded(model)) do
-            system.wait(10)
-        end
-
-        local i = #escort + 1
-        escort[i] = ped.create_ped(29, model, pos, player.get_player_heading(pid), true, false)
-       BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escort[i])
-        if #groupIDs == nil then
-            ped_group_setup()
-        else
-        end
-        local y = #groupIDs
-
-
-        for i = 1, #escort do
-            pedgroup = ped.get_ped_group(escort[i])
-            myplygrp = player.get_player_group(player.player_id())
-            player_group = player.get_player_group(pid)
-            ped.set_ped_as_group_member(escort[i], groupIDs[y])
-            ped.set_ped_never_leaves_group(escort[i], true)
-            ped.set_relationship_between_groups(5, groupIDs[y], player_group)
-            ped.set_relationship_between_groups(5, player_group,  groupIDs[y])
-            ped.set_relationship_between_groups(1, groupIDs[y], myplygrp)
-            ped.set_relationship_between_groups(1, myplygrp,  groupIDs[y])
-        end
-        --entity.set_entity_god_mode(escort[i], true)
-        ped.set_ped_combat_attributes(escort[i], 46, true)
-        ped.set_ped_combat_attributes(escort[i], 52, true)
-        ped.set_ped_combat_attributes(escort[i], 1, true)
-        ped.set_ped_combat_attributes(escort[i], 2, true)
-        ped.set_ped_combat_range(escort[i], 2)
-        ped.set_ped_combat_ability(escort[i], 2)
-        ped.set_ped_combat_movement(escort[i], 2)
-        entity.set_entity_god_mode(escort[i], true)
-        ped.set_ped_combat_attributes(escort[i], 52, true)
-        ped.set_ped_combat_attributes(escort[i], 1, true)
-        ped.set_ped_combat_attributes(escort[i], 46, true)
-        ped.set_ped_combat_attributes(escort[i], 2, true)
-        ped.set_ped_combat_range(escort[i], 2)
-        ped.set_ped_combat_ability(escort[i], 2)
-        ped.set_ped_combat_movement(escort[i], 2)
-        weapon.give_delayed_weapon_to_ped(escort[i], 0xb62d1f67, 1, 1)
-        ped.set_ped_can_switch_weapons(escort[i], true)
-        pos = player.get_player_coords(pid)
-        pos.x = pos.x + 8
-        pos.y = pos.y + 8
-        entity.set_entity_coords_no_offset(escort[i], pos)
-        ai.task_combat_ped(escort[i], pped, 0, 16)
-end), type = "action_value_str"}
-features["attacker2"].feat:set_str_data(attack_peds2)
-
-local blame = 0
-		
-features["blamer"] = {feat = menu.add_feature("Set Blame: ", "value_str", featureVars.g.id, function(feat)
-			if feat.on then
-				if feat.value == 32 then
-					blame = 0
-					elseif feat.value ~= 32 then
-					blame = player.get_player_ped(feat.value)
-				moist_notify("Blame Set: " .. Playerz[feat.value+1])
-
-				end
-				system.wait(200)
-				return HANDLER_CONTINUE
-			end
-			blame = 0
-			return HANDLER_POP
-end), type = "toggle"}
-features["blamer"].feat:set_str_data(Playerz)
-
-features["blamedorbital"] = {feat = menu.add_feature("Orbital Player Blaming: ", "action_value_str", featureVars.g.id, function(feat)
-			local pos, exp_pos = v3(), v3()
+			return HANDLER_CONTINUE
+		end
+	end),  type = "toggle", callback = function()
+	end}
+	features["weapon_impact"].feat.on = false
+	features["weapon_impact"].feat.hidden = false
+	--INFO: Weapon strike
+	local current_loop_delay
+	current_loop_delay = Settings["playerlist_loop"]
+	features["Give_Airstrike"] = {feat = menu.add_feature("Give WeaponStrike:", "value_str", featureVars.f.id, function(feat)
+		playerFeatures[pid].features["weapon_impact"].feat.on = true
+		local posm, playerz, zPos, hash
+		if feat.on then
 			pped = player.get_player_ped(pid)
-			myped = player.get_player_ped(feat.value)
-			pos = entity.get_entity_coords(pped)
-			offset = v3(0.0,0.0,-2000.00)
-			graphics.set_next_ptfx_asset("scr_xm_orbital")
-			while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-				graphics.request_named_ptfx_asset("scr_xm_orbital")
-				system.wait(0)
+			Settings["playerlist_loop"] = 0
+			if not notify_sent then
+				moist_notify(StrikeGive[feat.value+1], "Weapon Projectile Selected")
+				notify_sent = true
 			end
-			gameplay.set_override_weather(3)
-			gameplay.clear_cloud_hat()
-			fire.add_explosion(pos, 59, true, false, 1.5, myped)
-			fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
-			fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
-			fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
-			fire.add_explosion(pos, 50, true, false, 1.0, myped)
-			exp_pos.x = math.random(-2700, 2700)
-			exp_pos.y = math.random(-3300, 7500)
-			exp_pos.z = math.random(30, 90)
-
-			fire.add_explosion(exp_pos, 74, true, false, 0, myped)
-			
-			
-			graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
-			-- audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", v3(-910000.00,-10000.0,-19000.00), "MP_LOBBY_SOUNDS", true, 999999, false)
-			-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "MP_LOBBY_SOUNDS", true, 99999990, false)
-			-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon_Standard", pos, 0, true, 1000000, false)
-			-- audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", v3(-910000.00,-10000.0,-19000.00), "MP_LOBBY_SOUNDS", true, 999999, false)
-			-- audio.play_sound_from_coord(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", pos, "MP_LOBBY_SOUNDS", true, 99999990, false)
-			 audio.play_sound_from_coord(1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
-			-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, myped, true, 0, false)
-			-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
-			graphics.set_next_ptfx_asset("scr_xm_orbital")
-			while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-				graphics.request_named_ptfx_asset("scr_xm_orbital")
-				system.wait(0)
+			if not ped.is_ped_shooting(pped) then
+			return HANDLER_CONTINUE end
+			posm = v3()
+			posm = player.get_player_coords(pid)
+			if feat.value == 6 then
+				posm.z = posm.z + 10
+				else
+				posm.z = posm.z + 100
 			end
-			gameplay.set_override_weather(3)
-			gameplay.clear_cloud_hat()
-			fire.add_explosion(pos, 59, false, true, 1.5, myped)
-			fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
-			fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
-			fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
-			fire.add_explosion(pos, 50, true, false, 1.0, myped)
-			fire.add_explosion(pos, 50, true, false, 1.0, myped)
-			graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
-			--  audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", pos + v3(0.0,0.0,20000), "MP_LOBBY_SOUNDS", true, 0, false)
-			-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "o", true, 0, false)
-			-- audio.play_sound(-1, "DLC_XM_Explosions_Orbital_Cannon", 0, true, 0,false)
-			-- audio.play_sound(-1, "DLC_XM_Explosions_Orbital_Cannon", 0, true, 999999999, false)
-			-- audio.play_sound(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", 0, true, 0, false)
-			-- audio.play_sound_from_coord(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", pos,  0,  true, 999999999, false)
-			-- audio.play_sound_from_coord(-1, "MP_Impact", pos, 0, true, 0, false)
-			-- audio.play_sound(-1, "MP_Impact", 0, true, 0, false)
-
-			graphics.set_next_ptfx_asset("scr_xm_orbital")
-			while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-				graphics.request_named_ptfx_asset("scr_xm_orbital")
-				system.wait(0)
+			hash = gameplay.get_hash_key(StrikeGive[feat.value + 1])
+			pos_off = v3()
+			pos_off.x = PlyImpactPos[pid+1].x + math.random(1, 5)
+			pos_off.y = PlyImpactPos[pid+1].y + math.random(1, 8)
+			--	playerz, zPos = gameplay.get_ground_z(pos)
+			--pos_off.z = zPos
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 1000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x + 5
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y - 5
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x - 6
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y + 6
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 1000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x + 5
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y - 5
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].x = PlyImpactPos[pid+1].x - 4
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			PlyImpactPos[pid+1].y = PlyImpactPos[pid+1].y + 4
+			gameplay.shoot_single_bullet_between_coords(posm, PlyImpactPos[pid+1], 10000.00, hash, pped, true, false, 100000.0)
+			system.wait(50)
+			-- print(PlyImpactPos[pid+1])
+			return HANDLER_CONTINUE
+		end
+		playerFeatures[pid].features["weapon_impact"].feat.on = false
+		notify_sent = false
+		Settings["playerlist_loop"] = current_loop_delay
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["Give_Airstrike"].feat.on = false
+	features["Give_Airstrike"].feat:set_str_data(StrikeGive_label)
+	--INFO: *** **** Sticky Bomb Back **** ***	
+	features["StickyBack"] = {feat = menu.add_feature("Stickbomb on Back of this cunt!", "action", featureVars.tr.id, function(feat)
+		local PosBool, pos, offset, Tpos = false, v3(), v3(), v3()
+		local pped = player.get_player_ped(pid)
+		local BoneID = entity.get_entity_bone_index_by_name(pped, "SKEL_Spine_Root")
+		local hash = gameplay.get_hash_key("WEAPON_STICKYBOMB")
+		PosBool, pos = ped.get_ped_bone_coords(pped, 11816, offset)
+		Tpos = get_offset(pid, -0.19)
+		offset = v3(0.0,0.0,1.250)
+		myped = player.get_player_ped(player.player_id())
+		gameplay.shoot_single_bullet_between_coords(Tpos + offset, pos, 10000.00, hash, myped, true, false, 10.0)
+		PosBool, pos = ped.get_ped_bone_coords(pped, 57597, offset)
+		Tpos = get_offset(pid, 0.05)
+		gameplay.shoot_single_bullet_between_coords(Tpos + offset, pos, 10000.00, hash, myped, true, false, 10.0)
+		
+		
+	end), type = "action"}
+	
+	features["StickyBombBack"] = {feat = menu.add_feature("Sticky Bomb on Back of this cunt!", "action", featureVars.tr.id, function(feat)
+		local PosBool, pos, offset, Tpos = false, v3(), v3(), v3()
+		local pped = player.get_player_ped(pid)
+		local hash = gameplay.get_hash_key("WEAPON_STICKYBOMB")
+		PosBool, pos = ped.get_ped_bone_coords(pped, 57597, offset)
+		Pos1Bool, pos1 = ped.get_ped_bone_coords(pped, 64729, offset)
+		
+		Tpos = get_offset(pid, -0.05)
+		offset = v3(0.0,0.0,0.12)
+		myped = player.get_player_ped(player.player_id())
+		gameplay.shoot_single_bullet_between_coords(pos1, pos, 10000200, hash, myped, true, false, 0.001)
+		
+		PosBool, pos = ped.get_ped_bone_coords(pped, 57597, offset)
+		
+		system.wait(5)
+		
+		gameplay.shoot_single_bullet_between_coords(pos, pos1, 100000, hash, myped, true, false, 0.001)
+		
+		
+	end), type = "action"}
+	
+	
+	features["World_PickupDump"] = {feat = menu.add_feature("Dump World Pickups on this Cunt!", "action", featureVars.tr.id, function(feat)
+		if world_dumped then
+			local pos = v3()
+			pos = player.get_player_coords(pid)
+			dump_pickups_onplayer(pid, pos)
+		end
+		return HANDLER_POP
+	end), type = "action"}
+	
+	features["Block Passive"] = {feat = menu.add_feature("Block Passive Mode", "action", featureVars.f.id, function(feat)
+		script.trigger_script_event(0x4267b065, pid, {1, 1})
+		local scid = player.get_player_scid(pid)
+		local name = tostring(player.get_player_name(pid))
+		Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .."Blocked Passive"))
+	end), type = "action"}
+	features["Block Passive"].feat.hidden = NewDLC()
+	
+	features["Unblock Passive"] = {feat = menu.add_feature("Unblock Passive Mode", "action", featureVars.f.id, function(feat)
+		script.trigger_script_event(0x4267b065, pid, {2, 0})
+		scid = player.get_player_scid(pid)
+		name = tostring(player.get_player_name(pid))
+		Debug_Out(string.format("Player: " .. name .. " [" .. scid .. "]" .. "Passive Unblocked"))
+	end), type = "action"}
+	features["Unblock Passive"].feat.hidden = NewDLC()
+	
+	--INFO: Grief
+	featureVars.lag = menu.add_feature("Entity Area Lag", "parent", featureVars.g.id)
+	menu.add_feature("Value = Spawn Amount", "action", featureVars.lag.id)
+	
+	local attack_peds2 = {"u_m_y_juggernaut_01","a_f_y_topless_01","ig_lestercrest_2","ig_lestercrest_3","ig_trafficwarden","mp_f_deadhooker","s_m_m_pilot_01","s_m_m_pilot_02","s_m_y_pilot_01","s_m_y_robber_01","u_m_m_jewelthief","u_m_y_fibmugger_01","a_f_y_juggalo_01","mp_g_m_pros_01",}
+	features["attacker2"] = {feat = menu.add_feature("Send Attacker", "action_value_str", featureVars.g.id, function(feat)
+		
+		local pped = player.get_player_ped(pid)
+		
+		local pos = get_offset(pid, -6)
+		
+		local model = gameplay.get_hash_key(attack_peds2[feat.value + 1])
+		streaming.request_model(model)
+		while (not streaming.has_model_loaded(model)) do
+			system.wait(10)
+		end
+		
+		local i = #escort + 1
+		escort[i] = ped.create_ped(29, model, pos, player.get_player_heading(pid), true, false)
+		ped.set_ped_relationship_group_hash(escort[i], MoistEntRelHash[1])
+		ped.set_can_attack_friendly(escort[i], true, false)
+		BlipIDs[#BlipIDs+1] = ui.add_blip_for_entity(escort[i])
+		if #groupIDs == nil then
+			ped_group_setup()
+			else
+		end
+		local y = #groupIDs
+		
+		
+		for i = 1, #escort do
+			pedgroup = ped.get_ped_group(escort[i])
+			myplygrp = player.get_player_group(player.player_id())
+			player_group = player.get_player_group(pid)
+			ped.set_ped_as_group_member(escort[i], groupIDs[y])
+			ped.set_ped_never_leaves_group(escort[i], true)
+			ped.set_relationship_between_groups(5, groupIDs[y], player_group)
+			ped.set_relationship_between_groups(5, player_group,  groupIDs[y])
+			ped.set_relationship_between_groups(1, groupIDs[y], myplygrp)
+			ped.set_relationship_between_groups(1, myplygrp,  groupIDs[y])
+		end
+		--entity.set_entity_god_mode(escort[i], true)
+		ped.set_ped_combat_attributes(escort[i], 46, true)
+		ped.set_ped_combat_attributes(escort[i], 52, true)
+		ped.set_ped_combat_attributes(escort[i], 1, true)
+		ped.set_ped_combat_attributes(escort[i], 2, true)
+		ped.set_ped_combat_range(escort[i], 2)
+		ped.set_ped_combat_ability(escort[i], 2)
+		ped.set_ped_combat_movement(escort[i], 2)
+		entity.set_entity_god_mode(escort[i], true)
+		ped.set_ped_combat_attributes(escort[i], 52, true)
+		ped.set_ped_combat_attributes(escort[i], 1, true)
+		ped.set_ped_combat_attributes(escort[i], 46, true)
+		ped.set_ped_combat_attributes(escort[i], 2, true)
+		ped.set_ped_combat_range(escort[i], 2)
+		ped.set_ped_combat_ability(escort[i], 2)
+		ped.set_ped_combat_movement(escort[i], 2)
+		weapon.give_delayed_weapon_to_ped(escort[i], 0xb62d1f67, 1, 1)
+		ped.set_ped_can_switch_weapons(escort[i], true)
+		pos = player.get_player_coords(pid)
+		pos.x = pos.x + 8
+		pos.y = pos.y + 8
+		entity.set_entity_coords_no_offset(escort[i], pos)
+		ai.task_combat_ped(escort[i], pped, 0, 16)
+	end), type = "action_value_str"}
+	features["attacker2"].feat:set_str_data(attack_peds2)
+	
+	local blame = 0
+	
+	features["blamer"] = {feat = menu.add_feature("Set Blame: ", "value_str", featureVars.g.id, function(feat)
+		if feat.on then
+			if feat.value == 32 then
+				blame = 0
+				elseif feat.value ~= 32 then
+				blame = player.get_player_ped(feat.value)
+				moist_notify("Blame Set: " .. Playerz[feat.value+1])
+				
 			end
-			graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 10.000, false, false, true)
-			fire.add_explosion(pos, 59, false, true, 1.5, myped)
-			fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
-			fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
-			fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
-			fire.add_explosion(pos, 50, true, false, 1.0, myped)
-			fire.add_explosion(pos, 50, true, false, 1.0, myped)
-			fire.start_entity_fire(pped)
-
-end), type = "action"}
- features["blamedorbital"].feat:set_str_data(Playerz)
-
-features["Firework_ply"] = {feat = menu.add_feature("Fireworks Around Player Delay: ", "value_i", featureVars.tr.id, function(feat)
-			if feat.on then
-				local pos, Pos, Rpos1, Rpos2
-				pos, Pos = v3(), v3()
-				pos = player.get_player_coords(pid)
-				Pos = player.get_player_coords(pid)
-				Pos.x = pos.x + math.random(-10, 20)
-				Pos.y = pos.y + math.random(-10, 20)
-				Pos.z = pos.z + math.random(5, 50)
-				fire.add_explosion(Pos, 38, true, false, 0, blame)
-				system.wait(feat.value)
-				Pos.x = pos.x + math.random(-10, 20)
-				Pos.y = pos.y + math.random(-10, 20)
-				Pos.z = pos.z + math.random(5, 50)
-				fire.add_explosion(Pos, 38,  true, false, 0, blame)
-				system.wait(feat.value)
-				pos = player.get_player_coords(pid)
-				Pos.x = pos.x + math.random(-100, 200)
-				Pos.y = pos.y + math.random(-100, 200)
-				Pos.z = pos.z + math.random(5, 50)
-				fire.add_explosion(Pos, 38, true, false, 0, blame)
-				system.wait(feat.value)
-				Pos.x = pos.x + math.random(1, 200)
-				Pos.y = pos.y + math.random(1, 200)
-				Pos.z = pos.z + math.random(5, 50)
-				fire.add_explosion(Pos, 38,  true, false, 0, blame)
-				system.wait(feat.value)
-				return HANDLER_CONTINUE
-			end
-end), type = "toggle"}
-features["Firework_ply"].feat.max = 2000
-features["Firework_ply"].feat.min = 0
-features["Firework_ply"].feat.value = 100
-features["Firework_ply"].feat.mod = 10
---INFO: ************** PTFX ********************
-
-
-features["explodeply"] = {feat = menu.add_feature("Explosions Around Player", "value_i", featureVars.g.id, function(feat)
-			if feat.on then
-				local pos, Pos, Rpos1, Rpos2
-				pos, Pos = v3(), v3()
-				pos = player.get_player_coords(pid)
-				Pos = player.get_player_coords(pid)
-				Pos.x = pos.x + math.random(1, 5)
-				Pos.y = pos.y + math.random(1, 8)
-				fire.add_explosion(Pos, feat.value, true, false, 0, blame)
-				system.wait(25)
-				Pos.x = pos.x - math.random(1, 5)
-				Pos.y = pos.y - math.random(1, 8)
-				fire.add_explosion(Pos, feat.value, true, false, 0, blame)
-				system.wait(25)
-				fire.add_explosion(pos, feat.value, true, false, 0, blame)
-				return HANDLER_CONTINUE
-			end
-end), type = "toggle"}
-features["explodeply"].feat.max = 74
-features["explodeply"].feat.min = -1
-features["explodeply"].feat.value = 0
-
-features["explode_ply"] = {feat = menu.add_feature("Explosions Around Player", "action_value_i", featureVars.g.id, function(feat)
+			system.wait(200)
+			return HANDLER_CONTINUE
+		end
+		blame = 0
+		return HANDLER_POP
+	end), type = "toggle"}
+	features["blamer"].feat:set_str_data(Playerz)
+	
+	features["blamedorbital"] = {feat = menu.add_feature("Orbital Player Blaming: ", "action_value_str", featureVars.g.id, function(feat)
+		local pos, exp_pos = v3(), v3()
+		pped = player.get_player_ped(pid)
+		myped = player.get_player_ped(feat.value)
+		pos = entity.get_entity_coords(pped)
+		offset = v3(0.0,0.0,-2000.00)
+		graphics.set_next_ptfx_asset("scr_xm_orbital")
+		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+			graphics.request_named_ptfx_asset("scr_xm_orbital")
+			system.wait(0)
+		end
+		gameplay.set_override_weather(3)
+		gameplay.clear_cloud_hat()
+		fire.add_explosion(pos, 59, true, false, 1.5, myped)
+		fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
+		fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
+		fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
+		fire.add_explosion(pos, 50, true, false, 1.0, myped)
+		exp_pos.x = math.random(-2700, 2700)
+		exp_pos.y = math.random(-3300, 7500)
+		exp_pos.z = math.random(30, 90)
+		
+		fire.add_explosion(exp_pos, 74, true, false, 0, myped)
+		
+		
+		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+		-- audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", v3(-910000.00,-10000.0,-19000.00), "MP_LOBBY_SOUNDS", true, 999999, false)
+		-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "MP_LOBBY_SOUNDS", true, 99999990, false)
+		-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon_Standard", pos, 0, true, 1000000, false)
+		-- audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", v3(-910000.00,-10000.0,-19000.00), "MP_LOBBY_SOUNDS", true, 999999, false)
+		-- audio.play_sound_from_coord(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", pos, "MP_LOBBY_SOUNDS", true, 99999990, false)
+		audio.play_sound_from_coord(1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
+		-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, myped, true, 0, false)
+		-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
+		graphics.set_next_ptfx_asset("scr_xm_orbital")
+		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+			graphics.request_named_ptfx_asset("scr_xm_orbital")
+			system.wait(0)
+		end
+		gameplay.set_override_weather(3)
+		gameplay.clear_cloud_hat()
+		fire.add_explosion(pos, 59, false, true, 1.5, myped)
+		fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
+		fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
+		fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
+		fire.add_explosion(pos, 50, true, false, 1.0, myped)
+		fire.add_explosion(pos, 50, true, false, 1.0, myped)
+		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+		--  audio.play_sound_from_coord(-1, "BOATS_PLANES_HELIS_BOOM", pos + v3(0.0,0.0,20000), "MP_LOBBY_SOUNDS", true, 0, false)
+		-- audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, "o", true, 0, false)
+		-- audio.play_sound(-1, "DLC_XM_Explosions_Orbital_Cannon", 0, true, 0,false)
+		-- audio.play_sound(-1, "DLC_XM_Explosions_Orbital_Cannon", 0, true, 999999999, false)
+		-- audio.play_sound(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", 0, true, 0, false)
+		-- audio.play_sound_from_coord(script.get_global_i(1694982), "DLC_XM_Explosions_Orbital_Cannon", pos,  0,  true, 999999999, false)
+		-- audio.play_sound_from_coord(-1, "MP_Impact", pos, 0, true, 0, false)
+		-- audio.play_sound(-1, "MP_Impact", 0, true, 0, false)
+		
+		graphics.set_next_ptfx_asset("scr_xm_orbital")
+		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
+			graphics.request_named_ptfx_asset("scr_xm_orbital")
+			system.wait(0)
+		end
+		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 10.000, false, false, true)
+		fire.add_explosion(pos, 59, false, true, 1.5, myped)
+		fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
+		fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
+		fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
+		fire.add_explosion(pos, 50, true, false, 1.0, myped)
+		fire.add_explosion(pos, 50, true, false, 1.0, myped)
+		fire.start_entity_fire(pped)
+		
+	end), type = "action"}
+	features["blamedorbital"].feat:set_str_data(Playerz)
+	
+	features["Firework_ply"] = {feat = menu.add_feature("Fireworks Around Player Delay: ", "value_i", featureVars.tr.id, function(feat)
+		if feat.on then
+			local pos, Pos, Rpos1, Rpos2
+			pos, Pos = v3(), v3()
+			pos = player.get_player_coords(pid)
+			Pos = player.get_player_coords(pid)
+			Pos.x = pos.x + math.random(-10, 20)
+			Pos.y = pos.y + math.random(-10, 20)
+			Pos.z = pos.z + math.random(5, 50)
+			fire.add_explosion(Pos, 38, true, false, 0, blame)
+			system.wait(feat.value)
+			Pos.x = pos.x + math.random(-10, 20)
+			Pos.y = pos.y + math.random(-10, 20)
+			Pos.z = pos.z + math.random(5, 50)
+			fire.add_explosion(Pos, 38,  true, false, 0, blame)
+			system.wait(feat.value)
+			pos = player.get_player_coords(pid)
+			Pos.x = pos.x + math.random(-100, 200)
+			Pos.y = pos.y + math.random(-100, 200)
+			Pos.z = pos.z + math.random(5, 50)
+			fire.add_explosion(Pos, 38, true, false, 0, blame)
+			system.wait(feat.value)
+			Pos.x = pos.x + math.random(1, 200)
+			Pos.y = pos.y + math.random(1, 200)
+			Pos.z = pos.z + math.random(5, 50)
+			fire.add_explosion(Pos, 38,  true, false, 0, blame)
+			system.wait(feat.value)
+			return HANDLER_CONTINUE
+		end
+	end), type = "toggle"}
+	features["Firework_ply"].feat.max = 2000
+	features["Firework_ply"].feat.min = 0
+	features["Firework_ply"].feat.value = 100
+	features["Firework_ply"].feat.mod = 10
+	--INFO: ************** PTFX ********************
+	
+	
+	features["explodeply"] = {feat = menu.add_feature("Explosions Around Player", "value_i", featureVars.g.id, function(feat)
+		if feat.on then
 			local pos, Pos, Rpos1, Rpos2
 			pos, Pos = v3(), v3()
 			pos = player.get_player_coords(pid)
@@ -17468,558 +18361,606 @@ features["explode_ply"] = {feat = menu.add_feature("Explosions Around Player", "
 			fire.add_explosion(Pos, feat.value, true, false, 0, blame)
 			system.wait(25)
 			fire.add_explosion(pos, feat.value, true, false, 0, blame)
-end), type = "toggle"}
-features["explode_ply"].feat.max = 74
-features["explode_ply"].feat.min = -1
-features["explode_ply"].feat.value = 0
-
-local asset = "scr_bike_adversary"
-local effect = "scr_adversary_foot_flames"
-
-features["ptfx_annoy"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
-	pped = player.get_player_ped(pid)
-	if not feat.on then
-	local pos = v3()
-	pos = player.get_player_coords(pid)
-	graphics.remove_ptfx_from_entity(pped)
-		graphics.remove_ptfx_in_range(pos, 200000.00)
-	graphics.remove_particle_fx(gameplay.get_hash_key(effect), false)
-		graphics.remove_named_ptfx_asset(asset)
-	
-	return HANDLER_POP
-	end
-	
-	local i = feat.value + 1
-	local pos, rot = v3(), v3()
-	rot.x = math.random(0.0, 360.0)
-	rot.y = math.random(0.0, 360.0)
-	rot.z = math.random(0.0, 360.0)
-				asset = tostring(ptfx_dictasset[i][1])
-				effect = tostring(ptfx_dictasset[i][2]) 
-				graphics.set_next_ptfx_asset(asset)
-				while not graphics.has_named_ptfx_asset_loaded(asset)do graphics.request_named_ptfx_asset(asset)system.wait(0)end
-
-				pos = player.get_player_coords(pid)
-				--graphics.start_networked_ptfx_looped_at_coord(effect, pos, v3(0.0,0.0,0.0), 2.1, false, false, true)
-				--graphics.start_networked_ptfx_non_looped_at_coord(effect, pos, rot, 2.1, false, false, true)
-				if not graphics.does_looped_ptfx_exist(gameplay.get_hash_key(effect)) then
-		graphics.start_networked_ptfx_looped_on_entity(effect, pped, v3(0.0,0.0,0.0), rot, 3.0)
-				end
-
-	system.wait(1)
 			return HANDLER_CONTINUE
-
-end), type = "value_str", callback = function()
-
-end}
-features["ptfx_annoy"].feat:set_str_data(ptfx_Label)
-
-local asset2 = "scr_bike_adversary"
-local effect2 = "scr_adversary_foot_flames"
-
-features["ptfx_annoy2"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
-	pped = player.get_player_ped(pid)
-	if not feat.on then
-	local pos = v3()
-	pos = player.get_player_coords(pid)
-	graphics.remove_ptfx_from_entity(pped)
-		graphics.remove_ptfx_in_range(pos, 200000.00)
-	graphics.remove_particle_fx(gameplay.get_hash_key(effect2), false)
-		graphics.remove_named_ptfx_asset(asset2)
+		end
+	end), type = "toggle"}
+	features["explodeply"].feat.max = 74
+	features["explodeply"].feat.min = -1
+	features["explodeply"].feat.value = 0
 	
-	return HANDLER_POP
-	end
+	features["explode_ply"] = {feat = menu.add_feature("Explosions Around Player", "action_value_i", featureVars.g.id, function(feat)
+		local pos, Pos, Rpos1, Rpos2
+		pos, Pos = v3(), v3()
+		pos = player.get_player_coords(pid)
+		Pos = player.get_player_coords(pid)
+		Pos.x = pos.x + math.random(1, 5)
+		Pos.y = pos.y + math.random(1, 8)
+		fire.add_explosion(Pos, feat.value, true, false, 0, blame)
+		system.wait(25)
+		Pos.x = pos.x - math.random(1, 5)
+		Pos.y = pos.y - math.random(1, 8)
+		fire.add_explosion(Pos, feat.value, true, false, 0, blame)
+		system.wait(25)
+		fire.add_explosion(pos, feat.value, true, false, 0, blame)
+	end), type = "toggle"}
+	features["explode_ply"].feat.max = 74
+	features["explode_ply"].feat.min = -1
+	features["explode_ply"].feat.value = 0
 	
-	local i = feat.value + 1
-	local pos, rot = v3(), v3()
-	rot.x = math.random(0.0, 360.0)
-	rot.y = math.random(0.0, 360.0)
-	rot.z = math.random(0.0, 360.0)
-				asset2 = tostring(ptfx_dictasset[i][1])
-				effect2 = tostring(ptfx_dictasset[i][2]) 
-				graphics.set_next_ptfx_asset(asset2)
-				while not graphics.has_named_ptfx_asset_loaded(asset2)do graphics.request_named_ptfx_asset(asset2)system.wait(0)end
-
-				pos = player.get_player_coords(pid)
-				--graphics.start_networked_ptfx_looped_at_coord(effect, pos, v3(0.0,0.0,0.0), 2.1, false, false, true)
-				--graphics.start_networked_ptfx_non_looped_at_coord(effect, pos, rot, 2.1, false, false, true)
-				if not graphics.does_looped_ptfx_exist(gameplay.get_hash_key(effect2)) then
-		graphics.start_networked_ptfx_looped_on_entity(effect2, pped, v3(0.0,0.0,0.0), rot, 1.2)
-				end
-
-	system.wait(1)
-			return HANDLER_CONTINUE
-
-end), type = "value_str", callback = function()
-
-end}
-features["ptfx_annoy2"].feat:set_str_data(ptfx_Label)
-
-features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
-			pped = player.get_player_ped(pid)
-			local pedbool
-			local pos = v3()
-			local offset = v3(0.0,0.0,0.0)
-			pos = ped.get_ped_bone_coords(pped, 0, offset)
-			offset.x = 0.0
-			offset.y = -0.001
-			offset.z = 0.0
-			pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
-			spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-			entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, 100, 0, 0, 0, true, true)
-			pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
-			offset.y = offset.y + -0.001
-			system.wait(10)
-			spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-			entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, -2, 0, 0, true, true)
-			pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
-			system.wait(10)
-			offset.y = offset.y + -0.001
-			spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-			entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 3, 0, 0, 100, 1, 0, 0, true, true)
-			system.wait(10)
-			pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
-			offset.y = offset.y + -0.001
-			spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
-			system.wait(10)
-			entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, 10, 0, 10, true, true)
-			system.wait(100)
-			for i = 1, #spawned_cunts do
-				pos = entity.get_entity_coords(spawned_cunts[i])
-				offset.x = -0.5
-				offset.y = 0.5
-				fire.add_explosion(pos + offset, 60, true, false, 5, blame)
-				fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-				offset.x = 0.5
-				offset.y = -0.5
-				pos = entity.get_entity_coords(spawned_cunts[i])
-				fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-				fire.add_explosion(pos + offset, 60, true, false, 1, blame)
-				offset.x = -0.5
-				offset.y = -0.5
-				fire.add_explosion(pos + offset, 59, true, false, 5, blame)
-				system.wait(10)
-				fire.add_explosion(pos + offset, 60, true, false, 5, blame)
-				offset.x = 0.5
-				offset.y = 0.5
-				fire.add_explosion(pos + offset, 58, true, false, 5, blame)
-				fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-				offset.x = -1.0
-				offset.y = 1.0
-				fire.add_explosion(pos + offset, 60, true, false, 1, blame)
-				fire.add_explosion(pos + offset, 59, true, false, 1, blame)
-				offset.x = 0.0
-				offset.y = 0.0
-				system.wait(10)
-				fire.add_explosion(pos + offset, 59, true, false, 5, blame)
-				fire.add_explosion(pos + offset, 60, true, false, 5, blame)
-				system.wait(10)
-				entity.set_entity_as_no_longer_needed(spawned_cunts[i])
-				entity.delete_entity(spawned_cunts[i])
-			end
-end), type = "action"}
-features["HomingFlare"] = {feat = menu.add_feature("Flare assisted Homing", "action", featureVars.g.id, function(feat)
-			pped = player.get_player_ped(player.player_id())
+	local asset = "scr_bike_adversary"
+	local effect = "scr_adversary_foot_flames"
+	
+	features["ptfx_annoy"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
+		pped = player.get_player_ped(pid)
+		if not feat.on then
 			local pos = v3()
 			pos = player.get_player_coords(pid)
-			pos.z =  pos.z + 50.00
-			-- local posz
-			-- posz, pos.z = gameplay.get_ground_z(pos)
-			local offset = v3()
-			offset = get_offset(pid, 55)
-			-- offset.z =  offset.z + 20.00
-			local speed = 300000
-			local hash = gameplay.get_hash_key("WEAPON_FLAREGUN")
-			gameplay.shoot_single_bullet_between_coords(pos, offset, 1000.00, hash, pped, false, true, speed)
-			system.wait(0)
-			local hash = gameplay.get_hash_key(StrikeGive[12])
-			local pos = v3()
-			pos = player.get_player_coords(pid)
-			pos.z = pos.z + 750.0
-			local offset = v3()
-			offset = get_offset(pid, -200)
-			offset.z = offset.z + 75.0
-			gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 50), 10000.00, hash, blame, true, false, 10000.0)
-			system.wait(10)
-			local hash = gameplay.get_hash_key(StrikeGive[12])
-			local pos = v3()
-			pos = player.get_player_coords(pid)
-			pos.z = pos.z + 75.0
-			local offset = v3()
-			offset = get_offset(pid, -200)
-			offset.z = offset.z + 100.0
-			gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 50), 10000.00, hash, blame, true, false, 10000.0)
-			system.wait(10)
-			local hash = gameplay.get_hash_key(StrikeGive[13])
-			local pos = v3()
-			pos = player.get_player_coords(pid)
-			pos.z = pos.z + 75.0
-			local offset = v3()
-			offset = get_offset(pid, -200)
-			offset.z = offset.z + 100.0
-			gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 50), 10000.00, hash, blame, true, false, 10000.0)
-			system.wait(10)
-end), type = "action"}
-features["Homing_Flare"] = {feat = menu.add_feature("Flare assisted Homing v2", "action", featureVars.g.id, function(feat)
+			graphics.remove_ptfx_from_entity(pped)
+			graphics.remove_ptfx_in_range(pos, 200000.00)
+			graphics.remove_particle_fx(gameplay.get_hash_key(effect), false)
+			graphics.remove_named_ptfx_asset(asset)
 			
+			return HANDLER_POP
+		end
+		
+		local i = feat.value + 1
+		local pos, rot = v3(), v3()
+		rot.x = math.random(0.0, 360.0)
+		rot.y = math.random(0.0, 360.0)
+		rot.z = math.random(0.0, 360.0)
+		asset = tostring(ptfx_dictasset[i][1])
+		effect = tostring(ptfx_dictasset[i][2]) 
+		graphics.set_next_ptfx_asset(asset)
+		while not graphics.has_named_ptfx_asset_loaded(asset)do graphics.request_named_ptfx_asset(asset)system.wait(0)end
+		
+		pos = player.get_player_coords(pid)
+		--graphics.start_networked_ptfx_looped_at_coord(effect, pos, v3(0.0,0.0,0.0), 2.1, false, false, true)
+		--graphics.start_networked_ptfx_non_looped_at_coord(effect, pos, rot, 2.1, false, false, true)
+		if not graphics.does_looped_ptfx_exist(gameplay.get_hash_key(effect)) then
+			graphics.start_networked_ptfx_looped_on_entity(effect, pped, v3(0.0,0.0,0.0), rot, 3.0)
+		end
+		
+		system.wait(1)
+		return HANDLER_CONTINUE
+		
+	end), type = "value_str", callback = function()
+	
+	end}
+	features["ptfx_annoy"].feat:set_str_data(ptfx_Label)
+	
+	local asset2 = "scr_bike_adversary"
+	local effect2 = "scr_adversary_foot_flames"
+	
+	features["ptfx_annoy2"] = {feat = menu.add_feature("PTFX: ", "value_str", featureVars.tr.id, function(feat)
+		pped = player.get_player_ped(pid)
+		if not feat.on then
 			local pos = v3()
 			pos = player.get_player_coords(pid)
-			-- local posz
-			-- posz, pos.z = gameplay.get_ground_z(pos)
-			local offset = v3()
-			offset = get_offset(pid, 50)
-			offset.z =  offset.z + 30.00
-			local speed = 300000
-			local hash = gameplay.get_hash_key("WEAPON_FLAREGUN")
-			gameplay.shoot_single_bullet_between_coords(pos, offset, 1000.00, hash, blame, false, true, speed)
-			system.wait(0)
-			local hash = gameplay.get_hash_key(StrikeGive[12])
-			local pos = v3()
-			pos = player.get_player_coords(pid)
-			local offset = v3()
-			offset = get_offset(pid, -20)
-			offset.z = offset.z + 150.0
-			gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 100), 10000.00, hash, blame, true, false, 100000.0)
-			gameplay.shoot_single_bullet_between_coords(offset, pos, 10000.00, hash, blame, true, false, 100000.0)
-end), type = "action"}
-features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", featureVars.g.id, function(feat)
-			local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
-			local pos = v3()
-			pos = player.get_player_coords(pid)
-			pos.z = pos.z + 10.0
-			local offset = v3()
+			graphics.remove_ptfx_from_entity(pped)
+			graphics.remove_ptfx_in_range(pos, 200000.00)
+			graphics.remove_particle_fx(gameplay.get_hash_key(effect2), false)
+			graphics.remove_named_ptfx_asset(asset2)
+			
+			return HANDLER_POP
+		end
+		
+		local i = feat.value + 1
+		local pos, rot = v3(), v3()
+		rot.x = math.random(0.0, 360.0)
+		rot.y = math.random(0.0, 360.0)
+		rot.z = math.random(0.0, 360.0)
+		asset2 = tostring(ptfx_dictasset[i][1])
+		effect2 = tostring(ptfx_dictasset[i][2]) 
+		graphics.set_next_ptfx_asset(asset2)
+		while not graphics.has_named_ptfx_asset_loaded(asset2)do graphics.request_named_ptfx_asset(asset2)system.wait(0)end
+		
+		pos = player.get_player_coords(pid)
+		--graphics.start_networked_ptfx_looped_at_coord(effect, pos, v3(0.0,0.0,0.0), 2.1, false, false, true)
+		--graphics.start_networked_ptfx_non_looped_at_coord(effect, pos, rot, 2.1, false, false, true)
+		if not graphics.does_looped_ptfx_exist(gameplay.get_hash_key(effect2)) then
+			graphics.start_networked_ptfx_looped_on_entity(effect2, pped, v3(0.0,0.0,0.0), rot, 1.2)
+		end
+		
+		system.wait(1)
+		return HANDLER_CONTINUE
+		
+	end), type = "value_str", callback = function()
+	
+	end}
+	features["ptfx_annoy2"].feat:set_str_data(ptfx_Label)
+	
+	features["dildobombs"] = {feat = menu.add_feature("Dildo Bombs From Ass", "action", featureVars.g.id, function(feat)
+		pped = player.get_player_ped(pid)
+		local pedbool
+		local pos = v3()
+		local offset = v3(0.0,0.0,0.0)
+		pos = ped.get_ped_bone_coords(pped, 0, offset)
+		offset.x = 0.0
+		offset.y = -0.001
+		offset.z = 0.0
+		pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, 100, 0, 0, 0, true, true)
+		pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
+		offset.y = offset.y + -0.001
+		system.wait(10)
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, -2, 0, 0, true, true)
+		pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
+		system.wait(10)
+		offset.y = offset.y + -0.001
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 3, 0, 0, 100, 1, 0, 0, true, true)
+		system.wait(10)
+		pedbool, pos = ped.get_ped_bone_coords(pped, 0, offset)
+		offset.y = offset.y + -0.001
+		spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, true)
+		system.wait(10)
+		entity.apply_force_to_entity(spawned_cunts[#spawned_cunts], 5, 0, 0, -100, 10, 0, 10, true, true)
+		system.wait(100)
+		for i = 1, #spawned_cunts do
+			pos = entity.get_entity_coords(spawned_cunts[i])
+			offset.x = -0.5
+			offset.y = 0.5
+			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			offset.x = 0.5
+			offset.y = -0.5
+			pos = entity.get_entity_coords(spawned_cunts[i])
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			fire.add_explosion(pos + offset, 60, true, false, 1, blame)
+			offset.x = -0.5
+			offset.y = -0.5
+			fire.add_explosion(pos + offset, 59, true, false, 5, blame)
+			system.wait(10)
+			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
+			offset.x = 0.5
+			offset.y = 0.5
+			fire.add_explosion(pos + offset, 58, true, false, 5, blame)
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
+			offset.x = -1.0
+			offset.y = 1.0
+			fire.add_explosion(pos + offset, 60, true, false, 1, blame)
+			fire.add_explosion(pos + offset, 59, true, false, 1, blame)
 			offset.x = 0.0
 			offset.y = 0.0
-			offset.z = -1.0
-			gameplay.shoot_single_bullet_between_coords(pos, player.get_player_coords(pid) + offset, 10000.00, hash, blame, true, false, 10000.0)
-end), type = "action"}
-
-features["multishoot"] = {feat = menu.add_feature("Snipe for all Directions", "action", featureVars.g.id, function(feat)
-			local hash = gameplay.get_hash_key("weapon_heavysniper")
-			local pos = v3()
-			pos = player.get_player_coords(pid)
-			pos.z = pos.z + 5.0
-			offset = v3()
-			offset.x = 10.0
-			offset.y = 0.0
-			offset.z = 0.0
-			local boolpos, bonepos = ped.get_ped_bone_coords(player.get_player_ped(pid), 12844, offset)
-			gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
-			offset.x = -10.0
-			offset.y = 0.0
-			offset.z = 0.0
-			gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
-			offset.x = 0.0
-			offset.y = 10.0
-			offset.z = 0.0
-			gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
-			offset.x = 0.0
-			offset.y = -10.0
-			offset.z = 0.0
-			gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
-end), type = "action"}
-
-features["Ped_hate"] = {feat = menu.add_feature("PedsHate & AttackPlayer Weap:", "action_value_str", featureVars.g.id, function(feat)
-			local weap = ped_wep[feat.value + 1]
-			moist_notify("Peds Attack With:\n" .. Ped_WepL[feat.value +1], "Moist Ped Haters")
-			Peds_hateWorld(pid, weap)
-end), type = "action_value_i", callback = function()
+			system.wait(10)
+			fire.add_explosion(pos + offset, 59, true, false, 5, blame)
+			fire.add_explosion(pos + offset, 60, true, false, 5, blame)
+			system.wait(10)
+			entity.set_entity_as_no_longer_needed(spawned_cunts[i])
+			entity.delete_entity(spawned_cunts[i])
+		end
+	end), type = "action"}
+	
+features["SetOnFire"] = {feat = menu.add_feature("Set Them on Fire", "toggle", featureVars.g.id, function(feat)
+		if not feat.on then
+		fire.stop_entity_fire(player.get_player_ped(pid))
+		return HANDLER_POP
+		end
+		fire.start_entity_fire(player.get_player_ped(pid))
+		return HANDLER_POP
+end), type = "toggle", callback = function()
 end}
-features["Ped_hate"].feat:set_str_data(Ped_WepL)
-features["Ped_hate"].feat.value = 11
+features["SetOnFire"].feat.on = false
 
-features["Peds_eject"] = {feat = menu.add_feature("Task NearbyPeds Bail/Exit Veh", "action_value_i", featureVars.tr.id, function(feat)
-			moist_notify("Peds around Target Player\nWill Exit Vehicle or Bail from it", "MoistScript Troll")
-			Ped_eject(pid, eject[feat.value])
-end), type = "action_value_i", callback = function()
-end}
-features["Peds_eject"].feat.max = #eject
-features["Peds_eject"].feat.min = 1
-features["Peds_eject"].feat.value = 6
-
-lester, huntv = {}, {}
-
-features["Send_HunterLester"] = {feat = menu.add_feature("Send Lester Hunt them in savage", "action", featureVars.lgr.id, function(feat)
-			local pos = get_offset(pid, 25)
-			--Print(pos)
-			local offset = v3(120.0,110.0,200.00)
-			--v3(1012.2005615234,-756.86669921875,81.748390197754)
-			local vehhash = veh_list[2][2]
-			mod = 10
-			modvalue = -1
-			pped = player.get_player_ped(pid)
-			lester[#lester+1] = spawn_ped(pid, 0x6E42FD26, pos + offset, true, true)
-			system.wait(100)
-			local huntv = spawn_veh(pid, vehhash, pos + offset, mod, modvalue, true)
-			local blipid = ui.get_blip_from_entity(huntv)
-			ui.set_blip_sprite(blipid, 43)
-			local p = #escort
-			local y = #escortveh
-			local curhead = player.get_player_heading(pid)
-			entity.set_entity_heading(escortveh[y], curhead)
+	features["HomingFlare"] = {feat = menu.add_feature("Flare assisted Homing", "action", featureVars.g.id, function(feat)
+		pped = player.get_player_ped(player.player_id())
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z =  pos.z + 50.00
+		-- local posz
+		-- posz, pos.z = gameplay.get_ground_z(pos)
+		local offset = v3()
+		offset = get_offset(pid, 55)
+		-- offset.z =  offset.z + 20.00
+		local speed = 300000
+		local hash = gameplay.get_hash_key("WEAPON_FLAREGUN")
+		gameplay.shoot_single_bullet_between_coords(pos, offset, 1000.00, hash, pped, false, true, speed)
+		system.wait(0)
+		local hash = gameplay.get_hash_key(StrikeGive[12])
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 750.0
+		local offset = v3()
+		offset = get_offset(pid, -200)
+		offset.z = offset.z + 75.0
+		gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 50), 10000.00, hash, blame, true, false, 10000.0)
+		system.wait(10)
+		local hash = gameplay.get_hash_key(StrikeGive[12])
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 75.0
+		local offset = v3()
+		offset = get_offset(pid, -200)
+		offset.z = offset.z + 100.0
+		gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 50), 10000.00, hash, blame, true, false, 10000.0)
+		system.wait(10)
+		local hash = gameplay.get_hash_key(StrikeGive[13])
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 75.0
+		local offset = v3()
+		offset = get_offset(pid, -200)
+		offset.z = offset.z + 100.0
+		gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 50), 10000.00, hash, blame, true, false, 10000.0)
+		system.wait(10)
+	end), type = "action"}
+	features["Homing_Flare"] = {feat = menu.add_feature("Flare assisted Homing v2", "action", featureVars.g.id, function(feat)
+		
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		-- local posz
+		-- posz, pos.z = gameplay.get_ground_z(pos)
+		local offset = v3()
+		offset = get_offset(pid, 50)
+		offset.z =  offset.z + 30.00
+		local speed = 300000
+		local hash = gameplay.get_hash_key("WEAPON_FLAREGUN")
+		gameplay.shoot_single_bullet_between_coords(pos, offset, 1000.00, hash, blame, false, true, speed)
+		system.wait(0)
+		local hash = gameplay.get_hash_key(StrikeGive[12])
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		local offset = v3()
+		offset = get_offset(pid, -20)
+		offset.z = offset.z + 150.0
+		gameplay.shoot_single_bullet_between_coords(offset, get_offset(pid, 100), 10000.00, hash, blame, true, false, 100000.0)
+		gameplay.shoot_single_bullet_between_coords(offset, pos, 10000.00, hash, blame, true, false, 100000.0)
+	end), type = "action"}
+	features["airstrike"] = {feat = menu.add_feature("Airstrike player", "action", featureVars.g.id, function(feat)
+		local hash = gameplay.get_hash_key("weapon_airstrike_rocket")
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 10.0
+		local offset = v3()
+		offset.x = 0.0
+		offset.y = 0.0
+		offset.z = -1.0
+		gameplay.shoot_single_bullet_between_coords(pos, player.get_player_coords(pid) + offset, 10000.00, hash, blame, true, false, 10000.0)
+	end), type = "action"}
+	
+	features["multishoot"] = {feat = menu.add_feature("Snipe for all Directions", "action", featureVars.g.id, function(feat)
+		local hash = gameplay.get_hash_key("weapon_heavysniper")
+		local pos = v3()
+		pos = player.get_player_coords(pid)
+		pos.z = pos.z + 5.0
+		offset = v3()
+		offset.x = 10.0
+		offset.y = 0.0
+		offset.z = 0.0
+		local boolpos, bonepos = ped.get_ped_bone_coords(player.get_player_ped(pid), 12844, offset)
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
+		offset.x = -10.0
+		offset.y = 0.0
+		offset.z = 0.0
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
+		offset.x = 0.0
+		offset.y = 10.0
+		offset.z = 0.0
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
+		offset.x = 0.0
+		offset.y = -10.0
+		offset.z = 0.0
+		gameplay.shoot_single_bullet_between_coords(pos + offset, bonepos, 10000.00, hash, blame, true, false, 10000.0)
+	end), type = "action"}
+	
+	features["Ped_hate"] = {feat = menu.add_feature("PedsHate & AttackPlayer Weap:", "action_value_str", featureVars.g.id, function(feat)
+		local weap = ped_wep[feat.value + 1]
+		moist_notify("Peds Attack With:\n" .. Ped_WepL[feat.value +1], "Moist Ped Haters")
+		Peds_hateWorld(pid, weap)
+	end), type = "action_value_i", callback = function()
+	end}
+	features["Ped_hate"].feat:set_str_data(Ped_WepL)
+	features["Ped_hate"].feat.value = 11
+	
+	features["Peds_eject"] = {feat = menu.add_feature("Task NearbyPeds Bail/Exit Veh", "action_value_i", featureVars.tr.id, function(feat)
+		moist_notify("Peds around Target Player\nWill Exit Vehicle or Bail from it", "MoistScript Troll")
+		Ped_eject(pid, eject[feat.value])
+	end), type = "action_value_i", callback = function()
+	end}
+	features["Peds_eject"].feat.max = #eject
+	features["Peds_eject"].feat.min = 1
+	features["Peds_eject"].feat.value = 6
+	
+	lester, huntv = {}, {}
+	
+	features["Send_HunterLester"] = {feat = menu.add_feature("Send Lester Hunt them in savage", "action", featureVars.lgr.id, function(feat)
+		local pos = get_offset(pid, 25)
+		--Print(pos)
+		local offset = v3(120.0,110.0,200.00)
+		--v3(1012.2005615234,-756.86669921875,81.748390197754)
+		local vehhash = veh_list[2][2]
+		mod = 10
+		modvalue = -1
+		pped = player.get_player_ped(pid)
+		lester[#lester+1] = spawn_ped(pid, 0x6E42FD26, pos + offset, true, true)
+		system.wait(100)
+		local huntv = spawn_veh(pid, vehhash, pos + offset, mod, modvalue, true)
+		local blipid = ui.get_blip_from_entity(huntv)
+		ui.set_blip_sprite(blipid, 43)
+		local p = #escort
+		local y = #escortveh
+		local curhead = player.get_player_heading(pid)
+		entity.set_entity_heading(escortveh[y], curhead)
 		--	ai.task_turn_ped_to_face_entity(escort[p], pped, 999)
-			ped.set_ped_into_vehicle(lester[#lester], escortveh[y], -1)
-			vehicle.control_landing_gear(escortveh[y], 3)
-			vehicle.set_heli_blades_full_speed(escortveh[y])
-			vehicle.set_vehicle_forward_speed(escortveh[y], 25.00)
-			
-			--system.wait(2000)
-			ai.task_combat_ped(lester[#lester], pped, 0, 16)
-			--ai.task_goto_entity(escort[p], pped, 999999999999, 100, 1000.00)
-			--system.wait(4000)
-			-- system.wait(4000)
-			-- ai.task_vehicle_chase(lester[#lester], pped)
-			-- system.wait(4000)
-			ai.task_combat_ped(lester[#lester], pped, 0, 16)
---			entity.set_entity_collision(escortveh[y], false, false, false)
+		ped.set_ped_into_vehicle(lester[#lester], escortveh[y], -1)
+		vehicle.control_landing_gear(escortveh[y], 3)
+		vehicle.set_heli_blades_full_speed(escortveh[y])
+		vehicle.set_vehicle_forward_speed(escortveh[y], 25.00)
+		
+		--system.wait(2000)
+		ai.task_combat_ped(lester[#lester], pped, 0, 16)
+		--ai.task_goto_entity(escort[p], pped, 999999999999, 100, 1000.00)
+		--system.wait(4000)
+		-- system.wait(4000)
+		-- ai.task_vehicle_chase(lester[#lester], pped)
+		-- system.wait(4000)
+		ai.task_combat_ped(lester[#lester], pped, 0, 16)
+		--			entity.set_entity_collision(escortveh[y], false, false, false)
 		--	moist_notify("Lester Savage Hunter\nSent from Maze Tower to Target")
-			playerFeatures[pid].features["hunter_taskloop"].feat.on = true
-end), type = "action"}
-
--- features["Send_HunterLester1"] = {feat = menu.add_feature("Lester Thruster Hunter", "action", featureVars.lgr.id, function(feat)
-			-- local pos = get_offset(pid, 25)
-			-- Print(pos)
-			-- local offset = v3(120.0,110.0,200.00)
-			-- local vehhash = 0x58CDAF30
-			-- pped = player.get_player_ped(pid)
-			-- lester[#lester+1] = spawn_ped(pid, 0x6E42FD26, pos + offset, true, true)
-			-- system.wait(100)
-			-- local mod, modvalue = 10, -1
-			-- huntv[#huntv+1] = spawn_veh(pid, vehhash, pos + offset, mod, modvalue, true)
-			
-		-- --	entity.set_entity_as_mission_entity(huntv[y], true, false)
-				-- local modds = {{10, 1},{4, 0},{11, 3},{12, 2},{16, 4},{18, 1},{20, 0},{22, 0},{48, 23},}
-				-- for i = 1, #modds do
-					-- vehicle.set_vehicle_mod_kit_type(huntv[#huntv], 0)
-					-- vehicle.get_vehicle_mod(huntv[#huntv], modds[i][1])
-					-- vehicle.set_vehicle_mod(huntv[#huntv], modds[i][1], modds[i][2], false)
-				-- end
-			
-			-- ped.set_ped_into_vehicle(lester[#lester], huntv[#huntv], -1)
-
-			-- local blipid = ui.get_blip_from_entity(huntv[#huntv])
-			-- ui.set_blip_sprite(blipid, 597)
-			-- vehicle.control_landing_gear(huntv[#huntv], 3)
-			-- local curhead = player.get_player_heading(pid)
-			-- entity.set_entity_heading(huntv[#huntv], curhead)
-			-- ai.task_combat_ped(lester[#lester], pped, 0, 16)
-			
-			-- vehicle.set_vehicle_forward_speed(huntv[#huntv], 25.00)
-			
-			
-			
-			-- ai.task_combat_ped(lester[#lester], pped, 0, 16)
-
-			
-			-- playerFeatures[pid].features["hunter_loop"].feat.hidden = false
-
-			-- playerFeatures[pid].features["hunter_loop"].feat.on = true
--- end), type = "action"}
-
-
--- features["hunter_loop"] = {feat = menu.add_feature("Retask Lester on Death", "toggle", featureVars.lgr.id, function(feat)
-				-- pped = player.get_player_ped(pid)
-			-- if feat.on then
-				 -- if not entity.is_entity_dead(pped) then
-					 -- system.wait(1)
-					 -- return HANDLER_CONTINUE
-				 -- end
-				-- system.wait(5000)
-				-- for i = 1, #lester do
-				-- ai.task_combat_ped(lester[#lester], pped, 0, 6)
-				-- ai.task_combat_ped(lester[#lester], pped, 0, 6)
-					-- if #huntv == nil or 0 then
-					-- goto next
-					-- end
-					-- ped.set_ped_into_vehicle(lester[i], huntv[i], -1)
-					-- ::next::
-					-- ai.task_combat_ped(lester[i],  pped, 0, 6)
-				-- end
-				-- return HANDLER_CONTINUE
-			-- end
-			-- for i = 1, #huntv do
-				-- entity.set_entity_as_no_longer_needed(huntv[i])
-				-- entity.delete_entity(huntv[i])
-				-- huntv = {}
-			-- end
-			-- for i = 1, #lester do
-			-- --	entity.set_entity_as_no_longer_needed(lester[i])
-				-- entity.delete_entity(lester[i])
-			-- end
-			-- playerFeatures[pid].features["hunter_loop"].feat.hidden = true
-			-- return HANDLER_POP
--- end),  type = "toggle", callback = function()
--- end}
--- features["hunter_loop"].feat.on = false
--- features["hunter_loop"].feat.hidden = true
-
-features["hunter_taskloop"] = {feat = menu.add_feature("Retask Lester on Death", "toggle", featureVars.lgr.id, function(feat)
-			if feat.on then
-				pped = player.get_player_ped(pid)
+		playerFeatures[pid].features["hunter_taskloop"].feat.on = true
+	end), type = "action"}
+	
+	-- features["Send_HunterLester1"] = {feat = menu.add_feature("Lester Thruster Hunter", "action", featureVars.lgr.id, function(feat)
+	-- local pos = get_offset(pid, 25)
+	-- Print(pos)
+	-- local offset = v3(120.0,110.0,200.00)
+	-- local vehhash = 0x58CDAF30
+	-- pped = player.get_player_ped(pid)
+	-- lester[#lester+1] = spawn_ped(pid, 0x6E42FD26, pos + offset, true, true)
+	-- system.wait(100)
+	-- local mod, modvalue = 10, -1
+	-- huntv[#huntv+1] = spawn_veh(pid, vehhash, pos + offset, mod, modvalue, true)
+	
+	-- --	entity.set_entity_as_mission_entity(huntv[y], true, false)
+	-- local modds = {{10, 1},{4, 0},{11, 3},{12, 2},{16, 4},{18, 1},{20, 0},{22, 0},{48, 23},}
+	-- for i = 1, #modds do
+	-- vehicle.set_vehicle_mod_kit_type(huntv[#huntv], 0)
+	-- vehicle.get_vehicle_mod(huntv[#huntv], modds[i][1])
+	-- vehicle.set_vehicle_mod(huntv[#huntv], modds[i][1], modds[i][2], false)
+	-- end
+	
+	-- ped.set_ped_into_vehicle(lester[#lester], huntv[#huntv], -1)
+	
+	-- local blipid = ui.get_blip_from_entity(huntv[#huntv])
+	-- ui.set_blip_sprite(blipid, 597)
+	-- vehicle.control_landing_gear(huntv[#huntv], 3)
+	-- local curhead = player.get_player_heading(pid)
+	-- entity.set_entity_heading(huntv[#huntv], curhead)
+	-- ai.task_combat_ped(lester[#lester], pped, 0, 16)
+	
+	-- vehicle.set_vehicle_forward_speed(huntv[#huntv], 25.00)
+	
+	
+	
+	-- ai.task_combat_ped(lester[#lester], pped, 0, 16)
+	
+	
+	-- playerFeatures[pid].features["hunter_loop"].feat.hidden = false
+	
+	-- playerFeatures[pid].features["hunter_loop"].feat.on = true
+	-- end), type = "action"}
+	
+	
+	-- features["hunter_loop"] = {feat = menu.add_feature("Retask Lester on Death", "toggle", featureVars.lgr.id, function(feat)
+	-- pped = player.get_player_ped(pid)
+	-- if feat.on then
+	-- if not entity.is_entity_dead(pped) then
+	-- system.wait(1)
+	-- return HANDLER_CONTINUE
+	-- end
+	-- system.wait(5000)
+	-- for i = 1, #lester do
+	-- ai.task_combat_ped(lester[#lester], pped, 0, 6)
+	-- ai.task_combat_ped(lester[#lester], pped, 0, 6)
+	-- if #huntv == nil or 0 then
+	-- goto next
+	-- end
+	-- ped.set_ped_into_vehicle(lester[i], huntv[i], -1)
+	-- ::next::
+	-- ai.task_combat_ped(lester[i],  pped, 0, 6)
+	-- end
+	-- return HANDLER_CONTINUE
+	-- end
+	-- for i = 1, #huntv do
+	-- entity.set_entity_as_no_longer_needed(huntv[i])
+	-- entity.delete_entity(huntv[i])
+	-- huntv = {}
+	-- end
+	-- for i = 1, #lester do
+	-- --	entity.set_entity_as_no_longer_needed(lester[i])
+	-- entity.delete_entity(lester[i])
+	-- end
+	-- playerFeatures[pid].features["hunter_loop"].feat.hidden = true
+	-- return HANDLER_POP
+	-- end),  type = "toggle", callback = function()
+	-- end}
+	-- features["hunter_loop"].feat.on = false
+	-- features["hunter_loop"].feat.hidden = true
+	
+	features["hunter_taskloop"] = {feat = menu.add_feature("Retask Lester on Death", "toggle", featureVars.lgr.id, function(feat)
+		if feat.on then
+			pped = player.get_player_ped(pid)
 			ai.task_combat_ped(lester[#lester], pped, 0, 16)
 			ai.task_goto_entity(lester[#lester], pped, 999999999999, 100, 1000.00)
-				if not entity.is_entity_dead(pped) then return HANDLER_CONTINUE end
-				system.wait(4000)
-				for i = 1, #escort do
-					-- if #escortveh == nil or 0 then
-					-- goto next
-					-- end
-					ped.set_ped_into_vehicle(escort[i], escortveh[i], -1)
-					-- ::next::
-					ai.task_combat_ped(escort[i], pped, 0, 16)
-				end
-				return HANDLER_CONTINUE
-			end
-			for i = 1, #escortveh do
-				entity.set_entity_as_no_longer_needed(escortveh[i])
-				entity.delete_entity(escortveh[i])
-			end
+			if not entity.is_entity_dead(pped) then return HANDLER_CONTINUE end
+			system.wait(4000)
 			for i = 1, #escort do
-				entity.set_entity_as_no_longer_needed(escort[i])
-				entity.delete_entity(escort[i])
+				-- if #escortveh == nil or 0 then
+				-- goto next
+				-- end
+				ped.set_ped_into_vehicle(escort[i], escortveh[i], -1)
+				-- ::next::
+				ai.task_combat_ped(escort[i], pped, 0, 16)
 			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["hunter_taskloop"].feat.on = false
-features["hunter_taskloop"].feat.hidden = false
-
-		--INFO: World Dump Run Check
-features["World_Dump1"] = {feat = menu.add_feature("Dump World on this Cunt!(Frozen)", "action", featureVars.g.id, function(feat)
-			if world_dumped then
-				local pos = v3()
-				pos = player.get_player_coords(pid)
-				dumpfreeze_onplayer(pid, pos)
-			end
-			return HANDLER_POP
-end), type = "action"}
-features["World_Dump1"] = {feat = menu.add_feature("Dump peds n vehicles on player(Un-Frozen)", "action", featureVars.tr.id, function(feat)
-			if world_dumped then
-				local pos = v3()
-				pos = player.get_player_coords(pid)
-				dumpfreeze_ped_onplayer(pid, pos)
-			end
-			return HANDLER_POP
-end), type = "action"}
---INFO: Alkonostlag
-features["alkonost_lag"] = {feat = menu.add_feature("Alkonost Lag Area", "action_value_i", featureVars.lag.id, function(feat)
-			pped = player.get_player_ped(pid)
-			local heading, pos, hash
-			heading = player.get_player_heading(pid)
-			pos = v3()
-			local offset, rot = v3(0.0,0.0,0.0), v3(0.0,0.0,0.0)
+			return HANDLER_CONTINUE
+		end
+		for i = 1, #escortveh do
+			entity.set_entity_as_no_longer_needed(escortveh[i])
+			entity.delete_entity(escortveh[i])
+		end
+		for i = 1, #escort do
+			entity.set_entity_as_no_longer_needed(escort[i])
+			entity.delete_entity(escort[i])
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["hunter_taskloop"].feat.on = false
+	features["hunter_taskloop"].feat.hidden = false
+	
+	--INFO: World Dump Run Check
+	features["World_Dump1"] = {feat = menu.add_feature("Dump World on this Cunt!(Frozen)", "action", featureVars.g.id, function(feat)
+		if world_dumped then
+			local pos = v3()
 			pos = player.get_player_coords(pid)
-			hash = 3929093893
-			streaming.request_model(hash)
-			while (not streaming.has_model_loaded(hash)) do
-				system.wait(10)
-			end
-			for y = 1, feat.value do
-				pos.x = pos.x + 1.0
-				alkonost[#alkonost + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
-			end
-			streaming.set_model_as_no_longer_needed(hash)
-			return HANDLER_POP
-end),  type = "action_value_i", callback = function()
-end}
-features["alkonost_lag"].feat.min = 1
-features["alkonost_lag"].feat.max = 100
-features["alkonost_lag"].feat.value = 15
-
-features["alkonost_lagattach"] = {feat = menu.add_feature("Try to Remove Alkonost's", "toggle", featureVars.lag.id, function(feat)
-			if feat.on then
+			dumpfreeze_onplayer(pid, pos)
+		end
+		return HANDLER_POP
+	end), type = "action"}
+	features["World_Dump1"] = {feat = menu.add_feature("Dump peds n vehicles on player(Un-Frozen)", "action", featureVars.tr.id, function(feat)
+		if world_dumped then
+			local pos = v3()
+			pos = player.get_player_coords(pid)
+			dumpfreeze_ped_onplayer(pid, pos)
+		end
+		return HANDLER_POP
+	end), type = "action"}
+	--INFO: Alkonostlag
+	features["alkonost_lag"] = {feat = menu.add_feature("Alkonost Lag Area", "action_value_i", featureVars.lag.id, function(feat)
+		pped = player.get_player_ped(pid)
+		local heading, pos, hash
+		heading = player.get_player_heading(pid)
+		pos = v3()
+		local offset, rot = v3(0.0,0.0,0.0), v3(0.0,0.0,0.0)
+		pos = player.get_player_coords(pid)
+		hash = 3929093893
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value do
+			pos.x = pos.x + 1.0
+			alkonost[#alkonost + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["alkonost_lag"].feat.min = 1
+	features["alkonost_lag"].feat.max = 100
+	features["alkonost_lag"].feat.value = 15
+	
+	features["alkonost_lagattach"] = {feat = menu.add_feature("Try to Remove Alkonost's", "toggle", featureVars.lag.id, function(feat)
+		if feat.on then
 			
 			for i = 1, #alkonost do
 				entity.set_entity_as_no_longer_needed(alkonost[i])
 				entity.delete_entity(alkonost[i])
 			end
-			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
---INFO: kosatkalag
-features["kosatka_lag"] = {feat = menu.add_feature("kosatka Lag Area", "action_value_i", featureVars.lag.id, function(feat)
-			pped = player.get_player_ped(pid)
-			local heading, pos, hash
-			heading = player.get_player_heading(pid)
-			pos = v3()
-			local offset, rot = v3(0.0,0.0,0.0), v3(0.0,0.0,0.0)
-			pos = player.get_player_coords(pid)
-			hash = 1336872304
-			streaming.request_model(hash)
-			while (not streaming.has_model_loaded(hash)) do
-				system.wait(10)
-			end
-			for y = 1, feat.value do
-				pos.x = pos.x + 1.0
-				kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
-				spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
-				entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], kosatka[#kosatka], 0, pos, pos, true, true, false, 0, false)
-			end
-			streaming.set_model_as_no_longer_needed(hash)
-			return HANDLER_POP
-end),  type = "action_value_i", callback = function()
-end}
-features["kosatka_lag"].feat.min = 1
-features["kosatka_lag"].feat.max = 100
-features["kosatka_lag"].feat.value = 15
-features["kosatka_lagattach"] = {feat = menu.add_feature("Try To Remove Kosatka's", "toggle", featureVars.lag.id, function(feat)
-			if feat.on then
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	--INFO: kosatkalag
+	features["kosatka_lag"] = {feat = menu.add_feature("kosatka Lag Area", "action_value_i", featureVars.lag.id, function(feat)
+		pped = player.get_player_ped(pid)
+		local heading, pos, hash
+		heading = player.get_player_heading(pid)
+		pos = v3()
+		local offset, rot = v3(0.0,0.0,0.0), v3(0.0,0.0,0.0)
+		pos = player.get_player_coords(pid)
+		hash = 1336872304
+		streaming.request_model(hash)
+		while (not streaming.has_model_loaded(hash)) do
+			system.wait(10)
+		end
+		for y = 1, feat.value do
+			pos.x = pos.x + 1.0
+			kosatka[#kosatka + 1] = vehicle.create_vehicle(hash, pos, heading, true, false)
+			spawned_cunts[#spawned_cunts + 1] = object.create_object(-422877666, pos, true, false)
+			entity.attach_entity_to_entity(spawned_cunts[#spawned_cunts], kosatka[#kosatka], 0, pos, pos, true, true, false, 0, false)
+		end
+		streaming.set_model_as_no_longer_needed(hash)
+		return HANDLER_POP
+	end),  type = "action_value_i", callback = function()
+	end}
+	features["kosatka_lag"].feat.min = 1
+	features["kosatka_lag"].feat.max = 100
+	features["kosatka_lag"].feat.value = 15
+	features["kosatka_lagattach"] = {feat = menu.add_feature("Try To Remove Kosatka's", "toggle", featureVars.lag.id, function(feat)
+		if feat.on then
 			for i = 1, #kosatka do
 				entity.set_entity_as_no_longer_needed(kosatka[i])
 				entity.delete_entity(kosatka[i])
 			end
-			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-		--INFO: Kick System
-		featureVars.ses = menu.add_feature("Script Event Spam", "parent", featureVars.k.id)
-		featureVars.ses.hidden = NewDLC()
-		
-features["ForceRemove"] = {feat = menu.add_feature("Force Remove Player", "action", featureVars.k.id, function(feat)
-	network.force_remove_player(pid)
-	return HANDLER_POP
-	end), type = "action", callback = function()
-end}
-features["ForceRemove"].feat.on = false	
-		
-features["SE_Kick_Crash"] = {feat = menu.add_feature("New Randomised Kick Crash", "toggle", featureVars.k.id, function(feat)
-	if feat.on then
-	system.yield(1)
-	SE_KickCrash(pid)
-	system.yield(Settings["ScriptEvent_delay"])
-	return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-	end), type = "toggle", callback = function()
-end}
-features["SE_Kick_Crash"].feat.on = false	
-		
-features["SE_Kick_Crash2"] = {feat = menu.add_feature("New Randomised Kick Crash 2", "toggle", featureVars.k.id, function(feat)
-	if feat.on then
-	system.yield(1)
-	SE_KickCrash2(pid)
-	system.yield(Settings["ScriptEvent_delay"])
-	return HANDLER_CONTINUE
-	end
-	return HANDLER_POP
-	end), type = "toggle", callback = function()
-end}
-features["SE_Kick_Crash"].feat.on = false	
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	--INFO: Kick System
+	featureVars.ses = menu.add_feature("Script Event Spam", "parent", featureVars.k.id)
+	featureVars.ses.hidden = NewDLC()
 	
-local args_done = false
-features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:", "value_i", featureVars.k.id, function(feat)
-			local Args = {}
-			if feat.on then
+	features["ForceRemove"] = {feat = menu.add_feature("Force Remove Player", "action", featureVars.k.id, function(feat)
+		for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) then
+        Recent_Players[y].WasKicked = true 
+		
+    end
+end
+
+		network.force_remove_player(pid)
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["ForceRemove"].feat.on = false	
+	
+	features["SE_Kick_Crash"] = {feat = menu.add_feature("New Randomised Kick Crash", "toggle", featureVars.k.id, function(feat)
+		if feat.on then
+			system.yield(1)
+			SE_KickCrash(pid)
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["SE_Kick_Crash"].feat.on = false	
+	
+	features["SE_Kick_Crash2"] = {feat = menu.add_feature("New Randomised Kick Crash 2", "toggle", featureVars.k.id, function(feat)
+		if feat.on then
+			system.yield(1)
+			SE_KickCrash2(pid)
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["SE_Kick_Crash"].feat.on = false	
+	
+	local args_done = false
+	features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:", "value_i", featureVars.k.id, function(feat)
+		local Args = {}
+		if feat.on then
 			if args_done ~= true then
 				Args = build_params(feat.value)
 				system.yield(10000)
 				args_done = true
 				
 			end
-				-- player.unset_player_as_modder(pid, -1)
-				if player.is_player_valid(pid)then
+			-- player.unset_player_as_modder(pid, -1)
+			if player.is_player_valid(pid)then
+			for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
+		
+			end
+		end
+
+				system.yield(Settings["ScriptEvent_delay"])
 				for i = 1, #data do
 					par1 = math.random(-1000, 99999999)
 					par2 = math.random(20000, 99999999)
@@ -18038,24 +18979,36 @@ features["SE_CRASH_DATA1"] = {feat = menu.add_feature("SEKick Custom Arg Count:"
 					
 					system.yield(Settings["ScriptEvent_delay"])
 				end
-				end
-				return HANDLER_CONTINUE
+				system.yield(Settings["ScriptEvent_delay"])
 			end
-			args_done = false
-			return HANDLER_POP
-end),
-		type = "toggle", callback = function()
-end}
-features["SE_CRASH_DATA1"].feat.max = 100
-features["SE_CRASH_DATA1"].feat.min = 1
-features["SE_CRASH_DATA1"].feat.value = 100
-features["SE_CRASH_DATA1"].feat.on = false
-		
-features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle", featureVars.ses.id, function(feat)
-			if feat.on then
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		args_done = false
+		return HANDLER_POP
+	end),
+	type = "toggle", callback = function()
+	end}
+	features["SE_CRASH_DATA1"].feat.max = 100
+	features["SE_CRASH_DATA1"].feat.min = 1
+	features["SE_CRASH_DATA1"].feat.value = 100
+	features["SE_CRASH_DATA1"].feat.on = false
+	
+	features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle", featureVars.ses.id, function(feat)
+		if feat.on then
+			system.yield(Settings["ScriptEvent_delay"])
 			if player.is_player_valid(pid)then
+						for y = 1, #Recent_Players do
+							if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+							Recent_Players[y].WasKicked = true 
+		
+						end
+					end
+						
+				system.yield(Settings["ScriptEvent_delay"])
 				-- player.unset_player_as_modder(pid, -1)
 				for i = 1, #data do
+					system.yield(Settings["ScriptEvent_delay"])
 					par1 = math.random(-1000, 99999999)
 					par2 = math.random(-1, 9)
 					par3 = math.random(-1, 1)
@@ -18067,20 +19020,30 @@ features["Kick1_Type1"] = {feat = menu.add_feature("Kick Data 1 Type 1", "toggle
 					script.trigger_script_event(data[i], pid, {par3, par5, par2, par3, par2, par1, par3, par1})
 					system.yield(Settings["ScriptEvent_delay"])
 				end
+				system.yield(Settings["ScriptEvent_delay"])
 			end
-				return HANDLER_CONTINUE
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),
+	type = "toggle", callback = function()
+	end}
+	features["Kick1_Type1"].feat.on = false
+	
+	features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "toggle", featureVars.ses.id, function(feat)
+		if feat.on then
+			--player.unset_player_as_modder(pid, -1)
+			if player.is_player_valid(pid)then
+						for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
+		
 			end
-			return HANDLER_POP
-end),
-		type = "toggle", callback = function()
-end}
-features["Kick1_Type1"].feat.on = false
-
-features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "toggle", featureVars.ses.id, function(feat)
-			if feat.on then
-				--player.unset_player_as_modder(pid, -1)
-				if player.is_player_valid(pid)then
+		end
+				system.yield(Settings["ScriptEvent_delay"])
 				for i = 1, #data do
+					system.yield(Settings["ScriptEvent_delay"])
 					par1 = math.random(-1000, 99999999)
 					par2 = math.random(-99999999999999, -9)
 					par3 = math.random(46190868, 999999999)
@@ -18093,18 +19056,28 @@ features["Kick1_Type2"] = {feat = menu.add_feature("Kick Data 1 Type 2", "toggle
 					script.trigger_script_event(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
 					system.yield(Settings["ScriptEvent_delay"])
 				end
-				end
-				return HANDLER_CONTINUE
+				system.yield(Settings["ScriptEvent_delay"])
 			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-
-features["Kick1_Type2"].feat.on = false
-features["Kick1_Type3"] = {feat = menu.add_feature("Kick Data 1 Type 3", "toggle", featureVars.ses.id, function(feat)
-			if feat.on then
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	
+	features["Kick1_Type2"].feat.on = false
+	features["Kick1_Type3"] = {feat = menu.add_feature("Kick Data 1 Type 3", "toggle", featureVars.ses.id, function(feat)
+		if feat.on then
 			if player.is_player_valid(pid)then
+						for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
+		
+			end
+		end
+				system.yield(Settings["ScriptEvent_delay"])
 				for i = 1, #data do
+					system.yield(Settings["ScriptEvent_delay"])
 					par1 = kick_param_data[math.random(1, #kick_param_data)]
 					par2 = kick_param_data[math.random(1, #kick_param_data)]
 					par3 = kick_param_data[math.random(1, #kick_param_data)]
@@ -18119,100 +19092,136 @@ features["Kick1_Type3"] = {feat = menu.add_feature("Kick Data 1 Type 3", "toggle
 					script.trigger_script_event(data[i], pid, {par1, par4, par3, par5, par6, par2, par3, par2, par1, par3, par1})
 					system.yield(Settings["ScriptEvent_delay"])
 				end
+				system.yield(Settings["ScriptEvent_delay"])
 			end
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-end),  type = "toggle", callback = function()
-end}
-features["Kick1_Type3"].feat.on = false
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end),  type = "toggle", callback = function()
+	end}
+	features["Kick1_Type3"].feat.on = false
+	
+	features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
+		player.unset_player_as_modder(pid, -1)
+		local scid = player.get_player_scid(pid)
+		local name = tostring(player.get_player_name(pid))
+		for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
 		
-features["net-kick"] = {feat = menu.add_feature("Network Bail Kick", "action", featureVars.k.id, function(feat)
-			player.unset_player_as_modder(pid, -1)
-			local scid = player.get_player_scid(pid)
-			local name = tostring(player.get_player_name(pid))
-			script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+			end
+		end
+		script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+		
+		system.yield(Settings["ScriptEvent_delay"])
+		script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
+		system.yield(Settings["ScriptEvent_delay"])
+		Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
+	end), type = "action", callback = function()
+	end}
+	
+	features["Host-kick"] = {feat = menu.add_feature("Host Kick", "action", featureVars.k.id, function(feat)
+		--player.unset_player_as_modder(pid, -1)
+		local scid = player.get_player_scid(pid)
+		local name = tostring(player.get_player_name(pid))
+		Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Host Kicked"))
+		network_session_kick_player(pid)
+		
+	end), type = "action", callback = function()
+	end}
+	
+	features["SE_Crash"] = {feat = menu.add_feature("Script Event Crash", "action", featureVars.k.id, function(feat)
+			for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
+		
+			end
+		end
+		script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		system.yield(Settings["ScriptEvent_delay"])
+		script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
+		system.yield(Settings["ScriptEvent_delay"])
+		script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
+	end), type = "action",  callback = function()
+	end}
+	
+	features["SE1_Crash"] = {feat = menu.add_feature("New Script Event Crash", "toggle", featureVars.k.id, function(feat)
+		local Params = build_params(120)
+		if feat.on then
+			if player.is_player_valid(pid) then
+						for y = 1, #Recent_Players do
+							if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
+		
+			end
+		end
 			
-			system.yield(Settings["ScriptEvent_delay"])
-			script.trigger_script_event(0x493FC6BB, pid, {pid, script.get_global_i(1893548 + (1 + (pid * 600)) + 511)})
-			system.yield(Settings["ScriptEvent_delay"])
-			Debug_Out(string.format("Player: " ..name .." [" ..scid .."]" .." Network Bail Kicked"))
-end), type = "action", callback = function()
-end}
-		
-features["SE_Crash"] = {feat = menu.add_feature("Script Event Crash", "action", featureVars.k.id, function(feat)
-
-				script.trigger_script_event(0xc50f74ca, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-				system.yield(Settings["ScriptEvent_delay"])
-				script.trigger_script_event(0x8638a0ab, pid, {pid, 0, 30583, 0, 0, 0, -328966, 1132039228, 0})
-				system.yield(Settings["ScriptEvent_delay"])
-				script.trigger_script_event(0xc50f74ca, pid, {23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778,  23135423, 827870001, 23135423})
-end), type = "action",  callback = function()
-end}
-		
-features["SE1_Crash"] = {feat = menu.add_feature("New Script Event Crash", "toggle", featureVars.k.id, function(feat)
-local Params = build_params(120)
-if feat.on then
-		if player.is_player_valid(pid) then
 				for y = 1, #SECrash do
 					script.trigger_script_event(SECrash[y], pid, Params)
 					system.yield(Settings["ScriptEvent_delay"])
 				end
 			end
-	return HANDLER_CONTINUE
-end
-return HANDLER_POP
-end), type = "toggle",  callback = function()
-end}
-features["SE1_Crash"].feat.on = false
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle",  callback = function()
+	end}
+	features["SE1_Crash"].feat.on = false
+	
+	features["SEC-kick"] = {feat = menu.add_feature("Random Script Event Crash", "toggle", featureVars.k.id, function(feat)
+		if feat.on then
+					for y = 1, #Recent_Players do
+			if Recent_Players[y].rid == player.get_player_scid(pid) and Recent_Players[y].WasKicked == false then
+				Recent_Players[y].WasKicked = true 
 		
-features["SEC-kick"] = {feat = menu.add_feature("Random Script Event Crash", "toggle", featureVars.k.id, function(feat)
-			if feat.on then
-				par1 = kick_param_data[math.random(1, #kick_param_data)]
-				par2 = kick_param_data[math.random(1, #kick_param_data)]
-				par3 = kick_param_data[math.random(1, #kick_param_data)]
-				par4 = kick_param_data[math.random(1, #kick_param_data)]
-				par5 = kick_param_data[math.random(1, #kick_param_data)]
-				script.trigger_script_event(data[math.random(1, #data)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
-				system.yield(Settings["ScriptEvent_delay"])
-				return HANDLER_CONTINUE
 			end
-			return HANDLER_POP
+		end
+			par1 = kick_param_data[math.random(1, #kick_param_data)]
+			par2 = kick_param_data[math.random(1, #kick_param_data)]
+			par3 = kick_param_data[math.random(1, #kick_param_data)]
+			par4 = kick_param_data[math.random(1, #kick_param_data)]
+			par5 = kick_param_data[math.random(1, #kick_param_data)]
+			script.trigger_script_event(data[math.random(1, #data)], pid, {pid, par5, par3, par1, par5, par3, par1, par5, par3, pid, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, pid, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1, par5, par3, par1})
+			system.yield(Settings["ScriptEvent_delay"])
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+		
+	end), type = "toggle",  callback = function()
+	end}
+	features["SEC-kick"].feat.on = false
+	
+	features["DisableGame"] = {feat = menu.add_feature("Disable Players Game & Give God", "action", featureVars.g.id, function(feat)
+		if feat.on then
+			script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, 115, 1, 1, 1})
+			system.yield(Settings["ScriptEvent_delay"])
 			
-end), type = "toggle",  callback = function()
-end}
-features["SEC-kick"].feat.on = false
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "action", callback = function()
+	end}
+	features["DisableGame"].feat.hidden = NewDLC()
+	
+	features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "toggle", featureVars.g.id, function(feat)
+		if feat.on then
+			Settings["playerlist_loop"] = 0
+			par5 = math.ceil(math.random(0, 100))
+			script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, par5, 1, 1, 1})
+			system.yield(6000)
+			return HANDLER_CONTINUE
+		end
+		return HANDLER_POP
+	end), type = "toggle", callback = function()
+	end}
+	features["AptInv_Spam"].feat.on = false
+	features["AptInv_Spam"].feat.hidden = NewDLC()
 		
-features["DisableGame"] = {feat = menu.add_feature("Disable Players Game & Give God", "action", featureVars.g.id, function(feat)
-			if feat.on then
-				script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, 115, 1, 1, 1})
-				system.yield(Settings["ScriptEvent_delay"])
-				
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-end), type = "action", callback = function()
-end}
-features["DisableGame"].feat.hidden = NewDLC()
-		
-features["AptInv_Spam"] = {feat = menu.add_feature("Spam Random Apt Invites", "toggle", featureVars.g.id, function(feat)
-			if feat.on then
-				Settings["playerlist_loop"] = 0
-				par5 = math.ceil(math.random(0, 100))
-				script.trigger_script_event(0x23F74138, pid, {24, 24, 1, 0, par5, 1, 1, 1})
-				system.yield(6000)
-				return HANDLER_CONTINUE
-			end
-			return HANDLER_POP
-end), type = "toggle", callback = function()
-end}
-features["AptInv_Spam"].feat.on = false
-features["AptInv_Spam"].feat.hidden = NewDLC()
-		
-		playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
-		featureVars.f.hidden = false
-
-	end
+	playerFeatures[pid] = {feat = featureVars.f, scid = -1, features = features}
+	featureVars.f.hidden = false
+	
+end
 
 loop_logsent, count, playercount, check, ModderStart = false, 0, 0, 0, {{ismod = {}, start = {},}}
 
@@ -18220,324 +19229,603 @@ for pid = 0, 31 do
 	ModderStart[pid] = {}
 	ModderStart[pid].ismod = false
 	ModderStart[pid].start = nil
-
+	
 end
 
 --INFO: Standard Player Loop function
 
-loopFeat2 = menu.add_feature("Normal Loop Function", "toggle", globalFeatures.moist_tools.id, function(feat)
-    if feat.on then
-        local Online = network.is_session_started()
-        if not Online then
-            SessionHost = nil
-            ScriptHost = nil
-            loop_logsent = false
-            Active_menu = nil
-			Playercount = 0
-        end
-        local lpid = player.player_id()
-        for pid = 0, 31 do
 
-            pped = player.get_player_ped(pid)
-            tbl = playerFeatures[pid]
-            f = tbl.feat
+loopFeat2 = menu.add_feature("Normal Loop Function", "toggle", globalFeatures.moist_tools.id, function(feat)
+	while feat.on do
+		local Online = network.is_session_started()
+		if not Online then
+			SessionHost = nil
+			ScriptHost = nil
+			loop_logsent = false
+			Active_menu = nil
+			Playercount = 0
+		end
+		local lpid = player.player_id()
+		for pid = 0, 31 do
+			
+			pped = player.get_player_ped(pid)
+			tbl = playerFeatures[pid]
+			f = tbl.feat
 			local scid, name
-            scid = player.get_player_scid(pid)
-            SessionPlayers[pid].Scid = scid
-            playerFeatures[pid].scid = scid
-            if scid ~= -1 then
-                if f.hidden then
-                    f.hidden = false
-                end
+			scid = player.get_player_scid(pid)
+			SessionPlayers[pid].Scid = scid
+			playerFeatures[pid].scid = scid
+			if scid ~= -1 then
+				if f.hidden then
+					f.hidden = false
+				end
 				Playerz[pid+1] = player.get_player_name(pid)
-                name = player.get_player_name(pid)
-                Players[pid].name = name
-                local toname = ""
-                local isYou = lpid == pid
-                local tags, tagz = {}, {}
-                if Online then	
-				if playercount ~= player.player_count() then
-				for y = 0, 31 do
-				if Players[y].OTRBlipID ~= nil then
-				ui.remove_blip(Players[y].OTRBlipID)
-				Players[y].OTRBlipID = nil
-				end
-				end
-				
-				playercount = player.player_count()
-				RefreshPlayerInterior:set_str_data(Playerz)
-				interiorcheckbytype:set_str_data(Playerz)
-				player_pos:set_str_data(Playerz)
-				OrbitalStrike_All:set_str_data(Playerz)
-                OrbitalStrike_AllEntities:set_str_data(Playerz)
-				end
-				if player.is_player_valid(pid) and Players[pid].JoinTime ~= nil then
-				local test = (os.time() - Players[pid].JoinTime)
-				if test >= 160 then
-					Players[pid].PedSpawned = true
-				end
-				end
-					
-                    if isYou then
-                        tags[#tags + 1] = "Y"
-                    end
-                    if player.is_player_friend(pid) then
-                        tags[#tags + 1] = "F"
-                    end
-                    if player.is_player_host(pid) then
-                        tags[#tags + 1] = "H"
-                        toname = tostring(toname .."~h~~b~[H]")
-                        if SessionHost ~= pid then
-                            SessionHost = pid
-                            moist_notify((isYou and "You Are Now The The Session Host!" or "The Session Host is Now") .."\n" .. name, nil)
-                            Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
-                        end
-                    end
-                    if pid == script.get_host_of_this_script() then
-                        tags[#tags + 1] = "S"
-                        toname = tostring(toname .. "~h~~y~[S]")
-                        if ScriptHost ~= pid then
-                            ScriptHost = pid
-                            moist_notify((isYou and "You Are Now The Script Host!"  or  "The Script Host is Now") .."\n" .. name, nil)
-                            Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
-                        end
-                    end
-					if entity.is_entity_dead(player.get_player_ped(pid)) then
-                        GetKiller(pid)
-                        Players[pid].isDead = true
-                        Players[pid].PedSpawned = false
-                    elseif not entity.is_entity_dead(player.get_player_ped(pid)) and Players[pid].isDead then
-					Players[pid].isDead = false
-					Players[pid].PedSpawned = true
-					
+				name = player.get_player_name(pid)
+				Players[pid].name = name
+				local toname = ""
+				local isYou = lpid == pid
+				local tags, tagz = {}, {}
+				if Online then	
+					if playercount ~= player.player_count() then
+						for y = 0, 31 do
+							if Players[y].OTRBlipID ~= nil then
+								ui.remove_blip(Players[y].OTRBlipID)
+								Players[y].OTRBlipID = nil
+							end
+						end
+						
+						playercount = player.player_count()
+						RefreshPlayerInterior:set_str_data(Playerz)
+						interiorcheckbytype:set_str_data(Playerz)
+						player_pos:set_str_data(Playerz)
+						OrbitalStrike_All:set_str_data(Playerz)
+						OrbitalStrike_AllEntities:set_str_data(Playerz)
 					end
-                    if player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) then
-						--if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 and not Players[pid].isRC then
-                        tags[#tags + 1] = "G"
-					--	end
+					if isYou then
+						tags[#tags + 1] = "Y"
 					end
-					if Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 1 then
-					if player.is_player_god(pid) or player.is_player_vehicle_god(pid) then 
-						playerFeatures[pid].features["GodCheck"].feat.on  = true
-						playerFeatures[pid].features["pos2pos"].feat.on  = true
-						playerFeatures[pid].features["PBPulse"].feat.on  = true
-					elseif not player.is_player_god(pid) or not player.is_player_vehicle_god(pid) then
-						playerFeatures[pid].features["GodCheck"].feat.on  = false
-						playerFeatures[pid].features["pos2pos"].feat.on  = false
-						playerFeatures[pid].features["PBPulse"].feat.on  = false
-                    end
-					elseif Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 2 then
-					if player.is_player_valid(pid) then
-					playerFeatures[pid].features["GodCheck"].feat.on  = true
-					playerFeatures[pid].features["pos2pos"].feat.on  = true
-					playerFeatures[pid].features["PBPulse"].feat.on  = true
-					elseif not player.is_player_valid(pid) then
-						playerFeatures[pid].features["GodCheck"].feat.on  = false
-						playerFeatures[pid].features["pos2pos"].feat.on  = false
-						playerFeatures[pid].features["PBPulse"].feat.on  = false
+					if player.is_player_friend(pid) then
+						tags[#tags + 1] = "F"
 					end
-					end
-					
-                    if player.is_player_god(pid) and not Players[pid].isRC and not Players[pid].isint and not Players[pid].isPaused and Players[pid].JoinTime ~= nil and not entity.is_entity_dead(player.get_player_ped(pid)) then
-						local test = (os.time() - Players[pid].JoinTime)
-						if test >= 60 then
-                        tagz[#tagz + 1] = "~h~~r~[~y~G~r~~h~]"
+					if player.is_player_host(pid) then
+						tags[#tags + 1] = "H"
+					toname = toname .."~h~~b~[H]"
+						if SessionHost ~= pid then
+							SessionHost = pid
+							moist_notify((isYou and "You Are Now The The Session Host!" or "The Session Host is Now") .."\n" .. name, nil)
+							Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
 						end
 					end
-					if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true then
-						 tagz[#tagz + 1] = "~h~~r~[~y~G~r~~h~]"
+					if pid == script.get_host_of_this_script() then
+						tags[#tags + 1] = "S"
+						toname = toname .. "~h~~y~[S]"
+						if ScriptHost ~= pid then
+							ScriptHost = pid
+							moist_notify((isYou and "You Are Now The Script Host!"  or  "The Script Host is Now") .."\n" .. name, nil)
+							Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
+						end
+					end
+					if not Players[pid].PedSpawned and tracking.playerped_speed1[pid + 1] >= 5 and not Players[pid].isint then
+					Players[pid].PedSpawned = true
+					end
+					if entity.is_entity_dead(player.get_player_ped(pid)) then
+						GetKiller(pid)
+						Players[pid].isDead = true
+						Players[pid].PedSpawned = false
+						elseif not entity.is_entity_dead(player.get_player_ped(pid)) and Players[pid].isDead then
+						Players[pid].isDead = false
+						Players[pid].PedSpawned = true
+						
+					end
+					if player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) then
+						--if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 and not Players[pid].isRC then
+						tags[#tags + 1] = "G"
+						--	end
+					end
+					if Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 1 then
+						if player.is_player_god(pid) or player.is_player_vehicle_god(pid) then 
+							playerFeatures[pid].features["GodCheck"].feat.on  = true
+							--playerFeatures[pid].features["pos2pos"].feat.on  = true
+							playerFeatures[pid].features["PBPulse"].feat.on  = true
+							elseif not player.is_player_god(pid) or not player.is_player_vehicle_god(pid) then
+							playerFeatures[pid].features["GodCheck"].feat.on  = false
+							--playerFeatures[pid].features["pos2pos"].feat.on  = false
+							playerFeatures[pid].features["PBPulse"].feat.on  = false
+						end
+						elseif Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 2 then
+						if player.is_player_valid(pid) then
+							playerFeatures[pid].features["GodCheck"].feat.on  = true
+							--playerFeatures[pid].features["pos2pos"].feat.on  = true
+							playerFeatures[pid].features["PBPulse"].feat.on  = true
+							elseif not player.is_player_valid(pid) then
+							playerFeatures[pid].features["GodCheck"].feat.on  = false
+							--playerFeatures[pid].features["pos2pos"].feat.on  = false
+							playerFeatures[pid].features["PBPulse"].feat.on  = false
+						end
+					end
+
+					if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true and not Players[pid].isRC then
+						tagz[#tagz + 1] = "~h~~r~[~y~G~r~~h~]"
 						Players[pid].pulse = not Players[pid].pulse
 						
 					end
 					if Players[pid].isRC then
 						tags[#tags + 1] = "RC"
 						tagz[#tagz + 1] = "~h~~q~[~h~~b~RC~h~~q~]"
-						end
-
-						if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
-							if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 and not Players[pid].isRC  then
+					end
+					
+					if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
+						if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 and not Players[pid].isRC  then
 							tags[#tags + 1] = "V"
 						end
-							end
-                    if player.is_player_vehicle_god(pid) and Players[pid].isint ~= true --[[and Players[pid].PedSpawned == true]] then
-				--	if (tracking.playerped_speed1[pid + 1] >= 28) then
+					end
+					if player.is_player_vehicle_god(pid) and Players[pid].isint ~= true and not Players[pid].isRC --[[and Players[pid].PedSpawned == true]] then
+						--	if (tracking.playerped_speed1[pid + 1] >= 28) then
 						if Players[pid].pulse == true then
-                        tagz[#tagz + 1] = "~h~~o~[V]"
-					--	else
+							tagz[#tagz + 1] = "~h~~o~[V]"
+							--	else
 						end
-					elseif player.is_player_vehicle_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) then
-						 tagz[#tagz + 1] =  "~h~~r~[~o~V~r~]"
+						elseif player.is_player_vehicle_god(pid) and Players[pid].isint ~= true and (tracking.playerped_speed1[pid + 1] >= 28) and not Players[pid].isRC then
+						tagz[#tagz + 1] =  "~h~~r~[~o~V~r~]"
 						Players[pid].pulse = not Players[pid].pulse
-						--if not Players[pid].isvgod --[[and pid ~= player.player_id() ]] then
-
+						
+					end
+					if Players[pid].isint ~= true then
+						if player.is_player_spectating(pid) and player.is_player_playing(pid) then
+							tags[#tags + 1] = ".SPEC."
 						end
-                    if Players[pid].isint ~= true then
-                        if player.is_player_spectating(pid) and player.is_player_playing(pid) then
-                            tags[#tags + 1] = ".SPEC."
-                           --Players[pid].pulse = not Players[pid].pulse
-                        end
-                    end
-
-							if Players[pid].isTyping and Settings["PlayerTagginghook"] then
-						    tags[#tags + 1] = "T"
-                            tagz[#tagz + 1] = "~h~~q~[~h~~b~T~h~~q~]"
-							end
-							if player.get_player_armour(pid) > 50 then
-						    tags[#tags + 1] = "U"
-                            tagz[#tagz + 1] = "~h~~q~[U]"
-							if Settings["GodCheckNotif"] and not Players[pid].isgod then
+					end
+					
+					if Players[pid].isTyping and Settings["PlayerTagginghook"] then
+						tags[#tags + 1] = "T"
+						tagz[#tagz + 1] = "~h~~q~[~h~~b~T~h~~q~]"
+					end
+					if player.get_player_armour(pid) > 50 then
+						tags[#tags + 1] = "U"
+						tagz[#tagz + 1] = "~h~~q~[U]"
+						if Settings["GodCheckNotif"] and not Players[pid].isgod then
 							moist_notify(name .. " Has Excessive Armour ", "Modder Detection")
 							Players[pid].isgod = true
-							end
 						end
-
-                    if not isYou then
-					if not NewDLC() then
-					     if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1)then
-                            tags[#tags + 1] = "O"
-                            tagz[#tagz + 1] = "~h~~g~[O]"
-                            --toname = tostring(toname .. "~h~~g~[O]")
-                            if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
-                                Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
-								 Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
-                                ui.set_blip_colour(Players[pid].OTRBlipID, 2)
-                            end
-                        end
-
-                        if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
-                            if Players[pid].OTRBlipID ~= nil then
-							 Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
-                                ui.remove_blip(Players[pid].OTRBlipID)
-                                Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
-                                ui.remove_blip(Players[pid].OTRBlipID)
-                                Players[pid].OTRBlipID = nil
-                            end
-                        end
 					end
-                    end
-                    if not player.is_player_modder(pid, -1) then
-                        if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
-                            tags[#tags + 1] = "U"
-                            tagz[#tagz + 1] = "~h~~q~[U]"
-                            -- toname = tostring(toname .. "~h~~q~[U]")
-                        end
-                    end
-                    if not player.is_player_modder(pid, -1) then
-                        if (player.get_player_health(pid) == 0) and (player.get_player_max_health(pid) == 0) and (tracking.playerped_speed1[pid + 1] >= 10) then
-                            tags[#tags + 1] = "U"
-                            tagz[#tagz + 1] = "~h~~q~[U]"
-                            -- toname = tostring(toname .. "~h~~q~[U]")
-                        end
-                    end
-                    if Players[pid].bounty then
-                        tags[#tags + 1] = "[B:" .. Players[pid].bountyvalue .."]"
-                        tagz[#tagz + 1] = "~h~~p~[B:~h~~w~ " .. Players[pid].bountyvalue .. "~h~~p~]"
-                        -- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
-                    end
-                    if player.is_player_modder(pid, -1) then
-							tags[#tags + 1] = "M"
-							tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"
-							modderflag(pid)
-							RAC_OFF(pid)
-							elseif not player.is_player_modder(pid, -1) then
-							Modders_DB[pid].ismod = false
-						end
-						
-						
-                    if not player.is_player_modder(pid, -1) then
-
-                        Modders_DB[pid].ismod = false
-                    end
 					
-					if Players[pid].isPaused and Settings["PlayerTagginghook"] then
-					tags[#tags + 1] = "P"
-					tagz[#tagz + 1] = "~y~~h~[~q~~h~P~y~~h~]"
-					end
-					-- if interior.get_interior_from_entity(pped) ~= 0 then
-					-- Players[pid].isint = true
-					-- end
-											
-						if tbl.scid ~= scid then
-							for cf_name,cf in pairs(tbl.features) do
-								if cf.type == "toggle" and cf.feat.on then
-									cf.feat.on = false
+					if not isYou then
+						if not NewDLC() then
+							if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1)then
+								tags[#tags + 1] = "O"
+								tagz[#tagz + 1] = "~h~~g~[O]"
+									if not Players[pid].isOTR then
+									Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
+									 Players[pid].isOTR = true
+									end
+								if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
+									Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+									ui.set_blip_colour(Players[pid].OTRBlipID, 2)
 								end
 							end
-							tbl.scid = scid
-							if not isYou then
-								--INFO: Modder shit
+							
+							if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
+									if Players[pid].isOTR then
+									Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
+									 Players[pid].isOTR = false
+									end
+								if Players[pid].OTRBlipID ~= nil then
+									ui.remove_blip(Players[pid].OTRBlipID)
+									Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+									ui.remove_blip(Players[pid].OTRBlipID)
+									Players[pid].OTRBlipID = nil
+								end
 							end
 						end
 					end
-					if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
-						SessionPlayers[pid].Name = name .. " " .. toname
-					--system.wait(0)
-						if #tagz > 0 then
-							SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
-						end
-						else
-						SessionPlayers[pid].Name = name
-					--	system.wait(0)
-						if #tagz > 0 then
-							SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
+					if not player.is_player_modder(pid, -1) then
+						if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
+							tags[#tags + 1] = "U"
+							tagz[#tagz + 1] = "~h~~q~[U]"
 						end
 					end
-					if #tags > 0 then
-						name = name .. " [" .. table.concat(tags) .. "]"
+					if not player.is_player_modder(pid, -1) then
+						if (player.get_player_health(pid) == 0) and (player.get_player_max_health(pid) == 0) and (tracking.playerped_speed1[pid + 1] >= 10) then
+							tags[#tags + 1] = "U"
+							tagz[#tagz + 1] = "~h~~q~[U]"
+						end
 					end
-                if f.name ~= name then f.name = name end
-                for cf_name,cf in pairs(tbl.features) do
-                    if (cf.type ~= "toggle" or cf.type ~= "value_str" or cf.type ~= "value_i" or cf.type ~= "value_f" or cf.feat.on) and cf.callback then
-                        local status, err = pcall(cf.callback)
-                        if not status then
-                            moist_notify("Error running feature " .. cf.callback .. "\nOn pid: " .. pid, "MoistScript PlayerLoop Error")
-                         --   Print(status .. err)
-                        end
-                    end
-                end
-            else
-                if not f.hidden then
-                    f.hidden = true
-                    for cf_name,cf in pairs(tbl.features) do
-                        if cf.type == "toggle"  or cf.type == "value_str" or cf.type == "value_i" or cf.type == "value_f" and cf.feat.on then
-                            cf.feat.on = false
-                        end
-                    end
-                end
-                Playerz[pid+1] = string.format("Player " .. pid)
-            end
-        end
-        system.yield(Settings["playerlist_loop"])
-        return HANDLER_CONTINUE
-end
-    for i = 0, 31 do
-        playerFeatures[i].feat.hidden = false
-end
-    return HANDLER_POP
+					if Players[pid].bounty then
+						tags[#tags + 1] = "B:" .. Players[pid].bountyvalue
+						tagz[#tagz + 1] = "~h~~p~[B:~h~~w~ " .. Players[pid].bountyvalue .. "~h~~p~]"
+					end
+					if player.is_player_modder(pid, -1) then
+						tags[#tags + 1] = "M"
+						tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"
+					end
+					
+					if not player.is_player_modder(pid, -1) then
+						
+						Modders_DB[pid].ismod = false
+					end
+					
+					if Players[pid].isPaused and Settings["PlayerTagginghook"] then
+						tags[#tags + 1] = "P"
+						tagz[#tagz + 1] = "~y~~h~[~q~~h~P~y~~h~]"
+					end
+
+					
+					if tbl.scid ~= scid then
+						for cf_name,cf in pairs(tbl.features) do
+							if cf.type == "toggle" and cf.feat.on then
+								cf.feat.on = false
+							end
+						end
+						tbl.scid = scid
+						if not isYou then
+							--INFO: Modder shit
+						end
+					end
+				end
+				if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
+					SessionPlayers[pid].Name = name .. " " .. toname
+
+					if #tagz > 0 then
+						SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
+					end
+					else
+					SessionPlayers[pid].Name = name
+					if #tagz > 0 then
+						SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
+					end
+				end
+				if #tags > 0 then
+						name = name .. "[" .. table.concat(tags) .."]"
+				end
+				if f.name ~= name then f.name = name end
+				for cf_name,cf in pairs(tbl.features) do
+					if (cf.type ~= "toggle" or cf.type ~= "value_str" or cf.type ~= "value_i" or cf.type ~= "value_f" or cf.feat.on) and cf.callback then
+						local status, err = pcall(cf.callback)
+						if not status then
+							moist_notify("Error running feature " .. cf.callback .. "\nOn pid: " .. pid, "MoistScript PlayerLoop Error")
+							--   Print(status .. err)
+						end
+					end
+				end
+				else
+				if not f.hidden then
+					f.hidden = true
+					for cf_name,cf in pairs(tbl.features) do
+						if cf.type == "toggle"  or cf.type == "value_str" or cf.type == "value_i" or cf.type == "value_f" and cf.feat.on then
+							cf.feat.on = false
+						end
+					end
+				end
+				Playerz[pid+1] = string.format("Player " .. pid)
+			end
+		end
+		system.yield(Settings["playerlist_loop"])
+		--return HANDLER_CONTINUE
+	end
+	for i = 0, 31 do
+		playerFeatures[i].feat.hidden = false
+	end
+	return HANDLER_POP
 end)
 loopFeat2.hidden = false
 loopFeat2.on = true
 
 
+loop_Feat2 = menu.add_feature("Normal Loop Function", "toggle", globalFeatures.moist_tools.id, function(feat)
+	while feat.on do
+		local Online = network.is_session_started()
+		if not Online then
+			SessionHost = nil
+			ScriptHost = nil
+			loop_logsent = false
+			Active_menu = nil
+			Playercount = 0
+		end
+		local lpid = player.player_id()
+		for pid = 0, 31 do
+			
+			pped = player.get_player_ped(pid)
+			tbl = playerFeatures[pid]
+			f = tbl.feat
+			local scid, name
+			scid = player.get_player_scid(pid)
+			SessionPlayers[pid].Scid = scid
+			playerFeatures[pid].scid = scid
+			if scid ~= -1 then
+				if f.hidden then
+					f.hidden = false
+				end
+				Playerz[pid+1] = player.get_player_name(pid)
+				name = player.get_player_name(pid)
+				Players[pid].name = name
+				local toname = ""
+				local isYou = lpid == pid
+				local tags, tagz = {}, {}
+				if Online then	
+					if playercount ~= player.player_count() then
+						for y = 0, 31 do
+							if Players[y].OTRBlipID ~= nil then
+								ui.remove_blip(Players[y].OTRBlipID)
+								Players[y].OTRBlipID = nil
+							end
+						end
+						
+						playercount = player.player_count()
+						RefreshPlayerInterior:set_str_data(Playerz)
+						interiorcheckbytype:set_str_data(Playerz)
+						player_pos:set_str_data(Playerz)
+						OrbitalStrike_All:set_str_data(Playerz)
+						OrbitalStrike_AllEntities:set_str_data(Playerz)
+					end
+					-- if player.is_player_valid(pid) and Players[pid].JoinTime ~= nil then
+					-- local test = (os.time() - Players[pid].JoinTime)
+					-- if test >= 160 then
+					-- Players[pid].PedSpawned = true
+					-- end
+					-- end
+					
+					if isYou then
+						tags[#tags + 1] = "Y"
+					end
+					if player.is_player_friend(pid) then
+						tags[#tags + 1] = "F"
+					end
+					if player.is_player_host(pid) then
+						tags[#tags + 1] = "H"
+						toname = tostring(toname .."~h~~b~[H]")
+						if SessionHost ~= pid then
+							SessionHost = pid
+							moist_notify((isYou and "You Are Now The The Session Host!" or "The Session Host is Now") .."\n" .. name, nil)
+							Debug_Out(string.format("Session Host is Now : " .. (isYou and " you " or name)))
+						end
+					end
+					if pid == script.get_host_of_this_script() then
+						tags[#tags + 1] = "S"
+						toname = tostring(toname .. "~h~~y~[S]")
+						if ScriptHost ~= pid then
+							ScriptHost = pid
+							moist_notify((isYou and "You Are Now The Script Host!"  or  "The Script Host is Now") .."\n" .. name, nil)
+							Debug_Out(string.format("Script Host is Now : " .. (isYou and " you " or name)))
+						end
+					end
+					if not Players[pid].PedSpawned and tracking.playerped_speed1[pid + 1] >= 5 then
+					Players[pid].PedSpawned = true
+					end
+					if entity.is_entity_dead(player.get_player_ped(pid)) then
+						GetKiller(pid)
+						Players[pid].isDead = true
+						Players[pid].PedSpawned = false
+						elseif not entity.is_entity_dead(player.get_player_ped(pid)) and Players[pid].isDead then
+						Players[pid].isDead = false
+						Players[pid].PedSpawned = true
+						
+					end
+					if player.is_player_god(pid) and not entity.is_entity_dead(player.get_player_ped(pid)) then
+						--if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 and not Players[pid].isRC then
+						tags[#tags + 1] = "G"
+						--	end
+					end
+					if Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 1 then
+						if player.is_player_god(pid) or player.is_player_vehicle_god(pid) then 
+							playerFeatures[pid].features["GodCheck"].feat.on  = true
+							--playerFeatures[pid].features["pos2pos"].feat.on  = true
+							playerFeatures[pid].features["PBPulse"].feat.on  = true
+							elseif not player.is_player_god(pid) or not player.is_player_vehicle_god(pid) then
+							playerFeatures[pid].features["GodCheck"].feat.on  = false
+							--playerFeatures[pid].features["pos2pos"].feat.on  = false
+							playerFeatures[pid].features["PBPulse"].feat.on  = false
+						end
+						elseif Settings["GodCheck"] and Settings["PlayerGodCheckVersion"] == 2 then
+						if player.is_player_valid(pid) then
+							playerFeatures[pid].features["GodCheck"].feat.on  = true
+							--playerFeatures[pid].features["pos2pos"].feat.on  = true
+							playerFeatures[pid].features["PBPulse"].feat.on  = true
+							elseif not player.is_player_valid(pid) then
+							playerFeatures[pid].features["GodCheck"].feat.on  = false
+							--playerFeatures[pid].features["pos2pos"].feat.on  = false
+							playerFeatures[pid].features["PBPulse"].feat.on  = false
+						end
+					end
+
+					if player.is_player_god(pid) and (tracking.playerped_speed1[pid + 1] >= 28) and Players[pid].isint ~= true and not Players[pid].isRC then
+						tagz[#tagz + 1] = "~h~~r~[~y~G~r~~h~]"
+						Players[pid].pulse = not Players[pid].pulse
+						
+					end
+					if Players[pid].isRC then
+						tags[#tags + 1] = "RC"
+						tagz[#tagz + 1] = "~h~~q~[~h~~b~RC~h~~q~]"
+					end
+					
+					if player.is_player_playing(pid) and player.is_player_vehicle_god(pid) then
+						if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0 and not Players[pid].isRC  then
+							tags[#tags + 1] = "V"
+						end
+					end
+					if player.is_player_vehicle_god(pid) and Players[pid].isint ~= true and not Players[pid].isRC --[[and Players[pid].PedSpawned == true]] then
+						--	if (tracking.playerped_speed1[pid + 1] >= 28) then
+						if Players[pid].pulse == true then
+							tagz[#tagz + 1] = "~h~~o~[V]"
+							--	else
+						end
+						elseif player.is_player_vehicle_god(pid) and Players[pid].isint ~= true and (tracking.playerped_speed1[pid + 1] >= 28) and not Players[pid].isRC then
+						tagz[#tagz + 1] =  "~h~~r~[~o~V~r~]"
+						Players[pid].pulse = not Players[pid].pulse
+						--if not Players[pid].isvgod --[[and pid ~= player.player_id() ]] then
+						
+					end
+					if Players[pid].isint ~= true then
+						if player.is_player_spectating(pid) and player.is_player_playing(pid) then
+							tags[#tags + 1] = ".SPEC."
+							--Players[pid].pulse = not Players[pid].pulse
+						end
+					end
+					
+					if Players[pid].isTyping and Settings["PlayerTagginghook"] then
+						tags[#tags + 1] = "T"
+						tagz[#tagz + 1] = "~h~~q~[~h~~b~T~h~~q~]"
+					end
+					if player.get_player_armour(pid) > 50 then
+						tags[#tags + 1] = "U"
+						tagz[#tagz + 1] = "~h~~q~[U]"
+						if Settings["GodCheckNotif"] and not Players[pid].isgod then
+							moist_notify(name .. " Has Excessive Armour ", "Modder Detection")
+							Players[pid].isgod = true
+						end
+					end
+					
+					if not isYou then
+						if not NewDLC() then
+							if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  1)then
+								tags[#tags + 1] = "O"
+								tagz[#tagz + 1] = "~h~~g~[O]"
+									if not Players[pid].isOTR then
+									Debug_Out(string.format("Start Player OTR: " .. name .. "\n"))
+									 Players[pid].isOTR = true
+									end
+								if Settings["OTR_Blips"] and Players[pid].OTRBlipID == nil then
+									Players[pid].OTRBlipID = ui.add_blip_for_entity(pped)
+									ui.set_blip_colour(Players[pid].OTRBlipID, 2)
+								end
+							end
+							
+							if (script.get_global_i(2689156 + (1 + (pid * 453)) + 209) ==  0) then
+									if Players[pid].isOTR then
+									Debug_Out(string.format("Player OTR End: " .. name .. "\n"))
+									 Players[pid].isOTR = false
+									end
+								if Players[pid].OTRBlipID ~= nil then
+									ui.remove_blip(Players[pid].OTRBlipID)
+									Players[pid].OTRBlipID = ui.get_blip_from_entity(pped)
+									ui.remove_blip(Players[pid].OTRBlipID)
+									Players[pid].OTRBlipID = nil
+								end
+							end
+						end
+					end
+					if not player.is_player_modder(pid, -1) then
+						if (player.get_player_health(pid) > 100) and not (player.get_player_max_health(pid) > 0) then
+							tags[#tags + 1] = "U"
+							tagz[#tagz + 1] = "~h~~q~[U]"
+							-- toname = tostring(toname .. "~h~~q~[U]")
+						end
+					end
+					if not player.is_player_modder(pid, -1) then
+						if (player.get_player_health(pid) == 0) and (player.get_player_max_health(pid) == 0) and (tracking.playerped_speed1[pid + 1] >= 10) then
+							tags[#tags + 1] = "U"
+							tagz[#tagz + 1] = "~h~~q~[U]"
+							-- toname = tostring(toname .. "~h~~q~[U]")
+						end
+					end
+					if Players[pid].bounty then
+						tags[#tags + 1] = "B:" .. Players[pid].bountyvalue
+						tagz[#tagz + 1] = "~h~~p~[B:~h~~w~ " .. Players[pid].bountyvalue .. "~h~~p~]"
+						-- toname = tostring(toname .. "~h~~p~[B: " .. Players[pid].bountyvalue .. "]")
+					end
+					if player.is_player_modder(pid, -1) then
+						tags[#tags + 1] = "M"
+						tagz[#tagz + 1] = "~r~~h~[~y~~h~M~r~~h~]"
+					end
+					
+					if not player.is_player_modder(pid, -1) then
+						
+						Modders_DB[pid].ismod = false
+					end
+					
+					if Players[pid].isPaused and Settings["PlayerTagginghook"] then
+						tags[#tags + 1] = "P"
+						tagz[#tagz + 1] = "~y~~h~[~q~~h~P~y~~h~]"
+					end
+					-- if interior.get_interior_from_entity(pped) ~= 0 then
+					-- Players[pid].isint = true
+					-- end
+					
+					if tbl.scid ~= scid then
+						for cf_name,cf in pairs(tbl.features) do
+							if cf.type == "toggle" and cf.feat.on then
+								cf.feat.on = false
+							end
+						end
+						tbl.scid = scid
+						if not isYou then
+							--INFO: Modder shit
+						end
+					end
+				end
+				if player.is_player_host(pid) or pid == script.get_host_of_this_script() then
+					SessionPlayers[pid].Name = name .. " " .. toname
+					--system.wait(0)
+					if #tagz > 0 then
+						SessionPlayers[pid].Name = name .. " " .. toname .. table.concat(tagz)
+					end
+					else
+					SessionPlayers[pid].Name = name
+					--	system.wait(0)
+					if #tagz > 0 then
+						SessionPlayers[pid].Name = name .. " " .. table.concat(tagz)
+					end
+				end
+				if #tags > 0 then
+						name = name .. "[" .. table.concat(tags) .."]"
+					-- for i = 1, #tags do
+						-- name = name .. "[" .. tags[i] .."]"
+					-- end
+				end
+				if f.name ~= name then f.name = name end
+				for cf_name,cf in pairs(tbl.features) do
+					if (cf.type ~= "toggle" or cf.type ~= "value_str" or cf.type ~= "value_i" or cf.type ~= "value_f" or cf.feat.on) and cf.callback then
+						local status, err = pcall(cf.callback)
+						if not status then
+							moist_notify("Error running feature " .. cf.callback .. "\nOn pid: " .. pid, "MoistScript PlayerLoop Error")
+							--   Print(status .. err)
+						end
+					end
+				end
+				else
+				if not f.hidden then
+					f.hidden = true
+					for cf_name,cf in pairs(tbl.features) do
+						if cf.type == "toggle"  or cf.type == "value_str" or cf.type == "value_i" or cf.type == "value_f" and cf.feat.on then
+							cf.feat.on = false
+						end
+					end
+				end
+				Playerz[pid+1] = string.format("Player " .. pid)
+			end
+		end
+		system.yield(Settings["playerlist_loop"])
+		--return HANDLER_CONTINUE
+	end
+	for i = 0, 31 do
+		playerFeatures[i].feat.hidden = false
+	end
+	return HANDLER_POP
+end)
+loop_Feat2.hidden = false
+loop_Feat2.on = false
+	
 end
 ScriptLocals["playerlist"]()
 
 --INFO: Startup
+intgod = {}
 function OnlineResetCheck()
 
 	for pid = 0, 31 do
 		if player.is_player_valid(pid) ~= false then
 			playerRDB(pid)
 			Players[pid].JoinTime = os.time()
+			Players[pid].isFriend = player.is_player_friend(pid)
+			
 		end
-			menu.create_thread(inter_godcheck_thread, pid)
+		intgod[pid + 1] =	menu.create_thread(inter_godcheck_thread, pid)
 
 		-- playergroups[pid + 1]  = player.get_player_group(pid)
 		-- playerpeds[pid + 1] = player.get_player_ped(pid)
 		interiorcheckpid(pid, Settings["PlayerCheckVersion"])
-		interiorcheck_old_pid(pid)
-		-- God_Check_pid(pid)
-		-- God_Check1_pid(pid)
+		--interiorcheck_old_pid(pid)
+		 God_Check_pid(pid)
+		 God_Check1_pid(pid)
 		OrbitalProxy(pid)
 	
 		end
@@ -18564,7 +19852,7 @@ event.add_event_listener("exit", function()
         ui.remove_blip(ObitalBlip)
     end
 
-    if #escort == 0 or nil then return end
+    if #escort == 0 or #escort == nil then return end
     local pos = v3()
     pos.x = presets[1][2]
     pos.y = presets[1][3]
@@ -18577,7 +19865,7 @@ event.add_event_listener("exit", function()
         entity.set_entity_as_no_longer_needed(escort[i])
         entity.delete_entity(escort[i])
     end
-    if #escortveh == 0 or nil then return end
+    if #escortveh == 0 or #escortveh == nil then return end
     for y = 1, #escortveh do
         network.request_control_of_entity(escortveh[y])
         entity.detach_entity(escortveh[y])
@@ -18585,7 +19873,7 @@ event.add_event_listener("exit", function()
         entity.set_entity_as_no_longer_needed(escortveh[y])
         entity.delete_entity(escortveh[y])
     end
-    if #boobs == 0 or nil then return end
+    if #boobs == 0 or #boobs == nil then return end
     for i = 1, #boobs do
         network.request_control_of_entity(boobs[i])
         ped.clear_ped_tasks_immediately(boobs[i])
@@ -18593,7 +19881,7 @@ event.add_event_listener("exit", function()
         entity.set_entity_as_no_longer_needed(boobs[i])
         entity.delete_entity(boobs[i])
     end
-    if #boobveh == 0 or nil then return end
+    if #boobveh == 0 or #boobveh == nil then return end
     for y = 1, #boobveh do
         network.request_control_of_entity(boobveh[y])
         entity.detach_entity(boobveh[y])
@@ -18602,7 +19890,7 @@ event.add_event_listener("exit", function()
         entity.delete_entity(boobveh[y])
     end
 
-    if #lester == 0 or nil then return end
+    if #lester == 0 or #lester == nil then return end
     for i = 1, #lester do
         network.request_control_of_entity(lester[i])
         ped.clear_ped_tasks_immediately(lester[i])
@@ -18610,13 +19898,29 @@ event.add_event_listener("exit", function()
         entity.set_entity_as_no_longer_needed(lester[i])
         entity.delete_entity(lester[i])
     end
-    if #lesveh == 0 or nil then return end
+    if #lesveh == 0 or #lesveh == nil then return end
     for y = 1, #lesveh do
         network.request_control_of_entity(lesveh[y])
         entity.detach_entity(lesveh[y])
         entity.set_entity_coords_no_offset(lesveh[y], pos)
         entity.set_entity_as_no_longer_needed(lesveh[y])
         entity.delete_entity(lesveh[y])
+    end
+    if #SpawnedNPC == 0 or #SpawnedNPC == nil then return end
+    for i = 1, #SpawnedNPC do
+        network.request_control_of_entity(SpawnedNPC[i])
+        ped.clear_ped_tasks_immediately(SpawnedNPC[i])
+        entity.set_entity_coords_no_offset(SpawnedNPC[i], pos)
+        entity.set_entity_as_no_longer_needed(SpawnedNPC[i])
+        entity.delete_entity(SpawnedNPC[i])
+    end
+    if #SpawnedNPCV == 0 or #SpawnedNPCV == nil then return end
+    for y = 1, #SpawnedNPCV do
+        network.request_control_of_entity(SpawnedNPCV[y])
+        entity.detach_entity(SpawnedNPCV[y])
+        entity.set_entity_coords_no_offset(SpawnedNPCV[y], pos)
+        entity.set_entity_as_no_longer_needed(SpawnedNPCV[y])
+        entity.delete_entity(SpawnedNPCV[y])
     end
 
     for i = 1, #alkonost do
@@ -18657,6 +19961,9 @@ event.add_event_listener("exit", function()
     end
 
     event.remove_event_listener("chat", ChatEventID)
+    event.remove_event_listener("modder", Modder_Event)
+     event.remove_event_listener("modder", Modder_EventLog)
+     event.remove_event_listener("modder", Modder_EventRem)
     event.remove_event_listener("player_join",  Join_Event_Check)
     event.remove_event_listener("player_join", joining_players_logger)
     event.remove_event_listener("player_join", Passive_trackerIN)
@@ -18680,11 +19987,16 @@ end
 function RunMain()
 	
 	local status, err = pcall(Load_Moist)
+	--print(err)
 	--menu.notify(tostring(err), tostring(status), 5, 0xffff00ff)
 	local status, err = pcall(Moist_Script_Main)
+	--print(err)
 	local status, err = pcall(scriptloader)
-	if utils.file_exists(Paths.Root  .. "\\scripts\\Moists Modder_Module.lua") then
-	local status, err = pcall(Load_Module, "Moists Modder_Module.lua")
+	--print(err)
+	local file = Paths.Cfg  .. "\\Moists Modder_Module.lua"
+	if utils.file_exists(file) then
+	local status, err = pcall(Load_Module, "MoistsLUA_cfg\\Moists Modder_Module.lua")
+	--print(err)
 	end
 	
 	menu.notify("All Modules & MoistScript\nLoaded and any Scripts for Autoload")
@@ -18704,15 +20016,19 @@ startup = menu.add_feature("int MoistScript", "value_str", 0, function(feat)
 	--INFO: **********Remove Personal Script Execution from Public**************
 	
 	RunMain()
+
 	startup.hidden = true
 	startup.on = false
 	end
 	elseif feat.value == 1 then
 	RunMain()
 	--INFO: **********Remove Personal Script Execution from Public**************
+
 	startup.hidden = true
 	startup.on = false
 		end
+		KickFlagSetup()
+		RemoveFlagSetup()
 	elseif InstallState == "Fail" then
 	startup.hidden = false
 	
@@ -18724,6 +20040,7 @@ startup = menu.add_feature("int MoistScript", "value_str", 0, function(feat)
 	
 	--	startup.on = false
 	 end
+	-- KickFlagSetup()
 	 
 	return HANDLER_CONTINUE
 

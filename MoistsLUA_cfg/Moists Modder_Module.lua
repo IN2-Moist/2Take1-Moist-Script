@@ -176,11 +176,12 @@ PlayerSpawnNetHook = function(source, target, NetEventID)
             Players[source].PedSpawned = true
             return false
         end
-        if NetEventID == 43 then
+        if NetEventID == 43 or NetEventID == 12 or NetEventID == 13 or NetEventID == 14 then
             local e, f
             e = player.get_player_name(source)
             f = player.get_player_name(target)
-        moist_notify("NetEvent[" .. tostring(NetEventID) .. "] " .. tostring(NetEvents[NetEventID]) .. "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\n", "Network Clear Task Blocked\nMoists Modder Module")
+        moist_notify("Blocked: NetEvent[" .. tostring(NetEventID) .. "] " .. tostring(NetEvents[NetEventID]) .. "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\n", "Moists Modder Module")
+        player.set_player_as_modder(source, 67108864)
        -- ModderAudio_notify()
         return true
     end
@@ -188,6 +189,8 @@ PlayerSpawnNetHook = function(source, target, NetEventID)
             return false
 end
     spawn_net()
+    
+    moist_notify("Modder Module Loaded")
 end
 
 local players = function()
