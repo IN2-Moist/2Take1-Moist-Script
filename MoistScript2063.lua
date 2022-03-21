@@ -5820,13 +5820,9 @@ end
                 if feat.value == 0 then
                     AddScid(scid, name)
                     LoadBlacklist()
-                    AddTokenID(token, name)
-                    Load_Blacklist()
                 elseif feat.value == 1 then
                     RemoveScid(scid)
                     LoadBlacklist()
-                    RemoveTokenID(token)
-                    Load_Blacklist()
                 end
 
                 return HANDLER_POP
@@ -5924,13 +5920,11 @@ end
                 if feat.value == 0 then
                     AddScid(scid, name)
                     LoadBlacklist()
-                    AddTokenID(token, name)
-                    Load_Blacklist()
+
                 elseif feat.value == 1 then
                     RemoveScid(scid)
                     LoadBlacklist()
-                    RemoveTokenID(token)
-                    Load_Blacklist()
+
                 end
 
                 return HANDLER_POP
