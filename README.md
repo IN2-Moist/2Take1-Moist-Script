@@ -10,10 +10,10 @@ Please use the invite link below to Join the discord server for the most recent 
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
 <hr>
 
-# Moist Script (Build 2.0.6.0)
+# Moist Script (Build 2.0.6.4)
 
 
-## GTAV Script for 2Take1s Lua Engine (by -IN2-Moist-)
+## GTAV Script for 2Take1's Lua Engine (by -IN2-Moist-)
 
 ## Installation
 
@@ -34,6 +34,7 @@ Inside the Scripts Folder you need another Folder called : **MoistsLUA_cfg**
 - Moist_KickParam.ini
 - Moist_Kicks.ini
 - online_interiors.lua
+- Moists_Modder_Module.lua
 
 **Extras :**
 These must be inside the Folder : **scripts**
@@ -49,9 +50,9 @@ These must be inside the Folder : **scripts**
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_KickParam.ini
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moist_Kicks.ini
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\online_interiors.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistsLUA_cfg\Moists_Modder_Module.lua
 \AppData\Roaming\PopstarDevs\2Take1Menu\scripts\autoexec.lua
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistScript.lua
-\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\Moists Modder_Module.lua
+\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\MoistScript2064.lua
 ```
 # Function Parents Sub Parents & Functions within
 
@@ -72,186 +73,7 @@ https://discord.gg/9QUr3sVDfE
 `
 <hr>
 
-# ** Script Updates Changes Additions and Fixes **
-TODO: Readme Rewrite
-TO BE UPDATED
-
-
-
-# ** Previous Script Changes Additions and Fixes **
-
-* Added 15k CEO Loop
-
-   `works for Associates in other Organisations or Associates of yours`
-
-
-* Changed Rapid Switch RPG
-    
-    `<Standard RPG | Special RPG> `
- 
-  (special has very far range lifetime so travels further without hitting something before exploding)
-
-
-* Updated Online Ped Spawn Options
-
-  Basic Integrity check added to check that all options prior to them selves have been selected if not notify will popup showing which have been selected or not to prevent breaking the script
-
-* Added function: Saved Settings Check which will create a default settings file before executing the main function of the script
-  (this will fix the issues some people have when first executing the script)
-
-* Added: New Experimental God Modder Check
-  (Runs independent to other checks and works best if you have an expanded Radar there is option to change the function for normal or expanded, Normal Radar requires you to be outside of any interior)
-  Notify's for this contain the god mode return result for both player and vehicle if either were detected after 2 delayed checks
-
-* Added: Crash ScriptEvent Kick (Online Player Feature)
-  (uses my script event argument builder to create kick/crash using known events)
-
-* Added 2 troll/griefing options: Online Features -> Online Session
-  1. Send Mk1 Lester Wandering by all
-  2. MK1 Lester Annihilation
-
-* Fixed: Incorrect Bounty Tagging
-
-* Fixed: Auto-Remove RAC-Modder Marking
-  (Now Removes the correct tag)
-
-* Updated: OSD Speed for self Now indicates:
-  Current Speed/Estimated Vehicle Max Speed
-
-* Added: Temporarily 2x Interior & God Check Versions
-  * version 1 the older God Check version & interior check which did not spam detection's
-
-  * version 2 the newer ones might still be a little spammy but the blip checks in Theory should reduce the false notify's
-
-
-* Added- Netevent logging for player spawn
-        this is now used to determine if player is in an interior loaded into the session and not on death screen (note this may well cause the index feat error with everything if you reset state too much)
-
-
-* Added- section **  V1.40 Functions **
-        Found inside Script options (some features from my old 1.40 script no longer in v2)
-        
-* Added- OSD Spectate in V1.40 Functions
-        Will show on screen someone not in a detectable interior spectating any other player and will show you who they are spectating no saveable option for this its default on
-        
-* Updated- Rapid Weapon Switch and RPG Switch
-        More checks added to these to prevent crash
-        
-* Added- New Blip Pulse Option
-        Runs on playerlist loop hidden as u have no control over it other than having the old option on or not
-        
-* Added- New Godmode Check
-        Since detection of entity speed is something else limited in range i have added a check that is turned on when god mode and on a delay will check the players location and compare to its original location
-        if its over the value it will trigger a notify. (player accepting invite to heist (teleport to apt) this could potentially trigger false positive needs further testing)
-      
-* Updated- Vehicle RPM Reduced the size
-  
-* Added- Attach Vehicle to Mine
-        Attaches to your selection: Attach to Vehicle or Attach to Ped
-        Attaches and sets their alpha to 80 detaches and resets alpha when off
-
-* Updated- SE Spam with more delays to prevent crash
-
-* Updated Combat Features- Added Sub Sections to them:
-                        Player Ped Combat Features
-                        Vehicle Combat Features
-
-* Added- Vehicle Weapon Fire which can be positioned with the controls in here its designed mainly for aircraft
-
-* Updated- 2 Orbital Blocks:
-  * New Orbital Blast Door
-  * Moving Wall Orbital Block
-
-    `These can now be done remotely with ease no need to spectate
-you will be teleported to the location block will be built then you get teleported back to original location this is so fast your character twitches for a second
-objects are now world objects + mission objects and set to god
-`
-
-* Added- option to disable Script created Blips so all functions that use this have been updated with a check for that setting
-
-* updated- some SE functions
-
-* Update- toggle off Vehicle God -> Now is: Force Control & God Mode OFF and does exactly what it says so could be used to force control over their vehicle for other stuff too
-
-<hr>
-Script is executed in 2 parts which both are executed in a protected call so should stop shit breaking in other scripts i hope and started to do this to other functions to hopefully stop the break generating spammy errors if they happen
-<hr>
-
-
-* Disabled- Player Checks and Playerinfo box
-        cant be sure but im certain crash related to getting weapon info while in a vehicle (major menu bug) still causing this
-        its random since it could potentially be passed my checks for vehicle or having an attachment just as they get in a vehicle so disabled until i can investigate further
-
-* Added- Blip cleanup when resetting state
-* Added- Force Orbital block
-
-   (works off the blast door block and loops control and position 
-update on it)
-
-
-* (^) Updated Attach Options:
-
-  all but the room attaches are now select-able attach to players ped or Players vehicle (if no attach entity nothing will happen to avoid any breaks when no vehicle exists or detectable)
-
-* (+) Added Attach Options:
-
-* (+) Added Attach FIB Building
-
-  (note that this will trigger 2t1's modder detection when attaching to peds! False invalid world object and invalid attach attempts or crash attempts on whoever is close when you are near it or spectating)
-
-* (+) Added Attach Dooms Day Sub
-Similar situation with the FIB Attach and false modder detection's
-
-* (+) Added 2 New Script Event Crashes to Online Player Features
-
-* (-) Hidden empty vehicle tools in Online Player Features
-
-* Removed the delays in the Player list loop
-Player bar updates faster now
-
-* Added Save-able option for the Orbital Proximity Blip.
-
-* Updated the Spawn Vehicle Triplets
-
-  `Now sorted into Alpha Sub Functions
-Vehicle Hash LUA updated for this will break the script if you dont update this file too.`
-<hr><hr>
-
-
-#### Online Features
-
-
-##### Online Players
-`List Of Players by name in the session with the below functions inside`
-Player Names have tags:
-
-(**`*p`** = Also used on the Player Bar Feature)
-
--IN2Moist-[Y]                    =  Y = You
-
--IN2Moist-[F]                    =  F = Social Club Friend
-
--IN2Moist-[G]                    =  G = Player God Mode **`*p`**
-
--IN2Moist-[V]                    =  V = Vehicle God Mode **`*p`**
-
--IN2Moist-[U]                    =  U = Undead OTR & Excessive Armour (Undead Player Health 0/0 or <=328/0 -- Excessive Armour 100/50 essentially god mode) **`*p`**
-
--IN2Moist-[**B:** `somevalue`]   =  B = Bounty: Value of Bounty **`*p`**
-
--IN2Moist-[.SPEC.]               = .SPEC. = Spectating
-
--IN2Moist-[M]                    = M = Player is Marked as a Modder! See online Player Info Window for more Details!
-
--IN2Moist-[O]                    = O = Player is OTR Could be either Lester OTR CEO Ghost Organisation or Modded **`*p`**
-
--IN2Moist-[H]                    = H = Player is Currently The Session Host **`*p`**
-
--IN2Moist-[S]                    = S = Script Host (Freemode.c) **`*p`**
-
--IN2Moist-[T]                    = T = Player is Typing (Game Chat box to type chat msg into is currently open) **`*p`**
-
--IN2Moist-[P]                    = P = Player State is Paused or Player has opened the pause menu  **`*p`**
+#### Local Script Features
 
 
 ##### Online Features
@@ -262,7 +84,7 @@ Player Names have tags:
 ##### Moists Script Loader
 ##### MoistScript Options
 
-### Online Player Script Features
+### Online Script Player Features
 ** Inside Moist Script Parent **
 
 #### Spawn Options
@@ -325,16 +147,52 @@ Custom Value `Enter any Value Between 0 & 10,000`
 - Script Host Crash Kick
   
 
-## Online Features:
+## Local Online Features:
 
 ### Online Players
 
-- List of online players see Player Features below for info of functions inside each player
+- List Of Players by name in the session with the below functions inside each player 
+
+Player Names List has tags:
+
+(**`*p`** = Also used on the Player Bar Feature)
+
+-IN2Moist-[Y]                    =  Y = You
+
+-IN2Moist-[F]                    =  F = Social Club Friend
+
+-IN2Moist-[G]                    =  G = Player God Mode **`*p`**
+
+-IN2Moist-[V]                    =  V = Vehicle God Mode **`*p`**
+
+-IN2Moist-[RC]                   = RC = Player is using a Remote Control Vehicle (RC Bandito or RC Tank)
+
+-IN2Moist-[U]                    =  U = Undead OTR & Excessive Armour (Undead Player Health 0/0 or <=328/0 -- Excessive Armour 100/50 essentially god mode) **`*p`**
+
+-IN2Moist-[**B:** `somevalue`]   =  B = Bounty: Value of Bounty **`*p`**
+
+-IN2Moist-[.SPEC.]               = .SPEC. = Spectating
+
+-IN2Moist-[M]                    = M = Player is Marked as a Modder! See online Player Info Window for more Details!
+
+-IN2Moist-[O]                    = O = Player is OTR Could be either Lester OTR CEO Ghost Organisation or Modded **`*p`**
+
+-IN2Moist-[H]                    = H = Player is Currently The Session Host **`*p`**
+
+-IN2Moist-[S]                    = S = Script Host (Freemode.c) **`*p`**
+
+-IN2Moist-[T]                    = T = Player is Typing (Game Chat box to type chat msg into is currently open) **`*p`**
+
+-IN2Moist-[VC]                   = VC = Player is using Voice Chat
+
+-IN2Moist-[P]                    = P = Player State is Paused or Player has opened the pause menu  **`*p`**
+
 
 ### Recent players
 
 - List of Recently Encountered Players
 - Copy SCID
+- Previously Kicked Player true|false (state change)
 - Add to Blacklist
 - Temp BlacklistPlayer:
    ** By IP, SCID or Players Name **
