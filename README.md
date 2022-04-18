@@ -1,21 +1,27 @@
-```
-Please be Aware that Frequent updates and test builds for the script will only be posted on Keks Menu Discord Server, Updates may eventually end up on Github but it will be done as and when rather than now!
-
-Please use the invite link below to Join the discord server for the most recent updates:
-```
-
-[Keks Menu Server](https://discord.gg/9QUr3sVDfE)
-
 
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
 <hr>
 
 # Moist Script (Build 2.0.6.4)
 
+<hr>
+
+```
+Please be Aware that Frequent updates and test builds for the script will only be posted on Keks Menu Discord Server,
+Updates may eventually end up on Github but it will be done as and when rather than now!
+```
+
+**Please use the invite link below to Join the discord server for the most recent updates:**
+
+[Keks Menu Server](https://discord.gg/9QUr3sVDfE)
 
 ## GTAV Script for 2Take1's Lua Engine (by -IN2-Moist-)
 
 ## Installation
+
+[**Download the latest version:**](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
+
+[https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
 
 **Required Files & Folders**:
 
