@@ -2963,14 +2963,7 @@ Active_menu = nil
 local health, infoA, infoAB, infoB
 --local Menu Features
 globalFeatures.parent = menu.add_feature("MoistScript 2.0.6.5", "parent", 0).id
-globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent, function(feat)
-	if network.network_is_host() then
-	HostOptionsParent.hidden = false
-	elseif not network.network_is_host() then
-	HostOptionsParent.hidden = true
-	end
-	return HANDLER_POP
-end).id
+globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
 --INFO: Online Feature Parents
 playersFeature = menu.add_feature("Online Players", "parent", globalFeatures.Online_Session, function(feat)
