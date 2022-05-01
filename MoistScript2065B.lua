@@ -10,7 +10,27 @@ if MoistScript then
 	return
 end
 
-MoistScript = "2.0.6.5"
+MoistScript = "2.0.6.5.B"
+
+function Debug_Out(text, adddate, file_name)
+	local file, Text_Out
+	if file_name == nil then
+		file = io.open(Paths.debugfile, "a")
+	else
+	file = io.open(Paths.Logs .."\\" .. file_name, "a")
+	end
+if adddate == true or adddate == nil then
+	local curdate_time = tostring(Cur_Date_Time())
+	Text_Out = string.format(curdate_time .. text .. "\n")
+	elseif adddate == false then
+	Text_Out = text .. "\n"
+end
+	
+	io.output(file)
+	io.write(Text_Out)
+	io.close()
+end
+
 
 
 local function MoistScript_Main()
@@ -44,7 +64,7 @@ function SettingsReset()
 	local Root = (utils.get_appdata_path("PopstarDevs", "2Take1Menu") ..  "\\scripts\\MoistsLUA_cfg" .. "\\MoistsScript_settings.ini")
 	local file = io.open(Root, "w+")
 
-		file:write(tostring("MoistScript=2.0.6.5") .. "\n")
+		file:write(tostring("MoistScript=2.0.6.5.B") .. "\n")
 		todaysdate = os.date("%d-%m-%y")
 		file:write(tostring("DateSettingsSaved=" .. todaysdate) .. "\n")
 		file:write(tostring("PlayerRCHook=false") .. "\n")
@@ -79,7 +99,7 @@ function SettingsReset()
 		file:write(tostring("force_wBPH=false") .. "\n")
 		file:write(tostring("New_Notifys=false") .. "\n")
 		file:write(tostring("no_traffic=false") .. "\n")
-		file:write(tostring("MoistScript=2.0.6.5") .. "\n")
+		file:write(tostring("MoistScript=2.0.6.5.B") .. "\n")
 		file:write(tostring("NotifyColorGDefault=255") .. "\n")
 		file:write(tostring("Chat_Command=false") .. "\n")
 		file:write(tostring("loop_feat_delay=0") .. "\n")
@@ -335,7 +355,7 @@ function moist_notify(msg1, msg2, colour, timeout)
             colour = colour or Settings["NotifyColorDefault"]
             moist_notify2(msg1, msg2, colour, timeout)
         elseif not Settings["New_Notifys"] then
-		msg2 = msg2 or "MoistScript 2.0.6.5"
+		msg2 = msg2 or "MoistScript 2.0.6.5.B"
 		msg1 = msg1 or "MoistScript Putting Fun and Moisture over GTA ONLINE\nLike a Pussy Dripping ona Hard Cock!\nPenetrating Like a Missile from Lester on Opressor!!"
 		text = "~h~~b~" .. tostring(msg2) .. "~n~~h~~w~" .. tostring(msg1)
             ui.notify_above_map(text, "", 120)
@@ -348,14 +368,14 @@ function moist_notify2(msg1, msg2, colour, timeout)
 	timeout = timeout or 8
 
 msg1 = msg1 or "MoistScript Putting Fun and Moisture over GTA ONLINE\nLike a Pussy Dripping ona Hard Cock!\nPenetrating Like a Missile from Lester on Opressor!!"
-msg2 =  msg2 or "MoistScript 2.0.6.5"
+msg2 =  msg2 or "MoistScript 2.0.6.5.B"
 local color = Settings["NotifyColorDefault"] or colour
 menu.notify(msg1, msg2, timeout, color)
 end
 
 function Moist_Script_Main()
 
-Settings["MoistScript"] = "2.0.6.5"
+Settings["MoistScript"] = "2.0.6.5.B"
 Settings["DateSettingsSaved"] = ""
 Settings["OSD.modvehspeed_osd"] = false
 Settings["OSD.Player_bar"] = false
@@ -486,9 +506,9 @@ end
 
 function VersionCheck()
 	Load_Settings()
-	if Settings["MoistScript"] ~= "2.0.6.5" then
+	if Settings["MoistScript"] ~= "2.0.6.5.B" then
 	local saved_version = Settings["MoistScript"]
-	Settings["MoistScript"] = "2.0.6.5"
+	Settings["MoistScript"] = "2.0.6.5.B"
 	moist_notify2("Saved Version = " ..  saved_version .."\nThis Version = ".. Settings["MoistScript"], "Script Version Out of Date", 0xffffff)
 	moist_notify2("Loading Current Saved Settings\nAdding New Settings\nSaving all", "Script Version Updated", 0xffffff)
 	SaveSettings()
@@ -498,25 +518,6 @@ VersionCheck()
 Load_Settings()
 
 --TODO: Version Check only to enable when major settings are changed
-
-function Debug_Out(text, adddate, file_name)
-	local file, Text_Out
-	if file_name == nil then
-		file = io.open(Paths.debugfile, "a")
-	else
-	file = io.open(Paths.Logs .."\\" .. file_name, "a")
-	end
-if adddate == true or adddate == nil then
-	local curdate_time = tostring(Cur_Date_Time())
-	Text_Out = string.format(curdate_time .. text .. "\n")
-	elseif adddate == false then
-	Text_Out = text .. "\n"
-end
-	
-	io.output(file)
-	io.write(Text_Out)
-	io.close()
-end
 
 function Print(text)
 	--print(text)
@@ -2962,7 +2963,7 @@ NamedFeatures = {}
 Active_menu = nil
 local health, infoA, infoAB, infoB
 --local Menu Features
-globalFeatures.parent = menu.add_feature("MoistScript 2.0.6.5", "parent", 0).id
+globalFeatures.parent = menu.add_feature("MoistScript 2.0.6.5.B", "parent", 0).id
 globalFeatures.Online_Session = menu.add_feature("Online Features", "parent", globalFeatures.parent).id
 
 --INFO: Online Feature Parents
@@ -4586,7 +4587,7 @@ function Get_ModderFlag_Text(pid)
 	return flagtext
 end
 --INFO: Player Feature Parents
-PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.6.5", "parent", 0).id
+PlayerFeatParent = menu.add_player_feature("Moists Script 2.0.6.5.B", "parent", 0).id
 spawn_parent = menu.add_player_feature("Spawn Options", "parent", PlayerFeatParent).id
 Player_Tools = menu.add_player_feature("Player Tools", "parent", PlayerFeatParent).id
 
@@ -7917,7 +7918,7 @@ ragdoll_key = menu.add_feature("Ragdoll HotKey LCTRL+X ", "toggle", Ragdoll_Cont
 		key:push_str("x")
 		if key:is_down() then
 			rag_self.on = not rag_self.on
-			moist_notify("Ragdoll Set for your Ped = " .. tostring(rag_self.on), "Moists Ragdoll Control\nMoist Script 2.0.6.5")
+			moist_notify("Ragdoll Set for your Ped = " .. tostring(rag_self.on), "Moists Ragdoll Control\nMoist Script 2.0.6.5.B")
 			system.wait(1200)
 		end
 		return HANDLER_CONTINUE
