@@ -323,7 +323,7 @@ PrevKick_Join = event.add_event_listener("player_join", function(e)
 		kickedgone = false
 		local name = tostring(player.get_player_name(pid))
 		menu.notify("(" .. tostring(name) .." : " .. tostring(Kicked_Players[scid]) .. ") " .. tostring(scid), "Kicked Player Rejoining:", 15, 0xff0000ff)
-		DebugOut("Kicked Player Rejoining: " .. "(" .. tostring(name) .." : " .. tostring(Kicked_Players[scid]) .. ") " .. tostring(scid) .."\n")
+		Debug_Out("Kicked Player Rejoining: " .. "(" .. tostring(name) .." : " .. tostring(Kicked_Players[scid]) .. ") " .. tostring(scid) .."\n")
 		if Kick_Kicked == true then
 		
 		network.force_remove_player(pid)
