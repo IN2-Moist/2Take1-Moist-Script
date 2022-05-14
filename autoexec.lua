@@ -54,7 +54,7 @@ print(tostring(status) .. " Function Error " .. tostring(err))
 
 end
 
-local files = {"MoistScript2066.lua"}
+local files = {"MoistScript2067.lua"}
 for i = 1, #files do
 local status, err = pcall(autoload_lua, files[i])
 if not status then
