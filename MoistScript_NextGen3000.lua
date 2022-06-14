@@ -11,8 +11,23 @@ MoistScript_NextGen = "3.0.0.0"
 --TODO: Script Features Modules and Config Storage Tables
 local FolderPaths, ScriptConfig, Features, OnlineFeats, OnlineFeatures, LocalFeats, LocalFeatures, LoadedModules = {}, {}, {}, {}, {}, {}, {}, {}
 --TODO: Storage Tables
-local NpcList, NpcVehList, SpawnedShit =  {}, {}, {}
+local NpcList, NpcVehList, SpawnedShit =  {}, {"chernobog"}, {}
 local FriendsList, Session_Players, LobbyPlayers = {}, {{name = {}, scid = {},}}, {}
+local StringStat, StringStatLabel = {{"MP0_GB_GANG_NAME","MP0_GB_GANG_NAME2"},{"MP0_GB_OFFICE_NAME","MP0_GB_OFFICE_NAME2"},{"MP0_MC_GANG_NAME","MP0_MC_GANG_NAME2"},{"MP0_YACHT_NAME","MP0_YACHT_NAME2"}}, {}
+
+
+for i = 1, #StringStat do
+	local text = StringStat[i][1]
+	local separator = text:find("_", 1, true)
+	if separator then
+		par1 = text:sub(1, separator - 1)
+		par2 = text:sub(separator + 1)
+		
+		StringStatLabel[#StringStatLabel+1] = par2
+	end
+	
+end
+
 
 --INFO: Folder & Default Files Setup
 FolderPaths.Root = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
@@ -31,7 +46,8 @@ ScriptConfig["Moist_NG"] = "3.0.0.0"
 ScriptConfig["LoadPedList"] = false
 ScriptConfig["LoadVehList"] = false
 ScriptConfig["HotkeySave_ON"] = false
-ScriptConfig["LoadPlayerBar"]  = false
+ScriptConfig["LoadPlayerBar"] = false
+ScriptConfig["LoadESP"] = false
 ScriptConfig["PlayerBar_ON"] = false
 ScriptConfig["NotifyColorDefault"] = 0xff0000ff
 
@@ -56,9 +72,11 @@ _G.LobbyPlayers = LobbyPlayers
 --TODO: Translation stuff
 
 if not (package.path):find(FolderPaths.Root .. "\\scripts\\MoistFiles\\?.lua", 1, true) then
-		package.path =  FolderPaths.Root .. "\\scripts\\MoistFiles\\?.lua;" .. package.path
+	package.path =  FolderPaths.Root .. "\\scripts\\MoistFiles\\?.lua;" .. package.path
 end
 local Moist_Translate = require("Moist_Translate")
+local natives = require("Natives")
+
 
 --TODO: Script Feature Parents
 -- Local
@@ -66,8 +84,14 @@ Features.LocalParent = menu.add_feature("Moist Script NG", "parent", 0)
 Features["ParentLabel"] = menu.add_feature("Next Generation Moist Script 3.0.0.0", "action", Features.LocalParent.id)
 
 LocalFeatures.Self_Parent = menu.add_feature("Self Features", "parent", Features.LocalParent.id)
+LocalFeatures.Stats = menu.add_feature("Stat Features", "parent", LocalFeatures.Self_Parent.id)
+
 LocalFeatures.Self_WeaponStuff = menu.add_feature("Weapon Related Functions", "parent", LocalFeatures.Self_Parent.id)
 LocalFeatures.Self_Ped = menu.add_feature("Player Ped Features", "parent", LocalFeatures.Self_Parent.id)
+LocalFeatures.Self_Veh = menu.add_feature("Player Vehicle Features", "parent", LocalFeatures.Self_Parent.id, function(feat)
+	LocalFeatures.VehEngAudioMod:set_str_data(NpcVehList)
+end)
+
 Features.LocalSettings = menu.add_feature("MoistScript Settings", "parent", Features.LocalParent.id)
 LocalFeatures["save_settings"] = menu.add_feature("Current Settings: ", "action_value_str", Features.LocalSettings.id, function(feat)
 	if feat.value == 0 then
@@ -82,10 +106,10 @@ LocalFeatures["save_settings"]:set_str_data({"Save", "Reset"})
 LocalFeatures["HotKeyParent"] = menu.add_feature("MoistScript HOTKEYS", "parent", Features.LocalSettings.id)
 Features.LocalModules = menu.add_feature("Load MoistScript Modules", "parent", Features.LocalSettings.id)
 LocalFeatures["Translate"] = menu.add_feature("Update Script with Translation", "action", Features.LocalSettings.id, function(feat)
-
+	
 	Moist_Translate.localmenu(feat)
 	Moist_Translate.onlinemenu(feat)
-
+	
 end)
 -- Online
 Features.OnlineParent = menu.add_player_feature("Moist Script NG", "parent", 0)
@@ -107,7 +131,7 @@ Features.FramePlayer.feats.name = "Grief Others (Frame Player)"
 
 Features.ScriptEvents = menu.add_player_feature("Script Events", "parent", Features.OnlineParent.id, function(feat, pid)
 	if script.get_global_i(1893551 + (1 + (pid * 599)) + 10) == -1 then
-	Features["CEO"].feats[pid].hidden = true
+		Features["CEO"].feats[pid].hidden = true
 		OnlineFeatures["OTR"].feats[pid].name = "Off The Radar"
 		OnlineFeatures["NOCOPS"].feats[pid].name = "Cops Turn a Blind Eye"
 		elseif script.get_global_i(1893551 + (1 + (pid * 599)) + 10) ~= -1 then
@@ -124,8 +148,11 @@ end
 
 
 --TODO: Tables for Local Script Functions
+
 local M_Func, M_Event = {}, {}
+
 --INFO: Fetch Real Friends and Remember Them!
+
 M_Func["FetchFriends"] = function()
 	for FriD = 0, network.get_friend_count()-1 do
 		local FrName = network.get_friend_index_name(FriD)
@@ -134,6 +161,7 @@ M_Func["FetchFriends"] = function()
 	end
 end
 M_Func["FetchFriends"]()
+
 local FeatTypes <const> = {}
 FeatTypes[1 << 1 | 1 << 5 | 1 << 9] = "action_value_str"
 FeatTypes[1 << 1 | 1 << 5 | 1 << 10] = "autoaction_value_str"
@@ -141,7 +169,9 @@ FeatTypes[1 << 0 | 1 << 1 | 1 << 5] = "value_str"
 FeatTypes[1 << 1 | 1 << 5 | 1 << 9 | 1 << 15] = "action_value_str"
 FeatTypes[1 << 1 | 1 << 5 | 1 << 10 | 1 << 15] = "autoaction_value_str"
 FeatTypes[1 << 0 | 1 << 1 | 1 << 5 | 1 << 15] = "value_str"
+
 --INFO: Setup Array of Players
+
 M_Func["SessionSetup"] = function()
 	LobbyPlayers = {}
 	for pid = 0, 31 do
@@ -177,6 +207,7 @@ M_Func["SessionSetup"] = function()
 		end
 	end
 end
+
 M_Func["Get_PID"] = function(name)
 	for pid = 0, 31 do
 		if player.is_player_valid(pid) then
@@ -188,25 +219,48 @@ M_Func["Get_PID"] = function(name)
 		end
 	end
 end
+
+M_Func["Get_MP_Stat"] = function(stat)
+	local part1, part2
+	local text1 = stat
+	local separator = text1:find("_", 1, true)
+	if separator then
+		part1 = text1:sub(1, separator - 1)
+		part2 = text1:sub(separator + 1)
+	end
+	if part1 ~= "MPPLY" then
+		local text = part2
+		local hash = gameplay.get_hash_key("MPPLY_LAST_MP_CHAR")
+		local MP = stats.stat_get_int(hash, 1)
+		return (string.format("MP" ..MP .."_" ..text))
+		elseif part1 == "MPPLY" then
+		return stat
+	end
+end
+
 M_Func["LoadLUAFile"] = function(scriptname)
 	local file = FolderPaths.LUAS .. "\\scripts\\" .. scriptname
 	if not utils.file_exists(file) then return end
 	local a = assert(loadfile(file))
 	return a()
 end
+
 M_Event["Join_Event"] = event.add_event_listener("player_join", function(e)
 	M_Func["SessionSetup"]()
 	return
 end)
+
 M_Event["Leave_Event"] = event.add_event_listener("player_leave", function(e)
 	M_Func["SessionSetup"]()
 	return
 end)
+
 for pid = 0, 31 do
 	Session_Players[pid] = {}
 	Session_Players[pid].name = nil
 	Session_Players[pid].scid = -1
 end
+
 --TODO: Functions for Script Settings
 function SaveScriptConfig()
 	ScriptConfig["SaveDate"] = os.date("%d-%m-%y")
@@ -216,11 +270,13 @@ function SaveScriptConfig()
 	end
 	file:close()
 end
+
 function ResetScriptConfig()
 	local file = io.open(FolderPaths.SettingsFile, "w")
 	file:write("")
 	file:close()
 end
+
 function LoadScriptConfig()
 	if not utils.file_exists(FolderPaths.SettingsFile) then return end
 	for line in io.lines(FolderPaths.SettingsFile) do
@@ -241,7 +297,9 @@ function LoadScriptConfig()
 	end
 end
 LoadScriptConfig()
+
 --INFO: save settings
+
 LocalFeatures["SaveOptions_Hotkey"] = menu.add_feature("Options Save HotKey", "toggle", LocalFeatures.HotKeyParent.id, function(feat)
 	if not feat.on then
 		ScriptConfig["HotkeySave_ON"] = false
@@ -261,7 +319,9 @@ LocalFeatures["SaveOptions_Hotkey"] = menu.add_feature("Options Save HotKey", "t
 	return HANDLER_CONTINUE
 end)
 LocalFeatures["SaveOptions_Hotkey"].on = ScriptConfig["HotkeySave_ON"]
+
 --TODO: Script Event Listeners
+
 M_Event["NetworkJoin"] = event.add_event_listener("player_join", function(e)
 	local pid = tonumber(e.player)
 	if player.is_player_valid(pid) then
@@ -276,7 +336,9 @@ M_Event["NetworkJoin"] = event.add_event_listener("player_join", function(e)
 	end
 	return
 end)
+
 --TODO: Script Functions
+
 M_Func["TriggerEvent"] = function(event, pid, params)
 	local Param = {}
 	if type(params) ~= 'string' then
@@ -292,6 +354,7 @@ M_Func["TriggerEvent"] = function(event, pid, params)
 	end
 	return false
 end
+
 M_Func["Get_Date_Time"] = function()
 	local datedm, datetm, dateDMY
 	datedm = os.date()
@@ -299,6 +362,7 @@ M_Func["Get_Date_Time"] = function()
 	dateDMY = os.date("%d/%m/%y")
 	return (string.format(dateDMY .. " | " .. datetm))
 end
+
 M_Func["RandomArgBuilder"] = function(ArraySize)
 	local Arg = {}
 	local Args = ArraySize
@@ -314,6 +378,7 @@ M_Func["RandomArgBuilder"] = function(ArraySize)
 	end
 	return Arg
 end
+
 M_Func["File_Writer"] = function(OutputText, inc_date, Outputfile)
 	local file, TextOutput
 	if Outputfile == nil then
@@ -331,8 +396,11 @@ M_Func["File_Writer"] = function(OutputText, inc_date, Outputfile)
 	file:write(TextOutput)
 	file:close()
 end
+
 --INFO: Player Features
+
 --INFO: Framed Griefing
+
 OnlineFeats["FramedSessionOrbital"] = menu.add_player_feature("Framed Session Orbital Strike", "toggle", Features.FramePlayer.id, function(feat, pid)
 	local pos, Strike_pos = v3(), v3()
 	if feat.on then
@@ -424,6 +492,7 @@ end)
 for pid = 0, #OnlineFeats["FramedSessionOrbital"].feats do
 	OnlineFeats["FramedSessionOrbital"].feats[pid].on = false
 end
+
 OnlineFeats["FramedOrbital"] = menu.add_player_feature("Orbital Player: ", "action_value_str", Features.FramePlayer.id, function(feat, pid)
 	local pos, Strike_pos = v3(), v3()
 	local offset = v3(0.0,0.0,-2000.00)
@@ -486,16 +555,28 @@ for pid = 0, #OnlineFeats["FramedOrbital"].feats do
 	OnlineFeats["FramedOrbital"].feats[pid].value = 0
 	OnlineFeats["FramedOrbital"].feats[pid].name = "Orbital Player: "
 end
-OnlineFeatures["CuntCannon"] = menu.add_player_feature("Cunt Cannon!", "action", Features.GriefThisCunt.id, function(feat, pid)
+
+OnlineFeatures["CuntCannon"] = menu.add_player_feature("Kill with: ", "action_value_str", Features.GriefThisCunt.id, function(feat, pid)
 	local pos, Strike_pos = v3(), v3()
+	local ptfx_asset = {"scr_rcbarry1","scr_xm_orbital"}
+	local ptfx_name = {"scr_alien_impact","scr_xm_orbital_blast"}
+	local ptfx_asset_set, ptfx_name_set
+	if feat.value == 0 then
+		ptfx_asset_set = ptfx_asset[1]
+		ptfx_name_set = ptfx_name[1]
+		elseif feat.value == 1 then
+		ptfx_asset_set = ptfx_asset[2]
+		ptfx_name_set = ptfx_name[2]
+	end
+	
 	local offset = v3(0.0,0.0,-2000.00)
 	if player.is_player_valid(pid) then
 		local myped = player.get_player_ped(player.player_id())
 		local pped = player.get_player_ped(pid)
 		local pos = entity.get_entity_coords(pped)
-		graphics.set_next_ptfx_asset("scr_xm_orbital")
-		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-			graphics.request_named_ptfx_asset("scr_xm_orbital")
+		graphics.set_next_ptfx_asset(ptfx_asset_set)
+		while not graphics.has_named_ptfx_asset_loaded(ptfx_asset_set) do
+			graphics.request_named_ptfx_asset(ptfx_asset_set)
 			system.yield(0)
 		end
 		fire.add_explosion(pos, 59, true, false, 1.5, myped)
@@ -507,10 +588,10 @@ OnlineFeatures["CuntCannon"] = menu.add_player_feature("Cunt Cannon!", "action",
 		Strike_pos.y = math.random(-3300, 7500)
 		Strike_pos.z = math.random(30, 90)
 		fire.add_explosion(Strike_pos, 74, true, false, 0, myped)
-		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
-		graphics.set_next_ptfx_asset("scr_xm_orbital")
-		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-			graphics.request_named_ptfx_asset("scr_xm_orbital")
+		graphics.start_networked_ptfx_non_looped_at_coord(ptfx_name_set, pos, v3(0, 0, 0), 100.000, false, false, true)
+		graphics.set_next_ptfx_asset(ptfx_asset_set)
+		while not graphics.has_named_ptfx_asset_loaded(ptfx_asset_set) do
+			graphics.request_named_ptfx_asset(ptfx_asset_set)
 			system.yield(0)
 		end
 		fire.add_explosion(pos, 59, false, true, 1.5, myped)
@@ -519,13 +600,13 @@ OnlineFeatures["CuntCannon"] = menu.add_player_feature("Cunt Cannon!", "action",
 		fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, myped)
 		fire.add_explosion(pos, 50, true, false, 1.0, myped)
 		fire.add_explosion(pos, 50, true, false, 1.0, myped)
-		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
-		graphics.set_next_ptfx_asset("scr_xm_orbital")
-		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
-			graphics.request_named_ptfx_asset("scr_xm_orbital")
+		graphics.start_networked_ptfx_non_looped_at_coord(ptfx_name_set, pos, v3(0, 0, 0), 100.000, false, false, true)
+		graphics.set_next_ptfx_asset(ptfx_asset_set)
+		while not graphics.has_named_ptfx_asset_loaded(ptfx_asset_set) do
+			graphics.request_named_ptfx_asset(ptfx_asset_set)
 			system.yield(0)
 		end
-		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 10.000, false, false, true)
+		graphics.start_networked_ptfx_non_looped_at_coord(ptfx_name_set, pos, v3(0, 0, 0), 10.000, false, false, true)
 		fire.add_explosion(pos, 59, false, true, 1.5, myped)
 		fire.add_explosion(pos + offset, 60, true, false, 1.8, myped)
 		fire.add_explosion(pos + offset, 62, true, false, 2.0, myped)
@@ -534,11 +615,14 @@ OnlineFeatures["CuntCannon"] = menu.add_player_feature("Cunt Cannon!", "action",
 		fire.add_explosion(pos, 50, true, false, 1.0, myped)
 		fire.start_entity_fire(pped)
 	end
+	
 	return HANDLER_POP
 end)
 for pid = 0, #OnlineFeatures["CuntCannon"].feats do
 	OnlineFeatures["CuntCannon"].feats[pid].name = "Cunt Kill Cannon!"
+	OnlineFeatures["CuntCannon"].feats[pid]:set_str_data({"ALIEN CUNT CANNON","ORBITAL CUNT CANNON"})
 end
+
 --INFO: Script Events
 OnlineFeats["NetworkBail"] = menu.add_player_feature("Network Bail Kick", "action", Features.RemovePlayer.id, function(feat, pid)
 	local events = {0x493FC6BB,0x9C050EC}
@@ -552,6 +636,7 @@ end)
 for pid= 0, #OnlineFeats["NetworkBail"].feats do
 	OnlineFeats["NetworkBail"].feats[pid].hidden = false
 end
+
 OnlineFeatures["CEOMoney"] = menu.add_player_feature("Loop Payment: ", "value_str", Features.CEO.id, function(feat, pid)
 	if feat.on then	
 		if feat.value == 0 then
@@ -641,10 +726,11 @@ for pid = 0, #OnlineFeatures["NOCOPS"].feats do
 	OnlineFeatures["NOCOPS"].feats[pid].hidden = false
 	OnlineFeatures["NOCOPS"].feats[pid].name = "Cops Turn a Blind Eye"
 end
+
 OnlineFeatures["SE_Crash"] = menu.add_player_feature("Send Event: ", "action_value_str", Features.RemovePlayer.id, function(feat, pid)
 	if pid == player.player_id() then
-	MoistNotify("Just Prevented you From Crashing Yourself!", "")
-	elseif pid ~= player.player_id() then
+		MoistNotify("Just Prevented you From Crashing Yourself!", "")
+		elseif pid ~= player.player_id() then
 		local events = {69874647,924535804,1494472464,-1991317864,1902624891,127278285,-195247709,-1322571352,704979198,-1970125962,2112408256,677240627,-2113023004,-1704141512,962740265,-1386010354,603406648,-1715193475,1258808115,998716537,163598572,-1056683619,-393294520}
 		if feat.value == 0 then
 			local args = {}
@@ -699,8 +785,9 @@ end)
 for pid= 0, #OnlineFeatures["SE_Crash"].feats do
 	OnlineFeatures["SE_Crash"].feats[pid]:set_str_data({"Vector Crash","Stat Crash","Rando Crash","Moist Crash"})
 end
+
 OnlineFeatures["VehSyncCrash"] = menu.add_player_feature("Lester Cummy WindSock Crash", "action", Features.RemovePlayer.id, function(feat, pid)
-	local offset = v3(0.0,0.0,90.00)
+	local offset = v3(0.0,0.0,30.00)
 	local veh, lester
 	local model = gameplay.get_hash_key("ig_lestercrest_2")
 	streaming.request_model(model)
@@ -762,6 +849,7 @@ end)
 for pid= 0, #OnlineFeatures["VehSyncCrash"].feats do
 	OnlineFeatures["VehSyncCrash"].feats[pid].hidden = false
 end
+
 OnlineFeatures["VehSyncCrash2"] = menu.add_player_feature("Use Ruiner Crash & Bail to Space", "action", Features.RemovePlayer.id, function(feat, pid)
 	local offset = v3(0.0,0.0,90.00)
 	local veh, lester
@@ -808,6 +896,7 @@ end)
 for pid= 0, #OnlineFeatures["VehSyncCrash2"].feats do
 	OnlineFeatures["VehSyncCrash2"].feats[pid].hidden = false
 end
+
 OnlineFeatures["REM_CEO"] = menu.add_player_feature("Remove CEO: ", "action_value_str", Features.CEO.id, function(feat, pid)
 	local events = {-764524031,248967238}
 	local args = {{1, 1, 6},{0, 1, 6, 0},{0, 1, 5},{0, 1, 5, 0}}
@@ -828,59 +917,271 @@ end)
 for pid= 0, #OnlineFeatures["REM_CEO"].feats do
 	OnlineFeatures["REM_CEO"].feats[pid]:set_str_data({"Terminate","Dismiss","BAN"})
 end
+
 OnlineFeatures["SendCops"] = menu.add_player_feature("Dispatch Cops to Player Location", "action", Features.Troll.id, function(feat, pid)
 	local pid, nPid
-	local nPid = native.call(0x9EC6603812C24710, pid):__tointeger()
+	local nPid =  natives.INT_TO_PARTICIPANTINDEX(pid):__tointeger()
 	system.yield(1000)
-	native.call(0xDB172424876553F4, nPid, true)
+	natives.SET_DISPATCH_COPS_FOR_PLAYER(nPid, true)
 	system.yield(1000)
 end)
 for pid= 0, #OnlineFeatures["SendCops"].feats do
 	OnlineFeatures["SendCops"].feats[pid].name = "Dispatch Cops to Player Location"
 end
+
+OnlineFeatures["Force_to_Island"] = menu.add_player_feature("Force Player to Island", "action", Features.Troll.id, function(feat, pid)
+	M_Func["TriggerEvent"](0xDAF8082C, pid, {1300962917})
+	system.yield(100)
+	M_Func["TriggerEvent"](0xDAF8082C, pid, {0, 0, 9})
+	system.yield(100)
+	M_Func["TriggerEvent"](0xDAF8082C, pid, {pid, 0, 0, 9})
+	system.yield(100)
+	M_Func["TriggerEvent"](0x57420247, pid, {1300962917})
+	system.yield(100)
+	M_Func["TriggerEvent"](0x57420247, pid, {0, 0, 9})
+	system.yield(100)
+	M_Func["TriggerEvent"](0x57420247, pid, {pid, 0, 0, 9})
+	system.yield(100)
+	
+	return HANDLER_POP
+end)
+for pid= 0,#OnlineFeatures["Force_to_Island"].feats do
+	OnlineFeatures["Force_to_Island"].feats[pid].hidden = false
+end
+
 --TODO: Local Script Features
-LocalFeatures.wetnessframe= menu.add_feature("Make My Ped Wet! :P", "toggle", LocalFeatures.Self_Ped.id, function(feat)
+
+LocalFeatures["stringstatset"] = menu.add_feature("Set Stat: ", "action_value_str", LocalFeatures.Stats.id, function(feat)
+	local result1, label1, result2, label2
+	local stat_string1, stat_string2 = M_Func["Get_MP_Stat"](StringStat[feat.value + 1][1]), M_Func["Get_MP_Stat"](StringStat[feat.value + 1][2])
+	local statresult1 = natives.STAT_GET_STRING(gameplay.get_hash_key(stat_string1), -1)
+	system.wait(1000)
+	result1, label1 = statresult1:__tostring(), statresult1:__tostring(true)
+	local statresult2 = natives.STAT_GET_STRING(gameplay.get_hash_key(stat_string2), -1)
+	system.wait(1000)
+	result2, label2 = statresult2:__tostring(), statresult2:__tostring(true)
+	local inputlabel = label1 .. label2
+	--print(inputlabel)
+	
+	local r, str = input.get("Enter Value", inputlabel, 32, 0)
+	if r == 1 then
+		return HANDLER_CONTINUE
+	end
+	if r == 2 then
+		return HANDLER_POP
+	end
+	local str1, str2 = str:sub(1, 16), str:sub(16, 32)
+	natives.STAT_SET_STRING(gameplay.get_hash_key(stat_string1), str1, true)
+	natives.STAT_SET_STRING(gameplay.get_hash_key(stat_string2), str2, true)
+end)
+LocalFeatures["stringstatset"]:set_str_data(StringStatLabel)
+
+
+LocalFeatures.wetnessframe = menu.add_feature("Make My Ped Wet! :P", "toggle", LocalFeatures.Self_Ped.id, function(feat)
 	while feat.on do
-		local pid = native.call(0x4F8644AF03D0E0D6):__tointeger()
+		local pid = natives.PLAYER_ID():__tointeger()
 		system.yield(1000)
-		local playerPed = native.call(0x43A66C31C68491C0, pid):__tointeger()
+		local playerPed = natives.GET_PLAYER_PED(pid):__tointeger()
 		system.yield(1000)
-		native.call(0x44CB6447D2571AA0, playerPed, 100.0)
+		natives.SET_PED_WETNESS_HEIGHT(playerPed, 100.0)
 		system.yield(1000)
-		native.call(0xB5485E4907B53019, playerPed)
-		system.yield(1000)
+		natives.SET_PED_WETNESS_ENABLED_THIS_FRAME(playerPed)
+	system.yield(1000)
+end
+return HANDLER_POP
+end)
+LocalFeatures.wetnessframe.on = false
+
+LocalFeatures.Turbulance = menu.add_feature("AirCraft Turbulance", "autoaction_value_f", LocalFeatures.Self_Veh.id, function(feat)
+	local veh = player.get_player_vehicle(player.player_id())
+	local hash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_plane(hash) then	
+		natives.SET_PLANE_TURBULENCE_MULTIPLIER(veh, feat.value)
+	end	
+	return HANDLER_POP
+end)
+LocalFeatures.Turbulance.max = 1.0
+LocalFeatures.Turbulance.min = 0.0
+
+LocalFeatures.VehDamageProof = menu.add_feature("Set Vehicle Damage Proof", "toggle", LocalFeatures.Self_Veh.id, function(feat)
+	if not feat.on then
+		local veh = player.get_player_vehicle(player.player_id())
+		natives.SET_ENTITY_PROOFS(veh, false, false, false, false, false, false, 1, false)
+		system.yield(10000)
+		return HANDLER_POP
+	end
+	
+	local veh = player.get_player_vehicle(player.player_id())
+	natives.SET_ENTITY_PROOFS(veh, true, true, true, true, true, true, 1, true)
+	system.yield(10000)
+	return HANDLER_CONTINUE	
+end)
+LocalFeatures.VehDamageProof.on = false
+
+LocalFeatures.VehEngAudioMod = menu.add_feature("Engine Audio: ", "action_value_str", LocalFeatures.Self_Veh.id, function(feat)
+	local CurVehType, AudioType
+	local audioname = tostring(feat:get_str_data()[feat.value + 1])
+	local hash = gameplay.get_hash_key(audioname)
+	local veh = player.get_player_vehicle(player.player_id())
+	local VehHash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_plane(VehHash) then
+	CurVehType = "plane"
+	elseif streaming.is_model_a_heli(VehHash) then
+	CurVehType = "heli"
+	elseif streaming.is_model_a_boat(VehHash) then
+	CurVehType = "boat"
+	elseif streaming.is_model_a_train(VehHash) then
+	CurVehType = "train"
+	elseif streaming.is_model_a_vehicle(VehHash) then
+	 CurVehType = "vehicle"
+	end
+	if streaming.is_model_a_plane(hash) then
+	AudioType = "plane"
+	elseif streaming.is_model_a_heli(hash) then
+	AudioType = "heli"
+	elseif streaming.is_model_a_boat(hash) then
+	AudioType = "boat"
+	elseif streaming.is_model_a_train(hash) then
+	AudioType = "train"
+	elseif streaming.is_model_a_vehicle(VehHash) then
+	 AudioType = "vehicle"
+	end
+	if CurVehType ~= AudioType then
+	MoistNotify("Incompatible Audio for Current Vehicle", "")
+	elseif CurVehType == AudioType then
+	natives.FORCE_VEHICLE_ENGINE_AUDIO(veh, audioname)
+	system.yield(1000)
 	end
 	return HANDLER_POP
 end)
-LocalFeatures.wetnessframe.on = false
+LocalFeatures.VehEngAudioMod:set_str_data(NpcVehList)
+
+LocalFeatures.CargoBobMod = menu.add_feature("CargoBob Mod", "parent", LocalFeatures.Self_Veh.id)
+
+LocalFeatures.CbobMagnet = menu.add_feature("CargoBob: ", "value_str", LocalFeatures.CargoBobMod.id, function(feat)
+	if feat.on then	
+		local veh = player.get_player_vehicle(player.player_id())
+		local hash = entity.get_entity_model_hash(veh)
+		if streaming.is_model_a_heli(hash) then
+			if feat.value == 1 then
+				if not natives.DOES_CARGOBOB_HAVE_PICKUP_MAGNET(veh) then
+					natives.SET_CARGOBOB_PICKUP_ROPE_TYPE(veh, 1)
+					natives.SET_CARGOBOB_PICKUP_MAGNET_ACTIVE(veh, 1)
+				end
+			end
+			natives.CREATE_PICK_UP_ROPE_FOR_CARGOBOB(veh, feat.value)
+			natives.SET_CARGOBOB_PICKUP_MAGNET_ACTIVE(veh, 1)
+			if not feat.on then
+				natives.SET_CARGOBOB_PICKUP_MAGNET_ACTIVE(veh, 0)
+				natives.REMOVE_PICK_UP_ROPE_FOR_CARGOBOB(veh)
+				return HANDLER_POP
+			end
+		end
+		
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+LocalFeatures.CbobMagnet:set_str_data({"Hook","Magnet"})
+
+
+LocalFeatures.CbobMagMod1 = menu.add_feature("Magnet Pickup Strength: ", "autoaction_value_f", LocalFeatures.CargoBobMod.id, function(feat)
+	local veh = player.get_player_vehicle(player.player_id())
+	local hash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_heli(hash) then
+		natives.SET_CARGOBOB_PICKUP_MAGNET_STRENGTH(veh, feat.value)
+	end	
+	return HANDLER_POP
+end)
+LocalFeatures.CbobMagMod1.max = 10000.00
+LocalFeatures.CbobMagMod1.min = 0.00
+LocalFeatures.CbobMagMod1.mod = 1.00
+
+
+LocalFeatures.CbobMagMod2 = menu.add_feature("Magnet Effect Radius: ", "autoaction_value_f", LocalFeatures.CargoBobMod.id, function(feat)
+	local veh = player.get_player_vehicle(player.player_id())
+	local hash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_heli(hash) then
+		natives.SET_CARGOBOB_PICKUP_MAGNET_EFFECT_RADIUS(veh, feat.value)
+		
+	end	
+	return HANDLER_POP
+end)
+LocalFeatures.CbobMagMod2.max = 10000.00
+LocalFeatures.CbobMagMod2.min = 0.00
+LocalFeatures.CbobMagMod2.mod = 1.00
+
+
+LocalFeatures.CbobMagMod3 = menu.add_feature("Magnet Pull Rope Length: ", "autoaction_value_f", LocalFeatures.CargoBobMod.id, function(feat)
+	local veh = player.get_player_vehicle(player.player_id())
+	local hash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_heli(hash) then
+		natives.SET_CARGOBOB_PICKUP_MAGNET_PULL_ROPE_LENGTH(veh, feat.value)
+	end	
+	return HANDLER_POP
+end)
+LocalFeatures.CbobMagMod3.max = 1000.00
+LocalFeatures.CbobMagMod3.min = 0.00
+LocalFeatures.CbobMagMod3.mod = 1.00
+
+LocalFeatures.CbobMagMod4 = menu.add_feature("Magnet Rope Length: ", "autoaction_value_f", LocalFeatures.CargoBobMod.id, function(feat)
+	local veh = player.get_player_vehicle(player.player_id())
+	local hash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_heli(hash) then
+		natives.SET_PICKUP_ROPE_LENGTH_FOR_CARGOBOB(veh, feat.value, feat.value)
+	end	
+	return HANDLER_POP
+end)
+LocalFeatures.CbobMagMod4.max = 1000.00
+LocalFeatures.CbobMagMod4.min = -1.00
+LocalFeatures.CbobMagMod4.mod = 1.00
+
+
+
+LocalFeatures.CbobMagMod5 = menu.add_feature("Magnet Pull Strength: ", "autoaction_value_f", LocalFeatures.CargoBobMod.id, function(feat)
+	local veh = player.get_player_vehicle(player.player_id())
+	local hash = entity.get_entity_model_hash(veh)
+	if streaming.is_model_a_heli(hash) then
+		natives.SET_CARGOBOB_PICKUP_MAGNET_PULL_STRENGTH(veh, feat.value)
+	end	
+	return HANDLER_POP
+end)
+LocalFeatures.CbobMagMod5.max = 10000.00
+LocalFeatures.CbobMagMod5.min = 0.00
+LocalFeatures.CbobMagMod5.mod = 1.00
+LocalFeatures.CbobMagMod5.value = 400.00
+
+
 LocalFeatures.IAMACOP = menu.add_feature("Turn Me into a Cop (Cops Act like you are!)", "action", LocalFeatures.Self_Ped.id, function(feat)
-	local pid = native.call(0x4F8644AF03D0E0D6):__tointeger()
+	local pid = natives.PLAYER_ID():__tointeger()
 	system.yield(1000)
-	local playerPed = native.call(0x43A66C31C68491C0, pid):__tointeger()
+	local playerPed = natives.GET_PLAYER_PED(pid):__tointeger()
 	system.yield(1000)
-	native.call(0xBB03C38DD3FB7FFD, playerPed, true)
+	natives.SET_PED_AS_COP(playerPed, true)
 	system.yield(1000)
 end)
 LocalFeatures.IAMACOP.name = "Turn Me into a Cop (Cops Act like you are!)"
 
 LocalFeatures.UlWeClip = menu.add_feature("Weapon Clip: ", "action_value_str", LocalFeatures.Self_WeaponStuff.id, function(feat)
 	if feat.value == 0 then
-		local pid = native.call(0x4F8644AF03D0E0D6):__tointeger()
+		local pid = natives.PLAYER_ID():__tointeger()
 		system.yield(1000)
-		local playerPed = native.call(0x43A66C31C68491C0, pid):__tointeger()
+		local playerPed = natives.GET_PLAYER_PED(pid):__tointeger()
 		system.yield(1000)
-		native.call(0x183DADC6AA953186, playerPed, true)
+		natives.SET_PED_INFINITE_AMMO_CLIP(playerPed, true)
 		elseif feat.value == 1 then
-		local pid = native.call(0x4F8644AF03D0E0D6):__tointeger()
+		local pid = natives.PLAYER_ID():__tointeger()
 		system.yield(1000)
-		local playerPed = native.call(0x43A66C31C68491C0, pid):__tointeger()
+		local playerPed = natives.GET_PLAYER_PED(pid):__tointeger()
 		system.yield(1000)
-		native.call(0x183DADC6AA953186, playerPed, false)
+		natives.SET_PED_INFINITE_AMMO_CLIP(playerPed, false)
 	end
 	return HANDLER_POP
 end)
 LocalFeatures.UlWeClip:set_str_data({"Unlimited","Standard"})
+
 Features.Modulelists = menu.add_feature("Custom Lists for Features", "parent", Features.LocalModules.id)
+
 Features.Modules_PlayerBar = menu.add_feature("Load PlayerBar Module", "toggle", Features.LocalModules.id, function(feat)
 	if not feat.on then
 		ScriptConfig["LoadPlayerBar"] = false
@@ -895,6 +1196,22 @@ Features.Modules_PlayerBar = menu.add_feature("Load PlayerBar Module", "toggle",
 	return HANDLER_POP
 end)
 Features.Modules_PlayerBar.on = ScriptConfig["LoadPlayerBar"]
+
+Features.Modules_ESP = menu.add_feature("Load ESP Module", "toggle", Features.LocalModules.id, function(feat)
+	if not feat.on then
+		ScriptConfig["LoadESP"] = false
+		return HANDLER_POP
+	end
+	ScriptConfig["LoadESP"] = true
+	local file = FolderPaths.Config .. "\\MoistScript_ESP_Module.lua"
+	if MoistScript_ESP_Module == nil then
+		if not utils.file_exists(file) then return end
+		f = assert(loadfile(file)) return f()
+	end
+	return HANDLER_POP
+end)
+Features.Modules_ESP.on = ScriptConfig["LoadESP"]
+
 Features.Modules_Pedlist = menu.add_feature("Load Ped List", "toggle", Features.Modulelists.id, function(feat)
 	if not feat.on then
 		ScriptConfig["LoadPedList"] = false
@@ -906,6 +1223,7 @@ Features.Modules_Pedlist = menu.add_feature("Load Ped List", "toggle", Features.
 	return HANDLER_POP
 end)
 Features.Modules_Pedlist.on = ScriptConfig["LoadPedList"]
+
 Features.Modules_Vehlist = menu.add_feature("Load Vehicle List", "toggle", Features.Modulelists.id, function(feat)
 	if not feat.on then
 		ScriptConfig["LoadVehList"] = false
@@ -913,19 +1231,27 @@ Features.Modules_Vehlist = menu.add_feature("Load Vehicle List", "toggle", Featu
 	end
 	ScriptConfig["LoadVehList"] = true
 	if not utils.file_exists(FolderPaths.Config .. "\\vehlist.ini") then return end
-	for line in io.lines(FolderPaths.Config .. "\\vehlist.ini") do NpcVehList[#NpcVehList + 1] = line end
+	for line in io.lines(FolderPaths.Config .. "\\vehlist.ini") do 
+		NpcVehList[#NpcVehList + 1] = line end
 	return HANDLER_POP
 end)
 Features.Modules_Vehlist.on = ScriptConfig["LoadVehList"]
+
 --TODO: Auto Execute Functions
+
 M_Func.SessionSetup()
+
 M_Func["SessionSetup"]()
+
 --TODO: On Exit Shit
+
 event.add_event_listener("exit", function()
 	--clean up shit
 	for i = 1, #SpawnedShit do
-		if entity.is_an_entity(SpawnedShit[i]) then
-			entity.delete_entity(SpawnedShit[i])
+		if SpawnedShit[i] ~= nil then
+			if entity.is_an_entity(SpawnedShit[i]) then
+				entity.delete_entity(SpawnedShit[i])
+			end
 		end
 	end
 end)
