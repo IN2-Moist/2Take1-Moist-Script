@@ -9,12 +9,20 @@ end
 
 MoistScript_PlayerBar_Module = "loaded"
 local ScriptConfig = _G.ScriptConfig
+local PlayerBarFeats = {}
 local PCR, PCG, PCB, PCA
 local PCR1, PCG1, PCB1, PCA1 = 255, 255, 255, 255
 local PCR2, PCG2, PCB2, PCA2 = 0, 0, 0, 255
+local Root =  utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 
-Features.PlayerbarParent = menu.add_feature("PlayerBar Options", "parent", Features.LocalSettings.id)
-local PlayerbarParent = Features.PlayerbarParent
+if not (package.path):find(Root .. "\\scripts\\MoistFiles\\?.lua", 1, true) then
+	package.path = Root .. "\\scripts\\MoistFiles\\?.lua;" .. package.path
+end
+
+local natives = require("Natives")
+
+
+PlayerBarFeats.PlayerbarParent = menu.add_feature("PlayerBar Options", "parent", Features.LocalSettings.id)
 local Session_PB_Players = {
 	{
 		Name = {},
@@ -29,8 +37,8 @@ local Session_PB_Players = {
 		OTR_Start = {},
 		Notified = {},
 		interior = {},
-		Scrollfeat1 = {},
-		Scrollfeat2 = {},
+		isTalking = {},
+		PedSpawned = {},
 	}
 }
 
@@ -46,10 +54,12 @@ local function Player_add(pid)
 	Session_PB_Players[pid].OTR_Start = nil
 	Session_PB_Players[pid].Notified = false
 	Session_PB_Players[pid].interior = false
-	Session_PB_Players[pid].Scrollfeat1 = nil
-	Session_PB_Players[pid].Scrollfeat2 = nil
+	Session_PB_Players[pid].isTalking = false
+	Session_PB_Players[pid].PedSpawned = false
 	
 end
+
+_G.Session_PB_Players = Session_PB_Players
 
 for pid = 0, 31 do
 	Player_add(pid)
@@ -57,14 +67,14 @@ end
 
 
 local joined = event.add_event_listener("player_join", function(e)
-	local pid = e.player
-	Player_add(pid)
+
+	Player_add(e.player)
 	return
 end)
 
 local left = event.add_event_listener("player_leave", function(e)
-	local pid = e.player
-	Player_add(pid)
+
+	Player_add(e.player)
 	
 	return
 end)
@@ -99,7 +109,7 @@ end)
 
 --TODO: **********  PLAYER BAR ***************
 
-local ResetNotif = menu.add_feature("Reset Notified", "toggle", PlayerbarParent.id, function(feat)
+PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	local notiftimes = {}
 	if feat.on then
 		for pid = 0, 31 do
@@ -119,10 +129,10 @@ local ResetNotif = menu.add_feature("Reset Notified", "toggle", PlayerbarParent.
 		return HANDLER_CONTINUE
 	end
 end)
-ResetNotif.on = true
-ResetNotif.hidden = true
+PlayerBarFeats["ResetNotif"].on = true
+PlayerBarFeats["ResetNotif"].hidden = true
 
-local speedTracker = menu.add_feature("Track all Players speed", "toggle", PlayerbarParent.id, function(feat)
+PlayerBarFeats["speedTracker"] = menu.add_feature("Track all Players speed", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if feat.on then
 		for pid = 0, 31 do
 			if player.is_player_valid(pid) then
@@ -150,10 +160,10 @@ local speedTracker = menu.add_feature("Track all Players speed", "toggle", Playe
 	end
 	return HANDLER_POP
 end)
-speedTracker.on = _G.ScriptConfig["PlayerBar_ON"]
-speedTracker.hidden = false
+PlayerBarFeats["speedTracker"].on = _G.ScriptConfig["PlayerBar_ON"]
+PlayerBarFeats["speedTracker"].hidden = true
 
-local Player_BarLoop = menu.add_feature("Player Loop Function", "toggle", PlayerbarParent.id, function(feat)
+PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	while feat.on do
 		for pid = 0, 31 do
 			if not player.is_player_valid(pid) then
@@ -161,26 +171,28 @@ local Player_BarLoop = menu.add_feature("Player Loop Function", "toggle", Player
 			end
 			if player.is_player_valid(pid) then
 				Player_add(pid)
-				system.yield(0)
+				system.yield(200)
 			end
 		end
-		system.yield(0)
+		system.yield(200)
 	end
 	
 	return HANDLER_POP
 end)
-Player_BarLoop.on = _G.ScriptConfig["PlayerBar_ON"]
+PlayerBarFeats["Player_BarLoop"].on = _G.ScriptConfig["PlayerBar_ON"]
+PlayerBarFeats["Player_BarLoop"].hidden = true
 
-local Player_bar = menu.add_feature("Player Bar OSD", "toggle", PlayerbarParent.id, function(feat)
-	Player_BarLoop.on = true
-	speedTracker.on = true
-	ResetNotif.on  = true
+PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
+	PlayerBarFeats["Player_BarLoop"].on = true
+	PlayerBarFeats["speedTracker"].on = true
+	PlayerBarFeats["ResetNotif"].on  = true
 	_G.ScriptConfig["PlayerBar_ON"] = true
 	local pos = v2()
 	local Player_Name1, Player_Name
-	local hosttag, SHost_tag, OTR_tag, MOD_tag, Bounty_tag, Typing_tag = "~b~[H]","~y~[S]","~g~[O]","~y~[~r~M~y~]","~b~[~q~B~b~]","~q~[~b~T~q~]"
+	local hosttag, SHost_tag, OTR_tag, MOD_tag, Bounty_tag, Typing_tag, Voice_tag = "~b~[H]","~y~[S]","~g~[O]","~y~[~r~M~y~]","~b~[~q~B~b~]","~q~[~b~T~q~]","~q~[~y~VC~q~]"
 	
-	if feat.on then
+	if PlayerBarFeats["Player_bar"].on then
+
 		if network.is_session_started() then
 		ui.draw_rect(0.001, 0.001, 2.5, 0.085, 0, 0, 0, 240)
 		pos.x = 0.0001
@@ -262,6 +274,9 @@ local Player_bar = menu.add_feature("Player Bar OSD", "toggle", PlayerbarParent.
 					if (script.get_global_i(1644218 + (2 + (pid * 1) + (241 + 136)))& 1 << 16 ~= 0)  then
 						Player_Name =  Player_Name .. Typing_tag
 					end
+					if Session_PB_Players[pid].isTalking then
+						Player_Name =  Player_Name .. Voice_tag
+					end			
 					if player.is_player_modder(pid, -1) then
 						Player_Name =  Player_Name .. MOD_tag
 					end
@@ -279,11 +294,14 @@ local Player_bar = menu.add_feature("Player Bar OSD", "toggle", PlayerbarParent.
 		end
 		return HANDLER_CONTINUE
 	end
-	Player_BarLoop.on = false
-	speedTracker.on = false
-	ResetNotif.on  = false
+	PlayerBarFeats["Player_BarLoop"].on = false
+	PlayerBarFeats["speedTracker"].on = false
+	PlayerBarFeats["ResetNotif"].on  = false
 	_G.ScriptConfig["PlayerBar_ON"] = false
 	return HANDLER_POP
 end)
-Player_bar.on = _G.ScriptConfig["PlayerBar_ON"]
-Player_bar.hidden = false
+PlayerBarFeats["Player_bar"].on = _G.ScriptConfig["PlayerBar_ON"]
+PlayerBarFeats["Player_bar"].hidden = false
+
+
+_G.MoistNotify("Player Bar Module Loaded", "")

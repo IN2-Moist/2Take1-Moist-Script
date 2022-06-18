@@ -2,14 +2,17 @@
 ![NextGen](https://cdn.discordapp.com/attachments/869989558018781194/984253676443017246/cooltext412726820733010.png)
 <hr>
 # Next Generation Moist Script
-## 3.0.0.0 |-| BETA TEST |-|
+## 3.0.0.0 |-| BETA TEST 3 |-|
 
 ### Feaure List:
 
 #### Local Script Features
 
 ```
-    Self Features
+
+
+Self Features
+
 		Stat Features
 			Set Stat:
 				String Stat Builder
@@ -18,60 +21,124 @@
 				MC_GANG_NAME :: Combines the 2 stats that makes up Motorcycle Club Name
 				YACHT_NAME ::  Combines the 2 stats that makes up Your Yacht Name
 				(Completely Bypasses any Profanity Filters and can Accept Special Characters for R* Logos etc)
-				       
-        Weapon Related Functions
-            Weapon Clip: Unlimtied | Normal (unlimited is like fast no reload, stand there with a homing launcher u can lockon and spam rockets without having to reload at all)
+					   
+		Weapon Related Functions
+			Weapon Clip: Unlimtied | Normal (unlimited is like fast no reload, stand there with a homing launcher u can lockon and spam rockets without having to reload at all)
+			
+			Explosion Multiplier 0.00 -> 20.00 (Modifies The Explosion Radius of your Current Weapon)
+			** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out alot of players in the process !!
+			
+		Destroy Projectiles(WIP)
+			(Work.In.Progress) this will explode any weapon projectiles i have currently added still needs further testing as not all seem to work, mk2 missile wont get destroyed
+			but likes of a ruiner you shoot a missile it goes boom along with you. This will also explode players when they equip homing launcher, rpg firework launcher etc soon
+			as they switch to it the missile in the chamber is detected and exploded.
 
-        Player Ped Features
-            Make My Ped Wet! :P (Drench your ped like its raining heavily or you just come out of water)
-            Turn Me into a Cop (not outfit related makes your ped like a cop so you get ignored by cops get a cop cone on radar when wanted)
+```			
+
+		Current Projectiles Added:
+
+
+
+		"WEAPON_GRENADE","WEAPON_STICKYBOMB","VEHICLE_WEAPON_TANK","VEHICLE_WEAPON_SPACE_ROCKET","WEAPON_RPG",
+		"VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_PLAYER_LASER","VEHICLE_WEAPON_PLAYER_BULLET","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER",
+		"WEAPON_PROXMINE","WEAPON_FIREWORK","WEAPON_FLAREGUN","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_HUNTER_MISSILE",
+		"VEHICLE_WEAPON_HUNTER_BARRAGE","VEHICLE_WEAPON_DOGFIGHTER_MISSILE","VEHICLE_WEAPON_ROGUE_MISSILE","VEHICLE_WEAPON_VIGILANTE_MISSILE",
+		"VEHICLE_WEAPON_APC_CANNON","VEHICLE_WEAPON_APC_MISSILE","VEHICLE_WEAPON_TRAILER_MISSILE","VEHICLE_WEAPON_TRAILER_DUALAA",
+		"VEHICLE_WEAPON_OPPRESSOR_MISSILE","VEHICLE_WEAPON_MOBILEOPS_CANNON","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_CHERNO_MISSILE",
+		"VEHICLE_WEAPON_AKULA_MISSILE","VEHICLE_WEAPON_DELUXO_MISSILE","VEHICLE_WEAPON_SUBCAR_MISSILE","VEHICLE_WEAPON_SUBCAR_TORPEDO",
+		"VEHICLE_WEAPON_THRUSTER_MISSILE","WEAPON_GRENADELAUNCHER","WEAPON_AIRSTRIKE_ROCKET","WEAPON_PASSENGER_ROCKET","WEAPON_VEHICLE_ROCKET"
+
+
+				
+```			
+				
+		Portable Yacht Defenses
+			Same kinda effect as the real ones only you set the effect radius. Does not at the moment take out player like the yacht would still need to do some research and testing
+			some parameter or flag im missing to make it work as i would like. For NPC's Cops etc works well, will also destroy sub missiles. The effect area is marked with a red Radial
+			Blip at those coordinates.
+			
+		Remove All Air Defense Zone
+			This will literallly remove any Yacht Defences set, seems to also partially work for player yachts cant shoot in the area but does not take you out.
+
+		Player Ped Features
+			Make My Ped Wet! :P (Drench your ped like its raining heavily or you just come out of water)
+			Turn Me into a Cop (not outfit related makes your ped like a cop so you get ignored by cops get a cop cone on radar when wanted)
 			
 		Player Vehicle Features
-		
+
 			AirCraft Turbulance
 				Turbulance Modifier
 					0.0 (No Turbulance)
 					1.0 (Very Turbulant)
-				
-				Set Vehicle Damage Proof
-						Vehicle Becomes Near to God Mode without Detection
-						Impossible to Visibly Damage it from impacts explosions etc
-				
-				Engine Audio:
-				Overide Current Vehicle Engine Audio
-				List Populated from vehlist.ini
-				default preset chernobog
-			
-			CargoBob Mod
-				CargoBob: Hook | Magnet
-			
-			Magnet Pickup Strength:
-				modifier Value
-			Magnet Effect Radius:
-				modifier Value
-				Magnet Pull Rope Length:
-					modifier Value
-				Magnet Rope Length:
-					modifier Value
-				Magnet Pull Strength:
-					modifier Value
+					
+			Disable Plane Aileron
+				(extra rudders on the aircraft to contol roll yaw and pitch see animations below)
 
-    MoistScript Settings
-        Current Settings: Save | Clear
-        MoistScript HOTKEYS
-            Options Save HotKey
-        Load MoistScript Modules
-            Custom Lists for Features
-                Load Ped List
-                Load Vehicle List
-                Load PlayerBar Module
-				Load ESP Module
-        Update Script with Translation
+```
+	 
+![AlieronRoll](https://upload.wikimedia.org/wikipedia/commons/c/cc/Aileron_roll.gif)
+
+<hr>
+
+![AlieronYaw](https://upload.wikimedia.org/wikipedia/commons/9/96/Aileron_yaw.gif)
+
+<hr>
+
+![AlieronPitch](https://upload.wikimedia.org/wikipedia/commons/e/ec/Aileron_pitch.gif)
+
+<hr>
+
+
+```
+		Set Vehicle Damage Proof
+			Vehicle Becomes Near to God Mode without Detection
+			Impossible to Visibly Damage it from impacts explosions etc
+
+		Engine Audio:
+			Overide Current Vehicle Engine Audio
+			List Populated from vehlist.ini
+			default preset chernobog
+
+	CargoBob Mod
+		
+		CargoBob: Hook | Magnet
+
+		Magnet Pickup Strength:
+			modifier Value
+		Magnet Effect Radius:
+			modifier Value
+		Magnet Pull Rope Length:
+			modifier Value
+		Magnet Rope Length:
+			modifier Value
+		Magnet Pull Strength:
+			modifier Value
+
+	World Features
+	
+		LightningBolt Generator: Delay Multiplier = 0.01 -> 2.00
+			While on will generate Random Lightning no matter the weather Actual Delay = (Delay Multiplier * 60)
+
+	MoistScript Settings
+		Current Settings: Save | Clear
+	
+	MoistScript HOTKEYS
+		Options Save HotKey
+	
+	Load MoistScript Modules
+	Custom Lists for Features
+		Load Ped List
+		Load Vehicle List
+		Load PlayerBar Module
+		Load ESP Module
+		Load Network Events Module
+		Update Script with Translation
 
 ```
 
 
-#### Online Features
+### Online Features
+
 
 ```
 	Remove Player
@@ -79,9 +146,27 @@
 		Send Event:  Vector Crash | Stat Crash | Rando Crash | Moist Crash
 		Lester Cummy WindSock Crash (May Need to be executed a few times they will crash to many times you will likely crash the session game will clean up this shit)
 		Use Ruiner Crash & Bail to Space
+		
+	Player Info  (Basically some stuff im testing for some future functions)
+	
+		Force Lockon to this player (untested)
+			This is supposed to force your lockon to the selected playeer
+	
+		Get Player Zone Info (accuracy of this is shit! my method to get this info was far better and true)
+		
+		Get Interior from Collision  (still not a great way need to test in combination)
+		
+		
 
 	Troll & Annoy
 		Dispatch Cops to Player Location (Still testing but i seen undercover cops in the street after using this in a session)
+		
+		Disable Player Shooting (untested)
+			Prevents the player from shooting each frame
+		
+		Disable Player Interior
+			Unloads the interior the player is in and they fall through the building or map still needs further testing but seems to put them outside XD
+		
 		Force Player to Island
 
 	Grief This Cunt ! !

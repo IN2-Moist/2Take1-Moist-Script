@@ -67,9 +67,11 @@ ESP_PED_Extension.max = 10000.00
 ESP_PED_Extension.min = 1.00
 ESP_PED_Extension.mod = 10.50
 ESP_PED_Extension.value = 1450.00
+ESP_PED_Extension.on = false
+
 
 local DistModifier = menu.add_feature("ESP Step Modifier", "autoaction_value_f", ESP_PED_Parent.id, function(feat)
-	ESP_PED_Extension.mod = feat.value
+	ESP_PED_Extension.mod = tonumber(feat.value)
 end)
 DistModifier.max = 200.00
 DistModifier.min = 1.50
@@ -100,9 +102,11 @@ ESP_VEH_Extension.max = 10000.00
 ESP_VEH_Extension.min = 1.00
 ESP_VEH_Extension.mod = 10.50
 ESP_VEH_Extension.value = 1450.00
+ESP_VEH_Extension.on = false
 
 local vehDistModifier = menu.add_feature("ESP Step Modifier", "autoaction_value_f", ESP_VEH_Parent.id, function(feat)
-	ESP_VEH_Extension.mod = feat.value
+	ESP_VEH_Extension.mod = tonumber(feat.value)
 end)
 vehDistModifier.max = 200.00
 vehDistModifier.min = 1.50
+vehDistModifier.value = 2.00
