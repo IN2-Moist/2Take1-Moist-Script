@@ -1,6 +1,10 @@
 
 ![NextGen](https://cdn.discordapp.com/attachments/869989558018781194/984253676443017246/cooltext412726820733010.png)
 <hr>
+
+![Moist Script 2.x.x.x Backup available here:](https://github.com/IN2-Moist/MoistScript--2.0.6.7/releases/tag/2.0.6.7)
+
+
 # Next Generation Moist Script
 ## 3.0.0.0 |-| BETA TEST 3 |-|
 
