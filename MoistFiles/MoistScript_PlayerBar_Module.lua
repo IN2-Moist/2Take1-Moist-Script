@@ -1,4 +1,5 @@
 
+function PlayerBarMain(feat)
 if not MoistScript_NextGen then
 	return HANDLER_POP
 end
@@ -108,7 +109,28 @@ local Modder_EventLog = event.add_event_listener("modder", function(e)
 end)
 
 --TODO: **********  PLAYER BAR ***************
-
+--[[
+PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
+	local notiftimes = {}
+	if PlayerBarFeats["ResetNotif"].on then
+		for pid = 0, 31 do
+			if player.is_player_valid(pid) then
+				if Session_PB_Players[pid].Notified == true and notiftimes[pid+1] == nil then
+					notiftimes[pid+1] = os.clock()
+				end
+				if notiftimes[pid+1] ~= nil then
+					if (os.clock() - notiftimes[pid+1]) >= 60 then
+						Session_PB_Players[pid].Notified = false
+					end
+				end
+			end
+		end
+		return HANDLER_CONTINUE
+	end
+end)
+PlayerBarFeats["ResetNotif"].on = true
+PlayerBarFeats["ResetNotif"].hidden = true
+]]
 PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	local notiftimes = {}
 	if feat.on then
@@ -131,6 +153,8 @@ PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", Play
 end)
 PlayerBarFeats["ResetNotif"].on = true
 PlayerBarFeats["ResetNotif"].hidden = true
+
+
 
 PlayerBarFeats["speedTracker"] = menu.add_feature("Track all Players speed", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if feat.on then
@@ -305,3 +329,11 @@ PlayerBarFeats["Player_bar"].hidden = false
 
 
 _G.MoistNotify("Player Bar Module Loaded", "")
+end
+local PlayerBarThread = menu.create_thread(PlayerBarMain, feat)
+
+event.add_event_listener("exit", function()
+	--clean up shit
+	menu.delete_thread(PlayerBarThread)
+end)
+

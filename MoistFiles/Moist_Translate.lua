@@ -12,7 +12,8 @@ function Moist_Translate.localmenu(feat)
 	LocalFeatures.UlWeClip:set_str_data({"Unlimited","Standard"})
 	LocalFeatures.WeapExpRad.name = "Explosion Multiplier"
 	LocalFeatures.Projectiles.name = "Destroy Projectiles(WIP)"
-	LocalFeatures.AirDefense.name = "Portable Yacht Defenses"
+	LocalFeatures.AirDefense.name = "Portable Defenses Anti Player Vehicle"
+	LocalFeatures.AirDefense2.name = "Portable Defenses Anti Player Ped"
 	LocalFeatures.RemAllAirDef.name = "Remove All Air Defense Zone"
 	LocalFeatures.Self_Ped.name = "Player Ped Features"
 	Features.LocalModules.name = "Load MoistScript Modules"
@@ -44,7 +45,18 @@ function Moist_Translate.localmenu(feat)
 	Features.Modules_Pedlist.name = "Load Ped List"
 	Features.Modules_Vehlist.name = "Load Vehicle List"
 	LocalFeatures.Aileron.name = "Disable Plane Aileron"
-
+	LocalFeatures.AirDrag.name = "Set Air Drag Multiplier: "
+	LocalFeatures.RiotMode.name = "Turn ON Riot Mode!"
+	LocalFeatures.RadarZoom.name = "Set Radar Zoom: "
+	LocalFeatures.RainLvl.name = "Set Rain Level:  "
+	LocalFeatures.WaterOverStg.name = "Water Override Strength:  "
+	LocalFeatures.WaterMod.name = "Modify Water Radius:  "
+	LocalFeatures.RippleDis.name = "Water Ripple Disturbance:  "
+	LocalFeatures.RippleBump.name = "Water Ripple Bumpiness:  "
+	LocalFeatures.ShoreWaveAmp.name = "Override ShoreWave Amplitude:  "
+	LocalFeatures.AirDrag.name = "Set Air Drag Multiplier: "
+	LocalFeatures.NoRsEditorRec.name = "Disable R*Editor Recording"
+	
 	
 end
 
@@ -81,6 +93,15 @@ function Moist_Translate.onlinemenu(feat)
 	OnlineFeatures["SE_Crash"].feats[pid]:set_str_data({"Vector Crash","Stat Crash","Rando Crash","Moist Crash"})
 	OnlineFeatures["REM_CEO"].feats[pid]:set_str_data({"Terminate","Dismiss","BAN"})
 	OnlineFeatures["Force_to_Island"].feats[pid].name = "Force Player to Island"
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].name = "Players Blip Flashes"
+	OnlineFeatures["GangHarrasment"].feats[pid].name = "Gangs will Hassle Player"
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].name = "Players Blip Flashes"
+	OnlineFeats["SetMiniMap2PlayerBlip"].feats[pid].name = "Minimap Zoom to Players Blip"
+	OnlineFeats["SetMiniMap2Player"].feats[pid].name = "Set Minimap to Players Location"
+	OnlineFeats["ACKS"].feats[pid].name = "unAck TX's: "
+	OnlineFeats["AVERAGE_LATENCY"].feats[pid].name = "Latency Test"
+	Features.PlayerIPInfo.feats[pid]	.name = "Player IP Info"
+	
 	end
 end
 

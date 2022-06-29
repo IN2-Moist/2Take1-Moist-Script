@@ -1,4 +1,5 @@
-
+function NetEventMain(feat)
+	
 if not MoistScript_NextGen then
 	return HANDLER_POP
 end
@@ -159,3 +160,13 @@ NetEvents()
 
 
 _G.MoistNotify("Net Events Module Loaded", "")
+
+end
+
+local NetEventThread = menu.create_thread(NetEventMain, feat)
+
+event.add_event_listener("exit", function()
+	--clean up shit
+	menu.delete_thread(NetEventThread)
+end)
+

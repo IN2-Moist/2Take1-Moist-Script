@@ -1,16 +1,17 @@
+
 if MoistScript_NextGen then
 	menu.notify("Moist_NG Already Executed ! ! !", "", 30, 0xff0000ff)
 	menu.notify("EXECUTION DENIED ! ! !", "", 30, 0xff0000ff)
 	return
 end
 MoistScript_NextGen = "3.0.0.0"
-
+local function MoistNG_Main(feat)
 
 --TODO: Script Features Modules and Config Storage Tables
 
 local FolderPaths, ScriptConfig, Features, OnlineFeats, OnlineFeatures, LocalFeats, LocalFeatures, LoadedModules = {}, {}, {}, {}, {}, {}, {}, {}
 --TODO: Storage Tables
-local NpcList, NpcVehList, SpawnedShit =  {}, {"chernobog"}, {}
+local NpcList, NpcVehList, SpawnedShit, MoistVar =  {}, {"chernobog"}, {}, {}
 
 local FriendsList, Session_Players, LobbyPlayers = {}, {{name = {}, scid = {},}}, {}
 local StringStat, StringStatLabel = {{"MP0_GB_GANG_NAME","MP0_GB_GANG_NAME2"},{"MP0_GB_OFFICE_NAME","MP0_GB_OFFICE_NAME2"},{"MP0_MC_GANG_NAME","MP0_MC_GANG_NAME2"},{"MP0_YACHT_NAME","MP0_YACHT_NAME2"}}, {}
@@ -51,6 +52,10 @@ ScriptConfig["LoadESP"] = false
 ScriptConfig["PlayerBar_ON"] = false
 ScriptConfig["LoadNetEvents"] = false
 ScriptConfig["NotifyColorDefault"] = 0xff0000ff
+ScriptConfig["LoadTranslate"] = false
+ScriptConfig["Translang"] = "en"
+ScriptConfig["MyChatTrans"] = "ru"
+ScriptConfig["TransChatKey"] = false
 
 local MoistNotify = function(msg1, msg2, colour, timeout)
 	timeout = timeout or 8
@@ -69,6 +74,11 @@ _G.LocalFeatures = LocalFeatures
 _G.MoistNotify = MoistNotify
 _G.ScriptConfig = ScriptConfig
 _G.LobbyPlayers = LobbyPlayers
+_G.Session_Players = Session_Players
+
+--TODO: Tables for Local Script Functions
+
+local M_Func, M_Event = {}, {}
 
 --TODO: Translation stuff
 
@@ -78,6 +88,7 @@ end
 local Moist_Translate = require("Moist_Translate")
 local natives = require("Natives")
 local Zones = require("Zones")
+local json = require("json")
 
 
 --TODO: Script Feature Parents
@@ -87,26 +98,21 @@ Features["ParentLabel"] = menu.add_feature("Next Generation Moist Script 3.0.0.0
 
 LocalFeatures.Self_Parent = menu.add_feature("Self Features", "parent", Features.LocalParent.id)
 LocalFeatures.World_Parent = menu.add_feature("World Features", "parent", Features.LocalParent.id)
+LocalFeatures.UI_Parent = menu.add_feature("UI Features", "parent", Features.LocalParent.id)
 Features.Tests = menu.add_feature("Features Testing", "parent", Features.LocalParent.id)
 Features.Tests.hidden = true
 LocalFeatures.Stats = menu.add_feature("Stat Features", "parent", LocalFeatures.Self_Parent.id)
 LocalFeatures.Self_WeaponStuff = menu.add_feature("Weapon Related Functions", "parent", LocalFeatures.Self_Parent.id)
 LocalFeatures.Self_Ped = menu.add_feature("Player Ped Features", "parent", LocalFeatures.Self_Parent.id)
-LocalFeatures.Self_Veh = menu.add_feature("Player Vehicle Features", "parent", LocalFeatures.Self_Parent.id, function(feat)
+LocalFeatures.Self_Veh = menu.add_feature("Player VehicleFeatures", "parent", LocalFeatures.Self_Parent.id, function(feat)
+	
 	LocalFeatures.VehEngAudioMod:set_str_data(NpcVehList)
+	
+	LocalFeatures["WindSpeed"].value = natives.GET_WIND_SPEED():__tonumber()
+	
 end)
-
 Features.LocalSettings = menu.add_feature("MoistScript Settings", "parent", Features.LocalParent.id)
-LocalFeatures["save_settings"] = menu.add_feature("Current Settings: ", "action_value_str", Features.LocalSettings.id, function(feat)
-	if feat.value == 0 then
-		SaveScriptConfig()
-		MoistNotify("Current Settings Saved!", "MoistScript Settings")
-		elseif feat.value == 1 then
-		ResetScriptConfig()
-		MoistNotify("Settings Reset Done !", "MoistScript Settings")
-	end
-end)
-LocalFeatures["save_settings"]:set_str_data({"Save", "Reset"})
+
 LocalFeatures["HotKeyParent"] = menu.add_feature("MoistScript HOTKEYS", "parent", Features.LocalSettings.id)
 Features.LocalModules = menu.add_feature("Load MoistScript Modules", "parent", Features.LocalSettings.id)
 LocalFeatures["Translate"] = menu.add_feature("Update Script with Translation", "action", Features.LocalSettings.id, function(feat)
@@ -117,6 +123,7 @@ LocalFeatures["Translate"] = menu.add_feature("Update Script with Translation", 
 end)
 -- Online
 Features.OnlineParent = menu.add_player_feature("Moist Script NG", "parent", 0)
+
 Features.OnlineParent.feats.name = "Moist Script NG"
 Features["OnlineParentLabel"] = menu.add_player_feature("Next Generation Moist Script 3.0.0.0", "action", Features.OnlineParent.id)
 Features["OnlineParentLabel"].feats.name = "Next Generation Moist Script 3.0.0.0"
@@ -126,6 +133,12 @@ Features.RemovePlayer.feats.name = "Remove Player"
 
 Features.PlayerInfo = menu.add_player_feature("Player Info", "parent", Features.OnlineParent.id)
 Features.PlayerInfo.feats.name = "Player Info"
+
+Features.PlayerIPInfo = menu.add_player_feature("Player IP Info", "parent", Features.OnlineParent.id, function(feat, pid)
+	M_Func["UpdateIPInfo"](pid)
+end)
+Features.PlayerIPInfo.feats.name = "Player IP Info"
+
 
 Features.Troll = menu.add_player_feature("Troll & Annoy", "parent", Features.OnlineParent.id)
 Features.Troll.feats.name = "Troll & Annoy"
@@ -154,10 +167,6 @@ for pid = 0, #Features["CEO"].feats do
 end
 
 
---TODO: Tables for Local Script Functions
-
-local M_Func, M_Event = {}, {}
-
 --INFO: Fetch Real Friends and Remember Them!
 
 M_Func["FetchFriends"] = function()
@@ -169,8 +178,9 @@ M_Func["FetchFriends"] = function()
 end
 M_Func["FetchFriends"]()
 
-local FeatTypes <const> = {}
-FeatTypes[1 << 1 | 1 << 5 | 1 << 9] = "action_value_str"
+local FeatTypes <const>  = {}
+
+FeatTypes[(1 << 1) | (1 << 5) | (1 << 9)] = "action_value_str"
 FeatTypes[1 << 1 | 1 << 5 | 1 << 10] = "autoaction_value_str"
 FeatTypes[1 << 0 | 1 << 1 | 1 << 5] = "value_str"
 FeatTypes[1 << 1 | 1 << 5 | 1 << 9 | 1 << 15] = "action_value_str"
@@ -227,6 +237,29 @@ M_Func["Get_PID"] = function(name)
 	end
 end
 
+
+M_Func["UpdateIPInfo"] = function(pid)
+	local ip = player.get_player_ip(pid)
+	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
+	local success, result = web.get("http://ip-api.com/json/" .. sip .. "?fields=continent,country,countryCode,regionName,city,isp,org,mobile,proxy,hosting,query&lang=en")
+	system.yield(10)
+	local IpInfo = json.decode(result)
+	for k, v in pairs(IpInfo) do
+	system.yield(10)
+		OnlineFeatures[k].feats[pid].name = tostring(k) .. " = " .. tostring(v)
+		
+	end
+end
+
+M_Func["IPInfo"] = function(pid)
+	local ip = player.get_player_ip(pid)
+	local sip = string.format("%i.%i.%i.%i", (ip >> 24) & 0xff, ((ip >> 16) & 0xff), ((ip >> 8) & 0xff), ip & 0xff)
+	local success, result = web.get("http://ip-api.com/json/" .. sip .. "?fields=continent,country,countryCode,regionName,city,isp,org,mobile,proxy,hosting,query&lang=en")
+	system.yield(10)
+	Session_Players[pid].IPInfo = json.decode(result)
+end
+
+
 M_Func["Get_MP_Stat"] = function(stat)
 	local part1, part2
 	local text1 = stat
@@ -253,20 +286,47 @@ M_Func["LoadLUAFile"] = function(scriptname)
 end
 
 M_Event["Join_Event"] = event.add_event_listener("player_join", function(e)
+	local pid = e.player
 	M_Func["SessionSetup"]()
+	M_Func["IPInfo"](pid)
+
 	return
 end)
 
 M_Event["Leave_Event"] = event.add_event_listener("player_leave", function(e)
+	local pid = e.player
 	M_Func["SessionSetup"]()
-	return
-end)
-
-for pid = 0, 31 do
 	Session_Players[pid] = {}
 	Session_Players[pid].name = nil
 	Session_Players[pid].scid = -1
+	Session_Players[pid].IPInfo = {}
+	
+	
+	return
+end)
+
+M_Func["ScriptInt"] = function()
+	
+for pid = 0, 31 do
+
+	Session_Players[pid] = {}
+	Session_Players[pid].name = nil
+	Session_Players[pid].scid = -1
+	Session_Players[pid].IPInfo = {}
+	end
+	for pid = 0, 31 do
+	if network.is_session_started() then
+	if player.is_player_valid(pid) then
+	Session_Players[pid].name = player.get_player_name(pid)
+	Session_Players[pid].scid = player.get_player_scid(pid)
+	Session_Players[pid].IPInfo = {}
+	M_Func.IPInfo(pid)
+	end
+	
 end
+end
+end
+M_Func.ScriptInt()
 
 --TODO: Functions for Script Settings
 function SaveScriptConfig()
@@ -277,6 +337,7 @@ function SaveScriptConfig()
 	end
 	file:close()
 end
+
 
 function ResetScriptConfig()
 	local file = io.open(FolderPaths.SettingsFile, "w")
@@ -304,6 +365,16 @@ function LoadScriptConfig()
 	end
 end
 LoadScriptConfig()
+LocalFeatures["save_settings"] = menu.add_feature("Current Settings: ", "action_value_str", Features.LocalSettings.id, function(feat)
+	if feat.value == 0 then
+		SaveScriptConfig()
+		MoistNotify("Current Settings Saved!", "MoistScript Settings")
+		elseif feat.value == 1 then
+		ResetScriptConfig()
+		MoistNotify("Settings Reset Done !", "MoistScript Settings")
+	end
+end)
+LocalFeatures["save_settings"]:set_str_data({"Save", "Reset"})
 
 --INFO: save settings
 
@@ -345,6 +416,15 @@ M_Event["NetworkJoin"] = event.add_event_listener("player_join", function(e)
 end)
 
 --TODO: Script Functions
+M_Func["Blip_Flash"] = function(BlipID)
+	local PlayerBlip = BlipID
+
+	natives.SET_BLIP_FLASHES_ALTERNATE(PlayerBlip, true)
+	natives.SET_BLIP_FLASH_INTERVAL(PlayerBlip, 100)
+	natives.SET_BLIP_FLASH_TIMER(PlayerBlip, 7000)
+
+
+end
 
 M_Func["TriggerEvent"] = function(event, pid, params)
 	local Param = {}
@@ -405,6 +485,51 @@ M_Func["File_Writer"] = function(OutputText, inc_date, Outputfile)
 end
 
 --INFO: Player Features
+
+OnlineFeatures["query"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["query"].feats do
+	OnlineFeatures["query"].feats[pid].name = ""
+end
+OnlineFeatures["continent"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["continent"].feats do
+	OnlineFeatures["continent"].feats[pid].name = ""
+end
+OnlineFeatures["countryCode"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["countryCode"].feats do
+	OnlineFeatures["countryCode"].feats[pid].name = ""
+end
+OnlineFeatures["country"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["country"].feats do
+	OnlineFeatures["country"].feats[pid].name = ""
+end
+OnlineFeatures["regionName"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["regionName"].feats do
+	OnlineFeatures["regionName"].feats[pid].name = ""
+end
+OnlineFeatures["city"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["city"].feats do
+	OnlineFeatures["city"].feats[pid].name = ""
+end
+OnlineFeatures["isp"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["isp"].feats do
+	OnlineFeatures["isp"].feats[pid].name = ""
+end
+OnlineFeatures["org"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["org"].feats do
+	OnlineFeatures["org"].feats[pid].name = ""
+end
+OnlineFeatures["mobile"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["mobile"].feats do
+	OnlineFeatures["mobile"].feats[pid].name = ""
+end
+OnlineFeatures["proxy"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["proxy"].feats do
+	OnlineFeatures["proxy"].feats[pid].name = ""
+end
+OnlineFeatures["hosting"] = menu.add_player_feature("", "action", Features.PlayerIPInfo.id)
+for pid = 0, #OnlineFeatures["hosting"].feats do
+	OnlineFeatures["hosting"].feats[pid].name = ""
+end
 
 --INFO: Framed Griefing
 
@@ -541,6 +666,17 @@ OnlineFeats["FramedOrbital"] = menu.add_player_feature("Orbital Player: ", "acti
 		fire.add_explosion(pos + v3(100.0,100.0,7000.00), 50, true, false, 1.0, BlaPed)
 		fire.add_explosion(pos, 50, true, false, 1.0, BlaPed)
 		fire.add_explosion(pos, 50, true, false, 1.0, BlaPed)
+		local orb = script.get_global_i(196417)
+		MoistNotify(orb, "")
+		script.set_global_i(196417, 1)
+				graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
+		natives.REQUEST_SCRIPT_AUDIO_BANK("DLC_CHRISTMAS2017/XM_ION_CANNON", false, -1)
+		natives.REQUEST_SCRIPT_AUDIO_BANK("dlc_christmas2017", false, -1)
+		natives.REQUEST_SCRIPT_AUDIO_BANK("xm_ion_cannon", false, -1)
+		system.yield(10)
+		audio.play_sound_from_coord(-1, "ORBITAL_CANNON_FIRE_EXPLOSION", pos, 0, true, 0, false)
+		audio.play_sound_from_coord(-1, "DLC_XM_Explosions_Orbital_Cannon", pos, 0, true, 0, false)
+		
 		graphics.start_networked_ptfx_non_looped_at_coord("scr_xm_orbital_blast", pos, v3(0, 0, 0), 100.000, false, false, true)
 		graphics.set_next_ptfx_asset("scr_xm_orbital")
 		while not graphics.has_named_ptfx_asset_loaded("scr_xm_orbital") do
@@ -630,20 +766,16 @@ for pid = 0, #OnlineFeatures["CuntCannon"].feats do
 	OnlineFeatures["CuntCannon"].feats[pid]:set_str_data({"ALIEN CUNT CANNON","ORBITAL CUNT CANNON"})
 end
 
-OnlineFeats["SetLockonPlayer"] = menu.add_player_feature("Force Lockon to this player", "toggle", Features.PlayerInfo.id, function(feat, pid)
-	if feat.on then
-		natives.SET_PLAYER_LOCKON(pid, feat.on)
-		system.yield(10)
-		elseif not feat.on then
-		natives.SET_PLAYER_LOCKON(pid, feat.on)
-		system.yield(10)
-		return HANDLER_CONTINUE
-	end
+OnlineFeats["AVERAGE_LATENCY"] = menu.add_player_feature("Latency Test", "action", Features.PlayerInfo.id, function(feat, pid)
+
+		latency1 = natives.NETWORK_GET_AVERAGE_LATENCY_FOR_PLAYER(pid):__tonumber()
+		latency2 = natives.NETWORK_GET_AVERAGE_LATENCY_FOR_PLAYER_2(pid):__tonumber()
+		system.yield(600)
+		MoistNotify("Test1 = " .. latency1 .. "\nTest2 = " .. latency2, "Average Latency for Player")
 	return HANDLER_POP
 end)
-for pid= 0, #OnlineFeats["SetLockonPlayer"].feats do
-	OnlineFeats["SetLockonPlayer"].feats[pid].on = false
-	OnlineFeats["SetLockonPlayer"].feats[pid].name = "Force Lockon to this player"
+for pid= 0, #OnlineFeats["AVERAGE_LATENCY"].feats do
+	OnlineFeats["AVERAGE_LATENCY"].feats[pid].name = "Latency Test"
 	
 end
 
@@ -662,23 +794,80 @@ OnlineFeats["GetZoneInfo"] = menu.add_player_feature("Get Player Zone Info", "ac
 	return HANDLER_POP
 end)
 for pid= 0, #OnlineFeats["GetZoneInfo"].feats do
-	OnlineFeats["GetZoneInfo"].feats[pid].hidden = false
+	OnlineFeats["GetZoneInfo"].feats[pid].hidden = true
 	OnlineFeats["GetZoneInfo"].feats[pid].name = "Get Player Zone Info"
 	
 end
 
-OnlineFeats["GetInteriorInfo"] = menu.add_player_feature("Get Interior from Collision", "action", Features.PlayerInfo.id, function(feat, pid)
+
+OnlineFeats["ACKS"] = menu.add_player_feature("unAck TX's: ", "value_f", Features.PlayerInfo.id, function(feat, pid)
+	if feat.on then
+	local acks = natives.NETWORK_GET_NUM_UNACKED_FOR_PLAYER(pid):__tointeger()
+	feat.value = acks
+
 	
-	local result = natives.GET_INTERIOR_FROM_COLLISION(player.get_player_coords(pid)):__tointeger()
-	system.yield(1000)
-	MoistNotify(tostring(result), "")
-	
-	
+	return HANDLER_CONTINUE
+	end
 	return HANDLER_POP
 end)
-for pid= 0, #OnlineFeats["GetInteriorInfo"].feats do
-	OnlineFeats["GetInteriorInfo"].feats[pid].hidden = false
-	OnlineFeats["GetInteriorInfo"].feats[pid].name = "Get Interior from Collision"
+for pid= 0, #OnlineFeats["ACKS"].feats do
+	OnlineFeats["ACKS"].feats[pid].hidden = false
+	OnlineFeats["ACKS"].feats[pid].max = 200.00
+	OnlineFeats["ACKS"].feats[pid].min = 0.00
+	OnlineFeats["ACKS"].feats[pid].value = 0.00
+	OnlineFeats["ACKS"].feats[pid].name = "unAck TX's: "
+end
+
+OnlineFeats["SetMiniMap2Player"] = menu.add_player_feature("Set Minimap to Players Location", "toggle", Features.PlayerInfo.id, function(feat, pid)
+	if feat.on then
+		local pos = player.get_player_coords(pid)
+		natives.LOCK_MINIMAP_POSITION(pos.x, pos.y)
+		return HANDLER_CONTINUE
+	end
+	natives.UNLOCK_MINIMAP_POSITION()
+	return HANDLER_POP
+end)
+for pid= 0, #OnlineFeats["SetMiniMap2Player"].feats do
+	OnlineFeats["SetMiniMap2Player"].feats[pid].hidden = false
+	OnlineFeats["SetMiniMap2Player"].feats[pid].name = "Set Minimap to Players Location"
+	
+end
+
+OnlineFeats["SetMiniMap2PlayerBlip"] = menu.add_player_feature("Minimap Zoom to Players Blip", "value_f", Features.PlayerInfo.id, function(feat, pid)
+	local BlipID = ui.get_blip_from_entity(player.get_player_ped(pid))
+	if feat.on then
+		natives.SET_RADAR_ZOOM_TO_BLIP(BlipID, feat.value)
+		return HANDLER_CONTINUE
+	end
+	natives.UNLOCK_MINIMAP_POSITION()
+	return HANDLER_POP
+end)
+for pid= 0, #OnlineFeats["SetMiniMap2PlayerBlip"].feats do
+	OnlineFeats["SetMiniMap2PlayerBlip"].feats[pid].hidden = false
+	OnlineFeats["SetMiniMap2PlayerBlip"].feats[pid].max = 200.0
+	OnlineFeats["SetMiniMap2PlayerBlip"].feats[pid].min = 1.0
+	OnlineFeats["SetMiniMap2PlayerBlip"].feats[pid].mod = 5.0
+	OnlineFeats["SetMiniMap2PlayerBlip"].feats[pid].name = "Minimap Zoom to Players Blip"
+	
+end
+
+OnlineFeats["SetPlayerBlipFlash"] = menu.add_player_feature("Players Blip Flashes", "value_i", Features.PlayerInfo.id, function(feat, pid)
+	local BlipID = ui.get_blip_from_entity(player.get_player_ped(pid))
+	if feat.on then
+	
+		M_Func.Blip_Flash(BlipID)
+		system.yield(feat.value)
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+for pid= 0, #OnlineFeats["SetPlayerBlipFlash"].feats do
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].hidden = false
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].max = 500
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].min = 25
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].mod = 25
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].value = 250
+	OnlineFeats["SetPlayerBlipFlash"].feats[pid].name = "Players Blip Flashes"
 	
 end
 
@@ -784,36 +973,35 @@ for pid= 0, #OnlineFeatures["REM_CEO"].feats do
 end
 
 OnlineFeatures["SendCops"] = menu.add_player_feature("Dispatch Cops to Player Location", "action", Features.Troll.id, function(feat, pid)
-	local pid, nPid
-	local nPid =  natives.INT_TO_PARTICIPANTINDEX(pid):__tointeger()
-	system.yield(1000)
-	natives.SET_DISPATCH_COPS_FOR_PLAYER(nPid, true)
-	system.yield(1000)
+	natives.SET_DISPATCH_COPS_FOR_PLAYER(Pid, true)
+	return HANDLER_POP
+	
+	
+	
 end)
 for pid= 0, #OnlineFeatures["SendCops"].feats do
 	OnlineFeatures["SendCops"].feats[pid].name = "Dispatch Cops to Player Location"
 end
 
-OnlineFeatures["DisableShooting"] = menu.add_player_feature("Disable Player Shooting", "toggle", Features.Troll.id, function(feat, pid)
-	while feat.on do
-		local pid, nPid
-		local nPid =  natives.INT_TO_PARTICIPANTINDEX(pid):__tointeger()
-		system.yield(200)
-		natives.DISABLE_PLAYER_FIRING(nPid, true)
-		system.yield(0)
+OnlineFeatures["GangHarrasment"] = menu.add_player_feature("Gangs will Hassle Player", "toggle", Features.Troll.id, function(feat, pid)
+	if not feat.on then
+		natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(pid, false)
+		return HANDLER_POP
 	end
+	
+	
+	natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(pid, true)
 	return HANDLER_POP
 end)
-for pid= 0, #OnlineFeatures["DisableShooting"].feats do
-	OnlineFeatures["DisableShooting"].feats[pid].name = "Disable Player Shooting"
-	OnlineFeatures["DisableShooting"].feats[pid].on = false
-	
+for pid= 0, #OnlineFeatures["GangHarrasment"].feats do
+	OnlineFeatures["GangHarrasment"].feats[pid].name = "Gangs will Hassle Player"
+	OnlineFeatures["GangHarrasment"].feats[pid].on = false
 end
+
 
 OnlineFeatures["DisablePlayerInterior"] = menu.add_player_feature("Disable Player Interior", "toggle", Features.Troll.id, function(feat, pid)
 	while feat.on do
-		local playerPed = natives.GET_PLAYER_PED(pid):__tointeger()
-		system.yield(1000)
+		local playerPed = player.get_player_ped(pid)
 		local interior = natives.GET_INTERIOR_FROM_COLLISION(player.get_player_coords(pid)):__tointeger()
 		natives.CLEAR_INTERIOR_FOR_ENTITY(playerPed)
 		natives.DISABLE_INTERIOR(interior, true)
@@ -1047,6 +1235,25 @@ for pid= 0,#OnlineFeatures["Force_to_Island"].feats do
 	OnlineFeatures["Force_to_Island"].feats[pid].hidden = false
 end
 
+OnlineFeatures["FakePlayer"] = menu.add_player_feature("Fake Player Clone (WIP)", "action", Features.Troll.id, function(feat, pid)
+	if not network.is_session_started() then
+		return HANDLER_POP
+	end
+	local pped = player.get_player_ped(pid)
+	local pped_clone = ped.clone_ped(pped)
+	print(pped_clone)
+	tagID = natives.CREATE_FAKE_MP_GAMER_TAG(pped_clone, "PLAYER IS A CUNT", false, true, "CUNT", 1)
+	
+	local PedNetID = natives.PED_TO_NET(pped_clone):__tointeger()
+	print(PedNetID)
+	natives.SET_NETWORK_ID_ALWAYS_EXISTS_FOR_PLAYER(PedNetID, pid, true)
+	natives.SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(PedNetID, true) 
+	return HANDLER_POP
+end)
+for pid= 0,#OnlineFeatures["FakePlayer"].feats do
+	OnlineFeatures["FakePlayer"].feats[pid].hidden = false
+end
+
 --TODO: Local Script Features
 
 --TODO: Local Stat features
@@ -1107,10 +1314,57 @@ LocalFeatures.Turbulance = menu.add_feature("AirCraft Turbulance", "value_f", Lo
 	return HANDLER_POP
 end)
 LocalFeatures.Turbulance.max = 1.0
-LocalFeatures.Turbulance.min = -1.0
+LocalFeatures.Turbulance.min = 0.0
 LocalFeatures.Turbulance.mod = 0.1
-
 LocalFeatures.Turbulance.on = false
+
+LocalFeatures.AirDrag = menu.add_feature("Set Air Drag Multiplier: ", "value_f", LocalFeatures.Self_Veh.id, function(feat)
+	if feat.on and player.is_player_in_any_vehicle(player.player_id()) then
+		local veh = player.get_player_vehicle(player.player_id())
+		local hash = entity.get_entity_model_hash(veh)
+		if streaming.is_model_a_plane(hash) then	
+			natives.SET_AIR_DRAG_MULTIPLIER_FOR_PLAYERS_VEHICLE(player.player_id(), feat.value)
+		end
+		system.yield(800)
+		return HANDLER_CONTINUE
+	end
+	return HANDLER_POP
+end)
+LocalFeatures.AirDrag.max = 14.9
+LocalFeatures.AirDrag.min = 0.0
+LocalFeatures.AirDrag.mod = 0.1
+LocalFeatures.AirDrag.on = false
+LocalFeatures.AirDrag.name = "Set Air Drag Multiplier: "
+
+LocalFeatures.AltLvl = menu.add_feature("Altitude Level Indication: ", "action_value_f", LocalFeatures.Self_Veh.id, function(feat)
+	
+	natives.SET_MINIMAP_ALTITUDE_INDICATOR_LEVEL(feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.AltLvl.max = 400.0
+LocalFeatures.AltLvl.min = 0.0
+LocalFeatures.AltLvl.mod = 1.0
+
+
+LocalFeatures["WindSpeed"] = menu.add_feature("Set Wind Speed: ", "value_f", LocalFeatures.Self_Veh.id, function(feat)
+	if not 	MoistVar["windspeed"]  then
+		MoistVar["windspeed"] = natives.GET_WIND_SPEED():__tonumber()
+	end
+	if not feat.on then
+		natives.SET_WIND_SPEED(MoistVar["windspeed"])
+		return HANDLER_POP
+	end
+	natives.SET_WIND(feat.value)
+	natives.SET_WIND_SPEED(feat.value)
+	system.yield(10)
+	return HANDLER_CONTINUE
+end)
+LocalFeatures["WindSpeed"].max = 500.0
+LocalFeatures["WindSpeed"].min = -1.0
+LocalFeatures["WindSpeed"].mod = 0.5
+LocalFeatures["WindSpeed"].value = 0.0
+LocalFeatures["WindSpeed"].on = false
 
 LocalFeatures.Aileron = menu.add_feature("Disable Plane Aileron", "toggle", LocalFeatures.Self_Veh.id, function(feat)
 	if feat.on then
@@ -1341,16 +1595,97 @@ LocalFeatures.Lightning.max = 2.00
 LocalFeatures.Lightning.min = 0.01
 LocalFeatures.Lightning.mod = 0.01
 
+LocalFeatures.RainLvl = menu.add_feature("Set Rain Level:  ", "action_value_f", LocalFeatures.World_Parent.id, function(feat)
+	
+	natives.SET_RAIN_LEVEL(feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.RainLvl.name = "Set Rain Level:  "
+LocalFeatures.RainLvl.max = 0.9
+LocalFeatures.RainLvl.min = 0.0
+LocalFeatures.RainLvl.mod = 0.01
+
+
+LocalFeatures.WaterOverStg = menu.add_feature("Water Override Strength:  ", "action_value_f", LocalFeatures.World_Parent.id, function(feat)
+	
+	natives.WATER_OVERRIDE_SET_STRENGTH(feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.WaterOverStg.name = "Water Override Strength:  "
+LocalFeatures.WaterOverStg.max = 20.00
+LocalFeatures.WaterOverStg.min = 0.0
+LocalFeatures.WaterOverStg.value = 1.0
+LocalFeatures.WaterOverStg.mod = 0.1
+
+LocalFeatures.WaterMod = menu.add_feature("Modify Water Radius:  ", "action_value_f", LocalFeatures.World_Parent.id, function(feat)
+	local pos = player.get_player_coords(player.player_id())
+	
+	natives.MODIFY_WATER(pos.x, pos.y, feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.WaterMod.name = "Modify Water Radius:  "
+LocalFeatures.WaterMod.max = 250.00
+LocalFeatures.WaterMod.min = 0.0
+LocalFeatures.WaterMod.mod = 0.1
+
+LocalFeatures.RippleDis = menu.add_feature("Water Ripple Disturbance:  ", "action_value_f", LocalFeatures.World_Parent.id, function(feat)
+	
+	natives.WATER_OVERRIDE_SET_RIPPLEDISTURB(feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.RippleDis.name = "Water Ripple Disturbance:  "
+LocalFeatures.RippleDis.max = 50.00
+LocalFeatures.RippleDis.min = 0.00
+LocalFeatures.RippleDis.mod = 0.1
+
+LocalFeatures.RippleBump = menu.add_feature("Water Ripple Bumpiness:  ", "action_value_f", LocalFeatures.World_Parent.id, function(feat)
+	
+	natives.WATER_OVERRIDE_SET_RIPPLEBUMPINESS(feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.RippleBump.name = "Water Ripple Bumpiness:  "
+LocalFeatures.RippleBump.max = 50.00
+LocalFeatures.RippleBump.min = 0.0
+LocalFeatures.RippleBump.mod = 0.1
+
+LocalFeatures.ShoreWaveAmp = menu.add_feature("Override ShoreWave Amplitude:  ", "action_value_f", LocalFeatures.World_Parent.id, function(feat)
+	
+	natives.WATER_OVERRIDE_SET_SHOREWAVEAMPLITUDE(feat.value)
+	
+	return HANDLER_POP
+end)
+LocalFeatures.ShoreWaveAmp.name = "Override ShoreWave Amplitude:  "
+LocalFeatures.ShoreWaveAmp.max = 50.00
+LocalFeatures.ShoreWaveAmp.min = 0.0
+LocalFeatures.ShoreWaveAmp.mod = 0.1
+
+LocalFeatures.RiotMode = menu.add_feature("Turn ON Riot Mode!", "toggle", LocalFeatures.World_Parent.id, function(feat)
+	if not feat.on then
+		natives.SET_RIOT_MODE_ENABLED(false)
+		return HANDLER_POP
+	end
+	natives.SET_RIOT_MODE_ENABLED(true)
+	return HANDLER_POP
+end)
+LocalFeatures.RiotMode.name = "Turn ON Riot Mode!"
+
+
 --TODO: Destroy Projectiles
 LocalFeatures.Projectiles = menu.add_feature("Destroy Projectiles(WIP)", "toggle", LocalFeatures.Self_WeaponStuff.id, function(feat)
 	local Weap_Projectiles = {"WEAPON_GRENADE","WEAPON_STICKYBOMB","VEHICLE_WEAPON_TANK","VEHICLE_WEAPON_SPACE_ROCKET","WEAPON_RPG",
-	"VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_PLAYER_LASER","VEHICLE_WEAPON_PLAYER_BULLET","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER",
-	"WEAPON_PROXMINE","WEAPON_FIREWORK","WEAPON_FLAREGUN","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_HUNTER_MISSILE",
-	"VEHICLE_WEAPON_HUNTER_BARRAGE","VEHICLE_WEAPON_DOGFIGHTER_MISSILE","VEHICLE_WEAPON_ROGUE_MISSILE","VEHICLE_WEAPON_VIGILANTE_MISSILE",
-	"VEHICLE_WEAPON_APC_CANNON","VEHICLE_WEAPON_APC_MISSILE","VEHICLE_WEAPON_TRAILER_MISSILE","VEHICLE_WEAPON_TRAILER_DUALAA",
-	"VEHICLE_WEAPON_OPPRESSOR_MISSILE","VEHICLE_WEAPON_MOBILEOPS_CANNON","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_CHERNO_MISSILE",
-	"VEHICLE_WEAPON_AKULA_MISSILE","VEHICLE_WEAPON_DELUXO_MISSILE","VEHICLE_WEAPON_SUBCAR_MISSILE","VEHICLE_WEAPON_SUBCAR_TORPEDO",
-	"VEHICLE_WEAPON_THRUSTER_MISSILE","WEAPON_GRENADELAUNCHER","WEAPON_AIRSTRIKE_ROCKET","WEAPON_PASSENGER_ROCKET","WEAPON_VEHICLE_ROCKET"}
+		"VEHICLE_WEAPON_PLANE_ROCKET","VEHICLE_WEAPON_PLAYER_LASER","VEHICLE_WEAPON_PLAYER_BULLET","WEAPON_HOMINGLAUNCHER","WEAPON_STINGER",
+		"WEAPON_PROXMINE","WEAPON_FIREWORK","WEAPON_FLAREGUN","VEHICLE_WEAPON_RUINER_ROCKET","VEHICLE_WEAPON_HUNTER_MISSILE",
+		"VEHICLE_WEAPON_HUNTER_BARRAGE","VEHICLE_WEAPON_DOGFIGHTER_MISSILE","VEHICLE_WEAPON_ROGUE_MISSILE","VEHICLE_WEAPON_VIGILANTE_MISSILE",
+		"VEHICLE_WEAPON_APC_CANNON","VEHICLE_WEAPON_APC_MISSILE","VEHICLE_WEAPON_TRAILER_MISSILE","VEHICLE_WEAPON_TRAILER_DUALAA",
+		"VEHICLE_WEAPON_OPPRESSOR_MISSILE","VEHICLE_WEAPON_MOBILEOPS_CANNON","VEHICLE_WEAPON_AVENGER_CANNON","VEHICLE_WEAPON_CHERNO_MISSILE",
+		"VEHICLE_WEAPON_AKULA_MISSILE","VEHICLE_WEAPON_DELUXO_MISSILE","VEHICLE_WEAPON_SUBCAR_MISSILE","VEHICLE_WEAPON_SUBCAR_TORPEDO",
+	"VEHICLE_WEAPON_THRUSTER_MISSILE","WEAPON_GRENADELAUNCHER","WEAPON_AIRSTRIKE_ROCKET","WEAPON_PASSENGER_ROCKET","WEAPON_VEHICLE_ROCKET",
+	"VEHICLE_WEAPON_KHANJALI_CANNON","VEHICLE_WEAPON_KHANJALI_CANNON_HEAVY"}
 	while feat.on do
 		for i = 1, #Weap_Projectiles do
 			local hash = gameplay.get_hash_key(Weap_Projectiles[i])
@@ -1371,66 +1706,279 @@ end)
 LocalFeatures.Projectiles.name = "Destroy Projectiles(WIP)"
 LocalFeatures.Projectiles.on = false
 
-local DefenseZones, DefenseBlip = {}, {}
-
-LocalFeatures.AirDefense = menu.add_feature("Portable Yacht Defenses", "value_f", LocalFeatures.Self_WeaponStuff.id, function(feat)
-	if not feat.on then
-		if #DefenseZones ~= 0 then
-			for i = 1, #DefenseZones do
-				if natives.DOES_AIR_DEFENSE_ZONE_EXIST(DefenseZones[i]) then
-					natives.REMOVE_AIR_DEFENSE_ZONE(DefenseZones[i])
-					DefenseZones[i] = nil
+local DefenseZones, DefenseBlip, NavMesh = {}, {}, {}
+local defensePos, DefRad = v3(), 0.0
+local AirDefFireVehThread, AirDefFirePedThread = 0, 0
+function AirDefenseFireVeh(feat)
+	local vehpos
+	while true do
+		local allveh = vehicle.get_all_vehicles()
+		for y = 1, #allveh do
+			local veh_driver = vehicle.get_ped_in_vehicle_seat(allveh[y], -1)
+			if ped.is_ped_a_player(veh_driver) then
+				if player.get_player_from_ped(veh_driver) ~= player.player_id() then
+					for i = 1, #DefenseZones do
+						system.yield(0)
+						vehpos = entity.get_entity_coords(allveh[y])
+						local Magnitude = defensePos:magnitude(vehpos)
+						if Magnitude < DefRad then
+							natives.FIRE_AIR_DEFENSE_WEAPON(DefenseZones[i], vehpos)
+							offset = v3(5.0,0.0,0.0)
+							fire.add_explosion(vehpos, 59, true, false, 1.5, veh_driver)
+							fire.add_explosion(vehpos + offset, 60, true, false, 1.8, veh_driver)
+						end
+					end
 				end
 			end
 		end
-		if #DefenseBlip ~= 0 then
-			for i = 1, #DefenseBlip do
-				ui.remove_blip(DefenseBlip[i])
-				DefenseBlip[i] = nil
+		system.yield(100)
+	end
+end
+
+function AirDefFirePed(feat)
+	local pedpos
+	while true do
+		local allped = ped.get_all_peds()
+		for y = 1, #allped do
+			if ped.is_ped_a_player(allped[y]) then
+				if player.get_player_from_ped(allped[y]) ~= player.player_id() then
+					for i = 1, #DefenseZones do
+						system.yield(0)
+						pedpos = entity.get_entity_coords(allped[y])
+						local Magnitude = defensePos:magnitude(pedpos)
+						if Magnitude < DefRad then
+							natives.FIRE_AIR_DEFENSE_WEAPON(DefenseZones[i], pedpos)
+							offset = v3(5.0,0.0,0.0)
+							fire.add_explosion(pedpos, 59, true, false, 1.5, allped[y])
+							fire.add_explosion(pedpos + offset, 60, true, false, 1.8, allped[y])
+						end
+					end
+				end
 			end
 		end
-		return HANDLER_POP
+		system.yield(100)
 	end
+end
+
+
+
+LocalFeatures.AirDefense = menu.add_feature("Portable Defenses Anti Player Vehicle", "value_f", LocalFeatures.Self_WeaponStuff.id, function(feat)
+	
 	
 	local pos = player.get_player_coords(player.player_id())
+	defensePos = pos
 	local hash = gameplay.get_hash_key("weapon_air_defence_gun")
 	local radius = tonumber(feat.value)
-	DefenseZones[#DefenseZones + 1] = natives.CREATE_AIR_DEFENSE_SPHERE(pos.x, pos.y, pos.z, radius, pos.x, pos.y, pos.z, hash):__tointeger()
-	DefenseBlip[#DefenseBlip + 1] = ui.add_blip_for_radius(pos, radius)
-	natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[#DefenseZones], false)	
-	for pid = 0, 31 do
-		natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[#DefenseZones], true)	
-	end
-	ui.set_blip_colour(DefenseBlip[#DefenseBlip], 79)
-	DefenseZones[#DefenseZones + 1] =  natives.CREATE_AIR_DEFENSE_AREA(radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, radius * 0.2, hash)
-	
-	natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[#DefenseZones], false)
-	for pid = 0, 31 do
-		natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[#DefenseZones], true)	
+	DefRad = radius
+	graphics.set_next_ptfx_asset("scr_apartment_mp")
+	while not graphics.has_named_ptfx_asset_loaded("scr_apartment_mp") do
+		graphics.request_named_ptfx_asset("scr_apartment_mp")
+		system.wait(0)
 	end
 	
+	DefenseZones[#DefenseZones + 1] =  natives.CREATE_AIR_DEFENSE_SPHERE(pos.x, pos.y, pos.z, radius, pos.x, pos.y, pos.z, hash):__tointeger()
 	
-	system.yield(600)
+	NavMesh[#NavMesh+1] = natives.ADD_NAVMESH_BLOCKING_OBJECT(pos.x, pos.y, pos.z, radius, radius, radius, 1.0, 0, 7):__tointeger() 
+	natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[#DefenseZones], true)
+	for pid = 0, 31 do
+		if pid ~= (player.player_id()) then
+			natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(pid, DefenseZones[#DefenseZones], true)
+			natives.SET_RELATIONSHIP_TO_PLAYER(pid, true)
+		end
+	end
+	if AirDefFireVehThread == 0 then
+		AirDefFireVehThread = menu.create_thread(AirDefenseFireVeh, feat)
+	end
+	while feat.on do
+		natives.DRAW_SPHERE(pos.x, pos.y, pos.z, radius, 255, 0, 0, 0.2)
+		system.yield(1)
+	end
+	if AirDefFireVehThread ~= 0 then
+		menu.delete_thread(AirDefFireVehThread)
+		AirDefFireVehThread = 0
+	end
+	if #DefenseZones ~= 0 then
+		for i = 1, #DefenseZones do
+			if natives.DOES_AIR_DEFENSE_ZONE_EXIST(DefenseZones[i]) then
+				natives.REMOVE_AIR_DEFENSE_ZONE(DefenseZones[i])
+				DefenseZones[i] = nil
+			end
+		end
+			for pid = 0, 31 do
+		if pid ~= (player.player_id()) then
+		natives.SET_RELATIONSHIP_TO_PLAYER(pid, false)
+		end
+	end
+	end
+	if #NavMesh ~= 0 then
+		natives.REMOVE_NAVMESH_BLOCKING_OBJECT(NavMesh[i])
+	end
+	if #DefenseBlip ~= 0 then
+		for i = 1, #DefenseBlip do
+			ui.remove_blip(DefenseBlip[i])
+			DefenseBlip[i] = nil
+		end
+	end
 	return HANDLER_POP
 	
 end)
-LocalFeatures.AirDefense.name = "Portable Yacht Defenses"
-LocalFeatures.AirDefense.max = 2000.00
-LocalFeatures.AirDefense.min = 100.00
-LocalFeatures.AirDefense.mod = 50.00
-LocalFeatures.AirDefense.value = 150.00
+LocalFeatures.AirDefense.name = "Portable Defenses Anti Player Vehicle"
+LocalFeatures.AirDefense.max = 10000.00
+LocalFeatures.AirDefense.min = 75.00
+LocalFeatures.AirDefense.mod = 2.00
+LocalFeatures.AirDefense.value = 100.00
+
+LocalFeatures.AirDefense2 = menu.add_feature("Portable Defenses Anti Player Ped", "value_f", LocalFeatures.Self_WeaponStuff.id, function(feat)
+	
+	
+	local pos = player.get_player_coords(player.player_id())
+	defensePos = pos
+	local hash = gameplay.get_hash_key("weapon_air_defence_gun")
+	local radius = tonumber(feat.value)
+	DefRad = radius
+	graphics.set_next_ptfx_asset("scr_apartment_mp")
+	while not graphics.has_named_ptfx_asset_loaded("scr_apartment_mp") do
+		graphics.request_named_ptfx_asset("scr_apartment_mp")
+		system.wait(0)
+	end
+	
+	DefenseZones[#DefenseZones + 1] =  natives.CREATE_AIR_DEFENSE_SPHERE(pos.x, pos.y, pos.z, radius, pos.x, pos.y, pos.z, hash):__tointeger()
+	
+	NavMesh[#NavMesh+1] = natives.ADD_NAVMESH_BLOCKING_OBJECT(pos.x, pos.y, pos.z, radius, radius, radius, 1.0, 0, 7):__tointeger() 
+	natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[#DefenseZones], true)
+	for pid = 0, 31 do
+		if pid ~= (player.player_id()) then
+			natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(pid, DefenseZones[#DefenseZones], true)
+		end
+	end
+	if AirDefFirePedThread == 0 then
+		AirDefFirePedThread = menu.create_thread(AirDefFirePed, feat)
+	end
+	while feat.on do
+		natives.DRAW_SPHERE(pos.x, pos.y, pos.z, radius, 255, 0, 0, 0.2)
+		system.yield(1)
+	end
+	if AirDefFirePedThread ~= 0 then
+		menu.delete_thread(AirDefFirePedThread)
+		AirDefFirePedThread = 0
+	end
+	if #DefenseZones ~= 0 then
+		for i = 1, #DefenseZones do
+			if natives.DOES_AIR_DEFENSE_ZONE_EXIST(DefenseZones[i]) then
+				natives.REMOVE_AIR_DEFENSE_ZONE(DefenseZones[i])
+				DefenseZones[i] = nil
+			end
+		end
+	end
+	if #NavMesh ~= 0 then
+		natives.REMOVE_NAVMESH_BLOCKING_OBJECT(NavMesh[i])
+	end
+	if #DefenseBlip ~= 0 then
+		for i = 1, #DefenseBlip do
+			ui.remove_blip(DefenseBlip[i])
+			DefenseBlip[i] = nil
+		end
+	end
+	return HANDLER_POP
+	
+end)
+LocalFeatures.AirDefense2.name = "Portable Defenses Anti Player Ped"
+LocalFeatures.AirDefense2.max = 10000.00
+LocalFeatures.AirDefense2.min = 75.00
+LocalFeatures.AirDefense2.mod = 2.00
+LocalFeatures.AirDefense2.value = 100.00
+
+LocalFeatures.setDefenseZone = menu.add_feature("Zone Flags for: ", "action_value_str",  LocalFeatures.Self_WeaponStuff.id, function(feat)
+	if feat.value == 0 then
+	for i = 1, #DefenseZones do
+		natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[i], false)
+	end
+		elseif feat.value == 1 then
+		for i = 1, #DefenseZones do
+		for pid = 0, 31 do
+			if pid ~= (player.player_id()) then
+				natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(pid, DefenseZones[i], false)
+			end
+		end
+	end
+	elseif feat.value == 2 then
+	for i = 1, #DefenseZones do
+		natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(player.player_id(), DefenseZones[i], true)
+	end
+	elseif feat.value == 3 then
+			for i = 1, #DefenseZones do
+		for pid = 0, 31 do
+			if pid ~= (player.player_id()) then
+				natives.SET_PLAYER_AIR_DEFENSE_ZONE_FLAG(pid, DefenseZones[i], true)
+			end
+		end
+	end
+	
+	return HANDLER_POP
+	end
+end)
+LocalFeatures.setDefenseZone:set_str_data({"Self off","Others off","Self On","Others On"})
+LocalFeatures.setDefenseZone.name = "Zone Flags for: "
+
+LocalFeatures.BigMapMod = menu.add_feature("Minimap View Mode: ", "action_value_i", LocalFeatures.UI_Parent.id, function(feat)
+	if feat.on and feat.value == 0 then
+		natives.SET_BIGMAP_ACTIVE(true, true)
+		elseif feat.on and feat.value == 1 then
+		natives.SET_BIGMAP_ACTIVE(true, false)
+		elseif feat.on and feat.value == 2 then
+		natives.SET_BIGMAP_ACTIVE(false, false)
+	end
+	
+	
+	feat.on = false
+	
+	return HANDLER_POP
+	
+end)
+LocalFeatures.BigMapMod.name = "Minimap View Mode: "
+LocalFeatures.BigMapMod.on = false
+LocalFeatures.BigMapMod.max = 2
+LocalFeatures.BigMapMod.min = 0
 
 LocalFeatures.RemAllAirDef = menu.add_feature("Remove All Air Defense Zone", "toggle", LocalFeatures.Self_WeaponStuff.id, function(feat)
-	if feat.on then
-		natives.REMOVE_ALL_AIR_DEFENSE_ZONES()
-		system.yield(600)
-		return HANDLER_CONTINUE
-	end
+	
+	natives.REMOVE_ALL_AIR_DEFENSE_ZONES()
+	feat.on = false
+	
 	return HANDLER_POP
 	
 end)
 LocalFeatures.RemAllAirDef.name = "Remove All Air Defense Zone"
 LocalFeatures.RemAllAirDef.on = false
+
+RadarZoomVal = 100
+LocalFeatures.RadarZoom = menu.add_feature("Set Radar Zoom: ", "autoaction_value_f", LocalFeatures.UI_Parent.id, function(feat)
+	if RadarZoomVal == feat.value then
+            local r, s
+            repeat
+                r, s = input.get("Set Radar Zoom (Float Value: 0.1) ", feat.value, 64, 5)
+                if r == 2 then
+                    goto continue
+                end
+                system.wait(0)
+            until r == 0
+			RadarZoomVal = s
+		natives.SET_RADAR_ZOOM_PRECISE(tonumber(s))
+		feat.value = s
+::continue::
+	elseif RadarZoomVal ~= feat.value then
+	natives.SET_RADAR_ZOOM_PRECISE(feat.value)
+	RadarZoomVal = feat.value
+	
+	end
+        system.wait(0)
+end)
+LocalFeatures.RadarZoom.name = "Set Radar Zoom: "
+LocalFeatures.RadarZoom.max = 300.0
+LocalFeatures.RadarZoom.min = 0.0
+LocalFeatures.RadarZoom.value = 90.0
+LocalFeatures.RadarZoom.mod = 15.0
+
 
 --TODO: Script Module Loading
 
@@ -1450,6 +1998,21 @@ Features.Modules_PlayerBar = menu.add_feature("Load PlayerBar Module", "toggle",
 	return HANDLER_POP
 end)
 Features.Modules_PlayerBar.on = ScriptConfig["LoadPlayerBar"]
+
+Features.Modules_Translate = menu.add_feature("Load Translation Module", "toggle", Features.LocalModules.id, function(feat)
+	if not feat.on then
+		ScriptConfig["LoadTranslate"] = false
+		return HANDLER_POP
+	end
+	ScriptConfig["LoadTranslate"] = true
+	local file = FolderPaths.Config .. "\\MoistScript_Translate_Module.lua"
+	if MoistScript_Translate_Module == nil then
+		if not utils.file_exists(file) then return end
+		f = assert(loadfile(file)) return f()
+	end
+	return HANDLER_POP
+end)
+Features.Modules_Translate.on = ScriptConfig["LoadTranslate"]
 
 Features.Modules_NetEvents = menu.add_feature("Load Network Events Module", "toggle", Features.LocalModules.id, function(feat)
 	if not feat.on then
@@ -1506,11 +2069,19 @@ Features.Modules_Vehlist = menu.add_feature("Load Vehicle List", "toggle", Featu
 end)
 Features.Modules_Vehlist.on = ScriptConfig["LoadVehList"]
 
+LocalFeatures.NoRsEditorRec = menu.add_feature("Disable R*Editor Recording", "toggle", Features.LocalSettings.id, function(feat)
+	while feat.on do
+		natives.STOP_RECORDING_THIS_FRAME()
+		system.yield(0)
+	end
+	return HANDLER_POP
+	
+end)
+LocalFeatures.NoRsEditorRec.on = true
+LocalFeatures.NoRsEditorRec.name = "Disable R*Editor Recording"
 --TODO: Auto Execute Functions
 
 M_Func.SessionSetup()
-
-M_Func["SessionSetup"]()
 
 --TODO: On Exit Shit
 
@@ -1524,3 +2095,10 @@ event.add_event_listener("exit", function()
 		end
 	end
 end)
+end
+local MoistNgThread = menu.create_thread(MoistNG_Main, feat)
+
+event.add_event_listener("exit", function()
+	menu.delete_thread(MoistNgThread)
+end)
+	

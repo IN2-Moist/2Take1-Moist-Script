@@ -52,10 +52,10 @@ Self Features
 				
 ```			
 				
-		Portable Yacht Defenses
-			Same kinda effect as the real ones only you set the effect radius. Does not at the moment take out player like the yacht would still need to do some research and testing
-			some parameter or flag im missing to make it work as i would like. For NPC's Cops etc works well, will also destroy sub missiles. The effect area is marked with a red Radial
-			Blip at those coordinates.
+		Portable Defenses Anti Player Vehicle
+		Portable Defenses Anti Player Ped
+			Improved Since Last Release: Player in any vehicle goes in sphere they get Destroyed WIP needs some tweaking maybe a little over the top
+			Anti Player Ped does same as above only they dont need to be in any vehicle
 			
 		Remove All Air Defense Zone
 			This will literallly remove any Yacht Defences set, seems to also partially work for player yachts cant shoot in the area but does not take you out.
@@ -73,6 +73,12 @@ Self Features
 					
 			Disable Plane Aileron
 				(extra rudders on the aircraft to contol roll yaw and pitch see animations below)
+				
+			Set Air Drag Multiplier:
+				Adjust drag on vehicle caused by aircraft
+				
+			Set Wind Speed
+				Adjust current wind speed
 
 ```
 	 
@@ -118,6 +124,13 @@ Self Features
 	
 		LightningBolt Generator: Delay Multiplier = 0.01 -> 2.00
 			While on will generate Random Lightning no matter the weather Actual Delay = (Delay Multiplier * 60)
+			Set Rain Level
+			Water Override Strength
+			Modify Water Radius
+			Water Ripple Disturbance
+			Water Ripple Bumpiness
+			Override ShoreWave Amplitude
+			
 
 	MoistScript Settings
 		Current Settings: Save | Clear
@@ -130,11 +143,19 @@ Self Features
 		Load Ped List
 		Load Vehicle List
 		Load PlayerBar Module
+		Load Translation Module
 		Load ESP Module
 		Load Network Events Module
 		Update Script with Translation
 
 ```
+
+#### Tanslate Module
+
+	Adds Ingame Chat Translation to team chat or public
+	Hotkey RSHIFT + U will bring up a input box for you to enter chat to translate to ability
+	selected language in the module features
+	still need some tweaking but works well
 
 
 ### Online Features
@@ -149,18 +170,29 @@ Self Features
 		
 	Player Info  (Basically some stuff im testing for some future functions)
 	
-		Force Lockon to this player (untested)
-			This is supposed to force your lockon to the selected playeer
+		Latency Test
+		
+		unAck TX's:
+		
+		Set Minimap to Players Location
+			works properly when not in an interor will make the Radar MiniMap show the area player is located on map
+				
+		Minimap Zoom to Players Blip
+			use with above function to provide zoom ability needs some fine tuning
+		
+		Players Blip Flashes
+			flash the players blip needs more work to make flash smoother
 	
-		Get Player Zone Info (accuracy of this is shit! my method to get this info was far better and true)
-		
-		Get Interior from Collision  (still not a great way need to test in combination)
-		
-		
+
+	Player IP Info
+		IP Info Section from players IP Address
 
 	Troll & Annoy
 		Dispatch Cops to Player Location (Still testing but i seen undercover cops in the street after using this in a session)
 		
+		Gangs will Hassle Player
+			Nearby Gangs will Hassle Player
+			
 		Disable Player Shooting (untested)
 			Prevents the player from shooting each frame
 		
