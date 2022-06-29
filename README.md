@@ -2,7 +2,7 @@
 ![NextGen](https://cdn.discordapp.com/attachments/869989558018781194/984253676443017246/cooltext412726820733010.png)
 <hr>
 # Next Generation Moist Script
-## 3.0.0.0 |-| BETA TEST 3 |-|
+## 3.0.0.0 |-| BETA TEST 4 |-|
 
 ### Feaure List:
 
