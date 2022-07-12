@@ -2,7 +2,8 @@
 ![NextGen](https://cdn.discordapp.com/attachments/869989558018781194/984253676443017246/cooltext412726820733010.png)
 <hr>
 # Next Generation Moist Script
-## 3.0.0.0 |-| BETA TEST 4 |-|
+
+##  |-| 3.0.0.0 |-|
 
 ### Feaure List:
 
@@ -26,12 +27,12 @@ Self Features
 			Weapon Clip: Unlimtied | Normal (unlimited is like fast no reload, stand there with a homing launcher u can lockon and spam rockets without having to reload at all)
 			
 			Explosion Multiplier 0.00 -> 20.00 (Modifies The Explosion Radius of your Current Weapon)
-			** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out alot of players in the process !!
+				** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out alot of players in the process !!
 			
-		Destroy Projectiles(WIP)
-			(Work.In.Progress) this will explode any weapon projectiles i have currently added still needs further testing as not all seem to work, mk2 missile wont get destroyed
-			but likes of a ruiner you shoot a missile it goes boom along with you. This will also explode players when they equip homing launcher, rpg firework launcher etc soon
-			as they switch to it the missile in the chamber is detected and exploded.
+			Destroy Projectiles(WIP)
+				(Work.In.Progress) this will explode any weapon projectiles i have currently added still needs further testing as not all seem to work, mk2 missile wont get destroyed
+				but likes of a ruiner you shoot a missile it goes boom along with you. This will also explode players when they equip homing launcher, rpg firework launcher etc soon
+				as they switch to it the missile in the chamber is detected and exploded.
 
 ```			
 
@@ -51,21 +52,93 @@ Self Features
 
 				
 ```			
+		Portable Defence Sphere
+			Set Below Values Manually
+				Will Adjust all values below to this one
+				if you just activate the option and value has not changed Input box will popup so you can set this manually
 				
-		Portable Defenses Anti Player Vehicle
-		Portable Defenses Anti Player Ped
-			Improved Since Last Release: Player in any vehicle goes in sphere they get Destroyed WIP needs some tweaking maybe a little over the top
-			Anti Player Ped does same as above only they dont need to be in any vehicle
+			Portable Defenses Anti Player Vehicle
+			Portable Defenses Anti Player Ped
+				Improved Since Last Release: Player in any vehicle goes in sphere they get Destroyed WIP needs some tweaking maybe a little over the top
+				Anti Player Ped does same as above only they dont need to be in any vehicle
+			Portable Defences Anti Projectile
+				Should prevent projectiles and weapons fire in the sphere
+				has been said in game that people were unable to use some weapons like lazer cannons but this also can be effected by zone flag settings below
 			
-		Remove All Air Defense Zone
-			This will literallly remove any Yacht Defences set, seems to also partially work for player yachts cant shoot in the area but does not take you out.
+			Zone Flags for: < Self off | Others off | Self on | Others on>
+				turns zone flags on / off depending on option for players
+			
+			Remove All Air Defense Zone
+					This will literallly remove any Yacht Defences set, seems to also partially work for player yachts cant shoot in the area but does not take you out.
 
 		Player Ped Features
-			Make My Ped Wet! :P (Drench your ped like its raining heavily or you just come out of water)
+			Make My Ped Wet! :P
+				Drench your ped like its raining heavily or you just come out of water
+				
+			Set Myself Ghosted to Other Players
+				Sets Ghosting to others this is also in one of the defense sphere options
+
 			Turn Me into a Cop (not outfit related makes your ped like a cop so you get ignored by cops get a cop cone on radar when wanted)
 			
 		Player Vehicle Features
+		
+			CargoBob Mod
+		
+				CargoBob: Hook | Magnet
 
+				Magnet Pickup Strength:
+					modifier Value
+				Magnet Effect Radius:
+					modifier Value
+				Magnet Pull Rope Length:
+					modifier Value
+				Magnet Rope Length:
+					modifier Value
+				Magnet Pull Strength:
+					modifier Value
+			
+			Moists Train Mod
+				Enable Train Spawning
+					Enables Spawning of Trains and turns on Control Meter and Controller Support to control trains
+					Controls are Controller based:
+					
+					Left Trigger :: Reduce Cruise Speed or Speed negative (go backwards)
+					
+					Right Trigger :: Increase Cruise Speed or Speed Forwards
+					
+					Right Top Bumper/Trigger(HandBrake) :: Turns on Stop Train and sets all speeds to 0.0
+									
+				Track Switch
+					Sets Trains enabled on other tracks (WIP) still figuring this one out
+							
+				Train Control < Stop Train Enable Access | Enter Nearest Train as Driver>
+					option 1 will try to stop train and low you to enter (WIP not working fully yet)
+					option 2 Enter nearest train if one found nearby
+				
+				Switch Train Spawn Direction
+					changes the direction spawned train is facing
+				
+				Spawn Train Variation
+					23 variants can be spawned
+				
+				Train Cruise
+					Sets Train Cruise Speed When on
+					train will increase speed until it hits set speed
+					
+				Train Speed
+					Sets Train Speed Immediately
+				
+				Stop Train
+					used with controller control tries to stop train
+				
+				Control Speed(Instant Insane Speed)
+					use this with Train Speed on to use controller input to set the speed
+					very sensitive so speeds are insane
+				
+				DeRail Train
+					Does as it says sets the train to a Derailed State while on
+					
+				
 			AirCraft Turbulance
 				Turbulance Modifier
 					0.0 (No Turbulance)
@@ -105,21 +178,10 @@ Self Features
 			List Populated from vehlist.ini
 			default preset chernobog
 
-	CargoBob Mod
+	
+	Player Histroy
+		Requires Histroy Module to be loaded
 		
-		CargoBob: Hook | Magnet
-
-		Magnet Pickup Strength:
-			modifier Value
-		Magnet Effect Radius:
-			modifier Value
-		Magnet Pull Rope Length:
-			modifier Value
-		Magnet Rope Length:
-			modifier Value
-		Magnet Pull Strength:
-			modifier Value
-
 	World Features
 	
 		LightningBolt Generator: Delay Multiplier = 0.01 -> 2.00
@@ -130,8 +192,18 @@ Self Features
 			Water Ripple Disturbance
 			Water Ripple Bumpiness
 			Override ShoreWave Amplitude
+	
+	UI Features
+		MiniMap View Mode
+			changes states of minimap
+		Player Blip Enhancements
+			enables blip cones
+		Player Blip Enhancments
+			enables direction and height indicators
+		OTR Player Blips
+			Adds Blips for OTR Players
+			on main big map it also adds their name to the blip
 			
-
 	MoistScript Settings
 		Current Settings: Save | Clear
 	
@@ -142,6 +214,7 @@ Self Features
 	Custom Lists for Features
 		Load Ped List
 		Load Vehicle List
+		Load Player Histroy Module
 		Load PlayerBar Module
 		Load Translation Module
 		Load ESP Module
@@ -171,9 +244,24 @@ Self Features
 	Player Info  (Basically some stuff im testing for some future functions)
 	
 		Latency Test
-		
+
+```
+
+<hr>
+
+```		
+
 		unAck TX's:
-		
+		Latency (ms):
+		PacketLoss:
+			these Feature Value toggles will update periodically to show the values
+
+```
+
+<hr>
+
+```
+	
 		Set Minimap to Players Location
 			works properly when not in an interor will make the Radar MiniMap show the area player is located on map
 				
@@ -203,6 +291,9 @@ Self Features
 
 	Grief This Cunt ! !
 		Cunt Cannon!
+	
+		Gangs will Grief Player
+			Spawns Random Gangmember nearby to attack
 
 	Grief Others (Frame Player)
 		Framed Session Orbital Strike
