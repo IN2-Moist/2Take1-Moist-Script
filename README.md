@@ -238,7 +238,9 @@ Self Features
 
 ```
 	Remove Player
-		Network Bail Kick
+		Micheal Error Kick
+			Script Event Kicks player after Micheal sends a notification saying ERROR!
+
 		Send Event:  Vector Crash | Stat Crash | Rando Crash | Moist Crash
 		Send Event v2:  Vector Crash | Stat Crash | Rando Crash | Moist Crash | Bit Crash
 		Lester Cummy WindSock Crash (May Need to be executed a few times they will crash to many times you will likely crash the session game will clean up this shit)
