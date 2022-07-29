@@ -177,10 +177,12 @@ Self Features
 			Overide Current Vehicle Engine Audio
 			List Populated from vehlist.ini
 			default preset chernobog
-
 	
-	Player Histroy
-		Requires Histroy Module to be loaded
+	Online Features
+		Player Histroy
+			Requires Histroy Module to be loaded
+		Session Griefing
+			Send All to Del Pero : <Beach | Beach Bounty War!>
 		
 	World Features
 	
@@ -238,10 +240,11 @@ Self Features
 	Remove Player
 		Network Bail Kick
 		Send Event:  Vector Crash | Stat Crash | Rando Crash | Moist Crash
+		Send Event v2:  Vector Crash | Stat Crash | Rando Crash | Moist Crash | Bit Crash
 		Lester Cummy WindSock Crash (May Need to be executed a few times they will crash to many times you will likely crash the session game will clean up this shit)
 		Use Ruiner Crash & Bail to Space
 		
-	Player Info  (Basically some stuff im testing for some future functions)
+Player Info  (Basically some stuff im testing for some future functions)
 	
 		Latency Test
 
@@ -287,7 +290,8 @@ Self Features
 		Disable Player Interior
 			Unloads the interior the player is in and they fall through the building or map still needs further testing but seems to put them outside XD
 		
-		Force Player to Island
+		Island Events:
+			< SendToIsland v1 | SendToIsland v2 | Kick From Island | IslandForceRemove >
 
 	Grief This Cunt ! !
 		Cunt Cannon!
