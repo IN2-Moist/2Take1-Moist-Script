@@ -3,7 +3,7 @@
 <hr>
 # Next Generation Moist Script
 
-##  |-| 3.0.0.0 |-|
+##  |-| 3.0.0.2 |-|
 
 ### Feaure List:
 
@@ -74,6 +74,9 @@ Self Features
 		Player Ped Features
 			Make My Ped Wet! :P
 				Drench your ped like its raining heavily or you just come out of water
+			
+			StoneHatchet NoCoolDown & Duration Increase
+				Removes Cooldown between activations and increases the Duration to a really long Duration.
 				
 			Set Myself Ghosted to Other Players
 				Sets Ghosting to others this is also in one of the defense sphere options
@@ -209,11 +212,11 @@ Self Features
 	MoistScript Settings
 		Current Settings: Save | Clear
 	
-	MoistScript HOTKEYS
-		Options Save HotKey
+		MoistScript HOTKEYS
+			Options Save HotKey
 	
-	Load MoistScript Modules
-	Custom Lists for Features
+		Load MoistScript Modules
+		Custom Lists for Features
 		Load Ped List
 		Load Vehicle List
 		Load Player Histroy Module
@@ -221,7 +224,27 @@ Self Features
 		Load Translation Module
 		Load ESP Module
 		Load Network Events Module
-		Update Script with Translation
+		Load Script Loader Module
+
+	Update Script with Translation
+
+	ScriptEvent SafeMode
+		Prevents Script Events Being Sent to Yourself
+	
+	Auto Take Script Host
+		Delayed Script Host Force
+	
+	Player Notification Reset
+		Resets Modder Detection Notifies
+	
+	God Mode Player Notify
+		Checks Players and their Vehicle for God Mode not in an interior and some other variables once then recheck after delay
+	
+	Damage Proof Player Notify
+		Checks Player and their Vehicle for Damage Proofs and Notifies you
+	
+
+	
 
 ```
 
@@ -238,15 +261,24 @@ Self Features
 
 ```
 	Remove Player
+		Network Bail Kick
 		Micheal Error Kick
 			Script Event Kicks player after Micheal sends a notification saying ERROR!
-
-		Send Event:  Vector Crash | Stat Crash | Rando Crash | Moist Crash
-		Send Event v2:  Vector Crash | Stat Crash | Rando Crash | Moist Crash | Bit Crash
+		Force Error Kick
+		Send Event:  Vector Method | Stat Method | Rando Method | Moist Method | Bit Method
+			uses kicks.ini file event hashes
+		Send Event v2:  Vector Method | Stat Method | Rando Method | Moist Method | Bit Method
+			uses a set of event hashes to try and remove player
+		Send Event v3:  Vector Method | Stat Method | Rando Method | Moist Method | Bit Method
+			uses a smaller set of event hashes which seem to work well to remove a player
 		Lester Cummy WindSock Crash (May Need to be executed a few times they will crash to many times you will likely crash the session game will clean up this shit)
 		Use Ruiner Crash & Bail to Space
+	
+	Player Options
+		Player Exclusion
+			Excluded Player From any Session Wide Script Events
 		
-Player Info  (Basically some stuff im testing for some future functions)
+	Player Info  (Basically some stuff im testing for some future functions)
 	
 		Latency Test
 
@@ -289,6 +321,9 @@ Player Info  (Basically some stuff im testing for some future functions)
 		Disable Player Shooting (untested)
 			Prevents the player from shooting each frame
 		
+		Spam Invites
+			Spams Apartment & Buisness Invites Sending the Player Around The Map
+		
 		Disable Player Interior
 			Unloads the interior the player is in and they fall through the building or map still needs further testing but seems to put them outside XD
 		
@@ -297,6 +332,9 @@ Player Info  (Basically some stuff im testing for some future functions)
 
 	Grief This Cunt ! !
 		Cunt Cannon!
+
+		Nearby Vehicles: < Ram | Attack>
+			Nearby Vehicles will Ram the player / attack depending on Selection and explode on impact
 	
 		Gangs will Grief Player
 			Spawns Random Gangmember nearby to attack
