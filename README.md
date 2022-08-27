@@ -1,9 +1,9 @@
 
-![NextGen](https://cdn.discordapp.com/attachments/869989558018781194/984253676443017246/cooltext412726820733010.png)
+![NextGen](https://cdn.discordapp.com/attachments/688897307609268231/1012936069307707422/MOISTSCRIPT_NG_NEXTGEN_3.0.0.3.PNG)
 <hr>
 # Next Generation Moist Script
 
-##  |-| 3.0.0.2 |-|
+##  |-| 3.0.0.3 |-|
 
 ### Feaure List:
 
