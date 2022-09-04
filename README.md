@@ -356,7 +356,7 @@ Self Features
  ** %UserProfile%\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\ **
 
 
-Download the files or installer here: https://github.com/IN2-Moist/2Take1-Moist-Script/releases/tag/NG(3.0.0.0)
+Download the files or installer here: https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest
 
 * File layout:
 
