@@ -1,9 +1,9 @@
 
-![NextGen](https://cdn.discordapp.com/attachments/688897307609268231/1012936069307707422/MOISTSCRIPT_NG_NEXTGEN_3.0.0.3.PNG)
+![NextGen](https://cdn.discordapp.com/attachments/688897307609268231/1021158338429464757/NERW.png)
 <hr>
 # Next Generation Moist Script
 
-##  |-| 3.0.0.3 |-|
+##  |-| 3.0.0.4 |-|
 
 ### Feaure List:
 
@@ -186,6 +186,7 @@ Self Features
 			Requires Histroy Module to be loaded
 		Session Griefing
 			Send All to Del Pero : <Beach | Beach Bounty War!>
+			MultiDirectional Player Snipe : <Distance value Modifier>
 		
 	World Features
 	
@@ -234,6 +235,9 @@ Self Features
 	Auto Take Script Host
 		Delayed Script Host Force
 	
+	Get Player Killers
+		WIP Rework of my old Combat tracker currently only gives a notifty of who killed who if it was a player
+	
 	Player Notification Reset
 		Resets Modder Detection Notifies
 	
@@ -243,8 +247,21 @@ Self Features
 	Damage Proof Player Notify
 		Checks Player and their Vehicle for Damage Proofs and Notifies you
 	
-
+	Enable Sub Missile Detection
+		Does as the name states, detects any missile launch and adds a blip on radar/map when in range of you
+		
+	Enable RC Vehicle Detection
+		Again Name says it all Detects Activation of RC Tank & RC Bandito also adds [RC] tag to the players name in the player bar
 	
+	Log Session Joins
+		Outputs a daily Session Player Join CSV with all their info
+	
+	Disable R* Editor Recording
+		Fixes Crashes that can happen when activating it while using the menu
+	
+	Anti Orbital Protection
+		No Function Yet this is built into the main script for now and will disable any players ability to use the orbital cannon on you
+		while they are in the orbital room. They just will never find you in the player list preventing any orbital.
 
 ```
 
@@ -277,6 +294,8 @@ Self Features
 	Player Options
 		Player Exclusion
 			Excluded Player From any Session Wide Script Events
+		Player Waypoint
+			While Toggled on updates the Waypoint to the players location
 		
 	Player Info  (Basically some stuff im testing for some future functions)
 	
@@ -305,11 +324,18 @@ Self Features
 		Minimap Zoom to Players Blip
 			use with above function to provide zoom ability needs some fine tuning
 		
+		Unlock Minimap Zoom
+			Toggle enables Zoom and unhides a Value Modifier with manual input when value is not changed and activated a second time
+		
 		Players Blip Flashes
 			flash the players blip needs more work to make flash smoother
 	
 
 	Player IP Info
+		Give Treats
+			Selectable value defaults to the most common one for 50k bank treat.
+			(But be aware these can only be used a limited amount of times per player per session)
+			
 		IP Info Section from players IP Address
 
 	Troll & Annoy
@@ -341,9 +367,13 @@ Self Features
 
 	Grief Others (Frame Player)
 		Framed Session Orbital Strike
+			Now uses actual Orbital Cannon Sounds
 		Orbital Player: 
+			Now uses Orbital Cannon Sounds, PTFX and Explosions
 
 	Script Events
+		Remove GOD Mode!
+			Script event to attempt removal of god mode
 		CEO Features (hidden when they are not in a ceo)
 			Remove CEO: Terminate | Dismiss | BAN
 			Loop Payment: 10k | 15k | 20k | 30k
@@ -356,7 +386,7 @@ Self Features
  ** %UserProfile%\AppData\Roaming\PopstarDevs\2Take1Menu\scripts\ **
 
 
-Download the files or installer here: https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest
+![Download the files or installer here:](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
 
 * File layout:
 
@@ -371,9 +401,8 @@ Download the files or installer here: https://github.com/IN2-Moist/2Take1-Moist-
 		Natives.lua		
         pedlist.ini
         vehlist.ini
-MoistScript_NextGen3000.lua
+MoistScript_NextGen3004.lua
 ```
-
 ***Notes:***
 
 
