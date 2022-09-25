@@ -2,7 +2,7 @@
 ![MoistScript](https://media.discordapp.net/attachments/743938504375140403/830774254273429535/unknown.png)
 <hr>
 
-# Moist Script (Build 2.0.6.4)
+# Moist Script (Build 2.0.6.8)
 
 <hr>
 
