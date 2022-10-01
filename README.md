@@ -152,8 +152,6 @@ Self Features
 			Set Air Drag Multiplier:
 				Adjust drag on vehicle caused by aircraft
 				
-			Set Wind Speed
-				Adjust current wind speed
 
 ```
 	 
@@ -197,6 +195,8 @@ Self Features
 			Water Ripple Disturbance
 			Water Ripple Bumpiness
 			Override ShoreWave Amplitude
+			Set Wind Speed
+				Adjust current wind speed
 	
 	UI Features
 		MiniMap View Mode
@@ -237,6 +237,9 @@ Self Features
 	Get Player Killers
 		WIP Rework of my old Combat tracker currently only gives a notifty of who killed who if it was a player
 	
+	Auto Whitelist Friends
+		Toggles on the Manual Modder Detection Whitelist option on friends
+		
 	Player Notification Reset
 		Resets Modder Detection Notifies
 	

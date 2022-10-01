@@ -15,6 +15,8 @@ Session_PB_Players = {
 		isTalking = {},
 		PedSpawned = {},
 		isPaused = {},
+		RCveh = {}, 
+		
 	}
 }
 
@@ -33,7 +35,9 @@ end
 MoistScript_PlayerBar_Module = "loaded"
 local ScriptConfig = _G.ScriptConfig
 local Features = _G.Features
+local Session_Players = _G.Session_Players
 local PlayerBarFeats = {}
+_G.PlayerBarFeats = PlayerBarFeats
 local PCR, PCG, PCB, PCA
 local PCR1, PCG1, PCB1, PCA1 = 255, 255, 255, 255
 local PCR2, PCG2, PCB2, PCA2 = 0, 0, 0, 255
@@ -85,6 +89,7 @@ function Player_add(pid)
 	Session_PB_Players[pid].interior = false
 	Session_PB_Players[pid].isTalking = false
 	Session_PB_Players[pid].PedSpawned = false
+	Session_PB_Players[pid].RCveh = false
 	
 end
 
@@ -162,7 +167,7 @@ end)
 PlayerBarFeats["ResetNotif"]["on"] =true
 PlayerBarFeats["ResetNotif"]["hidden"] = true
 ]]
-PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
@@ -310,7 +315,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 	_G.ScriptConfig["PlayerBar_ON"] = true
 	local pos = v2()
 	local Player_Name1, Player_Name
-	local hosttag, SHost_tag, OTR_tag, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag = "~b~[H]","~y~[S]","~g~[O]","~y~[~r~M~y~]","~b~[~q~B~b~]","~q~[~b~T~q~]","~y~[~g~VC~y~]","~h~~o~[~y~P~o~]"
+	local hosttag, SHost_tag, OTR_tag, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag, RC_tag = "~b~[H]","~y~[S]","~g~[O]","~y~[~r~M~y~]","~b~[~q~B~b~]","~q~[~b~T~q~]","~y~[~g~VC~y~]","~h~~o~[~y~P~o~]","~w~~h~[~g~~h~RC~h~~w~]"
 	
 	if feat["on"] then
 
@@ -394,6 +399,10 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					end
 					if (script.get_global_i(2689235 + (1 + (pid * 453)) + 208) ==  1) then
 						Player_Name =  Player_Name .. OTR_tag
+						GTA_Natives.SET_TEXT_DROPSHADOW(150, 0, 255, 0, 255)
+					end
+					if Session_PB_Players[pid].RCveh then
+						Player_Name =  Player_Name .. RC_tag
 						GTA_Natives.SET_TEXT_DROPSHADOW(150, 0, 255, 0, 255)
 					end
 					if (script.get_global_i(1835502 + (1 + (pid * 3)) + 4) == 1) then

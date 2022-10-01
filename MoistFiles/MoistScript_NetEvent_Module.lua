@@ -173,8 +173,9 @@ if params[1] == 0xb521a553  then
 end
 return false
 end
+local PlaybarParent = _G.PlayerBarFeats.PlayerbarParent.id or _G.Features.LocalSettings.id
 
-ScriptEvent_Hook = menu.add_feature("Player Bar State Tags 1", "toggle", _G.Features.LocalSettings.id, function(feat)
+ScriptEvent_Hook = menu.add_feature("Player Bar State Tags 1", "toggle", PlaybarParent, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
@@ -193,7 +194,7 @@ end)
 ScriptEvent_Hook["on"] = _G.ScriptConfig["PB_State_Tags"]
 
 
-NetEvent_Hook = menu.add_feature("Player Bar State Tags 2", "toggle", _G.Features.LocalSettings.id, function(feat)
+NetEvent_Hook = menu.add_feature("Player Bar State Tags 2", "toggle", PlaybarParent, function(feat)
 	if feat["on"] and  NetEventHookID1 == 0 then
 	_G.ScriptConfig["PB_State_Tags"] = true
 		NetEventHookID1 = hook.register_net_event_hook(NetEventsHook)

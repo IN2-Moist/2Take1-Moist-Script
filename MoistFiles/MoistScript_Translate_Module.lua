@@ -291,7 +291,7 @@ for i = 1, #MyChatDefault:get_str_data() do
 	end
 end
 
-gamechathotkey = menu.add_feature("Send Translated Chat Hotkey", "toggle", trans_parent2.id,function(feat)
+gamechathotkey = menu.add_feature("Send Translated Chat Hotkey RSHIFT+U", "toggle", trans_parent2.id,function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
@@ -462,56 +462,9 @@ end)
 Trans_Lang:set_str_data(langSel)
 Trans_Lang.value = 15
 
---[[ChatEventID = event.add_event_listener("chat", function(e)
-	local success, lang, TestText, success1, langid1, TestText1
-	local TransFrom = "auto"
-	GTA_Natives._0x265559DA40B3F327(1)
-	--GTA_Natives.OVERRIDE_MULTIPLAYER_CHAT_PREFIX(-1755491431)
-	GTA_Natives.OVERRIDE_MULTIPLAYER_CHAT_PREFIX(-1, gameplay.get_hash_key("PI_BIK_0_T"))
-	
-	local playerID, senderID, ChatMsg = e["player"], e["sender"], e["body"]
-		if not player.is_player_valid(playerID) then
-		sender = "NaN"
-		elseif  player.is_player_valid(playerID) then
-		if senderID ~= playerID then
-	sendername = tostring(player.get_player_name(senderID)) .. "<!>SPOOFED<!>: ".. tostring(player.get_player_name(playerID))
-	MoistNotify("Chat Spoofer:\n" .. sendername, "Next Generation\nMoist Script")
-	elseif senderID == playerID then
-		sendername =  tostring(player.get_player_name(playerID))
-		end
-		if chatIpLocTrans.on then
-		for k, v in pairs(langID) do
-		if v == _G.Session_Players[playerID]["IPInfo"]["countryCode"] then
-		TransFrom = k
-		end
-		end
-		success, TestText, lang = Translatev2(ChatMsg, TransFrom, Translang)
-		if success and lang ~= Translang then
 
-			if lang:sub(1, 2) ~= string.lower(Translang:sub(1, 2)) then
-
-					network.send_chat_message("\n" .. sendername .. "[" .. lang:upper() .."] >>> [" .. Translang:upper() .. "]: ".. TestText, chatvisibility.on)
-				end
-			end
-			
-			elseif not chatIpLocTrans.on then
-			success, TestText, lang = Translatev2(ChatMsg, "auto", Translang)
-		if success and lang ~= Translang then
-
-			if lang:sub(1, 2) ~= string.lower(Translang:sub(1, 2)) then
-
-					network.send_chat_message("\n" .. sendername .. "[" .. lang:upper() .."] >>> [" .. Translang:upper() .. "]: ".. TestText, chatvisibility.on)
-				end
-			end
-		end
-		end
-
-return
-	
-end)
-]]
 MoistNotify("Translate Module Loaded", "")
-MoistNotify("Ensure to enable Chat Translation to start listening to game chat", "MoistScript NG")
+MoistNotify("Ensure to enable Chat Translation to start listening to game chat\nBe Aware Team Chat Translation will be visible on Team Jobs/Missions and to any member of your ceo/mc", "MoistScript NG", 0xff0000ff, 20)
 -- event.add_event_listener("exit", function()
 	-- --clean up shit
 	-- if ChatEventID ~= 0 then
