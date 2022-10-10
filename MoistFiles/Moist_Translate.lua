@@ -111,7 +111,7 @@ function Moist_Translate.onlinemenu(feat)
 FeaturesonlineParent.feats[pid].name = "Moist Script NG"
 Features.RemovePlayer.feats[pid].name = "Remove Player"
 Features.PlayerOptions.feats[pid].name = "Player Options"
-Features.PlayerExclusion.feats[pid].name = "Player Exclusion"
+OnlineFeats.PlayerExclusion.feats[pid].name = "Player Exclusion"
 OnlineFeats.PlayerWaypoint.feats[pid].name = "Player Waypoint"
 OnlineFeats.PlayerGhosting.feats[pid].name = "Ghost Myself To Player"
 Features.PlayerInfo.feats[pid].name = "Player Info"
