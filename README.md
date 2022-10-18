@@ -1,5 +1,5 @@
 
-![NextGen](https://cdn.discordapp.com/attachments/688897307609268231/1021158338429464757/NERW.png)
+![NextGen](https://cdn.discordapp.com/attachments/688897307609268231/1031890640692326430/NG3005.png)
 <hr>
 # Next Generation Moist Script
 
