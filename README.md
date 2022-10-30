@@ -587,6 +587,9 @@ Cops Turn a Blind Eye | Bribe the Cops( when they are in a ceo)
 
 ![Download the files or installer here:](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
 
+![https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
+
+
 - File layout:
 
 ```md
