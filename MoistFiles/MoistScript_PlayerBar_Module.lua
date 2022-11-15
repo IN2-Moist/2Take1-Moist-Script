@@ -32,7 +32,7 @@ end
 MoistScript_PlayerBar_Module = "loaded"
 local ScriptConfig = _G.ScriptConfig
 local Features = _G.Features
-local Session_Players = _G.Session_Players
+local Session_Players = GlobalPlayers
 local PlayerBarFeats = {}
 _G.PlayerBarFeats = PlayerBarFeats
 local PCR, PCG, PCB, PCA
@@ -75,8 +75,8 @@ PlayerBarFeats.PlayerbarParent = menu.add_feature("PlayerBar Options", "parent",
 
 function Player_add(pid)
 	Session_PB_Players[pid] = {}
-	Session_PB_Players[pid].Name = tostring(player.get_player_name(pid))
-	Session_PB_Players[pid].NameLabel = tostring(player.get_player_name(pid))
+Session_PB_Players[pid].Name = GTA_Natives.GET_PLAYER_NAME(pid)
+Session_PB_Players[pid].NameLabel = GTA_Natives.GET_PLAYER_NAME(pid)
 	Session_PB_Players[pid].scid = player.get_player_scid(pid)
 	Session_PB_Players[pid].tags = nil
 	Session_PB_Players[pid].speed = 0.0
@@ -110,7 +110,6 @@ local left = event.add_event_listener("player_leave", function(e)
 	
 	return
 end)
-
 
 
 local NetEventHookID1, PlayerTaghook_id, Event_Listener, NetEvents = 0, 0, 0, {}
@@ -203,24 +202,22 @@ NetEvents[85] = "ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT"
 NetEvents[86] = "BLOCK_WEAPON_SELECTION"
 NetEvents[87] = "NETWORK_CHECK_CATALOG_CRC"
 
-local NetEventsHook = function(source, target, NetEventID)
+NetEventsHook = function(source, target, NetEventID)
 	local pid = source
 	if NetEventID == 11 then
 		Session_PB_Players[pid].PedSpawned = true
 		return false
 	end
 	if NetEventID == 71 then
-
 		Session_PB_Players[pid].isTalking = true
 		return false
 	end
 	Session_PB_Players[pid].isTalking = false
-
 	if NetEventID == 43 or NetEventID == 12 or NetEventID == 13 or NetEventID == 14 then
 		local e, f
-		e = player.get_player_name(source)
-		f = player.get_player_name(target)
-        _G.MoistNotify("Blocked: NetEvent[" .. tostring(NetEventID) .. "] " .. tostring(NetEvents[NetEventID]) .. "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\n", "Moists Modder Module")
+		e = GTA_Natives.GET_PLAYER_NAME(source)
+		f = GTA_Natives.GET_PLAYER_NAME(target)
+        _G.MoistNotify("Blocked: " .. tostring(NetEventID) ..  "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\nMarking As Modder", "MoistScript NG 3.0.0.6\nModder Detection")
 		
         return true
 	end
@@ -230,7 +227,7 @@ end
 
 PlayerTag_event_Hook = function(source, target, params, count)
 local pid = source
-local player_source = tostring(player.get_player_name(source))
+local player_source = GTA_Natives.GET_PLAYER_NAME(source)
 if type(params) ~= 'table' then
 	return HANDLER_POP
 end
@@ -254,12 +251,12 @@ if feat["on"] and PlayerTaghook_id == 0 then
 _G.ScriptConfig["PB_State_Tags"] = true
 	
 	PlayerTaghook_id = hook.register_script_event_hook(PlayerTag_event_Hook)
-	return HANDLER_POP
+	return 
 elseif not feat["on"] and PlayerTaghook_id ~= 0 then
 _G.ScriptConfig["PB_State_Tags"] = false
 	hook.remove_script_event_hook(PlayerTaghook_id)
 	PlayerTaghook_id = 0
-	return HANDLER_POP
+	return
 end
 end)
 ScriptEvent_Hook["on"] = _G.ScriptConfig["PB_State_Tags"]
@@ -269,45 +266,16 @@ NetEvent_Hook = menu.add_feature("Player Bar State Tags 2", "toggle", PlaybarPar
 	if feat["on"] and  NetEventHookID1 == 0 then
 	_G.ScriptConfig["PB_State_Tags"] = true
 		NetEventHookID1 = hook.register_net_event_hook(NetEventsHook)
-		return HANDLER_POP
+		return
 	elseif not feat["on"] and NetEventHookID1 ~= 0 then
 	_G.ScriptConfig["PB_State_Tags"] = false
 		hook.remove_net_event_hook(NetEventHookID1)
 		NetEventHookID1 = 0
-		return HANDLER_POP
+		return
 	end
-	return HANDLER_POP
+	return 
 end)
 NetEvent_Hook["on"] = _G.ScriptConfig["PB_State_Tags"]
-
-
-
--- function GetFlag_Text(pid)
-	-- local flagtext = ""
-	-- local texts <const> = {}
-	-- local flags = player.get_player_modder_flags(pid)
-	-- for i = 0, 63 do
-		-- texts[#texts + 1] = flags & 1 << i == 1 << i  and player.get_modder_flag_text(1 << i) or nil
-	-- end
-	-- for i = 1, #texts do
-		-- flagtext = flagtext .. " | " .. tostring(texts[i])
-	-- end
-	-- return flagtext
--- end
-
--- local Modder_EventLog = event.add_event_listener("modder", function(e)
-    -- if e["player"] ~= nil then
-        -- local pid = e["player"]
-		-- local name = player.get_player_name(pid)
-		-- local flagtext = GetFlag_Text(pid)
-        -- if not Session_PB_Players[pid].Notified then
-            -- MoistNotify("[Modder Detected] " .. tostring(pid) .. " : " .. tostring(name).. " | " .. flagtext, "", 0xff0000ff)
-            -- --Debug_Out(string.format("[Modder]: " .. tostring(name).. " [Modder Flags]: " .. flagtext))
-            -- Session_PB_Players[pid].Notified = true
-		-- end
-	-- end
-    -- return
--- end)
 
 --TODO: **********  PLAYER BAR ***************
 
@@ -341,8 +309,11 @@ PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", Play
 				if notiftimes[pid+1] ~= nil then
 					if (os.clock() - notiftimes[pid+1]) >= 60 then
 						Session_PB_Players[pid].Notified = false
+						--Session_PB_Players[pid].isTalking = false
 					end
 				end
+				
+	--Session_PB_Players[pid].isTalking = false
 				system.yield(10)
 			end
 			system.yield(10)
@@ -470,7 +441,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 	_G.ScriptConfig["PlayerBar_ON"] = true
 	local pos = v2()
 	local Player_Name1, Player_Name
-	local hosttag, SHost_tag, OTR_tag, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag, RC_tag = "~b~~h~[H]","~y~~h~[S]","~g~~h~[O]","~y~~h~[~r~M~y~~h~]","~b~~h~[~q~~h~B~b~~h~]","~q~[~b~~h~T~q~]","~y~[~g~~h~VC~y~]","~h~~o~[~y~~h~P~o~~h~]","~w~~h~[~g~~h~RC~h~~w~]"
+	local hosttag, SHost_tag, OTR_tagA, OTR_tagB, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag, RC_tag = "~b~~h~[H]","~y~~h~[S]","~g~~h~[O:","~g~~h~]","~y~~h~[~r~M~y~~h~]","~b~~h~[~q~~h~B~b~~h~]","~q~[~b~~h~T~q~]","~y~[~g~~h~VC~y~]","~h~~o~[~y~~h~P~o~~h~]","~w~~h~[~g~~h~RC~h~~w~]"
 	
 	while feat["on"] do
 
@@ -481,7 +452,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 			local ScriptHost, SessionHost = script.get_host_of_this_script(), player.get_host()
 			for pid = 0, 31 do
 				if player.is_player_valid(pid) and Session_PB_Players[pid].Name ~= nil then
-					Player_Name = tostring(player.get_player_name(pid))
+				Player_Name = GTA_Natives.GET_PLAYER_NAME(pid)
 					local pped = player.get_player_ped(pid)
 					GTA_Natives.SET_TEXT_DROPSHADOW(160, 255, 255, 255, 255)
 					PCR, PCG, PCB, PCA = 255, 255, 255, 255
@@ -561,7 +532,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 255, 0, 255)
 					end
 					if (script.get_global_i(2689235 + (1 + (pid * 453)) + 208) ==  1) then
-						Player_Name =  Player_Name .. OTR_tag
+					Player_Name =  Player_Name .. OTR_tagA .. "~r~~h~" .. tostring(_G.Session_Players[pid].OTR_TimerM) .. OTR_tagB
 											GTA_Natives.SET_TEXT_DROP_SHADOW()
 					GTA_Natives.SET_TEXT_DROPSHADOW(2, 0, 0, 0, 255)
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 255, 0, 255)
@@ -589,11 +560,15 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					Player_Name =  Player_Name .. Paused_tag
 					end
 					
-					if _G.Session_Players[pid].isGodmode then
+					if _G.Session_Players[pid].isGodmode and player.is_player_god(pid) then
 					Player_Name = Player_Name .. "~y~[~h~~r~G~y~]"
+					elseif _G.Session_Players[pid].isGodmode and not player.is_player_god(pid) then
+					Player_Name = Player_Name
 					end
-					if _G.Session_Players[pid].VehGodmode then
-					Player_Name = Player_Name .. "~r~[~h~~o~V~r~]"
+					if _G.Session_Players[pid].VehGodmode and  player.is_player_vehicle_god(pid) then
+						Player_Name = Player_Name .. "~r~[~h~~o~V~r~]"
+					elseif _G.Session_Players[pid].VehGodmode and  not player.is_player_vehicle_god(pid) then
+					Player_Name = Player_Name
 					end
 
 					ui.set_text_scale(0.178)

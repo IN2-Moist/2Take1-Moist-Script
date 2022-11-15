@@ -33,113 +33,6 @@ function PlayerHistoryTableRebuild(limit)
 	return tablebuild
 end
 
--- local function exportstring( s )
-		-- s = string.format( "%q",s )
-		-- -- to replace
-		-- s = string.gsub( s,"\\\n","\\n" )
-		-- s = string.gsub( s,"\r","\\r" )
-		-- s = string.gsub( s,string.char(26),"\"..string.char(26)..\"" )
-		-- return s
--- end
-
--- local function table_save(tbl, filename)
-	-- SaveComplete = false
-	-- filename = filename or _G.FolderPaths.Logs .. "\\PlayersHistory.txt"
-		-- local charS,charE = "   ","\n"
-		-- local file,err = io.open(filename, "wb")
-		-- if err then return err end
-		-- -- initiate variables for save procedure
-		-- local tables,lookup = { tbl },{ [tbl] = 1 }
-		-- io.output(file)
-		-- io.write("return {"..charE)
-		-- for idx,t in ipairs(tables) do
-			-- io.write("-- Table: {"..idx.."}"..charE)
-			-- io.write("{"..charE)
-			-- local thandled = {}
-			-- for i,v in ipairs(t) do
-				-- thandled[i] = true
-				-- local stype = type(v)
-				-- -- only handle value
-				-- if stype == "table" then
-					-- if not lookup[v] then
-						-- table.insert(tables, v)
-						-- lookup[v] = #tables
-					-- end
-					-- io.write(charS.."{"..lookup[v].."},"..charE)
-					-- elseif stype == "string" then
-					-- io.write( charS..exportstring(v)..","..charE)
-					-- elseif stype == "number" then
-					-- io.write( charS..tostring(v)..","..charE)
-				-- end
-			-- end
-			-- for i,v in pairs(t) do
-				-- -- escape handled values
-				-- if (not thandled[i]) then
-					-- local str = ""
-					-- local stype = type(i)
-					-- -- handle index
-					-- if stype == "table" then
-						-- if not lookup[i] then
-							-- table.insert(tables,i)
-							-- lookup[i] = #tables
-						-- end
-						-- str = charS.."[{"..lookup[i].."}]="
-						-- elseif stype == "string" then
-						-- str = charS.."["..exportstring(i).."]="
-						-- elseif stype == "number" then
-						-- str = charS.."["..tostring(i).."]="
-					-- end
-					-- if str ~= "" then
-						-- stype = type(v)
-						-- -- handle value
-						-- if stype == "table" then
-							-- if not lookup[v] then
-								-- table.insert(tables,v)
-								-- lookup[v] = #tables
-							-- end
-							-- io.write(str.."{"..lookup[v].."},"..charE)
-							-- elseif stype == "string" then
-							-- io.write(str..exportstring(v)..","..charE)
-							-- elseif stype == "number" then
-							-- io.write(str..tostring(v)..","..charE)
-						-- end
-					-- end
-				-- end
-			-- end
-			-- io.write("},"..charE)
-		-- end
-		-- io.write("}")
-		-- io.close()
-		-- SaveComplete = true
-		-- return
-	-- end
-
--- --// The Load Function
--- local function table_load(sfile)
-	-- sfile = sfile or _G.FolderPaths.Logs .. "\\PlayersHistory.txt"
-	-- local ftables,err = loadfile(sfile)
-	-- if err then return _,err end
-	-- local tables = ftables()
-	-- if tables ~= nil then
-	-- for idx = 1,#tables do
-		-- local tolinki = {}
-		-- for i,v in pairs(tables[idx]) do
-			-- if type(v) == "table" then
-				-- tables[idx][i] = tables[v[1]]
-			-- end
-			-- if type(i) == "table" and tables[i[1]] then
-				-- table.insert(tolinki,{ i,tables[i[1]] })
-			-- end
-		-- end
-		-- -- link indices
-		-- for _,v in ipairs(tolinki) do
-			-- tables[idx][v[2]],tables[idx][v[1]] =  tables[idx][v[1]],nil
-		-- end
-	-- end
-	-- return tables[1]
-	-- end
--- end
-
    local function exportstring( s )
       return string.format("%q", s)
    end
@@ -224,6 +117,7 @@ local function table_load(sfile)
 	sfile = sfile or _G.FolderPaths.Logs .. "\\PlayersHistory.txt"
       local ftables,err = loadfile(sfile)
       if err then return _,err end
+	  if ftables ~= nil then
       local tables = ftables()
       for idx = 1,#tables do
          local tolinki = {}
@@ -241,6 +135,7 @@ local function table_load(sfile)
          end
       end
       return tables[1], tables[2]
+	  end
    end
 
 function GetPartial_IP(ip)
@@ -458,13 +353,20 @@ function PlayerHistoryDB(pid)
 	Part_IP = GetPartial_IP(TranIP)
 	scid = player.get_player_scid(pid)
 	if scid ~= -1 then
-		PlayerName = player.get_player_name(pid) or "NaN"
+		PlayerName = GTA_Natives.GET_PLAYER_NAME(pid) or "NaN"
 		count = -1
 		token = player.get_player_host_token(pid)
 		tokhex = string.format("%x", token)
 		tokeen = tostring(tokhex)
 		for y = 1, #Players_History do
 			if Players_History[y].rid == scid then
+			if Players_History[y].DecIP ~= Player_IP then
+			Players_History[y].DecIP = Player_IP
+			count = Players_History[y].count + 1 
+			Players_History[y].count = count
+			_G.MoistNotify(tostring(PlayerName) .. "\nSCID: " .. scid .. "\nIP: " .. tostring(TranIP) .. "\nSeen: " .. count .. " times", "Histroic Player Joined\nNew IP Detected!")
+			return
+			end
 				count = Players_History[y].count + 1
 				Players_History[y].count = count
 				if count > 1 then
@@ -482,6 +384,7 @@ function PlayerHistoryDB(pid)
 			_G.MoistNotify("Player History is 700 or more" , "Consider Clearing Player History", 0xff0000ff, 30)
 			_G.MoistNotify("Loading script Again or resetting State will take longer", "", 0xff0000ff, 30)
 			_G.MoistNotify("Most Likely Cause your Game to Freeze for a moment", "", 0xff0000ff, 30)
+			_G.TextPrintToScreen("Player History is 700 or more", "Consider Clearing Player History~n~For Optimal Performance", 20000, nil)
 			HistoryNotify = true
 		end
 		
@@ -514,7 +417,7 @@ function PlayerHistoryDB(pid)
 			decip2ON = {},
 		}
 		
-		Players_History[i].PlyName = player.get_player_name(pid)
+		Players_History[i].PlyName = GTA_Natives.GET_PLAYER_NAME(pid)
 		Players_History[i].count = count + 1
 		Players_History[i].rid = scid
 		Players_History[i].DateLJ = os.date("%d-%m-%y")
@@ -654,39 +557,39 @@ LocalFeatures.Search_Type = menu.add_feature("Search Player History", "action_va
 	end
 	local r, HistoryName
 	if feat.value == 0 then
+	repeat
 		r, HistoryName = input.get("Enter a Name To Search for", Current_Search, 64, 0)
-		while r == 1 do
-		system.yield()
-		end
 		if r == 2 then
-			Current_Search = ""
-			for i=1,#Players_History_Feat do
-				Players_History_Feat[i][1].hidden = false
-			end
-			return
+		Current_Search = ""
+		for i=1,#Players_History_Feat do
+		Players_History_Feat[i][1].hidden = false
 		end
+		goto continue
+		end
+		system.yield()
+		until r == 0
 		Current_Search = HistoryName
 		Search_History(HistoryName, "name")
-		elseif feat.value== 1 then
+		elseif feat.value == 1 then
 		if tonumber(Current_Search:sub(1, 2)) == nil then
 			Current_Search = ""
 		end
+		repeat
 		r, HistoryName = input.get("Enter Partial IP to Find", Current_Search, 64, 4)
-		while r == 1 do
-		system.yield()
-		end
 		if r == 2 then
-			Current_Search = ""
-			for i=1,#Players_History_Feat do
-				Players_History_Feat[i][1].hidden = false
-			end
-			return
+		Current_Search = ""
+		for i=1,#Players_History_Feat do
+		Players_History_Feat[i][1].hidden = false
 		end
+		goto continue
+		end
+		system.yield()
+		until r == 0
 		Current_Search = HistoryName
 		Search_History(HistoryName, "ip")
 		
 	end
-	
+		::continue::
 	return
 end)
 LocalFeatures.Search_Type:set_str_data({"By Name","By IP"})
@@ -700,6 +603,7 @@ function Load_History_File(feat)
 		if type(PlayerHist) ~= 'table' then
 		return
 		end
+		if PlayerHist ~= nil and PlayersHist ~= nil then
 		if #PlayerHist < #PlayersHist then
 				
 		for i = 1, #PlayersHist do
@@ -717,6 +621,7 @@ function Load_History_File(feat)
 		local count = #PlayerHist
 
 		_G.MoistNotify(tostring(count) .. " Entries", "Saved Player History Loaded")
+	end
 	end
 	return
 end
@@ -784,7 +689,7 @@ LocalFeatures.SaveHistoryInt = menu.add_feature("AutoSave History mins: ", "valu
 	
 end)
 LocalFeatures.SaveHistoryInt.on = ScriptConfig["AutoSaveHistoryFile"]
-LocalFeatures.SaveHistoryInt.min = 0.1
+LocalFeatures.SaveHistoryInt.min = 3.0
 LocalFeatures.SaveHistoryInt.max = 30.0
 LocalFeatures.SaveHistoryInt.mod = 0.1
 LocalFeatures.SaveHistoryInt.value = ScriptConfig["AutoSaveHistoryTime"]
@@ -890,7 +795,7 @@ LocalFeatures.DelHistory = menu.add_feature("Delete All History Players", "actio
 				end
 			end
 			menu.delete_feature(f.id)
-			system.yield(5)
+			system.yield()
 		end
 		if Players_History_Feat[i][1].child_count ~= 0 then
 			moist_notify(Players_History_Feat[i][1].child_count)
@@ -898,7 +803,7 @@ LocalFeatures.DelHistory = menu.add_feature("Delete All History Players", "actio
 			local f = Players_History_Feat[i][1]
 			menu.delete_feature(f.id)
 		end
-		system.yield(5)
+		system.yield()
 	end
 	Players_History_Feat = {}
 	Players_History, Temp_Blacklist, PlayerHistory = {},{},{}
@@ -926,7 +831,7 @@ function Temp_BlacklistCheck(pid)
 	end
 	local scid, name, decip
 	scid = player.get_player_scid(pid)
-	name = tostring(player.get_player_name(pid))
+	name = GTA_Natives.GET_PLAYER_NAME(pid)
 	decip = player.get_player_ip(pid)
 	local TranIP = string.format("%i.%i.%i.%i", (decip >> 24) & 0xff, ((decip >> 16) & 0xff), ((decip >> 8) & 0xff), decip & 0xff)
 	local PartIP = GetPartial_IP(TransIP)
@@ -982,7 +887,8 @@ local Network_Join_Event = event.add_event_listener("player_join", function(e)
 			if #Temp_Blacklist ~= nil then
 				local status, err = pcall(Temp_BlacklistCheck, e.player)
 				if not status then
-					_G.MoistNotify(tostring(err), "Player History Module Error")
+				print(err)
+				--	_G.MoistNotify(tostring(err), "Player History Module Error")
 				end
 			end
 			

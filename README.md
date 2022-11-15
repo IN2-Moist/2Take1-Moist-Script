@@ -1,10 +1,10 @@
-![NextGen](https://cdn.discordapp.com/attachments/688897307609268231/1031890640692326430/NG3005.png)
+![NextGen](https://media.discordapp.net/attachments/688897307609268231/1041885858527195146/MSNG3006.png)
 
 <hr>
 
 # Next Generation Moist Script
 
-# |-| 3.0.0.5 |-|
+# |-| 3.0.0.6 |-|
 
 ## Feaure List
 
@@ -16,18 +16,27 @@
 
 ```md
 Set Stat:
+
+Set Stat With Created Logo:
+	Adds a R* Created Logo at the start of the Text you input
+
+Set Stat With Verified Logo:
+	Adds a R* Verified Logo at the start of the Text you input
+
   String Stat Builder
   GB_GANG_NAME :: Combines the 2 stats that makes up your CEO Organisation Name
   GB_OFFICE_NAME :: Combines the 2 stats that makes up your CEO Office
   MC_GANG_NAME :: Combines the 2 stats that makes up Motorcycle Club Name
   YACHT_NAME ::  Combines the 2 stats that makes up Your Yacht Name
   (Completely Bypasses any Profanity Filters and can Accept Special Characters for R* Logos etc)
+ 
+  
 ```
 
 ## Weapon Related Functions
 
 ```md
-Weapon Clip: Unlimtied | Normal
+Weapon Unlimtied Ammo Clip <toggle>
  unlimited is like Rapid Fire / No Reload
  Using a Homing Launcher you can lockon and spam rockets without having to reload at all
 
@@ -101,9 +110,13 @@ Current Projectiles Added:
 
  Set Myself Ghosted to Other Players
   Sets Ghosting to others this is also in one of the defense sphere options
+ 
+ Set Ped Damage Proof
+	Essentially God Mode but without Advertising that fact
 
  Turn Me into a Cop
   (not outfit related makes your ped like a cop so you get ignored by cops get a cop cone on radar when wanted)
+  
 ```
 
 # Player Vehicle Features (Sub Features)
@@ -211,6 +224,12 @@ Disable Plane Aileron
 Set Bomb Count
  Enables you to set & Refill your Aircraft Bombs
 
+Modify Vehicle Top Speed
+	Change Possible Top Speed of Vehicle
+
+Max Speed Override
+	Basically Bypasses Game Speed Restrictions on your Vehicle
+
 Set Vehicle Damage Proof
   Vehicle Becomes Near to God Mode without Detection
   Impossible to Visibly Damage it from impacts explosions etc
@@ -286,7 +305,38 @@ OTR Player Blips
 
 ```md
 Current Settings: Save | Clear
+```
 
+### Detections & Protections
+
+```md
+
+ScriptEvent SafeMode
+ Prevents Script Events Being Sent to Yourself
+
+Auto Whitelist Friends
+ Toggles on the Manual Modder Detection Whitelist option on friends
+
+Player Notification Reset
+ Resets Modder Detection Notifies
+
+God Mode Player Notify
+ Checks Players and their Vehicle for God Mode not in an interior and some other variables once then recheck after delay, will also
+ add a [G] and / or [V] to their name if using the playerbar module
+
+Damage Proof Player Notify
+ Checks Player and their Vehicle for Damage Proofs and Notifies you, certain situations can cause a false positive like when they are
+ in control / driving their kosatka Submarine. 
+
+Enable Sub Missile Detection
+ Does as the name states, detects any guided missile launch from kosatka Submarine and adds a blip on radar/map when in range of you
+
+Enable RC Vehicle Detection
+ Again Name says it all Detects Activation of RC Tank & RC Bandito also adds [RC] tag to the players name in the player bar
+```
+
+## MoistScript Settings
+```md
 MoistScript HOTKEYS
   Options Save HotKey
 
@@ -312,8 +362,6 @@ Load Script Loader Module
 
 Update Script with Translation
 
-ScriptEvent SafeMode
- Prevents Script Events Being Sent to Yourself
 
 Auto Take Script Host
  Delayed Script Host Force
@@ -321,28 +369,11 @@ Auto Take Script Host
 Get Player Killers
  WIP Rework of my old Combat tracker currently only gives a notifty of who killed who if it was a player
 
-Auto Whitelist Friends
- Toggles on the Manual Modder Detection Whitelist option on friends
-
-Player Notification Reset
- Resets Modder Detection Notifies
-
-God Mode Player Notify
- Checks Players and their Vehicle for God Mode not in an interior and some other variables once then recheck after delay, will also
- add a [G] and / or [V] to their name if using the playerbar module
-
-Damage Proof Player Notify
- Checks Player and their Vehicle for Damage Proofs and Notifies you, certain situations can cause a false positive like when they are
- in control / driving their kosatka Submarine. 
-
-Enable Sub Missile Detection
- Does as the name states, detects any guided missile launch from kosatka Submarine and adds a blip on radar/map when in range of you
-
-Enable RC Vehicle Detection
- Again Name says it all Detects Activation of RC Tank & RC Bandito also adds [RC] tag to the players name in the player bar
-
 Log Session Joins
  Outputs a daily Session Player Join CSV with all their info
+ 
+Anti Voice Chat Privacy
+	Unlocks VoiceChat: if they have Setting to < no one | Friends | Crew > this will enable you to hear them and them to hear you!
 
 Disable R* Editor Recording
  Fixes Crashes that can happen when activating it while using the menu, Prevents any Recording.
@@ -550,6 +581,10 @@ Nearby Vehicles: < Ram | Attack>
 
 Spawn Nearby Random Attacker
  Spawns a Random Ped from your "pedlist.ini" file & tasks them to attack
+ 
+Send Lester UFO Griefer
+	Spawns Lester with a UFO to Hunt Them Down
+
 
 Gangs will Grief Player
  Spawns Random Gangmember nearby to attack
@@ -580,6 +615,12 @@ Off The Radar | Ghost Organisation (when they are in a ceo)
 Cops Turn a Blind Eye | Bribe the Cops( when they are in a ceo)
 
 ```
+
+## Online Features Main
+
+Turn Off Damage Proof Vehicle
+	Toggle to disable the damage proofs on a vehicle for those that use it
+
 
 ### Install location
 
