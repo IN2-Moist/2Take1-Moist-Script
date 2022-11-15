@@ -628,6 +628,9 @@ Turn Off Damage Proof Vehicle
 
 ![Download the files or installer here:](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
 
+![https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest](https://github.com/IN2-Moist/2Take1-Moist-Script/releases/latest)
+
+
 - File layout:
 
 ```md
