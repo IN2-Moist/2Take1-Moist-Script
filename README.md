@@ -1,10 +1,10 @@
-![NextGen](https://media.discordapp.net/attachments/688897307609268231/1041885858527195146/MSNG3006.png)
+![NextGen](https://media.discordapp.net/attachments/688897307609268231/1043671504937820271/3007-NG.png)
 
 <hr>
 
 # Next Generation Moist Script
 
-# |-| 3.0.0.6 |-|
+# |-| 3.0.0.7 |-|
 
 ## Feaure List
 
