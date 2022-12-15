@@ -1,5 +1,6 @@
 local Moist_Translate = {lang = "DE"}
-
+_G.Moist_is_Translated = true
+_G.ScriptConfig["MyLang"] = Moist_Translate.lang
 function Moist_Translate.localmenu(feat)
 	
 Features.LocalParent.name = "Feuchter Skript ng"

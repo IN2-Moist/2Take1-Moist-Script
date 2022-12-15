@@ -510,12 +510,14 @@ function Search_History(HistoryName, strtype)
 	if strtype == "ip" then
 		for i =1, #Players_History do
 			local DIP = Players_History[i].DecIP
+			if DIP ~= nil then
 			local TranIP = string.format("%i.%i.%i.%i", (DIP >> 24) & 0xff, ((DIP >> 16) & 0xff), ((DIP >> 8) & 0xff), DIP & 0xff)
 			if TranIP:find(HistoryName, 1, true) then
 				Players_History_Feat[i][1].hidden = false
 				else
 				Players_History_Feat[i][1].hidden = true
 				--Players_History[i].Feature.hidden = true
+			end
 			end
 		end
 		elseif strtype == "name" then
@@ -550,7 +552,7 @@ end
 
 local Historyopt = menu.add_feature("History Player Options", "parent", LocalFeatures["History"].id)
 local lastsavelabel = menu.add_feature("Never", "action", Historyopt.id)
-lastsavelabel.name = ""
+lastsavelabel.name = "Never"
 LocalFeatures.Search_Type = menu.add_feature("Search Player History", "action_value_str", LocalFeatures["History"].id, function(feat)
 	if type(feat) == "number" then
 		return
@@ -652,6 +654,14 @@ function History_Save()
 	return
 end
 
+function ResetLoad()
+	for pid = 0, 31 do
+		if player.is_player_valid(pid) then
+			PlayerHistoryDB(pid)
+		end
+	end
+end
+
 local lastsavetime = 0
 LocalFeatures.SaveHistoryInt = menu.add_feature("AutoSave History mins: ", "value_f", Historyopt.id,function(feat)
 	if type(feat) == "number" then
@@ -713,6 +723,7 @@ LocalFeatures.Loadrec = menu.add_feature("AutoLoad Saved History Players", "togg
 		menu.delete_thread(threadid)
 		threadid = 0
 		HistoryFileLoaded = true
+		ResetLoad()
 	end
 	system.yield(100)
 	return
@@ -990,16 +1001,6 @@ event.add_event_listener("exit", function()
 	
 	--FeatureCleanup()
 end)
-
-function ResetLoad()
-	for pid = 0, 31 do
-		if player.is_player_valid(pid) then
-			PlayerHistoryDB(pid)
-		end
-	end
-end
-
-ResetLoad()
 
 end
 

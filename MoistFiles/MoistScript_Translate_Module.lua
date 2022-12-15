@@ -103,71 +103,71 @@ function Translate(text, lanf)
 	return true, PlayersLang, translatedText
 end
 
+-- function Translatev2(text, lanf, lant)
+	
+	-- local TranslatedText = ""
+	-- if string.len(text) < 20 then
+	-- local status, TransText, Lan = Translatev3(text, lanf, lant)
+	-- return status, TransText, Lan
+	-- end
+
+	-- local seperator = text:find(" ", 1, true)
+	-- if seperator then
+	-- txt = text:sub(1, seperator)
+	-- TxT = text:sub(seperator+1, string.len(text))
+	-- end
+	
+	-- local encoded = web.urlencode(txt)
+
+	
+	-- local statusCode, body = web.get("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" .. lanf .. "&tl=" .. lant .. "&q=" ..encoded)
+	
+	-- if statusCode ~= 200 then
+		-- return false, body
+	-- end
+	
+	-- if lanf ~= "auto" then
+	-- translated = json.decode(body)
+
+	-- TranslatedText = TranslatedText .. " " .. translated[1]
+	-- PlayersLang = lanf
+	-- return true, TranslatedText, PlayersLang 
+	-- elseif lanf == "auto" then
+	-- translated = json.decode(body)
+	-- TranslatedText =  TranslatedText .. " " .. translated[1][1]
+	-- PlayersLang = translated[1][2]
+	-- return true, TranslatedText, PlayersLang 
+	-- end
+
+	-- local encoded = web.urlencode(TxT)
+
+	
+	-- local statusCode, body = web.get("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" .. lanf .. "&tl=" .. lant .. "&q=" ..encoded)
+	
+	-- if statusCode ~= 200 then
+		-- return false, body
+	-- end
+	
+	-- if lanf ~= "auto" then
+	-- translated = json.decode(body)
+
+	-- TranslatedText = TranslatedText .. " " .. translated[1]
+	-- PlayersLang = lanf
+	-- return true, TranslatedText, PlayersLang 
+	-- elseif lanf == "auto" then
+	-- translated = json.decode(body)
+
+
+	-- TranslatedText = TranslatedText .. " " .. translated[1][1]
+	-- PlayersLang = translated[1][2]
+	
+	-- return true, TranslatedText, PlayersLang 
+	-- end
+	
+-- end
+
+Translatev3 = Translatev2
 function Translatev2(text, lanf, lant)
-	
-	local TranslatedText = ""
-	if string.len(text) < 20 then
-	local status, TransText, Lan = Translatev3(text, lanf, lant)
-	return status, TransText, Lan
-	end
-
-	local seperator = text:find(" ", 1, true)
-	if seperator then
-	txt = text:sub(1, seperator)
-	TxT = text:sub(seperator+1, string.len(text))
-	end
-	
-	local encoded = web.urlencode(txt)
-
-	
-	local statusCode, body = web.get("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" .. lanf .. "&tl=" .. lant .. "&q=" ..encoded)
-	
-	if statusCode ~= 200 then
-		return false, body
-	end
-	
-	if lanf ~= "auto" then
-	translated = json.decode(body)
-
-	TranslatedText = TranslatedText .. " " .. translated[1]
-	PlayersLang = lanf
-	return true, TranslatedText, PlayersLang 
-	elseif lanf == "auto" then
-	translated = json.decode(body)
-	TranslatedText =  TranslatedText .. " " .. translated[1][1]
-	PlayersLang = translated[1][2]
-	return true, TranslatedText, PlayersLang 
-	end
-
-	local encoded = web.urlencode(TxT)
-
-	
-	local statusCode, body = web.get("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" .. lanf .. "&tl=" .. lant .. "&q=" ..encoded)
-	
-	if statusCode ~= 200 then
-		return false, body
-	end
-	
-	if lanf ~= "auto" then
-	translated = json.decode(body)
-
-	TranslatedText = TranslatedText .. " " .. translated[1]
-	PlayersLang = lanf
-	return true, TranslatedText, PlayersLang 
-	elseif lanf == "auto" then
-	translated = json.decode(body)
-
-
-	TranslatedText = TranslatedText .. " " .. translated[1][1]
-	PlayersLang = translated[1][2]
-	
-	return true, TranslatedText, PlayersLang 
-	end
-	
-end
-
-
-function Translatev3(text, lanf, lant)
 	local encoded = web.urlencode(text)
 
 	local statusCode, body = web.get("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" .. lanf .. "&tl=" .. lant .. "&q=" ..encoded)

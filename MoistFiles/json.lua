@@ -22,7 +22,7 @@
 -- SOFTWARE.
 --
 
-local json = { _version = "0.1.2" }
+json = { _version = "0.1.2" }
 
 -------------------------------------------------------------------------------
 -- Encode
@@ -30,7 +30,7 @@ local json = { _version = "0.1.2" }
 
 local encode
 
-local escape_char_map = {
+escape_char_map = {
 	[ "\\" ] = "\\",
 	[ "\"" ] = "\"",
 	[ "\b" ] = "b",
@@ -40,23 +40,23 @@ local escape_char_map = {
 	[ "\t" ] = "t",
 }
 
-local escape_char_map_inv = { [ "/" ] = "/" }
+escape_char_map_inv = { [ "/" ] = "/" }
 for k, v in pairs(escape_char_map) do
 	escape_char_map_inv[v] = k
 end
 
 
-local function escape_char(c)
+function escape_char(c)
 	return "\\" .. (escape_char_map[c] or string.format("u%04x", c:byte()))
 end
 
 
-local function encode_nil(val)
+function encode_nil(val)
 	return "null"
 end
 
 
-local function encode_table(val, stack)
+function encode_table(val, stack)
 	local res = {}
 	stack = stack or {}
 	
@@ -98,12 +98,12 @@ local function encode_table(val, stack)
 end
 
 
-local function encode_string(val)
+function encode_string(val)
 	return '"' .. val:gsub('[%z\1-\31\\"]', escape_char) .. '"'
 end
 
 
-local function encode_number(val)
+function encode_number(val)
 	-- Check for NaN, -inf and inf
 	if val ~= val or val <= -math.huge or val >= math.huge then
 		error("unexpected number value '" .. tostring(val) .. "'")
@@ -112,7 +112,7 @@ local function encode_number(val)
 end
 
 
-local type_func_map = {
+type_func_map = {
 	[ "nil"     ] = encode_nil,
 	[ "table"   ] = encode_table,
 	[ "string"  ] = encode_string,
@@ -144,7 +144,7 @@ local parse
 
 
 
-local function create_set(...)
+function create_set(...)
 	local res = {}
 	for i = 1, select("#", ...) do
 		res[ select(i, ...) ] = true
@@ -152,19 +152,19 @@ local function create_set(...)
 	return res
 end
 
-local space_chars   = create_set(" ", "\t", "\r", "\n")
-local delim_chars   = create_set(" ", "\t", "\r", "\n", "]", "}", ",")
-local escape_chars  = create_set("\\", "/", '"', "b", "f", "n", "r", "t", "u")
-local literals      = create_set("true", "false", "null")
+space_chars   = create_set(" ", "\t", "\r", "\n")
+delim_chars   = create_set(" ", "\t", "\r", "\n", "]", "}", ",")
+escape_chars  = create_set("\\", "/", '"', "b", "f", "n", "r", "t", "u")
+literals      = create_set("true", "false", "null")
 
-local literal_map = {
+literal_map = {
 	[ "true"  ] = true,
 	[ "false" ] = false,
 	[ "null"  ] = nil,
 }
 
 
-local function next_char(str, idx, set, negate)
+function next_char(str, idx, set, negate)
 	for i = idx, #str do
 		if set[str:sub(i, i)] ~= negate then
 			return i
@@ -174,7 +174,7 @@ local function next_char(str, idx, set, negate)
 end
 
 
-local function decode_error(str, idx, msg)
+function decode_error(str, idx, msg)
 	local line_count = 1
 	local col_count = 1
 	for i = 1, idx - 1 do
@@ -188,7 +188,7 @@ local function decode_error(str, idx, msg)
 end
 
 
-local function codepoint_to_utf8(n)
+function codepoint_to_utf8(n)
 	-- http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=iws-appendixa
 	local f = math.floor
 	if n <= 0x7f then
@@ -205,7 +205,7 @@ local function codepoint_to_utf8(n)
 end
 
 
-local function parse_unicode_escape(s)
+function parse_unicode_escape(s)
 	local n1 = tonumber( s:sub(1, 4),  16 )
 	local n2 = tonumber( s:sub(7, 10), 16 )
 	-- Surrogate pair?
@@ -217,7 +217,7 @@ local function parse_unicode_escape(s)
 end
 
 
-local function parse_string(str, i)
+function parse_string(str, i)
 	local res = ""
 	local j = i + 1
 	local k = j
@@ -258,7 +258,7 @@ local function parse_string(str, i)
 end
 
 
-local function parse_number(str, i)
+function parse_number(str, i)
 	local x = next_char(str, i, delim_chars)
 	local s = str:sub(i, x - 1)
 	local n = tonumber(s)
@@ -269,7 +269,7 @@ local function parse_number(str, i)
 end
 
 
-local function parse_literal(str, i)
+function parse_literal(str, i)
 	local x = next_char(str, i, delim_chars)
 	local word = str:sub(i, x - 1)
 	if not literals[word] then
@@ -279,7 +279,7 @@ local function parse_literal(str, i)
 end
 
 
-local function parse_array(str, i)
+function parse_array(str, i)
 	local res = {}
 	local n = 1
 	i = i + 1
@@ -306,7 +306,7 @@ local function parse_array(str, i)
 end
 
 
-local function parse_object(str, i)
+function parse_object(str, i)
 	local res = {}
 	i = i + 1
 	while 1 do
@@ -343,7 +343,7 @@ local function parse_object(str, i)
 end
 
 
-local char_func_map = {
+char_func_map = {
 	[ '"' ] = parse_string,
 	[ "0" ] = parse_number,
 	[ "1" ] = parse_number,

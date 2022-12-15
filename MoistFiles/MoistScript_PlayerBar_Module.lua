@@ -543,10 +543,10 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					GTA_Natives.SET_TEXT_DROPSHADOW(2, 0, 0, 0, 255)
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 255, 0, 255)
 					end
-					if (script.get_global_i(1835502 + (1 + (pid * 3)) + 4) == 1) then
+					if (script.get_global_i(1835504 + (1 + (pid * 3)) + 4) == 1) then
 						Player_Name =  Player_Name .. Bounty_tag
 					end
-					if (script.get_global_i(1648034 + (2 + (pid * 1) + (241 + 136)))& 1 << 16 ~= 0)  then
+					if (script.get_global_i(1653913 + (2 + (pid * 1) + (241 + 136)))& 1 << 16 ~= 0)  then
 						Player_Name =  Player_Name .. Typing_tag
 					end
 					if Session_PB_Players[pid].isTalking then
