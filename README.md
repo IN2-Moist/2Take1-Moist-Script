@@ -1,10 +1,21 @@
-![NextGen](https://media.discordapp.net/attachments/688897307609268231/1043671504937820271/3007-NG.png)
+![NextGen](https://i.imgur.com/yyINibY.png)
 
 <hr>
 
 # Next Generation Moist Script
 
-# |-| 3.0.0.7 |-|
+# |-| 3.0.0.8 |-|
+
+## Features to come in Next Edition:
+
+* Fast Nightclub Money
+* Stealth Mode Vehicle Detection Radar Blips
+* Updated Animated Radial OTR Blips
+* Player Bar High Player Speed Display
+* MoistScript Player Tagging Added Directly To Main Online Players Menu
+
+![OTR_Tags](https://i.imgur.com/NjuAZ8N.png)
+
 
 ## Feaure List
 
