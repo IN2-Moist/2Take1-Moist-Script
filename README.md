@@ -13,6 +13,7 @@
 * Updated Animated Radial OTR Blips
 * Player Bar High Player Speed Display
 * MoistScript Player Tagging Added Directly To Main Online Players Menu
+* Online Based Script Version Checking when outdated will copy url to the newest release to clipboard
 
 ![OTR_Tags](https://i.imgur.com/NjuAZ8N.png)
 
