@@ -14,6 +14,12 @@
 * Player Bar High Player Speed Display
 * MoistScript Player Tagging Added Directly To Main Online Players Menu
 * Online Based Script Version Checking when outdated will copy url to the newest release to clipboard
+* MK2 Opressor Chaff CoolDown Modifier
+* Mk2 Opressor Chaff Duration Modifier
+* Dooms Day Act 2 Finale 2.5m Payout for all
+* Sub Guided Missile (-)Cool Down (+)Range
+* Remove HostQueue until Host
+* Give all Blip & Name (for those situations where you can view the map but have no icons)
 
 ![OTR_Tags](https://i.imgur.com/NjuAZ8N.png)
 
