@@ -484,6 +484,9 @@ Chat_ToChat_Translation = function(e)
 			end
 		end
 		elseif success and lang == Translang or TestText == ChatMsg then
+					chattext = chattext .. TestText
+			File_Writer(chattext, FolderPaths.ChatFile, true, true)
+		
 				goto BypassTrans
 		end
 
@@ -587,6 +590,8 @@ Chat_ToNotify_Translation = function(e)
 			end
 		end
 		elseif success and lang == Translang or TestText == ChatMsg then
+					chattext = chattext .. TestText
+			File_Writer(chattext, FolderPaths.ChatFile, true, true)
 				goto BypassTrans
 		end
 
@@ -690,6 +695,8 @@ Chat_To_OldNotify_Translation = function(e)
 			end
 		end
 		elseif success and lang == Translang or TestText == ChatMsg then
+					chattext = chattext  .. TestText
+			File_Writer(chattext, FolderPaths.ChatFile, true, true)
 				goto BypassTrans
 		end
 

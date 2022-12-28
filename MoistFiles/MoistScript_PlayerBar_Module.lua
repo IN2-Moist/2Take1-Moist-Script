@@ -2,12 +2,14 @@ Session_PB_Players = {
 	{
 		Name = {},
 		NameLabel = {},
+		MenuName = {},
 		scid = {},
 		tags = {},
 		isHost = {},
 		isScHost = {},
 		speed = {},
 		isOTR = {},
+		PlySpeed = {},
 		OTRTNotify = {},
 		OTR_Start = {},
 		Notified = {},
@@ -75,8 +77,9 @@ PlayerBarFeats.PlayerbarParent = menu.add_feature("PlayerBar Options", "parent",
 
 function Player_add(pid)
 	Session_PB_Players[pid] = {}
-Session_PB_Players[pid].Name = GTA_Natives.GET_PLAYER_NAME(pid)
-Session_PB_Players[pid].NameLabel = GTA_Natives.GET_PLAYER_NAME(pid)
+	Session_PB_Players[pid].Name = GTA_Natives.GET_PLAYER_NAME(pid)
+	Session_PB_Players[pid].NameLabel = GTA_Natives.GET_PLAYER_NAME(pid)
+	Session_PB_Players[pid].MenuName = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
 	Session_PB_Players[pid].scid = player.get_player_scid(pid)
 	Session_PB_Players[pid].tags = nil
 	Session_PB_Players[pid].speed = 0.0
@@ -88,6 +91,8 @@ Session_PB_Players[pid].NameLabel = GTA_Natives.GET_PLAYER_NAME(pid)
 	Session_PB_Players[pid].isTalking = false
 	Session_PB_Players[pid].PedSpawned = false
 	Session_PB_Players[pid].RCveh = false
+	Session_PB_Players[pid].PlySpeed = 0.0
+	
 	
 end
 
@@ -217,8 +222,8 @@ NetEventsHook = function(source, target, NetEventID)
 		local e, f
 		e = GTA_Natives.GET_PLAYER_NAME(source)
 		f = GTA_Natives.GET_PLAYER_NAME(target)
-        _G.MoistNotify("Blocked: " .. tostring(NetEventID) ..  "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\nMarking As Modder", "MoistScript NG 3.0.0.6\nModder Detection")
-		
+        _G.MoistNotify("Blocked: " .. tostring(NetEvents[NetEventID]) ..  "\n" .. tostring(source) .. " : " .. tostring(e) .. " ->:-> " .. tostring(target) .. " | " .. tostring(f) .. "\nMarking As Modder", "MoistScript NG\nModder Detection")
+		player.set_player_as_modder(e, M_ModFlag["CuntModdedMe"])
         return true
 	end
     return false
@@ -227,15 +232,15 @@ end
 
 PlayerTag_event_Hook = function(source, target, params, count)
 local pid = source
-local player_source = GTA_Natives.GET_PLAYER_NAME(source)
+local player_source = GTA_Natives.GET_PLAYER_NAME(pid)
 if type(params) ~= 'table' then
 	return HANDLER_POP
 end
 --Print(player_source) Print(params)
-if params[1] == 0xb521a553  then
+if params[1] == 0xfcd04b03 then
 	Session_PB_Players[pid].isPaused = true
 	return false	
-	elseif params[1] == 0x1d6e7298 then
+	elseif params[1] == 0x6d62a880 then
 	Session_PB_Players[pid].isPaused = false
 	return false
 end
@@ -294,6 +299,42 @@ PlayerBarFeats["PlayerBarAlpha"]["value"] = _G.ScriptConfig["PlayerBarAlphaValue
 
 
 
+PlayerBarFeats["PBarShowSpeedValue"] = menu.add_feature("Show Players Speed in Playerbar", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
+	if type(feat) == "number" then
+		return
+	end
+	if feat.on then
+	_G.ScriptConfig["ShowSpeedPlayerbar"] = true
+	return
+	end
+	if not feat.on then
+	_G.ScriptConfig["ShowSpeedPlayerbar"] = false
+	return
+	end
+	return
+	
+end)
+PlayerBarFeats["PBarShowSpeedValue"]["on"] = _G.ScriptConfig["ShowSpeedPlayerbar"]
+
+PlayerBarFeats["AddMenuTags"] = menu.add_feature("Add Tags To Menu Playerlist", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
+	if type(feat) == "number" then
+		return
+	end
+	if feat.on then
+	_G.ScriptConfig["AddMenuPlayerTag"] = true
+	return
+	end
+	if not feat.on then
+	_G.ScriptConfig["AddMenuPlayerTag"] = false
+	return
+	end
+	return
+	
+end)
+PlayerBarFeats["AddMenuTags"]["on"] = _G.ScriptConfig["AddMenuPlayerTag"]
+
+
+
 PlayerBarFeats["ResetNotif"] = menu.add_feature("Reset Notified", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
@@ -325,42 +366,55 @@ end)
 PlayerBarFeats["ResetNotif"]["on"] =true
 PlayerBarFeats["ResetNotif"]["hidden"] = true
 
-PlayerBarFeats["speedTracker"] = menu.add_feature("Track all Players speed", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+PlayerBarFeats["speedTracker"] = menu.add_feature("Interior & Speed Tracker", "value_str", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
+	_G.ScriptConfig["speed_Tracker_ON"] = feat.on
+	_G.ScriptConfig["speed_Tracker"] = feat.value
 	while feat["on"] do
 	system.yield()
 		for pid = 0, 31 do
 			if player.is_player_valid(pid) then
-				
+				--Session_PB_Players[pid].interior = 0 and not true or not false
 				local ent
 				local ent1 = player.get_player_ped(pid)
-				local ent2 = ped.get_vehicle_ped_is_using(ent1)
-				if ped.is_ped_in_any_vehicle(ent1) then ent = ent2 else ent = ent1 end
-				--Session_PB_Players[pid].interior = 0 and not true or not false
+				local ent2 = player.get_player_vehicle(pid)
+				if player.is_player_in_any_vehicle(pid)  then ent = ent2 else ent = ent1 end
 				local test = interior.get_interior_at_coords_with_type(entity.get_entity_coords(ent), "") 
 				if test ~= 0 then
 					Session_PB_Players[pid]["interior"] = true
 					elseif test == 0 then
 					Session_PB_Players[pid]["interior"] = false
 				end
+				
+				if _G.ScriptConfig["ShowSpeedPlayerbar"] then
 				local speed = entity.get_entity_speed(ent)
-				local speedcalc = speed * 3.6 --kmph
+				if feat.value == 0 then
+				local speedcalc2 = speed * 3.6 --kmph
+				_G.Session_Players[pid].PlySpeed = RoundNum(math.ceil(speedcalc2), 1)
+				elseif feat.value == 1 then
 				local speedcalc2 =  speed * 2.236936 --mph
-				Session_PB_Players[pid].speed = math.ceil(speedcalc2)
-				--Session_PB_Players.speed[y] = math.ceil(speedcalc)
+				_G.Session_Players[pid].PlySpeed = RoundNum(math.ceil(speedcalc2), 1)
+				end
+				Session_PB_Players[pid].PlySpeed = _G.Session_Players[pid].PlySpeed
+				system.yield()
+				end
 			end
 			system.yield(10)
 		end
 	end
+	_G.ScriptConfig["speed_Tracker_ON"] = feat.on
+	_G.ScriptConfig["speed_Tracker"] = feat.value
 	return
 end)
-PlayerBarFeats["speedTracker"]["on"] =_G.ScriptConfig["PlayerBar_ON"]
-PlayerBarFeats["speedTracker"]["hidden"] = true
+PlayerBarFeats["speedTracker"]:set_str_data({"Kmph","Mph"})
+PlayerBarFeats["speedTracker"]["on"] = _G.ScriptConfig["speed_Tracker_ON"]
+PlayerBarFeats["speedTracker"]["value"] = _G.ScriptConfig["speed_Tracker"]
+PlayerBarFeats["speedTracker"]["hidden"] = false
 
 
-PlayerBarFeats["My_speed"] = menu.add_feature("Show My Speed in Playerbar", "value_str", PlayerBarFeats.PlayerbarParent.id,function(feat)
+PlayerBarFeats["My_speed"] = menu.add_feature("Show My Speed in Playerbar", "value_str", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
@@ -398,11 +452,33 @@ PlayerBarFeats["My_speed"] = menu.add_feature("Show My Speed in Playerbar", "val
 	 _G.ScriptConfig["PB_Speed_Type"] = feat.value
 	return
 end)
-PlayerBarFeats["My_speed"]["on"] =_G.ScriptConfig["My_PB_Speed"]
 PlayerBarFeats["My_speed"]:set_str_data({"Kmph","Mph"})
+PlayerBarFeats["My_speed"]["on"] =_G.ScriptConfig["My_PB_Speed"]
 PlayerBarFeats["My_speed"]["value"] =_G.ScriptConfig["PB_Speed_Type"]
 
-PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+
+function AddTagsToMenu(pid)
+	local tagtext = ""
+				if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					tag = Name:find(":", 1, true)
+					if tag then
+					menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name:sub(1, tag - 1)
+					end
+					local name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					local tagtext = ":"
+					tagtext = tagtext .. tostring(_G.Session_Players[pid].PlayerTags)
+			
+					local PName = name .. tostring(tagtext)
+					menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = PName
+	
+				end
+				
+	
+end
+
+
+PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
@@ -411,17 +487,40 @@ PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "tog
 			if not player.is_player_valid(pid) then
 				Player_add(pid)
 			end
-			if player.is_player_valid(pid) and Session_PB_Players.name == 'nil' then
+			-- if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					-- local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					-- local tag = Name:find(":", 1, true)
+					-- if not tag then
+					-- menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name .. ":"
+					-- end
+
+					-- local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					-- local tag = Name:find(":", 1, true)
+					-- if tag then
+					-- local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					-- menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name:sub(1, tag)
+	
+					-- local name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					-- for i =1, #_G.Session_Players[pid].PlayerTags do
+					-- if _G.Session_Players[pid].PlayerTags[i] ~= "" then
+					-- Name = name .. _G.Session_Players[pid].PlayerTags[i]
+					-- end
+					-- end
+					-- menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name
+					-- end
+			-- end
+
+				if player.is_player_valid(pid) and Session_PB_Players.name == 'nil' then
 				Player_add(pid)
 				system.yield(200)
 				elseif player.is_player_valid(pid) then
-				if script.get_global_i(2689224 + 1 + (pid * 451) + 242 ) ~= 0 then
+				if interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") ~= 0 or interior.get_interior_from_entity(player.get_player_ped(pid)) ~= 0  then
 				Session_PB_Players.interior = true
-				elseif script.get_global_i(2689224 + 1 + (pid * 451) + 242 ) == 0 then
+				elseif  interior.get_interior_at_coords_with_type(player.get_player_coords(pid), "") == 0 and interior.get_interior_from_entity(player.get_player_ped(pid)) == 0 then 
 				Session_PB_Players.interior = false
 				end
 			end
-			end
+		end
 
 		system.yield(200)
 	end
@@ -429,9 +528,10 @@ PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "tog
 	return
 end)
 PlayerBarFeats["Player_BarLoop"]["on"] =_G.ScriptConfig["PlayerBar_ON"]
-PlayerBarFeats["Player_BarLoop"]["hidden"] = true
+PlayerBarFeats["Player_BarLoop"]["hidden"] = false
 
-PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+local PCR, PCG, PCB, PCA = 255, 255, 255, 255
+PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
@@ -440,7 +540,6 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 	PlayerBarFeats["ResetNotif"]["on"] = true
 	_G.ScriptConfig["PlayerBar_ON"] = true
 	local pos = v2()
-	local Player_Name1, Player_Name
 	local hosttag, SHost_tag, OTR_tagA, OTR_tagB, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag, RC_tag = "~b~~h~[H]","~y~~h~[S]","~g~~h~[O:","~g~~h~]","~y~~h~[~r~M~y~~h~]","~b~~h~[~q~~h~B~b~~h~]","~q~[~b~~h~T~q~]","~y~[~g~~h~VC~y~]","~h~~o~[~y~~h~P~o~~h~]","~w~~h~[~g~~h~RC~h~~w~]"
 	
 	while feat["on"] do
@@ -451,6 +550,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 		pos.y = 0.0001
 			local ScriptHost, SessionHost = script.get_host_of_this_script(), player.get_host()
 			for pid = 0, 31 do
+				local Player_Name1, Player_Name
 				if player.is_player_valid(pid) and Session_PB_Players[pid].Name ~= nil then
 				Player_Name = GTA_Natives.GET_PLAYER_NAME(pid)
 					local pped = player.get_player_ped(pid)
@@ -480,20 +580,24 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 						Player_Name = "~r~" .. tostring(Player_Name) 
 					end
 					if player.is_player_god(pid) and not player.is_player_vehicle_god(pid) and Session_PB_Players[pid].interior == false then
-						Player_Name = "~r~~h~" .. tostring(Player_Name) 
+						Player_Name = "~r~~h~" .. tostring(Player_Name)
+						
 					GTA_Natives.SET_TEXT_DROP_SHADOW()
 					GTA_Natives.SET_TEXT_DROPSHADOW(2, 255, 0, 0, 255)
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 0, 0, 255)
 					end
 					
-					if (script.get_global_i(2689224 + (1 + (pid * 451)) + 207) ==  1) and Session_PB_Players[pid].interior == true and player.is_player_god(pid) then
+					if Session_PB_Players[pid].interior == true and player.is_player_god(pid) then
 						
 						PCR, PCG, PCB, PCA = 255, 0, 0, 200
-						elseif (script.get_global_i(2689224 + (1 + (pid * 451)) + 207) ==  1) and Session_PB_Players[pid].interior == false and player.is_player_god(pid) then
-						local val = 255 and true or 0 and false
-						PCR, PCG, PCB, PCA = tonumber(val == not val), tonumber(val == not val), 0, 255
+						elseif Session_PB_Players[pid].interior == false and player.is_player_god(pid) then
+
+						PCR, PCG, PCB, PCA = 255, 0, 0, 255
 					end
-					if (script.get_global_i(2689224 + (1 + (pid * 451)) + 207) ==  1) and Session_PB_Players[pid].interior == false then
+					if Session_PB_Players[pid].interior == false and not player.is_player_god(pid) then
+						PCR, PCG, PCB, PCA = 255, 255, 255, 255
+					end
+					if Session_PB_Players[pid].interior == true and not player.is_player_god(pid) then
 						PCR, PCG, PCB, PCA = 255, 255, 255, 255
 					end
 					if player.is_player_friend(pid) then
@@ -531,12 +635,30 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					GTA_Natives.SET_TEXT_DROPSHADOW(2, 0, 0, 0, 255)
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 255, 0, 255)
 					end
-					if (script.get_global_i(2689235 + (1 + (pid * 453)) + 208) ==  1) then
+					if (script.get_global_i(2657589 + (1 + (pid * 466)) + 210) ==  1) then
 					Player_Name =  Player_Name .. OTR_tagA .. "~r~~h~" .. tostring(_G.Session_Players[pid].OTR_TimerM) .. OTR_tagB
-											GTA_Natives.SET_TEXT_DROP_SHADOW()
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FF00FF00#O", 1, true) then
+					_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF00FF00#O"
+					AddTagsToMenu(pid)
+					end
+					end
+					elseif (script.get_global_i(2657589 + (1 + (pid * 466)) + 210) ==  0) then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FF00FF00#O", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags, "#FF00FF00#O", "")
+					AddTagsToMenu(pid)
+					end
+					end
+					end
+
+					
+					GTA_Natives.SET_TEXT_DROP_SHADOW()
 					GTA_Natives.SET_TEXT_DROPSHADOW(2, 0, 0, 0, 255)
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 255, 0, 255)
-					end
+				
 					if Session_PB_Players[pid].RCveh then
 						Player_Name =  Player_Name .. RC_tag
 											GTA_Natives.SET_TEXT_DROP_SHADOW()
@@ -559,16 +681,59 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					if Session_PB_Players[pid].isPaused then
 					Player_Name =  Player_Name .. Paused_tag
 					end
+					if ( _G.ScriptConfig["ShowSpeedPlayerbar"] == true) and type(_G.Session_PB_Players[pid].PlySpeed) == 'number' and  _G.Session_PB_Players[pid].PlySpeed > 175 then
+					if _G.Session_PB_Players[pid].PlySpeed > 180 then
+					Player_Name =  Player_Name .. "~w~[~h~~y~" .. tostring(_G.Session_PB_Players[pid].PlySpeed) .. "~w~]"
+					elseif _G.Session_PB_Players[pid].PlySpeed > 190 then
+					Player_Name =  Player_Name .. "~w~[~h~~r~" .. tostring(Session_PB_Players) .. "~w~]"
+					end
+					
+					end
 					
 					if _G.Session_Players[pid].isGodmode and player.is_player_god(pid) then
 					Player_Name = Player_Name .. "~y~[~h~~r~G~y~]"
-					elseif _G.Session_Players[pid].isGodmode and not player.is_player_god(pid) then
-					Player_Name = Player_Name
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FF0000FF#G", 1, true) then
+						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF0000FF#G"
+					AddTagsToMenu(pid)
+					
+					
 					end
+					end
+					end
+					if _G.Session_Players[pid].isGodmode and not player.is_player_god(pid) then
+					Player_Name = Player_Name
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+						local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FF0000FF#G", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FF0000FF#G", "")
+					 AddTagsToMenu(pid)
+					end
+					end
+					end
+
 					if _G.Session_Players[pid].VehGodmode and  player.is_player_vehicle_god(pid) then
 						Player_Name = Player_Name .. "~r~[~h~~o~V~r~]"
-					elseif _G.Session_Players[pid].VehGodmode and  not player.is_player_vehicle_god(pid) then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FFA000FF#V", 1, true) then
+					_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FFA000FF#V"
+					AddTagsToMenu(pid)
+					end
+					end
+					end
+					
+					if _G.Session_Players[pid].VehGodmode and  not player.is_player_vehicle_god(pid) then
 					Player_Name = Player_Name
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FFA000FF#V", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FFA000FF#V", "")
+
+					AddTagsToMenu(pid)
+					end
+					end
 					end
 
 					ui.set_text_scale(0.178)
@@ -581,7 +746,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					GTA_Natives.SET_TEXT_EDGE(3, 255, 255, 0, 255)
 					ui.draw_text(tostring(Player_Name).. " ", pos)
 					pos.x = pos.x + 0.090
-				end
+			end
 				
 			end
 			
@@ -597,7 +762,7 @@ end)
 PlayerBarFeats["Player_bar"]["on"] =_G.ScriptConfig["PlayerBar_ON"]
 PlayerBarFeats["Player_bar"]["hidden"] = false
 
-PlayerBarFeats["DrawOSD"] = menu.add_feature("Draw OSD", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+PlayerBarFeats["DrawOSD"] = menu.add_feature("Draw OSD", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
@@ -627,7 +792,7 @@ end)
 PlayerBarFeats["DrawOSD"]["on"] =_G.ScriptConfig["Draw_OSD"]
 PlayerBarFeats["DrawOSD"]["hidden"] = true
 
-PlayerBarFeats["DateTimeOSD"] = menu.add_feature("Date & Time OSD", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+PlayerBarFeats["DateTimeOSD"] = menu.add_feature("Date & Time OSD", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
@@ -645,16 +810,17 @@ PlayerBarFeats["DateTimeOSD"] = menu.add_feature("Date & Time OSD", "toggle", Pl
 end)
 PlayerBarFeats["DateTimeOSD"]["on"] =_G.ScriptConfig["DateTimeONScrn"]
 
-PlayerBarFeats["FPS"] = menu.add_feature("FPS", "toggle", PlayerBarFeats.PlayerbarParent.id,function(feat)
+PlayerBarFeats["FPS"] = menu.add_feature("FPS", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
 	end
 	_G.ScriptConfig["FPSONScrn"] = true
 	while feat["on"] do
+	system.yield()
 	PlayerBarFeats["DrawOSD"]["on"] = true
 		FPSOSD = " ~y~~h~FPS: " .. tostring(math.ceil(1 / gameplay.get_frame_time()))
 
-		system.yield(300)
+		system.yield(600)
 	end
 	FPSOSD = ""
 	_G.ScriptConfig["FPSONScrn"] = false
@@ -662,10 +828,6 @@ PlayerBarFeats["FPS"] = menu.add_feature("FPS", "toggle", PlayerBarFeats.Playerb
 	return
 end)
 PlayerBarFeats["FPS"]["on"] =_G.ScriptConfig["FPSONScrn"]
-
-
-
-
 
 _G.MoistNotify("Player Bar Module Loaded", "")
 --end

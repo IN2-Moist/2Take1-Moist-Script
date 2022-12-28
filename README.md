@@ -48,6 +48,16 @@ Set Stat With Verified Logo:
   YACHT_NAME ::  Combines the 2 stats that makes up Your Yacht Name
   (Completely Bypasses any Profanity Filters and can Accept Special Characters for R* Logos etc)
  
+ Auto Nightclub Vault Money MPCHAR: <value updates automatically to your current character>
+	NightClub Earnings Money Method for self,
+	goto your nightclub office safe open it stand in the threshold of the doorway,
+	turn on and enjoy some fast cash,
+	periodically this will pause for a moment to allow transactions to clear and transfer the money into your bank!
+	I found this to be slower in full sessions solo takes no time at all to clock up a few million!
+	Dont Be retarded with its use!
+	Few Million every now and then do some other stuff then you should be ok!
+	i have done this for a few weeks got 3 bil in the bank now and no issues
+	just be casual with its use!
   
 ```
 
@@ -61,10 +71,6 @@ Weapon Unlimtied Ammo Clip <toggle>
 Explosion Multiplier 0.00 -> 20.00
  Modifies The Explosion Radius of your Current Weapon if it has explosive ammo
  ** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out alot of players in the process !!
-
-Moists Orbital Gun
- Better than the impact orbital strike in MoistScript 2.x.x.x
- Shots are more reliable & all Explosions are Orbital Explosions with Actual Orbital Sound and PTFX
 
 Destroy Projectiles(WIP)
   (Work.In.Progress) this will explode any weapon projectiles i have currently added still needs further testing as not all seem to work, mk2 missile wont get destroyed
@@ -82,6 +88,19 @@ Current Projectiles Added:
  "VEHICLE_WEAPON_THRUSTER_MISSILE","WEAPON_GRENADELAUNCHER","WEAPON_AIRSTRIKE_ROCKET","WEAPON_PASSENGER_ROCKET","WEAPON_VEHICLE_ROCKET"
 
 ```
+
+## Moists Weapon Mods
+
+```
+Moists Orbital Gun
+ Better than the impact orbital strike in MoistScript 2.x.x.x
+ Shots are more reliable & all Explosions are Orbital Explosions with Actual Orbital Sound and PTFX
+
+Homing Aim
+	Shoot Aditional Homing Missile at target your aiming attack
+	
+Vehicle Lockon Missile v1 <delay modifier>
+	Shoots additional Lockon Missiles at locked on target
 
 # Portable Defence Sphere
 
