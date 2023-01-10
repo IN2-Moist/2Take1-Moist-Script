@@ -486,13 +486,14 @@ selected language in the module features
 
 still need some tweaking but works well
 
-```
+
 
 ## Online Features -
 
 ### Remove Player
 
 ```md
+
 Network Bail Kick
 
 Micheal Error Kick
@@ -538,12 +539,14 @@ Use Ruiner Crash & Bail to Space
 ## Player Options
 
 ```md
+
 Player Exclusion
  Excluded Player From any Session Wide Script Events, Also will Exclude the player from being Exploded when inside a Defence Sphere.
  
 
 Player Waypoint
  While Toggled on updates the Waypoint to the players location
+
 ```
 
 ## Player Info
@@ -551,6 +554,7 @@ Player Waypoint
 ### (Basically some stuff im testing for some future functions)
 
 ```md
+
 Latency Test
 
 Get Player Zone Info
@@ -583,20 +587,24 @@ Unlock Minimap Zoom
 
 Players Blip Flashes
   flash the players blip needs more work to make flash smoother
+  
 ```
 
 ## Player IP Info
 
 ```md
+
 Displays IP Info Information
 Country, city, region
 ISP, Proxy, hosting
  (When using the Script Translation Function will translate this to the Specified Language in the script)
+ 
 ```
 
 ## Troll & Annoy
 
 ```md
+
 Send UFO Lester
  Sends a Big Halloween UFO Attached to Lester on a Jet Pack to Follow & Stalk the Player.
  
@@ -671,6 +679,7 @@ Grief Others (Frame Player)
 
 Orbital Player:
  Now uses Orbital Cannon Sounds, PTFX and Explosions
+ 
 ```
 
 ## Script Events
@@ -705,9 +714,12 @@ Give Weapon Pickup railgun
 
 ## Online Features Main
 
+```md
+
 Turn Off Damage Proof Vehicle
 	Toggle to disable the damage proofs on a vehicle for those that use it
 
+```
 
 ### Install location
 
