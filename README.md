@@ -146,6 +146,7 @@ Vehicle Lockon Missile v1 <delay modifier>
 ## CargoBob Mod
 
 ```md
+
 CargoBob: Hook | Magnet
 
 Magnet Pickup Strength:
@@ -162,11 +163,13 @@ Magnet Rope Length:
 
 Magnet Pull Strength:
  modifier Value
+ 
 ```
 
 ### Moists Train Mod
 
 ```md
+
 Enable Train Spawning
  Enables Spawning of Trains and turns on Control Meter and Controller Support to control trains
  Controls are Controller based:
@@ -206,6 +209,7 @@ Control Speed(Instant Insane Speed)
 
 DeRail Train
  Does as it says sets the train to a Derailed State while on
+ 
 ```
 
 # Player Vehicle Features
@@ -213,6 +217,7 @@ DeRail Train
 ## AirCraft Turbulance
 
 ```md
+
 Turbulance Modifier
  0.0 (No Turbulance)
  1.0 (Very Turbulant)
@@ -242,7 +247,9 @@ Disable Plane Aileron
 
 <hr>
 
+
 ```md
+
 Set Bomb Count
  Enables you to set & Refill your Aircraft Bombs
 
@@ -260,21 +267,26 @@ Engine Audio:
   Overide Current Vehicle Engine Audio
   List Populated from vehlist.ini
   default preset chernobog
+
 ```
+
 
 ## Online Features
 
 ```md
+
 Player Histroy
   Requires Histroy Module to be loaded
 Session Griefing
   Send All to Del Pero : <Beach | Beach Bounty War!>
   MultiDirectional Player Snipe : <Distance value Modifier>
+  
 ```
 
 ## World Features
 
 ```md
+
 LightningBolt Generator
  Delay Multiplier = 0.01 -> 2.00
  While on will generate Random Lightning no matter the weather
@@ -307,6 +319,7 @@ Adjust current wind speed
 ## UI Features
 
 ```md
+
 MiniMap View Mode
  changes states of minimap (Does not work at all with expanded radar enabled)
  When online you need to be outside for it to do anything
@@ -321,12 +334,15 @@ Player Blip Enhancments
 OTR Player Blips
  Adds Blips for OTR Players
  on main big map it also adds their name to the blip
+ 
 ```
 
 ## MoistScript Settings
 
 ```md
+
 Current Settings: Save | Clear
+
 ```
 
 ### Detections & Protections
@@ -355,10 +371,13 @@ Enable Sub Missile Detection
 
 Enable RC Vehicle Detection
  Again Name says it all Detects Activation of RC Tank & RC Bandito also adds [RC] tag to the players name in the player bar
+ 
 ```
 
 ## MoistScript Settings
+
 ```md
+
 MoistScript HOTKEYS
   Options Save HotKey
 
@@ -419,16 +438,19 @@ Detect Orbital Users
 #### Send Translated Chat Options
 
 ```md
+
 set a default language
 	Value Selectable from language list
 
 Send Translated Chat Hotkey RSHIFT+U
 	Enables hotkey Right shift key + U key combination to bring up input box to type chat message to translate. Start of input must have a language code with : directly after so RU:Hello will translate Hello into russian. FR:Hello will translate into French Hello.
+    
 ```
 
-### Translate Game Chat-
+### Translate Game Chat
 
 ```md
+
 Chat Translation to:
 	Selectable Options : <Game Chat | New Notifys | Old Notifys>
 	
