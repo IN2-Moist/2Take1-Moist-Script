@@ -1,28 +1,10 @@
-![NextGen](https://i.imgur.com/yyINibY.png)
+![NextGen](https://cdn.discordapp.com/attachments/1043788232577523726/1062305882102321212/MoistScriptNG3009-1.png)
 
 <hr>
 
 # Next Generation Moist Script
 
-# |-| 3.0.0.8 |-|
-
-## Features to come in Next Edition:
-
-* Fast Nightclub Money
-* Stealth Mode Vehicle Detection Radar Blips
-* Updated Animated Radial OTR Blips
-* Player Bar High Player Speed Display
-* MoistScript Player Tagging Added Directly To Main Online Players Menu
-* Online Based Script Version Checking when outdated will copy url to the newest release to clipboard
-* MK2 Opressor Chaff CoolDown Modifier
-* Mk2 Opressor Chaff Duration Modifier
-* Dooms Day Act 2 Finale 2.5m Payout for all
-* Sub Guided Missile (-)Cool Down (+)Range
-* Remove HostQueue until Host
-* Give all Blip & Name (for those situations where you can view the map but have no icons)
-
-![OTR_Tags](https://i.imgur.com/NjuAZ8N.png)
-
+# |-| 3.0.0.9 |-|
 
 ## Feaure List
 
@@ -102,9 +84,12 @@ Homing Aim
 Vehicle Lockon Missile v1 <delay modifier>
 	Shoots additional Lockon Missiles at locked on target
 
-# Portable Defence Sphere
 
+```
+
+# Portable Defence Sphere
 ```md
+
  Set Below Values Manually
 
   Will Adjust all values below to this one
@@ -415,13 +400,19 @@ Anti Voice Chat Privacy
 Disable R* Editor Recording
  Fixes Crashes that can happen when activating it while using the menu, Prevents any Recording.
 
-Anti Orbital Protection
- No Function Yet this is built into the main script for now and will disable any players ability to use the orbital cannon on you
- while they are in the orbital room. They just will never find you in the player list preventing any orbital.
+Detect Orbital Users 
+  Protects or Notifys Depending on Selection:
+    < & Notify | Protect & Notify | & Protect >
+  Option with Notify will Notify when Player is Close to the Orbital Room Entrance and again once they are inside!
+  Option with Protect if also notify will tell you same as above but will also tell you its activating Orbital Protection on this Player,
+  Protect without notify will just turn on orbital Protection without telling you about anything! No Notifys at all!
+  Once Protection is turned on this will disable any players ability to use the orbital cannon on you while they are in the orbital room.
+  They just will never find you in the player list preventing any orbital!
+  One exception that can bypass this Protection is a bounty either way!
 
 ```
 
-## Tanslate Module
+## Translate Module
 
 ### Translate Game Chat
 
@@ -454,7 +445,7 @@ Translate Via IP Location
 	tries to translate via the players IP Location in attempt to minimise false or bad translations when spelling is bad or using slang / abreviations.
 
 Log Translated Chat
-	Logs to CSV Output chat and translated chat.
+	Logs to CSV Output all Translated Game Chat, Non Translated Chat & Sent Translated Chat (Both Original and the Translation).
 	
 	output Example:
 	26/10/22, 03:38:37, Tingyuxuan2021, 你们是哪里人, Where do you come from
@@ -491,6 +482,9 @@ Force Error Kick
 Script Kick
  Most Effective Script Event Kick, but like other methods will be blocked by any half decent menu.
 
+Random ScriptEvent Spam
+  Sends Random Script Events from the kicks.ini file with some nice parameters
+  
 Send Event:  Vector Method | Stat Method | Rando Method | Moist Method | Bit Method
  uses kicks.ini file event hashes
 
@@ -604,13 +598,36 @@ Disable Player Interior
 
 Island Events:
  < SendToIsland v1 | SendToIsland v2 | Kick From Island | IslandForceRemove >
+ 
+Passive Mode: < Disable Option | Enable Option >
+  Disable their Passive Mode Option or Enable it if its been disabled already
+
+Trigger Vehicle Locked On
+
+  Assuming the player is in Range for Detecting their Vehicle,
+  if they are using a Weaponised Vehicle or Aircraft this Triggers Missile Lockon Alarm.
+
 
 ```
 
 ## Grief This Cunt
 
 ```md
-Cunt Cannon!
+
+Kill with Lock ON Ruiner Missile
+  Shoots a High Speed Ruiner Missile Locked on to them (on foot) or their vehicle if in one! Kills them Pretty Fast!
+
+Start Script Fire Near Them
+  Starts a Scripted Fire at their Position on the ground, with a high spread rate.
+
+Proximity Surrounded: < Blame Me | Anonomous >
+  Surrounds their current location with proximity mines, will either blame you or will be anonomous depending on selection.
+
+surround with snowmen
+  Surrounds the player with Snowmen
+
+Kill With: < ALIEN CUNT CANNON | ORBITAL CUNT CANNON >
+  Cunt Cannon! kill with alien blast or an orbital cannon blast.
 
 Nearby Vehicles: < Ram | Attack>
  Nearby Vehicles will Ram the player / attack depending on Selection and explode on impact
@@ -637,21 +654,32 @@ Orbital Player:
 ## Script Events
 
 ```md
-Remove GOD Mode!
- Script event to attempt removal of god mode
 
 CEO Features >>
  (hidden when they are not in a ceo)
-
- Remove CEO: Terminate | Dismiss | BAN
-
- Loop Payment: 10k | 15k | 20k | 30k
 
 Off The Radar | Ghost Organisation (when they are in a ceo)
 
 Cops Turn a Blind Eye | Bribe the Cops( when they are in a ceo)
 
 ```
+
+## Player Pickups
+
+```md
+
+Give Fertilizer Can Pickup
+  Need a few drops to get full capacity wont save in their inventory!
+
+Give Armour Pickup
+  Gives Armour Pickup standard online if story mode on self gives a Modded Armour.
+  
+Give Weapon Pickup railgun
+  Give New RailGun Pickup this will save in their inventory,
+  Until released they can buy ammo via interation menu by selecting buy all ammo.
+
+```
+
 
 ## Online Features Main
 
@@ -677,7 +705,6 @@ Turn Off Damage Proof Vehicle
  kicks.ini
  MoistScript_ESP_Module.lua
  MoistScript_GTA_Natives.lua
-** MoistScript_NetEvent_Module.lua ** Depreciated Functions Merged with Playerbar Module **
  MoistScript_PlayerBar_Module.lua
  MoistScript_PlayerHistory_Module.lua
  MoistScript_ScriptLoader_Module.lua
@@ -691,7 +718,7 @@ Turn Off Damage Proof Vehicle
 
 \2Take1Menu\scripts\
 
-MoistScript_NextGen3005.lua
+MoistScript_NextGen3009.lua
 
 ```
 
