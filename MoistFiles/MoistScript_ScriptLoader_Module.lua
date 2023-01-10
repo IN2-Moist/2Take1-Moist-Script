@@ -2,7 +2,7 @@
 if MoistScript_LUA_Module then
 	menu.notify("Moist_NG Script Loader Already Executed ! ! !", "", 30, 0xff0000ff)
 	menu.notify("EXECUTION DENIED ! ! !", "", 30, 0xff0000ff)
-	return HANDLER_POP
+	return 
 	--break
 end
 
@@ -132,7 +132,7 @@ function MSNG_ScriptFeatBuilder()
 						local y = #MSNG_ScriptFeat + 1 
 						MSNG_ScriptFeat[y] = menu.add_feature(files[i], "action", MSNG_ScriptFeatParent[e]["id"], function(feat)
 							if type(feat) == "number" then
-								return HANDLER_POP
+								return 
 							end
 							local lua = files[i]
 							local sep = lua:find(".lua", 1, true)
@@ -142,7 +142,7 @@ function MSNG_ScriptFeatBuilder()
 								MSNG_loadedScripts[#MSNG_loadedScripts + 1] = lua
 								feat["hidden"] = true
 							end
-							
+							return
 						end)
 						MSNG_ScriptFeat[y]["hidden"] = false
 						
@@ -159,7 +159,7 @@ function MSNG_ScriptFeatBuilder()
 				local y = #MSNG_ScriptFeat + 1 
 				MSNG_ScriptFeat[y] = menu.add_feature(files[i], "action", MSNG_ScriptFeatParent[1]["id"], function(feat)
 					if type(feat) == "number" then
-						return HANDLER_POP
+						return 
 					end
 					local lua = files[i]
 					local sep = lua:find(".lua", 1, true)
@@ -169,6 +169,7 @@ function MSNG_ScriptFeatBuilder()
 						MSNG_loadedScripts[#MSNG_loadedScripts + 1] = lua
 						feat["hidden"] = true
 					end
+					return
 				end)
 				MSNG_ScriptFeat[y]["hidden"] = false
 				
@@ -180,7 +181,7 @@ end
 
 LoaderFeats["saveloaded"] = menu.add_feature("Save Loaded Scripts", "action_value_str", MSNG_ScriptFeatParent[1]["id"], function(feat)
 	if type(feat) == "number" then
-		return HANDLER_POP
+		return 
 	end
 	if feat["value"] == 0 then
 		io.open(scriptload, "w+")
@@ -189,12 +190,14 @@ LoaderFeats["saveloaded"] = menu.add_feature("Save Loaded Scripts", "action_valu
 			io.write(MSNG_loadedScripts[i] .. "\n")
 		end
 		io.close()
+		return
 		elseif feat["value"] == 1 then
 		io.open(scriptload, "w+")
 		io.output(scriptload)
 		io.write("")
 		io.close()
 	end
+	return
 end)
 LoaderFeats["saveloaded"]:set_str_data({"Save Loaded", "Clear Saved"})
 LoaderFeats["saveloaded"]["value"] = 0
@@ -202,7 +205,7 @@ LoaderFeats["saveloaded"]["value"] = 0
 
 LoaderFeats["refreshfolders"] = menu.add_feature("Refresh", "action", MSNG_ScriptFeatParent[1]["id"], function(feat)
 	if type(feat) == "number" then
-		return HANDLER_POP
+		return 
 	end
 	for i = 2, #MSNG_ScriptFeatParent, 1  do
 		if MSNG_ScriptFeatParent[i].child_count ~= 0 then
@@ -245,13 +248,13 @@ LoaderFeats["refreshfolders"] = menu.add_feature("Refresh", "action", MSNG_Scrip
 	end
 	
 	
-	
+return	
 end)
 
 ScriptDataSetup()
 MSNG_ScriptFeatBuilder()
 
-
+function Read_Savefile()
 for line in io.lines(scriptload) do
 	
 	local file = Root .. "\\scripts\\" .. line
@@ -278,8 +281,11 @@ for line in io.lines(scriptload) do
 		end
 	end
 	
-	
 end
+	return
+end
+Read_Savefile()
+
 _G.Features["ScriptLoader"]["hidden"] = false
 
 -- function ExitCleanup()

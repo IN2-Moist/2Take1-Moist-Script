@@ -4,7 +4,7 @@ if MoistScript_PlayerHistory_Module == 'loaded' then
 end
 
 MoistScript_PlayerHistory_Module = "loaded"
-function PlayerHistoryMod()
+local HistoryFunc = {}
 local ScriptConfig = _G.ScriptConfig
 local FolderPaths = _G.FolderPaths
 local LocalFeatures = _G.LocalFeatures
@@ -14,7 +14,51 @@ local Players_History_Feat, Black_List_PID = {}, {}
 local Players_History, Temp_Blacklist, PlayerHistory = {},{},{}
 local HistoryFileLoaded, threadid, SaveComplete = false, 0, true
 local GTA_Natives = require("MoistScript_GTA_Natives")
+local Historyopt = menu.add_feature("History Player Options", "parent", LocalFeatures["History"].id)
+local lastsavetime = 0
+local lastsavelabel = menu.add_feature("Never", "action", Historyopt.id)
+lastsavelabel.name = "Never"
 
+
+local Network_Join_Event = event.add_event_listener("player_join", function(e)
+	if type(e) == "number" then
+		return
+	end
+	
+	if e.player ~= nil then
+		local pid = e.player
+		if player.is_player_valid(pid) then
+			local status, err = pcall(HistoryFunc.PlayerHistoryDB, e.player)
+			if not status then
+				_G.MoistNotify(tostring(err), "Player History Module Error")
+			end
+			if #Temp_Blacklist ~= nil then
+				local status, err = pcall(HistoryFunc.Temp_BlacklistCheck, e.player)
+				if not status then
+				print(err)
+				--	_G.MoistNotify(tostring(err), "Player History Module Error")
+				end
+			end
+			
+		end
+	end
+	if HistoryFileLoaded then
+	local testtime = os.time()
+	if (testtime - lastsavetime) >= 60 then
+	
+	HistoryFunc.History_Save()
+	lastsavetime = os.time()
+	lastsavelabel.name = tostring(os.date())
+	
+	
+	end
+
+		end
+	
+	return
+end)
+
+function PlayerHistoryMod()
 
 function PackTable(tablename)
 	local Packed =  table.pack(tablename)
@@ -165,11 +209,18 @@ function GetPartial_IP(ip)
 end
 
 --INFO: Player History
-local session_Check = {}
+local session_Check, JoinedDate = {}, {}
 function History_Player(rpid)
 	local scid, name, token = (Players_History[rpid].rid), (Players_History[rpid].PlyName), (Players_History[rpid].htoken)
 	Players_History_Feat[rpid] = {}
-	Players_History_Feat[rpid][1] =  menu.add_feature(tostring(rpid) ..": " .. tostring(Players_History[rpid].PlyName), "parent", _G.LocalFeatures["History"].id)
+	Players_History_Feat[rpid][1] =  menu.add_feature(tostring(rpid) ..": " .. tostring(Players_History[rpid].PlyName), "parent", _G.LocalFeatures["History"].id, function(feat)
+		if type(feat) == "number" then
+			return
+		end
+		JoinedDate[rpid].name = tostring(Players_History[rpid].DateLJ)
+		return
+	end)
+		
 	Players_History_Feat[rpid][1].hidden = false
 	local t = #Players_History_Feat[rpid] + 1
 	
@@ -189,8 +240,12 @@ function History_Player(rpid)
 		end
 		return
 	end)
+	
+	JoinedDate[rpid] = Players_History_Feat[rpid][t+1]
+JoinedDate[rpid] = menu.add_feature(tostring(Players_History[rpid].DateLJ), "action", HistoryID.id, nil)
+	
 	Players_History_Feat[rpid][t+1] = menu.add_feature("Auto Stalk Players SCID", "toggle", HistoryID.id, function(feat)
-if type(feat) == "number" then
+	if type(feat) == "number" then
 			return
 		end
 		local scid = Players_History[rpid].rid
@@ -251,29 +306,6 @@ if type(feat) == "number" then
 		return
 	end)
 	
-	Black_List_PID[#Black_List_PID + 1] = menu.add_feature("Blacklist Player", "action_value_str", HistoryID.id, function(feat)
-		if type(feat) == "number" then
-			return
-		end
-		-- local plyr = rpid
-		-- local scid, name, token = (Players_History[plyr].rid), (Players_History[plyr].PlyName), (Players_History[plyr].htoken)
-		-- if feat.value== 0 then
-		-- AddScid(scid, name)
-		-- LoadBlacklist()
-		-- AddTokenID(token, name)
-		-- Load_Blacklist()
-		-- elseif feat.value== 1 then
-		-- RemoveScid(scid)
-		-- LoadBlacklist()
-		-- RemoveTokenID(token)
-		-- Load_Blacklist()
-		-- end
-		
-		return
-		end)
-	Black_List_PID[#Black_List_PID]:set_str_data({"Add","Remove"})
-	Black_List_PID[#Black_List_PID].hidden = true	
-	
 	PlayerHistory[rpid].Features = menu.add_feature("Temp BlacklistPlayer", "parent", HistoryID.id)
 	PlayerHistory[rpid].Blacklist1 = menu.add_feature("Blacklist IP", "toggle", PlayerHistory[rpid].Features.id, function(feat)
 		if type(feat) == "number" then
@@ -288,6 +320,7 @@ if type(feat) == "number" then
 			Temp_Blacklist[rpid].decipON = true
 			return
 		end
+		return
 	end)
 	PlayerHistory[rpid].Blacklist1.on = false
 	PlayerHistory[rpid].Blacklist12 = menu.add_feature("Partial Blacklist IP", "toggle", PlayerHistory[rpid].Features.id, function(feat)
@@ -304,6 +337,7 @@ if type(feat) == "number" then
 			Temp_Blacklist[rpid].decip2ON = true
 			return
 		end
+		return
 	end)
 	PlayerHistory[rpid].Blacklist12.on = false
 	PlayerHistory[rpid].Blacklist2 = menu.add_feature("Blacklist SCID", "toggle", PlayerHistory[rpid].Features.id, function(feat)
@@ -319,6 +353,7 @@ if type(feat) == "number" then
 			Temp_Blacklist[rpid].scidON = true
 			return
 		end
+		return
 	end)
 	PlayerHistory[rpid].Blacklist2.on = false
 	PlayerHistory[rpid].Blacklist3 = menu.add_feature("Blacklist Name", "toggle", PlayerHistory[rpid].Features.id, function(feat)
@@ -334,6 +369,7 @@ if type(feat) == "number" then
 			Temp_Blacklist[rpid].PlyNameON = true
 			return
 		end
+		return
 	end)
 	PlayerHistory[rpid].Blacklist3.on = false
 	
@@ -354,7 +390,6 @@ function PlayerHistoryDB(pid)
 	scid = player.get_player_scid(pid)
 	if scid ~= -1 then
 		PlayerName = GTA_Natives.GET_PLAYER_NAME(pid) or "NaN"
-		count = -1
 		token = player.get_player_host_token(pid)
 		tokhex = string.format("%x", token)
 		tokeen = tostring(tokhex)
@@ -362,20 +397,24 @@ function PlayerHistoryDB(pid)
 			if Players_History[y].rid == scid then
 			if Players_History[y].DecIP ~= Player_IP then
 			Players_History[y].DecIP = Player_IP
+			Players_History[y].DateLJ = os.date("%d-%m-%Y \t %H:%M:%S")
 			count = Players_History[y].count + 1 
 			Players_History[y].count = count
-			_G.MoistNotify(tostring(PlayerName) .. "\nSCID: " .. scid .. "\nIP: " .. tostring(TranIP) .. "\nSeen: " .. count .. " times", "Histroic Player Joined\nNew IP Detected!")
+
+			_G.MoistNotify(tostring(PlayerName) .. "\nSCID: " .. scid .. "\nIP: " .. tostring(TranIP) .. "\nSeen: " .. count .. " times", "Historic Player Joined\nNew IP Detected!")
 			return
 			end
 				count = Players_History[y].count + 1
 				Players_History[y].count = count
 				if count > 1 then
-					_G.MoistNotify("Histroic Player Join:\n" .. tostring(PlayerName) .. "\nSCID: " .. scid .. "\nSeen: " .. count .. " times", "Player Joined Found in History")
-				end
+					_G.MoistNotify("Historic Player Join:\n" .. tostring(PlayerName) .. "\nSCID: " .. scid .. "\nSeen: " .. count .. " times", "Player Joined Found in History")
 			return
+				end
+				return
 			end
-			system.yield(0)
+			system.yield()
 		end
+		count = 0
 		local i = #Players_History + 1
 		if HistoryNotify and i < 700 then
 			HistoryNotify = false
@@ -420,7 +459,7 @@ function PlayerHistoryDB(pid)
 		Players_History[i].PlyName = GTA_Natives.GET_PLAYER_NAME(pid)
 		Players_History[i].count = count + 1
 		Players_History[i].rid = scid
-		Players_History[i].DateLJ = os.date("%d-%m-%y")
+		Players_History[i].DateLJ = os.date("%d-%m-%Y \t %H:%M:%S")
 		Players_History[i].DecIP = Player_IP
 		Players_History[i].PartIP = Part_IP
 		Players_History[i].nid = network.network_hash_from_player(pid)
@@ -440,6 +479,8 @@ function PlayerHistoryDB(pid)
 	end
 	return
 end
+
+HistoryFunc.PlayerHistoryDB = PlayerHistoryDB
 
 function Player_History_Load(array)
 
@@ -550,9 +591,6 @@ function Search_History(HistoryName, strtype)
 	return
 end
 
-local Historyopt = menu.add_feature("History Player Options", "parent", LocalFeatures["History"].id)
-local lastsavelabel = menu.add_feature("Never", "action", Historyopt.id)
-lastsavelabel.name = "Never"
 LocalFeatures.Search_Type = menu.add_feature("Search Player History", "action_value_str", LocalFeatures["History"].id, function(feat)
 	if type(feat) == "number" then
 		return
@@ -653,6 +691,7 @@ function History_Save()
 	SaveThread = 0
 	return
 end
+HistoryFunc.History_Save = History_Save
 
 function ResetLoad()
 	for pid = 0, 31 do
@@ -662,7 +701,7 @@ function ResetLoad()
 	end
 end
 
-local lastsavetime = 0
+
 LocalFeatures.SaveHistoryInt = menu.add_feature("AutoSave History mins: ", "value_f", Historyopt.id,function(feat)
 	if type(feat) == "number" then
 		return
@@ -743,10 +782,11 @@ LocalFeatures.AutoHistoryLimit = menu.add_feature("(-100)Auto Limit value: ", "v
 	ScriptConfig["AutoLimitHistory"] = true
 	ScriptConfig["AutoLimitCount"] = tonumber(feat.value)
 		while feat.on do
+			system.yield()
 	if #Players_History_Feat > tonumber(feat.value) then
 		for i = 1, #Players_History_Feat do
-			for y = Players_History_Feat[i].child_count, 1, -1 do
-				local f = Players_History_Feat[i].children[y]
+			for y = Players_History_Feat[i][1].child_count, 1, -1 do
+				local f = Players_History_Feat[i][1].children[y]
 				if f.type == 1 << 11 then
 					for t = f.child_count, 1, -1 do
 						local e = f.children[t]
@@ -757,28 +797,30 @@ LocalFeatures.AutoHistoryLimit = menu.add_feature("(-100)Auto Limit value: ", "v
 				
 				system.yield(1)
 			end
-			if Players_History_Feat[i].child_count ~= 0 then
-				_G.MoistNotify(Players_History_Feat[i].child_count)
-				elseif Players_History_Feat[i].child_count == 0 then
-				local f = Players_History_Feat[i]
+			if Players_History_Feat[i][1].child_count ~= 0 then
+				_G.MoistNotify(Players_History_Feat[i][1].child_count)
+				elseif Players_History_Feat[i][1].child_count == 0 then
+				local f = Players_History_Feat[i][1]
 				menu.delete_feature(f.id)
 			end
 			--system.yield(1)
 		end
 		
-		Compact_Table = PlayerHistoryTableRebuild(tonumber(feat.value- 100))
+		Compact_Table = PlayerHistoryTableRebuild(tonumber(feat.value - 100))
 		Players_History = {}
 		
 		for y = 1, #Compact_Table do
-			player_Load(Compact_Table[y])
+			Player_History_Load(Compact_Table[y])
+		end
+			
+			
 			
 		end
 		
 		
 		system.yield(10000)
-	end
+
 	
-			system.yield()
 				end
 				return
 	
@@ -836,6 +878,7 @@ function CheckSession()
 	return
 end
 
+
 function Temp_BlacklistCheck(pid)
 	if not player.is_player_valid(pid) then
 		return
@@ -860,6 +903,8 @@ function Temp_BlacklistCheck(pid)
 	return
 end
 
+HistoryFunc.Temp_BlacklistCheck = Temp_BlacklistCheck
+
 function Temp_Blacklist_Kick(pid)
 	if pid == player.player_id() then
 		return
@@ -868,12 +913,12 @@ function Temp_Blacklist_Kick(pid)
 	if network.network_is_host() then
 		
 		if player.is_player_valid(pid) then
-			script.trigger_script_event_2(1 << pid, 1674887089, pid, script.get_global_i(1892703 + (1 + (pid * 599)) + 510))
+			script.trigger_script_event_2(1 << pid, 915462795, pid, script.get_global_i(1894573 + (1 + (pid * 608)) + 510))
 			
 			network.network_session_kick_player(pid)
 		end
 		elseif not network.network_is_host() then
-		script.trigger_script_event_2(1 << pid, 1674887089, pid, script.get_global_i(1892703 + (1 + (pid * 599)) + 510))
+		script.trigger_script_event_2(1 << pid, 915462795, pid, script.get_global_i(1894573 + (1 + (pid * 608)) + 510))
 		system.yield(1000)
 		if player.is_player_valid(pid) then
 			network.force_remove_player(pid)
@@ -883,43 +928,43 @@ function Temp_Blacklist_Kick(pid)
 end
 
 
-local Network_Join_Event = event.add_event_listener("player_join", function(e)
-	if type(e) == "number" then
-		return
-	end
+-- local Network_Join_Event = event.add_event_listener("player_join", function(e)
+	-- if type(e) == "number" then
+		-- return
+	-- end
 	
-	if e.player ~= nil then
-		local pid = e.player
-		if player.is_player_valid(pid) then
-			local status, err = pcall(PlayerHistoryDB, e.player)
-			if not status then
-				_G.MoistNotify(tostring(err), "Player History Module Error")
-			end
-			if #Temp_Blacklist ~= nil then
-				local status, err = pcall(Temp_BlacklistCheck, e.player)
-				if not status then
-				print(err)
-				--	_G.MoistNotify(tostring(err), "Player History Module Error")
-				end
-			end
+	-- if e.player ~= nil then
+		-- local pid = e.player
+		-- if player.is_player_valid(pid) then
+			-- local status, err = pcall(PlayerHistoryDB, e.player)
+			-- if not status then
+				-- _G.MoistNotify(tostring(err), "Player History Module Error")
+			-- end
+			-- if #Temp_Blacklist ~= nil then
+				-- local status, err = pcall(Temp_BlacklistCheck, e.player)
+				-- if not status then
+				-- print(err)
+				-- --	_G.MoistNotify(tostring(err), "Player History Module Error")
+				-- end
+			-- end
 			
-		end
-	end
-	if HistoryFileLoaded then
-	local testtime = os.time()
-	if (testtime - lastsavetime) >= 60 then
+		-- end
+	-- end
+	-- if HistoryFileLoaded then
+	-- local testtime = os.time()
+	-- if (testtime - lastsavetime) >= 60 then
 	
-	History_Save()
-	lastsavetime = os.time()
-	lastsavelabel.name = tostring(os.date())
+	-- History_Save()
+	-- lastsavetime = os.time()
+	-- lastsavelabel.name = tostring(os.date())
 	
 	
-	end
+	-- end
 
-		end
+		-- end
 	
-	return
-end)
+	-- return
+-- end)
 
 _G.MoistNotify("Player History Module Loaded", "")
 

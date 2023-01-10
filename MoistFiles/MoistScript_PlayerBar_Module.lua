@@ -322,10 +322,12 @@ PlayerBarFeats["AddMenuTags"] = menu.add_feature("Add Tags To Menu Playerlist", 
 	end
 	if feat.on then
 	_G.ScriptConfig["AddMenuPlayerTag"] = true
+	PlayerBarFeats["Player_MenuTags"].on = true
 	return
 	end
 	if not feat.on then
 	_G.ScriptConfig["AddMenuPlayerTag"] = false
+	PlayerBarFeats["Player_MenuTags"].on = false
 	return
 	end
 	return
@@ -461,21 +463,34 @@ function AddTagsToMenu(pid)
 	local tagtext = ""
 				if _G.ScriptConfig["AddMenuPlayerTag"] == true then
 					local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
-					tag = Name:find(":", 1, true)
+					tag = Name:find(":", 1, true, 1)
 					if tag then
+					
 					menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name:sub(1, tag - 1)
 					end
+					local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
+					tag = Name:find(":", 1, true, 1)
+					if tag then
+					
+					menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name:sub(1, tag - 1)
+								
+					
+					end
+					system.yield(10)
+					if _G.Session_Players[pid].PlayerTags ~= "" then
 					local name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
-					local tagtext = ":"
-					tagtext = tagtext .. tostring(_G.Session_Players[pid].PlayerTags)
+					local tagtext = ":["
+					tagtext = tagtext .. tostring(_G.Session_Players[pid].PlayerTags) .. "#DEFAULT#]:"
 			
 					local PName = name .. tostring(tagtext)
 					menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = PName
 	
 				end
+				end
 				
-	
+	--feat_name:gsub("%[%a%]$", "")
 end
+
 
 
 PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
@@ -487,28 +502,6 @@ PlayerBarFeats["Player_BarLoop"] = menu.add_feature("Player Loop Function", "tog
 			if not player.is_player_valid(pid) then
 				Player_add(pid)
 			end
-			-- if _G.ScriptConfig["AddMenuPlayerTag"] == true then
-					-- local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
-					-- local tag = Name:find(":", 1, true)
-					-- if not tag then
-					-- menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name .. ":"
-					-- end
-
-					-- local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
-					-- local tag = Name:find(":", 1, true)
-					-- if tag then
-					-- local Name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
-					-- menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name:sub(1, tag)
-	
-					-- local name = menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name
-					-- for i =1, #_G.Session_Players[pid].PlayerTags do
-					-- if _G.Session_Players[pid].PlayerTags[i] ~= "" then
-					-- Name = name .. _G.Session_Players[pid].PlayerTags[i]
-					-- end
-					-- end
-					-- menu.get_feature_by_hierarchy_key("online.online_players.player_" .. tostring(pid)).name = Name
-					-- end
-			-- end
 
 				if player.is_player_valid(pid) and Session_PB_Players.name == 'nil' then
 				Player_add(pid)
@@ -531,6 +524,7 @@ PlayerBarFeats["Player_BarLoop"]["on"] =_G.ScriptConfig["PlayerBar_ON"]
 PlayerBarFeats["Player_BarLoop"]["hidden"] = false
 
 local PCR, PCG, PCB, PCA = 255, 255, 255, 255
+
 PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
 		return
@@ -637,21 +631,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					end
 					if (script.get_global_i(2657589 + (1 + (pid * 466)) + 210) ==  1) then
 					Player_Name =  Player_Name .. OTR_tagA .. "~r~~h~" .. tostring(_G.Session_Players[pid].OTR_TimerM) .. OTR_tagB
-					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
-					local tags = tostring(_G.Session_Players[pid].PlayerTags)
-					if not string.find(tags, "#FF00FF00#O", 1, true) then
-					_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF00FF00#O"
-					AddTagsToMenu(pid)
-					end
-					end
-					elseif (script.get_global_i(2657589 + (1 + (pid * 466)) + 210) ==  0) then
-					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
-					local tags = tostring(_G.Session_Players[pid].PlayerTags)
-					if string.find(tags, "#FF00FF00#O", 1, true) then
-					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags, "#FF00FF00#O", "")
-					AddTagsToMenu(pid)
-					end
-					end
+
 					end
 
 					
@@ -670,7 +650,9 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					end
 					if (script.get_global_i(1653913 + (2 + (pid * 1) + (241 + 136)))& 1 << 16 ~= 0)  then
 						Player_Name =  Player_Name .. Typing_tag
+					
 					end
+					
 					if Session_PB_Players[pid].isTalking then
 						Player_Name =  Player_Name .. Voice_tag
 					end			
@@ -680,6 +662,7 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					
 					if Session_PB_Players[pid].isPaused then
 					Player_Name =  Player_Name .. Paused_tag
+									
 					end
 					if ( _G.ScriptConfig["ShowSpeedPlayerbar"] == true) and type(_G.Session_PB_Players[pid].PlySpeed) == 'number' and  _G.Session_PB_Players[pid].PlySpeed > 175 then
 					if _G.Session_PB_Players[pid].PlySpeed > 180 then
@@ -692,48 +675,11 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 					
 					if _G.Session_Players[pid].isGodmode and player.is_player_god(pid) then
 					Player_Name = Player_Name .. "~y~[~h~~r~G~y~]"
-					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
-					local tags = tostring(_G.Session_Players[pid].PlayerTags)
-					if not string.find(tags, "#FF0000FF#G", 1, true) then
-						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF0000FF#G"
-					AddTagsToMenu(pid)
-					
-					
-					end
-					end
-					end
-					if _G.Session_Players[pid].isGodmode and not player.is_player_god(pid) then
-					Player_Name = Player_Name
-					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
-						local tags = tostring(_G.Session_Players[pid].PlayerTags)
-					if string.find(tags, "#FF0000FF#G", 1, true) then
-					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FF0000FF#G", "")
-					 AddTagsToMenu(pid)
-					end
-					end
 					end
 
 					if _G.Session_Players[pid].VehGodmode and  player.is_player_vehicle_god(pid) then
 						Player_Name = Player_Name .. "~r~[~h~~o~V~r~]"
-					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
-					local tags = tostring(_G.Session_Players[pid].PlayerTags)
-					if not string.find(tags, "#FFA000FF#V", 1, true) then
-					_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FFA000FF#V"
-					AddTagsToMenu(pid)
-					end
-					end
-					end
 					
-					if _G.Session_Players[pid].VehGodmode and  not player.is_player_vehicle_god(pid) then
-					Player_Name = Player_Name
-					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
-					local tags = tostring(_G.Session_Players[pid].PlayerTags)
-					if string.find(tags, "#FFA000FF#V", 1, true) then
-					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FFA000FF#V", "")
-
-					AddTagsToMenu(pid)
-					end
-					end
 					end
 
 					ui.set_text_scale(0.178)
@@ -761,6 +707,177 @@ PlayerBarFeats["Player_bar"] = menu.add_feature("Player Bar OSD", "toggle", Play
 end)
 PlayerBarFeats["Player_bar"]["on"] =_G.ScriptConfig["PlayerBar_ON"]
 PlayerBarFeats["Player_bar"]["hidden"] = false
+
+PlayerBarFeats["Player_MenuTags"] = menu.add_feature("Add PlayerTags to Menu Features", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
+	if type(feat) == "number" then
+		return
+	end
+	ScriptConfig["AddMenuPlayerTag"] = true
+	local hosttag, SHost_tag, OTR_tagA, OTR_tagB, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag, RC_tag = "~b~~h~[H]","~y~~h~[S]","~g~~h~[O:","~g~~h~]","~y~~h~[~r~M~y~~h~]","~b~~h~[~q~~h~B~b~~h~]","~q~[~b~~h~T~q~]","~y~[~g~~h~VC~y~]","~h~~o~[~y~~h~P~o~~h~]","~w~~h~[~g~~h~RC~h~~w~]"
+	
+	while feat["on"] do
+
+		if network.is_session_started() then
+			for pid = 0, 31 do
+				local Player_Name1, Player_Name
+				if player.is_player_valid(pid) and Session_PB_Players[pid].Name ~= nil then
+
+					if (script.get_global_i(2657589 + (1 + (pid * 466)) + 210) ==  1) then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FF00FF00#O", 1, true) then
+					_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF00FF00#O"
+					AddTagsToMenu(pid)
+					end
+					end
+					elseif (script.get_global_i(2657589 + (1 + (pid * 466)) + 210) ==  0) then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FF00FF00#O", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags, "#FF00FF00#O", "")
+					AddTagsToMenu(pid)
+					end
+					end
+					end
+
+					if Session_PB_Players[pid].RCveh then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FFFFFB00#RC", 1, true) then
+						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FFFFFB00#RC"
+						AddTagsToMenu(pid)	
+					end
+					end
+					elseif not Session_PB_Players[pid].RCveh then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FFFFFB00#RC", 1, true) then
+						_G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FFFFFB00#RC", "")
+					 AddTagsToMenu(pid)
+					end
+					end
+					end
+					--Bounty
+					if (script.get_global_i(1835504 + (1 + (pid * 3)) + 4) == 1) then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FFFF0000#B", 1, true) then
+						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FFFF0000#B"
+					AddTagsToMenu(pid)	
+					end
+					end
+					elseif (script.get_global_i(1835504 + (1 + (pid * 3)) + 4) == 0) then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FFFF0000#B", 1, true) then
+						_G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FFFF0000#B", "")
+					 AddTagsToMenu(pid)
+					end
+					end
+					end
+					
+					if (script.get_global_i(1653913 + (2 + (pid * 1) + (241 + 136)))& 1 << 16 ~= 0)  then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FF00FFFF#T", 1, true) then
+						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF00FFFF#T"
+					AddTagsToMenu(pid)	
+					end
+					end
+					elseif (script.get_global_i(1653913 + (2 + (pid * 1) + (241 + 136)))& 1 << 16 == 0)  then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+						local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FF00FFFF#T", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FF00FFFF#T", "")
+					 AddTagsToMenu(pid)
+					
+					
+					end
+					end
+					end
+					
+					if Session_PB_Players[pid].isTalking then
+					
+					end			
+
+					if Session_PB_Players[pid].isPaused then
+
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FF00FFFF#P", 1, true) then
+						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF00FFFF#P"
+					AddTagsToMenu(pid)
+					end
+					end
+					elseif not Session_PB_Players[pid].isPaused then
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FF00FFFF#P", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FF00FFFF#P", "")
+					 AddTagsToMenu(pid)
+					end
+					end
+					
+					end
+				
+					if _G.Session_Players[pid].isGodmode and player.is_player_god(pid) then
+
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true  then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FF0000FF#G", 1, true) then
+						_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FF0000FF#G"
+					AddTagsToMenu(pid)
+					
+					
+					end
+					end
+					end
+					if _G.Session_Players[pid].isGodmode and not player.is_player_god(pid) then
+				--	Player_Name = Player_Name
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+						local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FF0000FF#G", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FF0000FF#G", "")
+					 AddTagsToMenu(pid)
+					end
+					end
+					end
+
+					if _G.Session_Players[pid].VehGodmode and  player.is_player_vehicle_god(pid) then
+					--	Player_Name = Player_Name .. "~r~[~h~~o~V~r~]"
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if not string.find(tags, "#FFA000FF#V", 1, true) then
+					_G.Session_Players[pid].PlayerTags = _G.Session_Players[pid].PlayerTags .. "#FFA000FF#V"
+					AddTagsToMenu(pid)
+					end
+					end
+					elseif not _G.Session_Players[pid].VehGodmode and  not player.is_player_vehicle_god(pid) then
+				--	Player_Name = Player_Name
+					if _G.ScriptConfig["AddMenuPlayerTag"] == true then
+					local tags = tostring(_G.Session_Players[pid].PlayerTags)
+					if string.find(tags, "#FFA000FF#V", 1, true) then
+					 _G.Session_Players[pid].PlayerTags = string.gsub( _G.Session_Players[pid].PlayerTags,  "#FFA000FF#V", "")
+
+					AddTagsToMenu(pid)
+					end
+					end
+					end
+
+			end
+				
+			end
+			
+		end
+		system.yield()
+	end
+	if not feat.on then
+	ScriptConfig["AddMenuPlayerTag"] = false
+	end
+	return
+end)
+PlayerBarFeats["Player_MenuTags"]["on"] = _G.ScriptConfig["AddMenuPlayerTag"]
+PlayerBarFeats["Player_MenuTags"]["hidden"] = true
 
 PlayerBarFeats["DrawOSD"] = menu.add_feature("Draw OSD", "toggle", PlayerBarFeats.PlayerbarParent.id, function(feat)
 	if type(feat) == "number" then
