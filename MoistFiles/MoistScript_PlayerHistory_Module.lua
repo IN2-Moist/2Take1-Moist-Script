@@ -9,6 +9,7 @@ local ScriptConfig = _G.ScriptConfig
 local FolderPaths = _G.FolderPaths
 local LocalFeatures = _G.LocalFeatures
 local json = require("json")
+local M_Func, Session_Players = require("MoistScript_MoistBasics_Module")
 local File = _G.FolderPaths.Logs .. "\\PlayersHistory.txt"
 local Players_History_Feat, Black_List_PID = {}, {}
 local Players_History, Temp_Blacklist, PlayerHistory = {},{},{}

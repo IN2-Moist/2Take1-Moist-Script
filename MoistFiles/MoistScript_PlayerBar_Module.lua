@@ -30,22 +30,20 @@ end
 if MoistScript_PlayerBar_Module == 'loaded' then
 	return
 end
+local Root =  utils.get_appdata_path("PopstarDevs", "2Take1Menu")
+if not (package.path):find(Root .. "\\scripts\\MoistFiles\\?.lua", 1, true) then
+	package.path = Root .. "\\scripts\\MoistFiles\\?.lua;" .. package.path
+end
 
 MoistScript_PlayerBar_Module = "loaded"
 local ScriptConfig = _G.ScriptConfig
 local Features = _G.Features
-local Session_Players = GlobalPlayers
-local PlayerBarFeats = {}
-_G.PlayerBarFeats = PlayerBarFeats
+PlayerBarFeats = {}
 local PCR, PCG, PCB, PCA
 local PCR1, PCG1, PCB1, PCA1 = 255, 255, 255, 255
 local PCR2, PCG2, PCB2, PCA2 = 0, 0, 0, 255
 local FPSOSD, MySpeed, CurTime, BarAlpha = "", "", "", _G.ScriptConfig["PlayerBarAlphaValue"]
-local Root =  utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 
-if not (package.path):find(Root .. "\\scripts\\MoistFiles\\?.lua", 1, true) then
-	package.path = Root .. "\\scripts\\MoistFiles\\?.lua;" .. package.path
-end
 
 GTA_Natives = require("MoistScript_GTA_Natives")
 
@@ -713,10 +711,9 @@ PlayerBarFeats["Player_MenuTags"] = menu.add_feature("Add PlayerTags to Menu Fea
 		return
 	end
 	ScriptConfig["AddMenuPlayerTag"] = true
-	local hosttag, SHost_tag, OTR_tagA, OTR_tagB, MOD_tag, Bounty_tag, Typing_tag, Voice_tag, Paused_tag, RC_tag = "~b~~h~[H]","~y~~h~[S]","~g~~h~[O:","~g~~h~]","~y~~h~[~r~M~y~~h~]","~b~~h~[~q~~h~B~b~~h~]","~q~[~b~~h~T~q~]","~y~[~g~~h~VC~y~]","~h~~o~[~y~~h~P~o~~h~]","~w~~h~[~g~~h~RC~h~~w~]"
 	
 	while feat["on"] do
-
+	system.yield()
 		if network.is_session_started() then
 			for pid = 0, 31 do
 				local Player_Name1, Player_Name
@@ -869,7 +866,7 @@ PlayerBarFeats["Player_MenuTags"] = menu.add_feature("Add PlayerTags to Menu Fea
 			end
 			
 		end
-		system.yield()
+		
 	end
 	if not feat.on then
 	ScriptConfig["AddMenuPlayerTag"] = false
