@@ -1,49 +1,33 @@
-function main(feat)
 if not MoistScript_NextGen then
-	return HANDLER_POP
+	return
 end
-
-
 if MoistScript_Translate_Module then
-	return HANDLER_POP
+	return
 end
 MoistScript_Translate_Module = "loaded"
-
-local ScriptConfig = _G.ScriptConfig
+function Translation_Main()
 local json = require("json")
 local GTA_Natives = require("MoistScript_GTA_Natives")
-
-
+local M_Func = require("MoistScript_MoistBasics_Module")
 function Moist_Notify2(msg1, msg2, colour, timeout)
-           timeout = timeout or 8
-
-            colour = colour or 0xff00ffff
-
-		msg2 = msg2 or ""
-		msg1 = msg1 or ""
-		text = "~h~~y~" .. tostring(msg2) .. "~n~~h~~w~" .. tostring(msg1)
-           ui.notify_above_map(text, "", 123)
-			--_G.MoistNotify(msg1, msg2, colour, timeout)
-
- 
+	timeout = timeout or 8
+	colour = colour or 0xff00ffff
+	msg2 = msg2 or ""
+	msg1 = msg1 or ""
+	text = "~h~~y~" .. tostring(msg2) .. "~n~~h~~w~" .. tostring(msg1)
+	ui.notify_above_map(text, "", 123)
+	--_G.MoistNotify(msg1, msg2, colour, timeout)
 end
-
 function MoistNotify2(msg1, msg2, colour, timeout)
-           timeout = timeout or 8
-
-            colour = colour or 0xff00ffff
-
-		msg2 = msg2 or ""
-		msg1 = msg1 or ""
-		text = "~h~~y~" .. tostring(msg2) .. "~n~~h~~w~" .. tostring(msg1)
-            --ui.notify_above_map(text, "", 123)
-			_G.MoistNotify(msg1, msg2, colour, timeout)
-
- 
+	timeout = timeout or 8
+	colour = colour or 0xff00ffff
+	msg2 = msg2 or ""
+	msg1 = msg1 or ""
+	text = "~h~~y~" .. tostring(msg2) .. "~n~~h~~w~" .. tostring(msg1)
+	--ui.notify_above_map(text, "", 123)
+	_G.MoistNotify(msg1, msg2, colour, timeout)
 end
-
 local Translang, MyDefaultTransTo, langID, IpLocTrans = "en", "ru", {}, true
-
 local langSel = {
 	"af","az","id","ms","su","bs","ca","ceb","ny","sn","co","cy","da","de","et","en-GB","es","es-419",
 	"eu","fil","fr","fr-CA","fy","ga","gl","gd","ha","haw","hr","ig","zu","it","jv","sw","lv","lt","hu","mg"
@@ -51,23 +35,18 @@ local langSel = {
 	"ht","yo","is","cs","el","uz","be","bg","mk","mn","ru","sr","uk","ky","tg","kk","hy","yi","sd","ne","mr",
 	"hi","bn","pa","gu","ta","te","kn","ml","si","th","lo","my","ka","am","km","ku","iw","ur","ar","fa","ps",
 "zh-CN","zh-HK","ja","ko"}
-
 local og_yield = coroutine.yield
-
 function coroutine.yield(...)
     if not coroutine.isyieldable() then
         return
 	end
     og_yield(...)
 end
-
 system.wait = coroutine.yield
 system.yield = coroutine.yield
-
 local char_to_hex = function(c)
     return string.format("%%%02X", string.byte(c))
 end
-
 local function UrlEncode(url)
     if url == nil then
         return
@@ -79,7 +58,6 @@ local function UrlEncode(url)
     url = url:gsub(" ", "+")
     return url
 end
-
 local function UrlEncode(url)
     if url == nil then
         return
@@ -89,7 +67,6 @@ local function UrlEncode(url)
     url = url:gsub(" ", "+")
     return url
 end
-
 function Translate(text, lanf)
 	langf = lanf:lower() or "auto"
     local encoded = web.urlencode(text)
@@ -102,32 +79,22 @@ function Translate(text, lanf)
 	PlayersLang = translated[3]
 	return true, PlayersLang, translatedText
 end
-
 function Translatev2(text, lanf, lant)
 	local encoded = web.urlencode(text)
-
 	local statusCode, body = web.get("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" .. lanf .. "&tl=" .. lant .. "&q=" ..encoded)
-	
 	if statusCode ~= 200 then
 		return false, body
 	end
-	
 	if lanf ~= "auto" then
-	translated = json.decode(body)
-
-	TranslatedText, PlayersLang = translated[1], lanf
-	return true, TranslatedText, PlayersLang 
-	elseif lanf == "auto" then
-	translated = json.decode(body)
-
-	TranslatedText, PlayersLang = translated[1][1], translated[1][2]
-	return true, TranslatedText, PlayersLang 
+		translated = json.decode(body)
+		TranslatedText, PlayersLang = translated[1], lanf
+		return true, TranslatedText, PlayersLang 
+		elseif lanf == "auto" then
+		translated = json.decode(body)
+		TranslatedText, PlayersLang = translated[1][1], translated[1][2]
+		return true, TranslatedText, PlayersLang 
 	end
-
-	
 end
-
-
 function TranslateTo(text, lang)
 	lang = lang or "auto"
     local encoded = web.urlencode(text)
@@ -138,7 +105,6 @@ function TranslateTo(text, lang)
     local translatedText = body:match(".-\"(.-)\",\"")
 	return true, translatedText
 end
-
 langID = {}
 langID["AD"] = "en"
 langID["AE"] = "en"
@@ -297,19 +263,16 @@ langID["YT"] = "fr"
 langID["ZA"] = "zu"
 langID["ZM"] = "en"
 langID["ZW"] = "sn"
-
-trans_parent = menu.add_feature("Translate Game Chat", "parent", Features.LocalSettings.id)
+trans_parent = menu.add_feature("Translate Game Chat", "parent", LocalFeatures["LocalSettings"].id)
 trans_parent2 = menu.add_feature("Send Translated Chat Options", "parent", trans_parent.id)
 label = menu.add_feature("HotKey (RSHIFT + U)", "action", trans_parent2.id)
-
-MyChatDefault = menu.add_feature("Set a Default Language: ", "action_value_str", trans_parent2.id,function(feat)
+MyChatDefault = menu.add_feature("Set a Default Language: ", "action_value_str", trans_parent2.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
 	local lan = MyChatDefault:get_str_data()[MyChatDefault.value + 1]
 	ScriptConfig["MyChatTrans"] = lan
 	MyDefaultTransTo = lan
-
 end)
 MyChatDefault:set_str_data(langSel)
 MyChatDefault.value = 0
@@ -318,8 +281,7 @@ for i = 1, #MyChatDefault:get_str_data() do
 		MyChatDefault.value = i - 1
 	end
 end
-
-gamechathotkey = menu.add_feature("Send Translated Chat Hotkey RSHIFT+U", "toggle", trans_parent2.id,function(feat)
+gamechathotkey = menu.add_feature("Send Translated Chat Hotkey RSHIFT+U", "toggle", trans_parent2.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
@@ -345,10 +307,10 @@ gamechathotkey = menu.add_feature("Send Translated Chat Hotkey RSHIFT+U", "toggl
 			system.yield(1000)
 			if success then
 				network.send_chat_message(translatedText, false)
-						if TranslateToLog then
-			chattext = GTA_Natives.GET_PLAYER_NAME(player.player_id()) .. chatmsg .. ", " .. translatedText
-			File_Writer(chattext, FolderPaths.ChatFile, true, true)
-			end
+				if TranslateToLog then
+					chattext = GTA_Natives.GET_PLAYER_NAME(player.player_id()) .. chatmsg .. ", " .. translatedText
+					File_Writer(chattext, FolderPaths.ChatFile, true, true)
+				end
 			end
 		end
 		::continue::
@@ -359,167 +321,139 @@ gamechathotkey["on"] = ScriptConfig["TransChatKey"]
 gamechathotkey["data"] = MenuKey()
 gamechathotkey.data:push_str("RSHIFT")
 gamechathotkey.data:push_str("u")
-
 local transGfx = GTA_Natives.GET_GLOBAL_CHAR_BUFFER()
 local ChatEventID = 0
-
 ShowTransOnScreen = function(sendername, lang, Tlang, ChatText)
 	if ScriptConfig["ChatTransListenerType"] == 0 then
-		GTA_Natives.NETWORK_SET_SCRIPT_CONTROLLING_TEAMS(1)
-	--GTA_Natives.OVERRIDE_MULTIPLAYER_CHAT_PREFIX(-1755491431)
-	GTA_Natives.OVERRIDE_MP_TEXT_CHAT_TEAM_STRING(-1, gameplay.get_hash_key("transGfx"))
-
-	network.send_chat_message("\n" .. sendername .. "[" .. lang:upper() .."] >>> [" .. Tlang:upper() .. "]: ".. ChatText, chatvisibility.on)
-	elseif ScriptConfig["ChatTransListenerType"] == 1 then
-	MoistNotify2(ChatText,	sendername .. " [" .. lang:upper() .." >" .. Tlang:upper() .. "]", 0xff00ffff, 10)
-	
-	elseif ScriptConfig["ChatTransListenerType"]  == 2 then
-	Moist_Notify2(ChatText, sendername .. "~c~ [" .. lang:upper() .." >" .. Tlang:upper() .. "]", 0xff00ffff, 10)
-	
+		GTA_Natives.OVERRIDE_MP_TEXT_CHAT_TEAM_STRING(-1, gameplay.get_hash_key("transGfx"))
+		network.send_chat_message("\n" .. sendername .. "[" .. lang:upper() .."] >>> [" .. Tlang:upper() .. "]: ".. ChatText, chatvisibility.on)
+		elseif ScriptConfig["ChatTransListenerType"] == 1 then
+		MoistNotify2(ChatText,	sendername .. " [" .. lang:upper() .." >" .. Tlang:upper() .. "]", 0xff00ffff, 10)
+		elseif ScriptConfig["ChatTransListenerType"]  == 2 then
+		Moist_Notify2(ChatText, sendername .. "~c~ [" .. lang:upper() .." >" .. Tlang:upper() .. "]", 0xff00ffff, 10)
 	end
 end
-
-
 Chat_Translation = function(e)
-local success, lang, TestText, success1, langid1, TestText1, sendername
+	local success, lang, TestText, success1, langid1, TestText1, sendername
 	local TransFrom = "auto"
 	local outputdone = false
 	local playerID, senderID, ChatMsg = e["player"], e["sender"], e["body"]
-		if not player.is_player_valid(playerID) then
+	if not player.is_player_valid(playerID) then
 		return
 		elseif  player.is_player_valid(playerID) then
 		sendername = GTA_Natives.GET_PLAYER_NAME(playerID) or  "NaN"
 		local chattext = sendername .. ", " .. tostring(e.body) .. ", "
 		if IpLocTrans then
-		if type(_G.Session_Players[playerID]["IPInfo"]["countryCode"]) == 'string' then
-		local CCD = string.lower(_G.Session_Players[playerID]["IPInfo"]["countryCode"])
-		TransFrom = langID[CCD] or auto
-		else
-		TransFrom = "auto"
-		end
-		local langfound = false
-		for i =1,#langSel do
-		if TransFrom == langSel[i] then
-		langfound = true
-		goto trans
-		end
-		langfound = false
-		end
-		TransFrom = "auto"
-		::trans::
-		success, Test_Text, lang = Translatev2(ChatMsg, "auto", Translang)
-		if success then
-		if TransFrom ~= 'auto' then
-		if lang == TransFrom and lang ~= Translang and Test_Text ~= ChatMsg then
-		if string.lower(lang) ~= string.lower(Translang) then
-
-		ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), Test_Text)
-		if TranslateToLog and not outputdone then
-			chattext = chattext .. Test_Text
-			File_Writer(chattext, FolderPaths.ChatFile, true, true)
-			outputdone = true
+			if type(_G.Session_Players[playerID]["IPInfo"]["countryCode"]) == 'string' then
+				local CCD = string.lower(_G.Session_Players[playerID]["IPInfo"]["countryCode"])
+				TransFrom = langID[CCD] or auto
+				else
+				TransFrom = "auto"
 			end
-		end
-		end
-		elseif TransFrom == 'auto' and lang ~= Translang and Test_Text ~= ChatMsg then
-		
-		ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), Test_Text)
-		if TranslateToLog and not outputdone then
-			chattext = chattext .. Test_Text
-			File_Writer(chattext, FolderPaths.ChatFile, true, true)
-			outputdone = true
+			local langfound = false
+			for i =1,#langSel do
+				if TransFrom == langSel[i] then
+					langfound = true
+					goto trans
+				end
+				langfound = false
 			end
-		end
-		elseif lang ~= TransFrom and lang ~= Translang then
-		success, TestText, lang = Translatev2(ChatMsg, TransFrom, Translang)
-		if success and lang ~= Translang or TestText ~= ChatMsg then
-			if string.lower(lang) ~= string.lower(Translang) then
-
-					ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), TestText)
+			TransFrom = "auto"
+			::trans::
+			success, Test_Text, lang = Translatev2(ChatMsg, "auto", Translang)
+			if success then
+				if TransFrom ~= 'auto' then
+					if lang == TransFrom and lang ~= Translang and Test_Text ~= ChatMsg then
+						if string.lower(lang) ~= string.lower(Translang) then
+							ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), Test_Text)
+							if TranslateToLog and not outputdone then
+								chattext = chattext .. Test_Text
+								File_Writer(chattext, FolderPaths.ChatFile, true, true)
+								outputdone = true
+							end
+						end
+					end
+					elseif TransFrom == 'auto' and lang ~= Translang and Test_Text ~= ChatMsg then
+					ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), Test_Text)
 					if TranslateToLog and not outputdone then
-			chattext = chattext .. TestText
-			File_Writer(chattext, FolderPaths.ChatFile, true, true)
-			outputdone = true
-			end
-		end
-		elseif success and lang == Translang or TestText == ChatMsg then
+						chattext = chattext .. Test_Text
+						File_Writer(chattext, FolderPaths.ChatFile, true, true)
+						outputdone = true
+					end
+				end
+				elseif lang ~= TransFrom and lang ~= Translang then
+				success, TestText, lang = Translatev2(ChatMsg, TransFrom, Translang)
+				if success and lang ~= Translang or TestText ~= ChatMsg then
+					if string.lower(lang) ~= string.lower(Translang) then
+						ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), TestText)
+						if TranslateToLog and not outputdone then
+							chattext = chattext .. TestText
+							File_Writer(chattext, FolderPaths.ChatFile, true, true)
+							outputdone = true
+						end
+					end
+					elseif success and lang == Translang or TestText == ChatMsg then
 					chattext = chattext .. TestText
-			File_Writer(chattext, FolderPaths.ChatFile, true, true)
-		outputdone = true
-				goto BypassTrans
-		end
-
-
-
-
-		
-	
-		end
-		
-
-	::BypassTrans::
-	if not outputdone then
-	File_Writer(chattext, FolderPaths.ChatFile, true, true)
-	outputdone = true
-	end
-			elseif not IpLocTrans then
-			success, TestText, lang = Translatev2(ChatMsg, "auto", Translang)
-		if success and lang ~= Translang then
-
-			if string.lower(lang) ~= string.lower(Translang) then
-			ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), Test_Text)
-	if TranslateToLog and not outputdone then
-			chattext = chattext .. TestText
-			File_Writer(chattext, FolderPaths.ChatFile, true, true)
-			outputdone = true
-			end
+					File_Writer(chattext, FolderPaths.ChatFile, true, true)
+					outputdone = true
+					goto BypassTrans
 				end
 			end
-			
+			::BypassTrans::
+			if not outputdone then
+				File_Writer(chattext, FolderPaths.ChatFile, true, true)
+				outputdone = true
+			end
+			elseif not IpLocTrans then
+			success, TestText, lang = Translatev2(ChatMsg, "auto", Translang)
+			if success and lang ~= Translang then
+				if string.lower(lang) ~= string.lower(Translang) then
+					ShowTransOnScreen(sendername, lang:upper(), Translang:upper(), Test_Text)
+					if TranslateToLog and not outputdone then
+						chattext = chattext .. TestText
+						File_Writer(chattext, FolderPaths.ChatFile, true, true)
+						outputdone = true
+					end
+				end
+			end
 		end
-		end
-	if not outputdone then
-	File_Writer(chattext, FolderPaths.ChatFile, true, true)
-	outputdone = true
 	end
-
-return
-	
+	if not outputdone then
+		File_Writer(chattext, FolderPaths.ChatFile, true, true)
+		outputdone = true
+	end
+	return
 end
-
-
 local ChatTransEnabled = menu.add_feature("Chat Translation to: ", "value_str", trans_parent.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
 	if feat["on"] and ChatEventID == 0 then
-	if feat["value"] == 0 then
-	ScriptConfig["ChatTransListener"] = true
-	ScriptConfig["ChatTransListenerType"] = feat.value
-	ChatEventID = event.add_event_listener("chat", Chat_Translation)
-	return
-	end
-	if feat["value"] == 1 then
-	ScriptConfig["ChatTransListener"] = true
-	ScriptConfig["ChatTransListenerType"] = feat.value
-	ChatEventID = event.add_event_listener("chat", Chat_Translation)
-	
-	return
-	end
-	if feat["value"] == 2 then
-	ScriptConfig["ChatTransListener"] = true
-	ScriptConfig["ChatTransListenerType"] = feat.value
-	ChatEventID = event.add_event_listener("chat", Chat_Translation)
-	return
-	end
-	
+		if feat["value"] == 0 then
+			ScriptConfig["ChatTransListener"] = true
+			ScriptConfig["ChatTransListenerType"] = feat.value
+			ChatEventID = event.add_event_listener("chat", Chat_Translation)
+			return
+		end
+		if feat["value"] == 1 then
+			ScriptConfig["ChatTransListener"] = true
+			ScriptConfig["ChatTransListenerType"] = feat.value
+			ChatEventID = event.add_event_listener("chat", Chat_Translation)
+			return
+		end
+		if feat["value"] == 2 then
+			ScriptConfig["ChatTransListener"] = true
+			ScriptConfig["ChatTransListenerType"] = feat.value
+			ChatEventID = event.add_event_listener("chat", Chat_Translation)
+			return
+		end
 	end
 	if not feat["on"] and ChatEventID ~= 0 then
-	event.remove_event_listener("chat", ChatEventID)
-	ChatEventID = 0
-	ScriptConfig["ChatTransListener"] = false
-	ScriptConfig["ChatTransListenerType"] = feat.value
-	return
+		event.remove_event_listener("chat", ChatEventID)
+		ChatEventID = 0
+		ScriptConfig["ChatTransListener"] = false
+		ScriptConfig["ChatTransListenerType"] = feat.value
+		return
 	end
 end)
 ChatTransEnabled:set_str_data({"Game Chat","New Notifys","Old Notifys"})
@@ -527,46 +461,41 @@ ChatTransEnabled["on"] = ScriptConfig["ChatTransListener"]
 ChatTransEnabled["value"] = ScriptConfig["ChatTransListenerType"]
 chatvisibility = menu.add_feature("Team[ON] | Public[OFF]", "toggle", trans_parent.id)
 chatvisibility["on"] = true
-
-
-
-chatIpLocTrans = menu.add_feature("translate via IP Location", "toggle", trans_parent.id,function(feat)
+chatIpLocTrans = menu.add_feature("translate via IP Location", "toggle", trans_parent.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
-		if not feat["on"] then
+	if not feat["on"] then
 		IpLocTrans = false
 		ScriptConfig["IPlocTranslate"] = false
 		return
-		end
-		IpLocTrans = true
-		ScriptConfig["IPlocTranslate"] = true
-		return
+	end
+	IpLocTrans = true
+	ScriptConfig["IPlocTranslate"] = true
+	return
 end)
 chatIpLocTrans["on"] = ScriptConfig["IPlocTranslate"]
 chatIpLocTrans.hidden = false
-
 LogTranslation = menu.add_feature("Log Translated Chat", "toggle", trans_parent.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
-		if not feat["on"] then
+	if not feat["on"] then
 		ScriptConfig["TranslateToLog"] = false
 		TranslateToLog = false
 		return
 		elseif feat["on"] then
 		if _G.LocalFeatures["ChatLogging"].on then
-		_G.LocalFeatures["ChatLogging"].on = false
-		 end
+			_G.LocalFeatures["ChatLogging"].on = false
+		end
 		ScriptConfig["TranslateToLog"] = true
 		TranslateToLog = true
-		end
-		return
+	end
+	return
 end)
 LogTranslation["on"] = ScriptConfig["TranslateToLog"]
 LogTranslation.hidden = false
-
-Trans_Lang = menu.add_feature("Translate to: ", "action_value_str", trans_parent.id,function(feat)
+Trans_Lang = menu.add_feature("Translate to: ", "action_value_str", trans_parent.id, function(feat)
 	if type(feat) == "number" then
 		return HANDLER_POP
 	end
@@ -575,16 +504,7 @@ Trans_Lang = menu.add_feature("Translate to: ", "action_value_str", trans_parent
 end)
 Trans_Lang:set_str_data(langSel)
 Trans_Lang.value = 15
-
-
 MoistNotify("Translate Module Loaded", "")
 MoistNotify("Ensure to enable Chat Translation to start listening to game chat\nBe Aware Team Chat Translation will be visible on Team Jobs/Missions and to any member of your ceo/mc", "MoistScript NG", 0xff0000ff, 20)
--- event.add_event_listener("exit", function()
-	-- --clean up shit
-	-- if ChatEventID ~= 0 then
-		-- event.remove_event_listener("chat", ChatEventID)
-	-- end
-
--- end)
 end
-local TranslateThread = menu.create_thread(main, feat)
+local TranslateThread = menu.create_thread(Translation_Main)

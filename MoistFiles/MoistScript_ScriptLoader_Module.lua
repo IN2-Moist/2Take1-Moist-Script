@@ -11,11 +11,19 @@ MoistScript_LUA_Module = "loaded"
 local Root = utils.get_appdata_path("PopstarDevs", "2Take1Menu")
 local LUAScripts, LoaderFeats = {}, {}
 local MSNG_ScriptFeatParent, MSNG_ScriptFolders, MSNG_ScriptFeat, MSNG_loadedScripts = {},{},{},{}
-local Features = _G.Features
 
 local scriptload = Root .. "\\scripts\\MoistFiles\\scriptloader.ini"
 
-MSNG_ScriptFeatParent[1] = _G.Features["ScriptLoader"]
+MSNG_ScriptFeatParent[1] = _G.LocalFeatures["ScriptLoader"]
+
+function Print_Dump(text)
+	local file = io.open(Root .."\\lualogs" .. "\\DebugPrint.txt", "a+")
+	print(text)
+	text = tostring(text) .. "\n"
+	file:write(tostring(text))
+	file:close()
+end
+
 
 function DumpShit(table2dump)
     for k, v in pairs(table2dump) do
@@ -40,14 +48,6 @@ function DumpShit(table2dump)
 	end
 end
 
-
-function Print_Dump(text)
-	local file = io.open(Root .."\\lualogs" .. "\\DebugPrint.txt", "a+")
-	print(text)
-	text = tostring(text) .. "\n"
-	file:write(tostring(text))
-	file:close()
-end
 
 
 
@@ -248,77 +248,42 @@ LoaderFeats["refreshfolders"] = menu.add_feature("Refresh", "action", MSNG_Scrip
 	end
 	
 	
-return	
+	return	
 end)
 
 ScriptDataSetup()
 MSNG_ScriptFeatBuilder()
 
 function Read_Savefile()
-for line in io.lines(scriptload) do
-	
-	local file = Root .. "\\scripts\\" .. line
-	if utils.file_exists(file) then
-		local sep = line:find(".lua", 1, true)
-		if sep then
-			local LuaFile = line:sub(1, sep - 1)
-			LoadLUAFile(LuaFile)
-			
-			MSNG_loadedScripts[#MSNG_loadedScripts + 1] = line
-		end
-		elseif not utils.file_exists(file) then
-		for i = 1, #MSNG_ScriptFolders do
-			local file = Root .. "\\scripts\\" .. MSNG_ScriptFolders[i] .."\\" .. line
-			if utils.file_exists(file) then
-				local sep = line:find(".lua", 1, true)
-				if sep then
-					local LuaFile = line:sub(1, sep - 1)
-					LoadLUAFile(LuaFile)
-					MSNG_loadedScripts[#MSNG_loadedScripts + 1] = line
-				end
+	for line in io.lines(scriptload) do
+		
+		local file = Root .. "\\scripts\\" .. line
+		if utils.file_exists(file) then
+			local sep = line:find(".lua", 1, true)
+			if sep then
+				local LuaFile = line:sub(1, sep - 1)
+				LoadLUAFile(LuaFile)
 				
+				MSNG_loadedScripts[#MSNG_loadedScripts + 1] = line
+			end
+			elseif not utils.file_exists(file) then
+			for i = 1, #MSNG_ScriptFolders do
+				local file = Root .. "\\scripts\\" .. MSNG_ScriptFolders[i] .."\\" .. line
+				if utils.file_exists(file) then
+					local sep = line:find(".lua", 1, true)
+					if sep then
+						local LuaFile = line:sub(1, sep - 1)
+						LoadLUAFile(LuaFile)
+						MSNG_loadedScripts[#MSNG_loadedScripts + 1] = line
+					end
+					
+				end
 			end
 		end
+		
 	end
-	
-end
 	return
 end
 Read_Savefile()
 
-_G.Features["ScriptLoader"]["hidden"] = false
-
--- function ExitCleanup()
-
--- local MSNG_ScriptFeats, MSNG_ScriptFeatParents = {}, {}
-
--- function FetchAllFeats(main)
--- for i=1,main.child_count do
--- if main.children[i].type == 2048 then
--- MSNG_ScriptFeatParents[#MSNG_ScriptFeatParents+1] = main.children[i]
--- end
--- MSNG_ScriptFeats[#MSNG_ScriptFeats+1] = main.children[i]
--- end
--- end
-
--- function RemoveFeats(Feat)
--- if Feat.type == 2048 then
--- for i=1,Feat.child_count do
--- RemoveFeats(Feat.children[1])
--- end
--- end
--- menu.delete_feature(Feat["id"])
--- end
-
--- FetchAllFeats(menu.get_feature_by_hierarchy_key("local.script_features"))
-
--- for i = 1, #MSNG_ScriptFeatParents do
--- RemoveFeats(MSNG_ScriptFeatParents[i])
--- end
-
--- for i = 1, #MSNG_ScriptFeats do
--- RemoveFeats(MSNG_ScriptFeats[i])
--- end
--- end
-
---event.add_event_listener("exit", ExitCleanup)
+LocalFeatures["ScriptLoader"]["hidden"] = false
