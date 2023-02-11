@@ -4,7 +4,7 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.1 |-|
+# |-| 3.0.1.2 |-|
 
 ## Feaure List
 
@@ -81,8 +81,17 @@ Moists Orbital Gun
 Homing Aim
 	Shoot Aditional Homing Missile at target your aiming attack
 	
-Vehicle Lockon Missile v1 <delay modifier>
-	Shoots additional Lockon Missiles at locked on target
+Better Vehicle Lockon Missiles <delay modifier>
+	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
+	shots should look more legit 500 delay or more
+
+Vehicle Missiles from my Ass <delay modifier>
+	Shoots additional Lockon Missiles at locked on target, this version Keeps the last Target and shoots missiles locked onto the target even if the target
+	is not visible on screen (its behind you for instance) this will cause your missiles to shoot at any direction. Your Vehicle is safe using this as you
+	can not damage your vehicle with them.
+	
+OnFoot Lockon Missiles
+	Shoots an additional Ruiner Missile at the target locked onto via your homing launcher.
 
 
 ```
@@ -287,11 +296,32 @@ Session Griefing
 
 ```md
 
+Set Wind Speed
+
 LightningBolt Generator
  Delay Multiplier = 0.01 -> 2.00
  While on will generate Random Lightning no matter the weather
  Actual Delay = (Delay Multiplier * 60)
 
+Atmospheric Lighting
+	Atmospheric Lighting Modifiers
+		Set Red Value
+			Red Brightness / amount (0-255)
+		Set Green Value
+			Green Brightness / amount (0-255)
+		Set Blue Value
+			Blue Brightness / amount (0-255)
+		Set Range Value
+			Distance of Light Effect Range (0.00 - 100000.00)
+		Set Shadow Value
+			Amount of Shadow Effect (less shadow more brightness
+		Set Intensity Value
+			How Intense the Light Effect should be
+			
+	Enable Atmos Light FX <Toggle>
+		Bigger Range will make particles and objects glow
+		Lower Range will localise the light to you this kinda looks like you have vehicle neons on your ped 
+	
 Set Rain Level
 
 Water Override Strength
@@ -310,7 +340,6 @@ Water Ripple Bumpiness
 
 Override ShoreWave Amplitude
 
-Set Wind Speed
 
 Adjust current wind speed
 
