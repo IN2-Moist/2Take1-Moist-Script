@@ -1,4 +1,4 @@
-![NextGen](https://cdn.discordapp.com/attachments/1043788232577523726/1067523279415419000/NGred2_3.png)
+![NextGen](https://cdn.discordapp.com/attachments/1043788232577523726/1089336753158111313/nglog2o.png)
 
 <hr>
 
