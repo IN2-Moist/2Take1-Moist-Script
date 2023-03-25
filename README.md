@@ -4,7 +4,7 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.2 |-|
+# |-| 3.0.1.3 |-|
 
 ## Feaure List
 
@@ -30,16 +30,27 @@ Set Stat With Verified Logo:
   YACHT_NAME ::  Combines the 2 stats that makes up Your Yacht Name
   (Completely Bypasses any Profanity Filters and can Accept Special Characters for R* Logos etc)
  
- Auto Nightclub Vault Money MPCHAR: <value updates automatically to your current character>
+  Auto Nightclub Vault Money Fast Method
+  Fast Nightclub Vault Money [Requires 2Take1 VIP License
+  Auto Nightclub Vault Money (Slower Method)
+ 
 	NightClub Earnings Money Method for self,
 	goto your nightclub office safe open it stand in the threshold of the doorway,
-	turn on and enjoy some fast cash,
-	periodically this will pause for a moment to allow transactions to clear and transfer the money into your bank!
+	turn on and enjoy some fast cash.
+	VIP Method does not require you to even be anywhere near your nightclub can be done While otherside of the map Killing Noobs.
+	Non Vip Version will periodically pause for a moment to allow transactions to clear and transfer the money into your bank!
 	I found this to be slower in full sessions solo takes no time at all to clock up a few million!
 	Dont Be retarded with its use!
 	Few Million every now and then do some other stuff then you should be ok!
 	i have done this for a few weeks got 3 bil in the bank now and no issues
 	just be casual with its use!
+	
+  Dooms Day ACT2 2.5 Million
+	Turn on Before launching this finale and Enjoy a Bigger Payout,
+	just leave the values as they are even if they are not upto 100%.
+	
+  Sub Guided Missiles (+)Range (-)CoolDown
+	Extends the Range of the Submarine Guided Missiles, & Removes Any Cooldown Between Shots.
   
 ```
 
@@ -82,6 +93,12 @@ Homing Aim
 	Shoot Aditional Homing Missile at target your aiming attack
 	
 Better Vehicle Lockon Missiles <delay modifier>
+	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
+	shots should look more legit 500 delay or more
+	
+Better Vehicle Lockon Missiles v2 <delay modifier>
+	Enhanced Version this will Lockon to the driver rather than Vehicle so if they were to eject/bail from vehicle before missile gets their vehicle
+	the Enhanced Missile will lock onto their ped for a nice Bail Fail!
 	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
 	shots should look more legit 500 delay or more
 
@@ -287,9 +304,26 @@ Engine Audio:
 Player Histroy
   Requires Histroy Module to be loaded
 Session Griefing
+ 
   Send All to Del Pero : <Beach | Beach Bounty War!>
-  MultiDirectional Player Snipe : <Distance value Modifier>
-  
+	Beach Fun & Money Maker for people, this version Respects Script Safemode & Player Exclusions.
+ 
+  Player Broadcast to Del Pero : <Beach | Beach Bounty War!>
+	Instantly Send all to the Beach for Money & Games. ** This Version Will Send All Even You! (Alternate version Should the other Not Send All Players!)
+	
+  Give All 10k Bounty
+	Does as Name States
+	
+	Mission: <Selectable Job>
+		This will Send the entire session to the job screen for the mission you selected
+
+  Treat Troll
+	Halloween Jack-O-Lantern treats for all players
+	
+  Nearby Player Orbital Dist: <Distance Modifier>
+	This is Replacment for the Multidirectional Snipe.
+	This will Orbital all Players within selected distance from you this is anonomous kill.
+
 ```
 
 ## World Features
@@ -401,6 +435,13 @@ Enable Sub Missile Detection
 Enable RC Vehicle Detection
  Again Name says it all Detects Activation of RC Tank & RC Bandito also adds [RC] tag to the players name in the player bar
  
+ 
+Blacklist Features
+	When Blacklist Module loaded will give you Blacklist options for players SCID and IP
+	
+		
+ 
+ 
 ```
 
 ## MoistScript Settings
@@ -458,6 +499,13 @@ Detect Orbital Users
   They just will never find you in the player list preventing any orbital!
   One exception that can bypass this Protection is a bounty either way!
 
+  Sub Missile Seek & Destroy
+	This Feature does not require the Missile Detection to work this will constantly check for a missile in range and shoot it out the sky
+	
+  Shoot Down Sub Missiles
+	This Requires Sub Missile Detection to be on only looks for a missile when one has been launched
+	
+
 ```
 
 ## Translate Module
@@ -473,7 +521,9 @@ set a default language
 
 Send Translated Chat Hotkey RSHIFT+U
 	Enables hotkey Right shift key + U key combination to bring up input box to type chat message to translate. Start of input must have a language code with : directly after so RU:Hello will translate Hello into russian. FR:Hello will translate into French Hello.
-    
+
+Send Translated Definition in Chat Hotkey RSHIFT+D
+	WIP Will send the description/Meaning of a word you enter into the Language you input. Works same as Sending Translated Chat Message.s
 ```
 
 ### Translate Game Chat
