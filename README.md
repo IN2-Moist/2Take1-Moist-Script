@@ -4,7 +4,7 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.3 |-|
+# |-| 3.0.1.4 |-|
 
 ## Feaure List
 
@@ -382,6 +382,9 @@ Adjust current wind speed
 ## UI Features
 
 ```md
+
+Projectile radar
+	Options to show Missiles, Grenades, Sticky Bombs / Proxy Mines on the Radar / Map
 
 MiniMap View Mode
  changes states of minimap (Does not work at all with expanded radar enabled)
