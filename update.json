@@ -1,1 +1,28 @@
-[[3014,"/Moistscript_NextGen3014.luac","/MoistFiles/MoistScript_PlayerHistory_Module.lua"]]
+[
+    {
+        "main": [
+            "MoistScript_NextGen3014.luac"
+        ]
+    },
+    {
+        "MoistFiles": [
+            "json.lua",
+            "kicks.ini",
+            "MoistScript_Blacklist_Module.lua",
+            "MoistScript_ESP_Module.lua",
+            "MoistScript_FeatureValue_Saver.lua",
+            "MoistScript_GTA_Natives.lua",
+            "MoistScript_MoistBasics_Module.lua",
+            "MoistScript_PlayerBar_Module.lua",
+            "MoistScript_PlayerHistory_Module.lua",
+            "MoistScript_ScriptLoader_Module.lua",
+            "MoistScript_Translate_Module.lua",
+            "Moist_InteriorLibs.lua",
+            "Moist_Translate.lua",
+            "PedConfigFlags.lua",
+            "Recent_Spam_Chat_Text.txt",
+            "vehlist.ini",
+            "Zones.lua"
+        ]
+    }
+]
