@@ -1,7 +1,7 @@
 [
     {
         "main": [
-            "MoistScript_NextGen3015.luac"
+            "MoistScript_NextGen30151.luac"
         ]
     },
     {
@@ -16,7 +16,7 @@
             "MoistScript_PlayerBar_Module.lua",
             "MoistScript_PlayerHistory_Module.lua",
             "MoistScript_ScriptLoader_Module.lua",
-						"MoistScript_Teleport_Module.lua",
+	    "MoistScript_Teleport_Module.lua",
             "MoistScript_Translate_Module.lua",
             "Moist_InteriorLibs.lua",
             "Moist_Translate.lua",
