@@ -4,7 +4,7 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.4 |-|
+# |-| 3.0.1.5 |-|
 
 ## Feaure List
 
@@ -61,6 +61,9 @@ Weapon Unlimtied Ammo Clip <toggle>
  unlimited is like Rapid Fire / No Reload
  Using a Homing Launcher you can lockon and spam rockets without having to reload at all
 
+Spawn Gun Van Nerby
+ Spawns Gun Van Close to your current location
+
 Explosion Multiplier 0.00 -> 20.00
  Modifies The Explosion Radius of your Current Weapon if it has explosive ammo
  ** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out alot of players in the process !!
@@ -101,6 +104,15 @@ Better Vehicle Lockon Missiles v2 <delay modifier>
 	the Enhanced Missile will lock onto their ped for a nice Bail Fail!
 	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
 	shots should look more legit 500 delay or more
+	
+Better Vehicle Lockon Missiles v3 <delay modifier> (WIP)
+	Complete Replacement for the vehicle Missiles, like the other Enhanced Version this will Lockon to the driver rather than Vehicle so if they were to eject/bail from vehicle before missile gets their vehicle
+	the Enhanced Missile will lock onto their ped for a nice Bail Fail!
+	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
+	shots should look more legit 500 delay or more
+
+Missiles from any Vehicle (WIP)
+	Will shoot missiles from any vehicle you are in.
 
 Vehicle Missiles from my Ass <delay modifier>
 	Shoots additional Lockon Missiles at locked on target, this version Keeps the last Target and shoots missiles locked onto the target even if the target
@@ -476,6 +488,9 @@ Load Script Loader Module
 
 Update Script with Translation
 
+Check Script Version is Up To Date
+
+Download Update
 
 Auto Take Script Host
  Delayed Script Host Force
