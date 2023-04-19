@@ -1,10 +1,13 @@
 [{
         "main": [
+				{
             "MoistScript_NextGen3017.lua" : "5aa38ce83205e807",
+				}
         ]
     },
     {
         "MoistFiles": [
+				{
             "json.lua" : "ffbdc8cade0a42f5",
             "kicks.ini" : "9f22e57c5ea22094",
             "MoistScript_Blacklist_Module.lua" : "5bfc583c185778d2",
@@ -23,6 +26,7 @@
             "Recent_Spam_Chat_Text.txt" : "2d3120cb2ce7f43b",
             "vehlist.ini" : "9eaad6195d823cec",
             "Zones.lua" : "71967fecd8b3b4ef",
+				}
         ]
     }
 ]
