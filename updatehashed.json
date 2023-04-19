@@ -1,0 +1,28 @@
+[{
+        "main": [
+            "MoistScript_NextGen3017.luac", "5aa38ce83205e807",
+        ]
+    },
+    {
+        "MoistFiles": [
+            "json.lua", "ffbdc8cade0a42f5",
+            "kicks.ini", "9f22e57c5ea22094",
+            "MoistScript_Blacklist_Module.lua", "5bfc583c185778d2",
+            "MoistScript_ESP_Module.lua", "32a9bef65d02e71a",
+            "MoistScript_FeatureValue_Saver.lua", "b4b08f4c94c29e5",
+            "MoistScript_GTA_Natives.lua", "6aed8cff9a2ea769",
+            "MoistScript_MoistBasics_Module.lua", "d3e23f9cce2fe541",
+            "MoistScript_PlayerBar_Module.lua", "393ccc82f92757a0",
+            "MoistScript_PlayerHistory_Module.lua", "c0a8a9effa0957a5",
+            "MoistScript_ScriptLoader_Module.lua", "96ffeed2369a5cff",
+            "MoistScript_Teleport_Module.lua", "735e02bfe985e8dd",
+            "MoistScript_Translate_Module.lua", "cb2285a66cb1c853",
+            "Moist_InteriorLibs.lua", "c79d89716ef79d2a",
+            "Moist_Translate.lua", "753752c4af747d72",
+            "PedConfigFlags.lua", "d103732f3c15f545",
+            "Recent_Spam_Chat_Text.txt", "2d3120cb2ce7f43b",
+            "vehlist.ini", "9eaad6195d823cec",
+            "Zones.lua", "71967fecd8b3b4ef",
+        ]
+    }
+]
