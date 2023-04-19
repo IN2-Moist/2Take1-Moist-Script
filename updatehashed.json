@@ -1,4 +1,5 @@
-{
+[
+	{
 	  "main": [
     [
       "MoistScript_NextGen3017.lua",
@@ -81,3 +82,4 @@
     ]
   ]
 }
+]
