@@ -22,12 +22,12 @@ Update Release
 
 -Updated Missiles From Any Vehicle
 
--Improved Update Check & Download, now checks the files by hash and notifys of outdated files, download function will check the same then update those needed files. will remove the extra 0 from the version number on next release as this is no longer needed for the update check
+-Improved Update Check & Download, now checks the files by hash and notify of outdated files, download function will check the same then update those needed files. will remove the extra 0 from the version number on next release as this is no longer needed for the update check
 
 <hr>
 
 
-## Feaure List
+## Feature List
 
 ### Local Script Features
 
@@ -55,22 +55,22 @@ Set Stat With Verified Logo:
   Fast Nightclub Vault Money [Requires 2Take1 VIP License
   Auto Nightclub Vault Money (Slower Method)
  
-	NightClub Earnings Money Method for self,
-	goto your nightclub office safe open it stand in the threshold of the doorway,
+	Nightclub Earnings Money Method for self,
+	go to your nightclub office safe open it stand in the threshold of the doorway,
 	turn on and enjoy some fast cash.
-	VIP Method does not require you to even be anywhere near your nightclub can be done While otherside of the map Killing Noobs.
-	Non Vip Version will periodically pause for a moment to allow transactions to clear and transfer the money into your bank!
+	VIP Method does not require you to even be anywhere near your nightclub can be done While other side of the map Killing Noobs.
+	Non VIP Version will periodically pause for a moment to allow transactions to clear and transfer the money into your bank!
 	I found this to be slower in full sessions solo takes no time at all to clock up a few million!
-	Dont Be retarded with its use!
+	Don’t Be retarded with its use!
 	Few Million every now and then do some other stuff then you should be ok!
-	i have done this for a few weeks got 3 bil in the bank now and no issues
+	I have done this for a few weeks got 3 billion in the bank now and no issues
 	just be casual with its use!
 	
   Dooms Day ACT2 2.5 Million
-	Turn on Before launching this finale and Enjoy a Bigger Payout,
-	just leave the values as they are even if they are not upto 100%.
+	Turn on Before launching this finale and Enjoy a Bigger Pay-out,
+	just leave the values as they are even if they are not up to 100%.
 	
-  Sub Guided Missiles (+)Range (-)CoolDown
+  Sub Guided Missiles (+)Range (-)Cooldown
 	Extends the Range of the Submarine Guided Missiles, & Removes Any Cooldown Between Shots.
   
 ```
@@ -78,20 +78,20 @@ Set Stat With Verified Logo:
 ## Weapon Related Functions
 
 ```md
-Weapon Unlimtied Ammo Clip <toggle>
+Weapon Unlimited Ammo Clip <toggle>
  unlimited is like Rapid Fire / No Reload
- Using a Homing Launcher you can lockon and spam rockets without having to reload at all
+ Using a Homing Launcher you can lock-on and spam rockets without having to reload at all
 
-Spawn Gun Van Nerby
+Spawn Gun Van Nearby
  Spawns Gun Van Close to your current location
 
 Explosion Multiplier 0.00 -> 20.00
  Modifies The Explosion Radius of your Current Weapon if it has explosive ammo
- ** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out alot of players in the process !!
+ ** Fair warning to this ** :  setting it at 200 on a Homing launcher and you create an explosion the size of the city and take out a lot of players in the process !!
 
 Destroy Projectiles(WIP)
-  (Work.In.Progress) this will explode any weapon projectiles i have currently added still needs further testing as not all seem to work, mk2 missile wont get destroyed
-  but likes of a ruiner you shoot a missile it goes boom along with you. This will also explode players when they equip homing launcher, rpg firework launcher etc soon
+  (Work In Progress) this will explode any weapon projectiles I have currently added still needs further testing as not all seem to work, mk2 missile wont get destroyed
+  but likes of a ruiner you shoot a missile it goes boom along with you. This will also explode players when they equip homing launcher, RPG firework launcher etc soon
   as they switch to it the missile in the chamber is detected and exploded.
 
 Current Projectiles Added:
@@ -106,41 +106,41 @@ Current Projectiles Added:
 
 ```
 
-## Moists Weapon Mods
+## Moist’s Weapon Mods
 
 ```
-Moists Orbital Gun
- Better than the impact orbital strike in MoistScript 2.x.x.x
+Moist’s Orbital Gun
+ Better than the impact orbital strike in Moist Script 2.x.x.x
  Shots are more reliable & all Explosions are Orbital Explosions with Actual Orbital Sound and PTFX
 
 Homing Aim
-	Shoot Aditional Homing Missile at target your aiming attack
+	Shoot Additional Homing Missile at target your aiming attack
 	
-Better Vehicle Lockon Missiles <delay modifier>
-	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
+Better Vehicle Lock-on Missiles <delay modifier>
+	Shoots additional Lock-on Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
 	shots should look more legit 500 delay or more
 	
-Better Vehicle Lockon Missiles v2 <delay modifier>
-	Enhanced Version this will Lockon to the driver rather than Vehicle so if they were to eject/bail from vehicle before missile gets their vehicle
+Better Vehicle Lock-on Missiles v2 <delay modifier>
+	Enhanced Version this will Lock-on to the driver rather than Vehicle so if they were to eject/bail from vehicle before missile gets their vehicle
 	the Enhanced Missile will lock onto their ped for a nice Bail Fail!
-	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
+	Shoots additional Lock-on Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
 	shots should look more legit 500 delay or more
 	
-Better Vehicle Lockon Missiles v3 <delay modifier> (WIP)
-	Complete Replacement for the vehicle Missiles, like the other Enhanced Version this will Lockon to the driver rather than Vehicle so if they were to eject/bail from vehicle before missile gets their vehicle
+Better Vehicle Lock-on Missiles v3 <delay modifier> (WIP)
+	Complete Replacement for the vehicle Missiles, like the other Enhanced Version this will Lock-on to the driver rather than Vehicle so if they were to eject/bail from vehicle before missile gets their vehicle
 	the Enhanced Missile will lock onto their ped for a nice Bail Fail!
-	Shoots additional Lockon Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
+	Shoots additional Lock-on Missiles at locked on target, clears target each after each shot to ensure next shot is fired at the correct target
 	shots should look more legit 500 delay or more
 
 Missiles from any Vehicle (WIP)
 	Will shoot missiles from any vehicle you are in.
 
 Vehicle Missiles from my Ass <delay modifier>
-	Shoots additional Lockon Missiles at locked on target, this version Keeps the last Target and shoots missiles locked onto the target even if the target
+	Shoots additional Lock-on Missiles at locked on target, this version Keeps the last Target and shoots missiles locked onto the target even if the target
 	is not visible on screen (its behind you for instance) this will cause your missiles to shoot at any direction. Your Vehicle is safe using this as you
 	can not damage your vehicle with them.
 	
-OnFoot Lockon Missiles
+On Foot Lock-on Missiles
 	Shoots an additional Ruiner Missile at the target locked onto via your homing launcher.
 
 
@@ -159,23 +159,23 @@ OnFoot Lockon Missiles
  Anti Player Ped
 
   Improved Since Last Release: Player in any vehicle goes in sphere they get Destroyed WIP needs some tweaking maybe a little over the top
-  Anti Player Ped does same as above only they dont need to be in any vehicle
+  Anti Player Ped does same as above only they don’t need to be in any vehicle
 
  Anti Projectile
 
   Should prevent projectiles and weapons fire in the sphere
-  has been said in game that people were unable to use some weapons like lazer cannons but this also can be effected by zone flag settings below
+  has been said in game that people were unable to use some weapons like Lazer cannons but this also can be effected by zone flag settings below
   
-  WayPoint Anti Player Ped
+  Waypoint Anti Player Ped
 
   Same as The Above "Anti Player Ped", only the location of it can be set manually to anywhere on the map you can place a waypoint!
 
  Zone Flags for: < Self off | Others off | Self on | Others on>
   turns Defence zone flags on / off depending on option for players
 
- Remove All Air Defense Zone
+ Remove All Air Defence Zone
 
-  This will literallly remove any Yacht Defences set
+  This will literally remove any Yacht Defences set
   seems to also partially work for player yachts cant shoot in the area but does not take you out.
 ```
 
@@ -186,11 +186,11 @@ OnFoot Lockon Missiles
  Make My Ped Wet! :P
   Drench your ped like its raining heavily or you just come out of water
 
- StoneHatchet NoCoolDown & Duration Increase
+ Stone Hatchet No Cooldown & Duration Increase
   Removes Cooldown between activations and increases the Duration to a really long Duration.
 
  Set Myself Ghosted to Other Players
-  Sets Ghosting to others this is also in one of the defense sphere options
+  Sets Ghosting to others this is also in one of the defence sphere options
  
  Set Ped Damage Proof
 	Essentially God Mode but without Advertising that fact
@@ -202,11 +202,11 @@ OnFoot Lockon Missiles
 
 # Player Vehicle Features (Sub Features)
 
-## CargoBob Mod
+## Cargo Bob Mod
 
 ```md
 
-CargoBob: Hook | Magnet
+Cargo Bob: Hook | Magnet
 
 Magnet Pickup Strength:
  modifier Value
@@ -225,7 +225,7 @@ Magnet Pull Strength:
  
 ```
 
-### Moists Train Mod
+### Moist’s Train Mod
 
 ```md
 
@@ -237,7 +237,7 @@ Enable Train Spawning
 
  Right Trigger :: Increase Cruise Speed or Speed Forwards
 
- Right Top Bumper/Trigger(HandBrake) :: Turns on Stop Train and sets all speeds to 0.0
+ Right Top Bumper/Trigger(Handbrake) :: Turns on Stop Train and sets all speeds to 0.0
 
 Track Switch
  Sets Trains enabled on other tracks (WIP) still figuring this one out
@@ -266,29 +266,29 @@ Control Speed(Instant Insane Speed)
  use this with Train Speed on to use controller input to set the speed
  very sensitive so speeds are insane
 
-DeRail Train
+Derail Train
  Does as it says sets the train to a Derailed State while on
  
 ```
 
 # Player Vehicle Features
 
-## AirCraft Turbulance
+## Aircraft Turbulance
 
 ```md
 
-Turbulance Modifier
- 0.0 (No Turbulance)
- 1.0 (Very Turbulant)
+Turbulence Modifier
+ 0.0 (No Turbulence)
+ 1.0 (Very Turbulent)
 
 Set Air Drag Multiplier:
  Adjust drag on vehicle caused by aircraft
 
 Altitude Level Indicator
- Adjust to bring the Radar Aircraft Height lines on the radar on foot or other vehicles that dont use these
+ Adjust to bring the Radar Aircraft Height lines on the radar on foot or other vehicles that don’t use these
 
 Disable Plane Aileron
- (extra rudders on the aircraft to contol roll yaw and pitch see animations below)
+ (extra rudders on the aircraft to control roll yaw and pitch see animations below)
 
 ```
 
@@ -323,9 +323,9 @@ Set Vehicle Damage Proof
   Impossible to Visibly Damage it from impacts explosions etc
 
 Engine Audio:
-  Overide Current Vehicle Engine Audio
+  Override Current Vehicle Engine Audio
   List Populated from vehlist.ini
-  default preset chernobog
+  default preset Chernobog
 
 ```
 
@@ -334,12 +334,12 @@ Engine Audio:
 
 ```md
 
-Player Histroy
-  Requires Histroy Module to be loaded
+Player History
+  Requires History Module to be loaded
 Session Griefing
  
   Send All to Del Pero : <Beach | Beach Bounty War!>
-	Beach Fun & Money Maker for people, this version Respects Script Safemode & Player Exclusions.
+	Beach Fun & Money Maker for people, this version Respects Script Safe mode & Player Exclusions.
  
   Player Broadcast to Del Pero : <Beach | Beach Bounty War!>
 	Instantly Send all to the Beach for Money & Games. ** This Version Will Send All Even You! (Alternate version Should the other Not Send All Players!)
@@ -353,9 +353,9 @@ Session Griefing
   Treat Troll
 	Halloween Jack-O-Lantern treats for all players
 	
-  Nearby Player Orbital Dist: <Distance Modifier>
-	This is Replacment for the Multidirectional Snipe.
-	This will Orbital all Players within selected distance from you this is anonomous kill.
+  Nearby Player Orbital Dist.  <Distance Modifier>
+	This is Replacement for the Multidirectional Snipe.
+	This will Orbital all Players within selected distance from you this is anonymous kill.
 
 ```
 
@@ -365,7 +365,7 @@ Session Griefing
 
 Set Wind Speed
 
-LightningBolt Generator
+Lightning Bolt Generator
  Delay Multiplier = 0.01 -> 2.00
  While on will generate Random Lightning no matter the weather
  Actual Delay = (Delay Multiplier * 60)
@@ -387,7 +387,7 @@ Atmospheric Lighting
 			
 	Enable Atmos Light FX <Toggle>
 		Bigger Range will make particles and objects glow
-		Lower Range will localise the light to you this kinda looks like you have vehicle neons on your ped 
+		Lower Range will localise the light to you this kind of looks like you have vehicle neon’s on your ped 
 	
 Set Rain Level
 
@@ -405,7 +405,7 @@ Water Ripple Disturbance
 
 Water Ripple Bumpiness
 
-Override ShoreWave Amplitude
+Override Shore Wave Amplitude
 
 
 Adjust current wind speed
@@ -419,15 +419,15 @@ Adjust current wind speed
 Projectile radar
 	Options to show Missiles, Grenades, Sticky Bombs / Proxy Mines on the Radar / Map
 
-MiniMap View Mode
- changes states of minimap (Does not work at all with expanded radar enabled)
+Mini Map View Mode
+ changes states of Mini Map (Does not work at all with expanded radar enabled)
  When online you need to be outside for it to do anything
  Works better in story mode
 
 Player Blip Enhancements
  enables blip cones
 
-Player Blip Enhancments
+Player Blip Enhancements
  enables direction and height indicators
 
 OTR Player Blips
@@ -436,7 +436,7 @@ OTR Player Blips
  
 ```
 
-## MoistScript Settings
+## Moist Script Settings
 
 ```md
 
@@ -448,7 +448,7 @@ Current Settings: Save | Clear
 
 ```md
 
-ScriptEvent SafeMode
+Script Event SafeMode
  Prevents Script Events Being Sent to Yourself
 
 Auto Whitelist Friends
@@ -459,7 +459,7 @@ Player Notification Reset
 
 God Mode Player Notify
  Checks Players and their Vehicle for God Mode not in an interior and some other variables once then recheck after delay, will also
- add a [G] and / or [V] to their name if using the playerbar module
+ add a [G] and / or [V] to their name if using the player bar module
 
 Damage Proof Player Notify
  Checks Player and their Vehicle for Damage Proofs and Notifies you, certain situations can cause a false positive like when they are
@@ -480,14 +480,14 @@ Blacklist Features
  
 ```
 
-## MoistScript Settings
+## Moist Script Settings
 
 ```md
 
-MoistScript HOTKEYS
-  Options Save HotKey
+Moist Script HOTKEYS
+  Options Save Hotkey
 
-Load MoistScript Modules
+Load Moist Script Modules
 
 Custom Lists for Features
 
@@ -495,9 +495,9 @@ Load Ped List
 
 Load Vehicle List
 
-Load Player Histroy Module
+Load Player History Module
 
-Load PlayerBar Module
+Load Player Bar Module
 
 Load Translation Module
 
@@ -517,23 +517,23 @@ Auto Take Script Host
  Delayed Script Host Force
 
 Get Player Killers
- WIP Rework of my old Combat tracker currently only gives a notifty of who killed who if it was a player
+ WIP Rework of my old Combat tracker currently only gives a notify of who killed who if it was a player
 
 Log Session Joins
  Outputs a daily Session Player Join CSV with all their info
  
 Anti Voice Chat Privacy
-	Unlocks VoiceChat: if they have Setting to < no one | Friends | Crew > this will enable you to hear them and them to hear you!
+	Unlocks Voice Chat: if they have Setting to < no one | Friends | Crew > this will enable you to hear them and them to hear you!
 
 Disable R* Editor Recording
  Fixes Crashes that can happen when activating it while using the menu, Prevents any Recording.
 
 Detect Orbital Users 
-  Protects or Notifys Depending on Selection:
+  Protects or Notifies Depending on Selection:
     < & Notify | Protect & Notify | & Protect >
   Option with Notify will Notify when Player is Close to the Orbital Room Entrance and again once they are inside!
   Option with Protect if also notify will tell you same as above but will also tell you its activating Orbital Protection on this Player,
-  Protect without notify will just turn on orbital Protection without telling you about anything! No Notifys at all!
+  Protect without notify will just turn on orbital Protection without telling you about anything! No Notifies at all!
   Once Protection is turned on this will disable any players ability to use the orbital cannon on you while they are in the orbital room.
   They just will never find you in the player list preventing any orbital!
   One exception that can bypass this Protection is a bounty either way!
@@ -559,10 +559,10 @@ set a default language
 	Value Selectable from language list
 
 Send Translated Chat Hotkey RSHIFT+U
-	Enables hotkey Right shift key + U key combination to bring up input box to type chat message to translate. Start of input must have a language code with : directly after so RU:Hello will translate Hello into russian. FR:Hello will translate into French Hello.
+	Enables hotkey Right shift key + U key combination to bring up input box to type chat message to translate. Start of input must have a language code with : directly after so RU:Hello will translate Hello into Russian. FR:Hello will translate into French Hello.
 
 Send Translated Definition in Chat Hotkey RSHIFT+D
-	WIP Will send the description/Meaning of a word you enter into the Language you input. Works same as Sending Translated Chat Message.s
+	WIP Will send the description/Meaning of a word you enter into the Language you input. Works same as Sending Translated Chat Message’s
 ```
 
 ### Translate Game Chat
@@ -570,19 +570,19 @@ Send Translated Definition in Chat Hotkey RSHIFT+D
 ```md
 
 Chat Translation to:
-	Selectable Options : <Game Chat | New Notifys | Old Notifys>
+	Selectable Options : <Game Chat | New Notifies | Old Notifys>
 	
 	Game Chat will send directly into the multiplayer game chat either publicly or via team/organisation chat depending on the setting for this.
 	
-	New Notifys will display top most over most game states but lacks unicode so can display some stupid shit instead.
+	New Notifies will display top most over most game states but lacks Unicode so can display some stupid shit instead.
 	
-	Old Notifys Slightly more elegant looking which displays unicode text without the shit generated by the new notifys but lacks the ability to show above alot of the game states and features.
+	Old Notifies Slightly more elegant looking which displays Unicode text without the shit generated by the new notifies but lacks the ability to show above a lot of the game states and features.
 
 Team [ON] | Public [OFF]
 	Selects where to send the translated chat when send translated chat is set to game chat. When toggled on it will send it to a more private chat (Team/Organisation/Motorcycle Club) this will limit it being viewable to you when not on a job or in a MC / CEO, when on jobs or you have others in your MC/CEO this translated chat will also be viewable by them.
 
 Translate Via IP Location
-	tries to translate via the players IP Location in attempt to minimise false or bad translations when spelling is bad or using slang / abreviations.
+	tries to translate via the players IP Location in attempt to minimise false or bad translations when spelling is bad or using slang / abbreviations.
 
 Log Translated Chat
 	Logs to CSV Output all Translated Game Chat, Non Translated Chat & Sent Translated Chat (Both Original and the Translation).
@@ -596,7 +596,7 @@ Translate to:
 
 ```
 
-Adds Ingame Chat Translation to team chat or public
+Adds In game Chat Translation to team chat or public
 
 Hotkey RSHIFT + U will bring up a input box for you to enter chat to translate to ability
 
@@ -614,8 +614,8 @@ still need some tweaking but works well
 
 Network Bail Kick
 
-Micheal Error Kick
- Script Event Kicks player after Micheal sends a notification saying ERROR!
+Michael Error Kick
+ Script Event Kicks player after Michael sends a notification saying ERROR!
 
 Force Error Kick
  Updated & Improved (October 2022) more effective than before
@@ -623,7 +623,7 @@ Force Error Kick
 Script Kick
  Most Effective Script Event Kick, but like other methods will be blocked by any half decent menu.
 
-Random ScriptEvent Spam
+Random Script Event Spam
   Sends Random Script Events from the kicks.ini file with some nice parameters
   
 Send Event:  Vector Method | Stat Method | Rando Method | Moist Method | Bit Method
@@ -640,8 +640,8 @@ Parachute Model Crash
  at some point they will crash and most of the session
 
 
-Lester Cummy WindSock Crash v1
-Lester Cummy WindSock Crash v2
+Lester Cummy Windsock Crash v1
+Lester Cummy Windsock Crash v2
  Both versions have potential to crash everyone in your session be warned!
  v1 spawns and executes higher up in the sky above the player
  v2 spawns lower and closer to the player
@@ -650,7 +650,7 @@ Lester Cummy WindSock Crash v2
  The Game will clean up this shit after its done
 
 Use Ruiner Crash & Bail to Space
- You again are the crash entity, teleports you and puts you into a ruiner above the player and parachutes crashing them and most of the session.
+ You again are the crash entity, teleports you and puts you into a Ruiner above the player and parachutes crashing them and most of the session.
 
 ```
 
@@ -669,7 +669,7 @@ Player Waypoint
 
 ## Player Info
 
-### (Basically some stuff im testing for some future functions)
+### (Basically some stuff I’m testing for some future functions)
 
 ```md
 
@@ -691,13 +691,13 @@ Unreliable Resend Count
 
 Latency (ms):
 
-PacketLoss:
+Packet Loss:
   These Feature Value toggles will update periodically to show the values
 
-Set Minimap to Players Location
-  works properly when not in an interor will make the Radar MiniMap show the area player is located on map
+Set Mini Map to Players Location
+  works properly when not in an interior will make the Radar Mini Map show the area player is located on map
 
-Minimap Zoom to Players Blip
+Mini Map Zoom to Players Blip
   use with above function to provide zoom ability needs some fine tuning
 
 Unlock Minimap Zoom
@@ -731,13 +731,13 @@ Give Treats
  (But be aware these can only be used a limited amount of times per player per session)
 
 Dispatch Cops to Player Location
- (Still testing but i seen undercover cops in the street after using this in a session)
+ (Still testing but I seen undercover cops in the street after using this in a session)
 
 Gangs will Hassle Player
  Nearby Gangs will Hassle Player
 
 Spam Invites
- Spams Apartment & Buisness Invites Sending the Player Around The Map
+ Spams Apartment & Business Invites Sending the Player Around The Map
 
 Disable Player Interior
  Unloads the interior the player is in
@@ -745,7 +745,7 @@ Disable Player Interior
  still needs further investigation could be just a local thing rather than working remotely
 
 Island Events:
- < SendToIsland v1 | SendToIsland v2 | Kick From Island | IslandForceRemove >
+ < Send to Island v1 | Send to Island v2 | Kick From Island | Island Force Remove >
  
 Passive Mode: < Disable Option | Enable Option >
   Disable their Passive Mode Option or Enable it if its been disabled already
@@ -753,7 +753,7 @@ Passive Mode: < Disable Option | Enable Option >
 Trigger Vehicle Locked On
 
   Assuming the player is in Range for Detecting their Vehicle,
-  if they are using a Weaponised Vehicle or Aircraft this Triggers Missile Lockon Alarm.
+  if they are using a Weaponised Vehicle or Aircraft this Triggers Missile Lock on Alarm.
 
 
 ```
@@ -768,8 +768,8 @@ Kill with Lock ON Ruiner Missile
 Start Script Fire Near Them
   Starts a Scripted Fire at their Position on the ground, with a high spread rate.
 
-Proximity Surrounded: < Blame Me | Anonomous >
-  Surrounds their current location with proximity mines, will either blame you or will be anonomous depending on selection.
+Proximity Surrounded: < Blame Me | Anonymous >
+  Surrounds their current location with proximity mines, will either blame you or will be anonymous depending on selection.
 
 surround with snowmen
   Surrounds the player with Snowmen
@@ -789,7 +789,7 @@ Send Lester UFO Griefer
 
 
 Gangs will Grief Player
- Spawns Random Gangmember nearby to attack
+ Spawns Random Gang member nearby to attack
 
 Grief Others (Frame Player)
  Framed Session Orbital Strike
@@ -805,11 +805,11 @@ Orbital Player:
 ```md
 
 CEO Features >>
- (hidden when they are not in a ceo)
+ (hidden when they are not in a CEO)
 
-Off The Radar | Ghost Organisation (when they are in a ceo)
+Off The Radar | Ghost Organisation (when they are in a CEO)
 
-Cops Turn a Blind Eye | Bribe the Cops( when they are in a ceo)
+Cops Turn a Blind Eye | Bribe the Cops( when they are in a CEO)
 
 ```
 
@@ -824,8 +824,8 @@ Give Armour Pickup
   Gives Armour Pickup standard online if story mode on self gives a Modded Armour.
   
 Give Weapon Pickup railgun
-  Give New RailGun Pickup this will save in their inventory,
-  Until released they can buy ammo via interation menu by selecting buy all ammo.
+  Give New Railgun Pickup this will save in their inventory,
+  Until released they can buy ammo via integration menu by selecting buy all ammo.
 
 ```
 
@@ -878,9 +878,9 @@ MoistScript_NextGen3009.lua
 
 - Ped list and vehicle list are for your own custom named lists for use in functions to come not required at the moment
 
-- Playerbar Module is Load on demand and will save loaded if you wish
+- Player bar Module is Load on demand and will save loaded if you wish
 
-- Playerbar will not show until in an online session
+- Player bar will not show until in an online session
 
 - To Translate the script simply change the names in the Moist_Translate.lua functions then use Update Script with Translation
 
@@ -913,7 +913,7 @@ local Moist_Translate = {lang = "FR"}
 
 ```
 
-DE will show others & enable the script to recognise its translation as german and will enable the script to use this to transalte some other features
+DE will show others & enable the script to recognise its translation as German and will enable the script to use this to translate some other features
 
 
 
