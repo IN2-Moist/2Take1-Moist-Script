@@ -4,7 +4,28 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.6 |-|
+# |-| 3.0.1.7 |-|
+
+# changes:
+
+<hr>
+
+Update Release
+
+-Fixed : Bug in Experimental Feature Value Saver causing Feature Depth not to go all the way.
+
+-Updated Player History: Removed Index number from name and added it to a hint, updated the history limiter, updated the delete all history.
+
+-Updated Projectile Radar
+
+-Improved  Better Vehicle Missiles v3 to not care if  target is in line of sight before you could get a moment that the weapon would not fire due to this check. updated replacement sound.
+
+-Updated Missiles From Any Vehicle
+
+-Improved Update Check & Download, now checks the files by hash and notifys of outdated files, download function will check the same then update those needed files. will remove the extra 0 from the version number on next release as this is no longer needed for the update check
+
+<hr>
+
 
 ## Feaure List
 
