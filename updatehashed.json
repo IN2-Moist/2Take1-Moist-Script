@@ -1,8 +1,8 @@
 {
   "main": [
     [
-      "MoistScript_NextGen3017.luac",
-      "9e479bce20b6d2d5"
+      "MoistScript_NextGen.luac",
+      "9e1868933cc71b9e"
     ]
   ],
   "MoistFiles": [
@@ -32,7 +32,7 @@
     ],
     [
       "MoistScript_MoistBasics_Module.lua",
-      "12e44bf01a228337"
+      "27ca7b5f0df08215"
     ],
     [
       "MoistScript_PlayerBar_Module.lua",
@@ -40,7 +40,7 @@
     ],
     [
       "MoistScript_PlayerHistory_Module.lua",
-      "2aaee5ee84218e92"
+      "21ad0c815324bf76"
     ],
     [
       "MoistScript_ScriptLoader_Module.lua",

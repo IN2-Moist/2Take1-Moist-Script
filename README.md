@@ -4,9 +4,23 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.7 |-|
+# |-| 3.0.1.8 |-|
 
 # changes:
+
+<hr>
+
+Updated Most of the Function Names to be more understandable for non English people. & to help make anyone translating it life alot easier! Most of the Spelling Mistakes Fixed .
+
+Fixed Bug with Downloading Update & nil file error causing crash.
+
+Update now Downloads needed files & then Removes all script features & executes the script again with the updated files.
+
+Main Script File now has the version number removed from the filename, makes life easier and was part of the cause of download crash.
+
+Updated Vehicle Missiles V3 this will only work on vigilante toreador & Oppressor MK1 & MK2.  This is due to how annoying it is when flying a lazer & use cannons & end up shooting missiles!
+
+Added: Make My Weapon Invisble
 
 <hr>
 
