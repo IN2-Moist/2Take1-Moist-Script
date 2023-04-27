@@ -9,7 +9,38 @@
 # changes:
 
 <hr>
+27/4/23
 
+## online player features: (WIP)
+
+### Added Send Lester in Khanjali
+### Added Send Lester in Savage
+
+> (Both Lester Griefing options are toggles which will loop some code so when the player dies Lester will go to them and attack again. Toggle off does not remove the Spawned Entities you will need to do so in the Entity Functions & tools in the local part of the script.
+
+#### Added Some Custom Functions into the script.
+
+> These are customised for creating ped vehicles & finding spawn points these will be for more spawn options to come, all peds should not go nuts on each other and should respect each other, so far no issues need to test further multiple spawns being groups have a limit some updating on this will be needed.
+> 
+## local player features:
+
+### Added  No More One Shot Hits
+ 
+ > Will prevent you taking critical damage that would kill you instantly like in a oneshot/headshot situation. Damage taken will be that of a normal body shot!
+
+### Added Motion Blur
+
+> (This is a Test Feature not sure if it makes any difference to what others see)
+
+### Added Thermal Heat-scale Override <Value Modifier>
+
+> Changes how visible you are when using a thermal helmet or scope. 0.0 will mean you have none at all so essentially invisible on thermal.
+
+## Issues with feature value saver should now be resolved!
+
+> Re-Enabled the Update Check on Script Execution (Still Requires you to goto settings and click the download option should it be outdated)
+
+<hr>
 Updated Most of the Function Names to be more understandable for non English people. & to help make anyone translating it life alot easier! Most of the Spelling Mistakes Fixed .
 
 Fixed Bug with Downloading Update & nil file error causing crash.
@@ -75,7 +106,7 @@ Set Stat With Verified Logo:
 	VIP Method does not require you to even be anywhere near your nightclub can be done While other side of the map Killing Noobs.
 	Non VIP Version will periodically pause for a moment to allow transactions to clear and transfer the money into your bank!
 	I found this to be slower in full sessions solo takes no time at all to clock up a few million!
-	Don’t Be retarded with its use!
+	Donâ€™t Be retarded with its use!
 	Few Million every now and then do some other stuff then you should be ok!
 	I have done this for a few weeks got 3 billion in the bank now and no issues
 	just be casual with its use!
@@ -120,10 +151,10 @@ Current Projectiles Added:
 
 ```
 
-## Moist�s Weapon Mods
+## Moist’s Weapon Mods
 
 ```
-Moist�s Orbital Gun
+Moist’s Orbital Gun
  Better than the impact orbital strike in Moist Script 2.x.x.x
  Shots are more reliable & all Explosions are Orbital Explosions with Actual Orbital Sound and PTFX
 
@@ -173,7 +204,7 @@ On Foot Lock-on Missiles
  Anti Player Ped
 
   Improved Since Last Release: Player in any vehicle goes in sphere they get Destroyed WIP needs some tweaking maybe a little over the top
-  Anti Player Ped does same as above only they don’t need to be in any vehicle
+  Anti Player Ped does same as above only they donâ€™t need to be in any vehicle
 
  Anti Projectile
 
@@ -247,7 +278,7 @@ Magnet Pull Strength:
  
 ```
 
-### Moist’s Train Mod
+### Moistâ€™s Train Mod
 
 ```md
 
@@ -307,7 +338,7 @@ Set Air Drag Multiplier:
  Adjust drag on vehicle caused by aircraft
 
 Altitude Level Indicator
- Adjust to bring the Radar Aircraft Height lines on the radar on foot or other vehicles that don’t use these
+ Adjust to bring the Radar Aircraft Height lines on the radar on foot or other vehicles that donâ€™t use these
 
 Disable Plane Aileron
  (extra rudders on the aircraft to control roll yaw and pitch see animations below)
@@ -409,7 +440,7 @@ Atmospheric Lighting
 			
 	Enable Atmos Light FX <Toggle>
 		Bigger Range will make particles and objects glow
-		Lower Range will localise the light to you this kind of looks like you have vehicle neon’s on your ped 
+		Lower Range will localise the light to you this kind of looks like you have vehicle neonâ€™s on your ped 
 
 
 	
@@ -586,7 +617,7 @@ Send Translated Chat Hotkey RSHIFT+U
 	Enables hotkey Right shift key + U key combination to bring up input box to type chat message to translate. Start of input must have a language code with : directly after so RU:Hello will translate Hello into Russian. FR:Hello will translate into French Hello.
 
 Send Translated Definition in Chat Hotkey RSHIFT+D
-	WIP Will send the description/Meaning of a word you enter into the Language you input. Works same as Sending Translated Chat Message’s
+	WIP Will send the description/Meaning of a word you enter into the Language you input. Works same as Sending Translated Chat Messageâ€™s
 ```
 
 ### Translate Game Chat
@@ -612,7 +643,7 @@ Log Translated Chat
 	Logs to CSV Output all Translated Game Chat, Non Translated Chat & Sent Translated Chat (Both Original and the Translation).
 	
 	output Example:
-	26/10/22, 03:38:37, Tingyuxuan2021, 你们是哪里人, Where do you come from
+	26/10/22, 03:38:37, Tingyuxuan2021, ä½ ä»¬æ˜¯å“ªé‡Œäºº, Where do you come from
 
 Translate to:
 	Language Selectable to translate other languages into. This should be your native language or one you understand.
@@ -693,7 +724,7 @@ Player Waypoint
 
 ## Player Info
 
-### (Basically some stuff I’m testing for some future functions)
+### (Basically some stuff Iâ€™m testing for some future functions)
 
 ```md
 
@@ -967,7 +998,7 @@ OnlineFeatures["SendCops"].feats[pid].name = "Schicke Polizisten zum Spielerstan
 
 --translated Menu Hints
 
-LocalFeatures["AvengerTeleport"].hint = "Teleportieren Sie sich in Ihren Rächer, während es sich in Ihrer Einrichtung befindet. Bitte beachten Sie, dass die Verwendung von Entitäts- / Sitzungsreinigungen dazu führt, dass dies nicht funktioniert, und Avenger kann nicht mehr in der Einrichtung sein"
+LocalFeatures["AvengerTeleport"].hint = "Teleportieren Sie sich in Ihren RÃ¤cher, wÃ¤hrend es sich in Ihrer Einrichtung befindet. Bitte beachten Sie, dass die Verwendung von EntitÃ¤ts- / Sitzungsreinigungen dazu fÃ¼hrt, dass dies nicht funktioniert, und Avenger kann nicht mehr in der Einrichtung sein"
 
 FeaturesonlineParent.feats[pid].hint = "Feuchte Drehbuchfunktionen"
 
