@@ -9,6 +9,7 @@
 # changes:
 
 <hr>
+
 27/4/23
 
 ## online player features: (WIP)
@@ -41,6 +42,7 @@
 > Re-Enabled the Update Check on Script Execution (Still Requires you to goto settings and click the download option should it be outdated)
 
 <hr>
+
 Updated Most of the Function Names to be more understandable for non English people. & to help make anyone translating it life alot easier! Most of the Spelling Mistakes Fixed .
 
 Fixed Bug with Downloading Update & nil file error causing crash.
