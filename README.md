@@ -4,7 +4,7 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.8 |-|
+# |-| 3.0.1.9 |-|
 
 # changes:
 
@@ -120,10 +120,10 @@ Current Projectiles Added:
 
 ```
 
-## Moistâ€™s Weapon Mods
+## Moist’s Weapon Mods
 
 ```
-Moistâ€™s Orbital Gun
+Moist’s Orbital Gun
  Better than the impact orbital strike in Moist Script 2.x.x.x
  Shots are more reliable & all Explosions are Orbital Explosions with Actual Orbital Sound and PTFX
 
@@ -211,7 +211,15 @@ On Foot Lock-on Missiles
 
  Turn Me into a Cop
   (not outfit related makes your ped like a cop so you get ignored by cops get a cop cone on radar when wanted)
-  
+
+No More One Shot Hits
+   Will prevent you taking critical damage that would kill you instantly like in a oneshot/headshot situation. Damage taken will be that of a normal body shot!
+
+Motion Blur (This is a Test Feature not sure if it makes any difference to what others see)
+
+Thermal Heat-scale Override <Value Modifier>
+   Changes how visible you are when using a thermal helmet or scope. 0.0 will mean you have none at all so essentially invisible on thermal.
+
 ```
 
 # Player Vehicle Features (Sub Features)
@@ -402,6 +410,8 @@ Atmospheric Lighting
 	Enable Atmos Light FX <Toggle>
 		Bigger Range will make particles and objects glow
 		Lower Range will localise the light to you this kind of looks like you have vehicle neonâ€™s on your ped 
+
+
 	
 Set Rain Level
 
