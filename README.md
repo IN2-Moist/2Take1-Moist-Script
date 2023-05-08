@@ -4,9 +4,30 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.1.9 |-|
+# |-| 3.0.2.0 |-|
 
 # changes:
+
+<hr>
+
+8/5/23
+
+>Fixed OTR & No Cops Script Events not working
+Added Lester Escort (Heli Protect)
+Improved the Lester in Savage & Khanjali
+Added Custom Thermal Options
+Enable Thermal anytime without equipment being present
+adjust thermal see through parameters
+Added Terrorbyte Drone Range increase no cooldown extended boost and boost recharge of only seconds and shock has no cooldown & increased damage (1 hit kill with shock)
+Drone function works with other drones only it does not remove cooldown on all only terrorbyte
+Added Save Players Position to file
+Added Search function to teleports
+Added Session Attributes shows your transition state connected players & max player counts
+Added Mission Checker to Features Testing will notify if session is a mission session
+Added Use Game Help Notify
+Added Give My Ped Sexiness selectable Sexiness
+Updated Script Language Translation File
+
 
 <hr>
 
