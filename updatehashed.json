@@ -2,7 +2,7 @@
   "main": [
     [
       "MoistScript_NextGen.luac",
-      "4e03e76061e3725"
+      "f9fecdb34c5a2498"
     ]
   ],
   "MoistFiles": [
@@ -59,8 +59,8 @@
       "c9051c6692d32d98"
     ],
     [
-      "Moist_Translate.lua",
-      "6352c005ef317aa5"
+      "MoistScript_ScriptTranslation.lua",
+      "72949a43dfe58cb8"
     ],
     [
       "PedConfigFlags.lua",
