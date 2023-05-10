@@ -2,7 +2,7 @@
   "main": [
     [
       "MoistScript_NextGen.luac",
-      "f9fecdb34c5a2498"
+      "afb430b2041b6c91"
     ]
   ],
   "MoistFiles": [
@@ -16,7 +16,7 @@
     ],
     [
       "MoistScript_Blacklist_Module.lua",
-      "d77b0bed1037e18e"
+      "36928f73496b0117"
     ],
     [
       "MoistScript_ESP_Module.lua",
@@ -40,11 +40,11 @@
     ],
     [
       "MoistScript_PlayerHistory_Module.lua",
-      "8f537230391b062f"
+      "ca438e6aee98a74a"
     ],
     [
       "MoistScript_ScriptLoader_Module.lua",
-      "4ae9e8286a6eaa11"
+      "3948102ecb41c1c0"
     ],
     [
       "MoistScript_Teleport_Module.lua",
@@ -57,10 +57,6 @@
     [
       "Moist_InteriorLibs.lua",
       "c9051c6692d32d98"
-    ],
-    [
-      "MoistScript_ScriptTranslation.lua",
-      "72949a43dfe58cb8"
     ],
     [
       "PedConfigFlags.lua",
