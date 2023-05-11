@@ -27,7 +27,6 @@ function Moist_Translate.localmenu()
 	LocalFeatures.TrainControl.name = "Moist's Train Mod"
 	LocalFeatures.EntityTools.name = "Entitätsfunktionen & Werkzeuge"
 	LocalFeatures.ScriptLoader.name = "Moist Script Loader"
-	Features.AltSaveParent.name = "Experimentelle Speichereinstellungen"
 	LocalFeatures.LocalSettings.name = "Feuchtes-Skript-Einstellungen"
 	LocalFeatures.save_settings.name = "Aktuelle Einstellungen: "
 	LocalFeatures.Protections.name = "Erkennungen & Schutzmaßnahmen"
@@ -480,9 +479,9 @@ end
 function Moist_Translate.Set_Online_StrData()
 for pid = 0, 31 do
 
-OnlineFeatures.SE_CrashV3.feats[pid]:set_str_data({"Vektor-Methode", "Stat-Methode", "Rando-Methode", "Feuchte Methode", "Bit-Methode"})
-OnlineFeatures.SE_CrashV2.feats[pid]:set_str_data({"Vektor Methode", "Stat Methode", "Rando Methode", "Feuchte Methode", "Bit Methode"})
-OnlineFeatures.SE_Crash.feats[pid]:set_str_data({"Vektor Methode", "Stat Methode", "Rando Methode", "Feuchte Methode", "Bit Methode"})
+OnlineFeatures.SE_CrashV3.feats[pid]:set_str_data({"Vektor-Methode", "Stat-Methode","Feuchte Methode", "Bit-Methode"})
+OnlineFeatures.SE_CrashV2.feats[pid]:set_str_data({"Vektor Methode", "Stat Methode", "Feuchte Methode", "Bit Methode"})
+OnlineFeatures.SE_Crash.feats[pid]:set_str_data({"Vektor Methode", "Stat Methode", "Feuchte Methode", "Bit Methode"})
 OnlineFeatures.ProximitySurrounded.feats[pid]:set_str_data({"Blame Me", "Anonymous"})
 OnlineFeatures.Passive_Events.feats[pid]:set_str_data({"Option ausschalten", "Option einschalten"})
 OnlineFeatures.NBV_RAM2.feats[pid]:set_str_data({"Ram", "Angriff"})

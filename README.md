@@ -4,9 +4,39 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.2.1 |-|
+# |-| 3.0.2.2 |-|
 
 # changes:
+
+<hr>
+
+11/5/23
+
+Fixed Issues With File Encoding causing errors
+
+Fixed Ped Sexiness Code Put the variable used on exit into scope
+
+Added Disable Stat Cap (Bypasses the Cap on Things like armour and snacks so instead of max 10/15/20 it can be 100)
+
+Added Session Attributes & Player Attributes Outside of the Moist Script Main Parent in each tab for easy access
+
+Added Bounty Value to attributes
+
+Added Aim Detection Notify for when someone is either aiming at you or your vehicle (this is integrated into the detect aims feature)
+
+Removed Experimental Feature Value Saver & Integrated it into the main Script Settings Features
+
+Improved Lester Savage Escort (Heli Protection) now he will loop being in your/ the player you send him to protects player group so they should not kill the protectee
+
+Added Check into Homing Missiles from any vehicle & Better Vehicle Lockon Missiles v3 the check toggles off the other feature to itsself. Both functions use a Disabled Control input which is specific to some vehicle and cant run at same time due to values needing to be different and the other one trying to turn the disabled controls feature off Help Message will popup explaining this
+
+Added Save Player Coords to File in online player options
+
+Teleport Module Has a Search Feature now if you want to store alot
+
+
+<hr>
+
 
 <hr>
 
