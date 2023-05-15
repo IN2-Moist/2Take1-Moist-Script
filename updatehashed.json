@@ -2,7 +2,7 @@
   "main": [
     [
       "MoistScript_NextGen.luac",
-      "3f506b1ff3112c69"
+      "6b6ecce597a7aec4"
     ]
   ],
   "MoistFiles": [
@@ -21,10 +21,6 @@
     [
       "MoistScript_ESP_Module.lua",
       "21bd78dd97ff4723"
-    ],
-    [
-      "MoistScript_FeatureValue_Saver.lua",
-      "3043482615f4623d"
     ],
     [
       "MoistScript_GTA_Natives.lua",
