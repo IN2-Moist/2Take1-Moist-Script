@@ -2,7 +2,7 @@
   "main": [
     [
       "MoistScript_NextGen.luac",
-      "6b6ecce597a7aec4"
+      "244b96628010cb2f"
     ]
   ],
   "MoistFiles": [
@@ -32,11 +32,11 @@
     ],
     [
       "MoistScript_PlayerBar_Module.lua",
-      "316c137b03f31e93"
+      "da6928e253b4a4fd"
     ],
     [
       "MoistScript_PlayerHistory_Module.lua",
-      "696b71d200a83f8d"
+      "72320a6be1d5efe2"
     ],
     [
       "MoistScript_ScriptLoader_Module.lua",
@@ -60,7 +60,7 @@
     ],
     [
       "Recent_Spam_Chat_Text.txt",
-      "f864262530385ac"
+      "79a7ab9ea601e33f"
     ],
     [
       "vehlist.ini",
