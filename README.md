@@ -4,9 +4,35 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.2.2 |-|
+# |-| 3.0.2.4 |-|
 
 # changes:
+
+Updated Mission Protection Automation Switches to Smaller Radar for Missions if you have Expanded Set and switches back after. Fixed issue with it getting stuck in a loop doing nothing
+
+Added OTR for All in Session Griefing
+
+Updated Force Error Kick
+
+Fixed False Positive Excessive OTR Time Notify When not even Over a Ghost Org Duration
+
+Updated Script Event Function should be much faster
+
+Decreased the Time Between Player Orbitals using Framed Session Orbital Strike
+
+Added Ped Spawn Check & Increased Jointime check for God & Damage Proof Detections
+
+Fixed Bounty info in Player Attributes not always showing value
+
+Update Functions are now called as a threaded function (fixes Repoted Issues with errors)
+
+Changed Trust Check to just check & show a warning rather than abort execution
+
+Fixed bug with setting playerbits
+
+All Save Feature Options are now in a Seperate Settings Parent
+
+
 
 <hr>
 
