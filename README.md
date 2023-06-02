@@ -4,158 +4,88 @@
 
 # Next Generation Moist Script
 
-# |-| 3.0.2.4 |-|
+# |-| 3.0.2.5 |-|
 
-# changes:
+<hr>
+README is currently a WIP
 
-Updated Mission Protection Automation Switches to Smaller Radar for Missions if you have Expanded Set and switches back after. Fixed issue with it getting stuck in a loop doing nothing
-
-Added OTR for All in Session Griefing
-
-Updated Force Error Kick
-
-Fixed False Positive Excessive OTR Time Notify When not even Over a Ghost Org Duration
-
-Updated Script Event Function should be much faster
-
-Decreased the Time Between Player Orbitals using Framed Session Orbital Strike
-
-Added Ped Spawn Check & Increased Jointime check for God & Damage Proof Detections
-
-Fixed Bounty info in Player Attributes not always showing value
-
-Update Functions are now called as a threaded function (fixes Repoted Issues with errors)
-
-Changed Trust Check to just check & show a warning rather than abort execution
-
-Fixed bug with setting playerbits
-
-All Save Feature Options are now in a Seperate Settings Parent
-
-
+REWRITE due to complete layout change in version 3.0.2.5
 
 <hr>
 
-11/5/23
+# Feature List
 
-Fixed Issues With File Encoding causing errors
+## Local Script Features
 
-Fixed Ped Sexiness Code Put the variable used on exit into scope
+### Player Features
 
-Added Disable Stat Cap (Bypasses the Cap on Things like armour and snacks so instead of max 10/15/20 it can be 100)
+* Teleport Features
 
-Added Session Attributes & Player Attributes Outside of the Moist Script Main Parent in each tab for easy access
+* Player Ped Features
 
-Added Bounty Value to attributes
+* Player Vehicle Features
 
-Added Aim Detection Notify for when someone is either aiming at you or your vehicle (this is integrated into the detect aims feature)
+### Online Features
 
-Removed Experimental Feature Value Saver & Integrated it into the main Script Settings Features
+* Player History
+	List of Recent Players Joined, within each player is some extra info about them, ability to blacklist them temporarily or via blacklist Modules.
+	Can also Auto Join Then until offline.
 
-Improved Lester Savage Escort (Heli Protection) now he will loop being in your/ the player you send him to protects player group so they should not kill the protectee
+* Session Griefing
+	Location of Del Pero Bounty Beach War! 10k Bounty All, OTR for All, Jack-O-Lantern Treats, Force to Mission.
 
-Added Check into Homing Missiles from any vehicle & Better Vehicle Lockon Missiles v3 the check toggles off the other feature to itsself. Both functions use a Disabled Control input which is specific to some vehicle and cant run at same time due to values needing to be different and the other one trying to turn the disabled controls feature off Help Message will popup explaining this
+* Session Kick Functions
+	Remove Host Queue until Host (Removes all Hosts Until you are Host if your host priority is high enough)
+	Session Exit (SE Kick)
+	Session: Desync Kick | Host Kick | Broadcast Freemode Error | Bail Kicks
+	Spawn Self Ruiner with Parachute Crash (spawns in front of you use it jump and spam open parachute to kill most of the session)
 
-Added Save Player Coords to File in online player options
+### Moist Weapon Mods
 
-Teleport Module Has a Search Feature now if you want to store alot
+* Moist Weapon Mod Options
+	Dont Lockon to my Friends (for use with the custom lockon missiles from any vehicle)
+	Lockon for any vehicle exclude Aircraft (for people who like to use their jet cannons and not have them disabled)
+	Speed of Missiles <value Modifer> (for all Missile Weapon Mods)
 
+* Weapon Related Functions
+	Weapon Unlimited Ammo Clip (clip never empties prevents reload and gives ability to rapid fire rpgs etc)
+	Spawn Gun Van Nearby (spawns the gun van near to your location)
+	Explosion Area of Effect <value Modifier> (changes the explosion range or area the exolosion will cause damage)
+	Destroy Projectiles (Explodes specific Projectiles)
 
-<hr>
+* Portable Defence Sphere
+	Contains various types of portable yacht defences to protect an area from invasion by other Players
 
+* Moists Orbital Gun
+	Impact area of your current weapons bullet will Obliterate the area with the orbital cannon. (works like you are using the orbital cannon itself)
 
-<hr>
+* Make My Weapon invisible
+	like name states makes your current weapon invisible. On homing launcher you can see the missile still so its like your holding a missile and shooting it.
 
-8/5/23
+* Select type
+	Missile Type By Name for Missile Functions Below.
+	
+* Aim Snipe headshot
+	Attempts to shoot a heavy sniper bullet into a player / npc you aim at or their vehicle good line of sight of them in their vehicle will help.
 
->Fixed OTR & No Cops Script Events not working
-Added Lester Escort (Heli Protect)
-Improved the Lester in Savage & Khanjali
-Added Custom Thermal Options
-Enable Thermal anytime without equipment being present
-adjust thermal see through parameters
-Added Terrorbyte Drone Range increase no cooldown extended boost and boost recharge of only seconds and shock has no cooldown & increased damage (1 hit kill with shock)
-Drone function works with other drones only it does not remove cooldown on all only terrorbyte
-Added Save Players Position to file
-Added Search function to teleports
-Added Session Attributes shows your transition state connected players & max player counts
-Added Mission Checker to Features Testing will notify if session is a mission session
-Added Use Game Help Notify
-Added Give My Ped Sexiness selectable Sexiness
-Updated Script Language Translation File
+* Homing aim
+	Shoots homing missile locked on to the vehicle, player or npc you aim and shoot at.
 
+* Better Vehicle Lock-on Missiles V3
+	Disables normal vehicle weapons firing and shoots a better type of missile at the vehicles lock on target. (Revives the Nerfed MK2 Missiles)
 
-<hr>
+* Missiles from any vehicle
+	Shoots a missile in a static direction no lockon from the front of any vehicles
 
-27/4/23
+* Any Vehicle Lockon Missiles (Players)
+	Custom Missile System Designed by myself for Player lock on Targeting for missiles in any vehicle. For vehicles already equiped with lockon missiles
+	it will utilise both my targeting and the vehicle targeting to find a target, if no nearby player is targetable it will use the vehicle lock on targeting
+	to give you another target useful for the need to kill npcs. Design of this is to target players even on foot as long as they are in front of you they get a lock on.
 
-## online player features: (WIP)
-
-### Added Send Lester in Khanjali
-### Added Send Lester in Savage
-
-> (Both Lester Griefing options are toggles which will loop some code so when the player dies Lester will go to them and attack again. Toggle off does not remove the Spawned Entities you will need to do so in the Entity Functions & tools in the local part of the script.
-
-#### Added Some Custom Functions into the script.
-
-> These are customised for creating ped vehicles & finding spawn points these will be for more spawn options to come, all peds should not go nuts on each other and should respect each other, so far no issues need to test further multiple spawns being groups have a limit some updating on this will be needed.
-> 
-## local player features:
-
-### Added  No More One Shot Hits
- 
- > Will prevent you taking critical damage that would kill you instantly like in a oneshot/headshot situation. Damage taken will be that of a normal body shot!
-
-### Added Motion Blur
-
-> (This is a Test Feature not sure if it makes any difference to what others see)
-
-### Added Thermal Heat-scale Override <Value Modifier>
-
-> Changes how visible you are when using a thermal helmet or scope. 0.0 will mean you have none at all so essentially invisible on thermal.
-
-## Issues with feature value saver should now be resolved!
-
-> Re-Enabled the Update Check on Script Execution (Still Requires you to goto settings and click the download option should it be outdated)
-
-<hr>
-
-Updated Most of the Function Names to be more understandable for non English people. & to help make anyone translating it life alot easier! Most of the Spelling Mistakes Fixed .
-
-Fixed Bug with Downloading Update & nil file error causing crash.
-
-Update now Downloads needed files & then Removes all script features & executes the script again with the updated files.
-
-Main Script File now has the version number removed from the filename, makes life easier and was part of the cause of download crash.
-
-Updated Vehicle Missiles V3 this will only work on vigilante toreador & Oppressor MK1 & MK2.  This is due to how annoying it is when flying a lazer & use cannons & end up shooting missiles!
-
-Added: Make My Weapon Invisble
-
-<hr>
-
-Update Release
-
--Fixed : Bug in Experimental Feature Value Saver causing Feature Depth not to go all the way.
-
--Updated Player History: Removed Index number from name and added it to a hint, updated the history limiter, updated the delete all history.
-
--Updated Projectile Radar
-
--Improved  Better Vehicle Missiles v3 to not care if  target is in line of sight before you could get a moment that the weapon would not fire due to this check. updated replacement sound.
-
--Updated Missiles From Any Vehicle
-
--Improved Update Check & Download, now checks the files by hash and notify of outdated files, download function will check the same then update those needed files. will remove the extra 0 from the version number on next release as this is no longer needed for the update check
-
-<hr>
+* Vehicle Missiles from my Ass
+	Shoots missiles in either direction from your vehicle if lockon target is behind you the missiles come out your ass.
 
 
-## Feature List
-
-### Local Script Features
-
-## Player Features
 
 ### Stat Features
 
