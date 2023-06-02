@@ -2,13 +2,17 @@
   "main": [
     [
       "MoistScript_NextGen.luac",
-      "9359216108dffe4c"
+      "aa301df7e8e07333"
     ]
   ],
   "MoistFiles": [
     [
       "json.lua",
       "e45035e209acc62b"
+    ],
+    [
+      "target.png",
+      "f190633272318959"
     ],
     [
       "kicks.ini",
@@ -28,15 +32,15 @@
     ],
     [
       "MoistScript_MoistBasics_Module.lua",
-      "4154651c19539e07"
+      "a81a02fdcb3789aa"
     ],
     [
       "MoistScript_PlayerBar_Module.lua",
-      "f2d89d4a30ad797e"
+      "915f5d0647c99b6d"
     ],
     [
       "MoistScript_PlayerHistory_Module.lua",
-      "2f228c02ff3ad4f2"
+      "a7a17eeb22acd01c"
     ],
     [
       "MoistScript_ScriptLoader_Module.lua",
@@ -52,7 +56,7 @@
     ],
     [
       "Moist_InteriorLibs.lua",
-      "c9051c6692d32d98"
+      "358dffa201176e2e"
     ],
     [
       "PedConfigFlags.lua",
