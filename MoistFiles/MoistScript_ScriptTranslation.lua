@@ -66,7 +66,6 @@ start:]]
 	LocalFeatures.Radar_Parent.name = "Radar Enhancements"
 	LocalFeatures.ProjectileRadar_Parent.name = "Projectile Radar"
 	Features.Tests.name = "Features Testing"
-	LocalFeatures.Stats.name = "Stat Features"
 	LocalFeatures.Self_WeaponStuff.name = "Weapon Related Functions"
 	LocalFeatures.PortableDefences.name = "Portable Defence Spheres"
 	LocalFeatures.Self_Ped.name = "Player Ped Features"
@@ -85,7 +84,6 @@ start:]]
 	LocalFeatures.OrbitalProtex.name = "Detect Orbital Users "
 	LocalFeatures.ThisScript.name = "Script = "
 	LocalFeatures.MyGlobalState.name = "Global State = "
-	LocalFeatures.GlobalState.name = "State = "
 	LocalFeatures.Connected.name = "Connected Players = "
 	LocalFeatures.SessMax.name = "Max Players = "
 	LocalFeatures.EventCountA.name = "AI Events Q:"
@@ -99,11 +97,8 @@ start:]]
 	LocalFeatures.chatSpamLoop.name = "Spam Loop: "
 	LocalFeatures.chatSpamOneShot.name = "Spam Once: "
 	LocalFeatures.chatclipboard.name = "Send Clipboard Contents"
-	LocalFeatures.SendAll_To_Beach.name = "Player Broadcast to Del Pero : 2"
 	LocalFeatures.Bounty_All.name = "Give All 10k Bounty"
 	LocalFeatures.OTRALL.name = "Give All OTR"
-	LocalFeatures.MissionEvents.name = "Mission: "
-	LocalFeatures.LobbyTreatTroll.name = "Treat Troll: "
 	LocalFeatures.OrbitalNearbyPlayers.name = "Nearby Player Orbital Dist. "
 	LocalFeatures.TakeHost.name = "Remove Host Queue until Host"
 	LocalFeatures.SessionKick.name = "Session: "
@@ -130,14 +125,9 @@ start:]]
 	LocalFeatures.ClubMoneyF.name = "Auto Nightclub Vault Money Fast Method"
 	LocalFeatures.ClubMoneyFO.name = "Fast Nightclub Vault Money [VIP]"
 	LocalFeatures.ClubMoneyS.name = "Auto Nightclub Vault Money (Slower Method)"
-	LocalFeatures.DoomsDay2A2.name = "Dooms Day ACT2 2xPlayer Finale"
-	LocalFeatures.DoomsDayA2.name = "Dooms Day ACT2 4xPlayer Finale"
-	LocalFeatures.CasinoHeist2P.name = "Casino Heist 2xPlayer Finale Payout"
-	LocalFeatures.CasinoHeist4P.name = "Casino Heist 4xPlayer Finale Payout"
-	LocalFeatures.SubGM_ExtRange_NoCD.name = "Sub Guided Missiles (+)Range (-)Cool-down"
+		LocalFeatures.SubGM_ExtRange_NoCD.name = "Sub Guided Missiles (+)Range (-)Cool-down"
 	LocalFeatures.Drone_RangeNoCD.name = "TB Drone(+)Range+Speed (-)cool-down+recharge"
 	LocalFeatures.CEO_Veh_CD.name = "CEO Vehicle Request No Cooldown"
-	LocalFeatures.DisableCap.name = "Disable Stat Cap"
 	LocalFeatures.wetnessframe.name = "Make My Ped Wet! :P"
 	LocalFeatures.MySexiness.name = "Give My Ped Sexiness:P"
 	LocalFeatures.StoneHatchetMode.name = "Stone Hatchet No Cooldown & Duration Increase"
@@ -155,7 +145,6 @@ start:]]
 	LocalFeatures.SpeedOveride.name = "Max Speed Override: "
 	LocalFeatures.VehPara.name = "Give My Vehicle A Parachute"
 	LocalFeatures.CHAFFDURATION.name = "Set CHAFF DURATION"
-	LocalFeatures.CHAFFCOOLDOWN.name = "Set CHAFF COOLDOWN"
 	LocalFeatures.VolicBoost.name = "Voltic Boost Recharge Modifier: "
 	LocalFeatures.PedDamageProof.name = "Set Ped Damage Proof"
 	LocalFeatures.VehDamageProof.name = "Set Vehicle Damage Proof"
@@ -321,6 +310,43 @@ start:]]
 	LocalFeatures.LockonAnyVehExclude.name = "Lockon for any vehicle Exclude Aircraft"
 	LocalFeatures.Translate.name = "Update Script with Translation"
 	LocalFeatures.ChatSpamData.name = "Load Set: "
+
+--[[INFO:[3.0.2.6][Changed]
+start:]]
+
+--[[Changed features Moved Below commented and details replacments not commented below it.
+	
+	LocalFeatures.Stats.name = "Stat Features"
+	
+		Changed to Money Stats & Globals Below
+		
+	Set CHAFF COOLDOWN
+		
+		Changed to : Set Chaff/Flare Cooldown
+	]]
+				
+	LocalFeatures.Stats.name = "Money Stats & Globals"
+	
+	
+	LocalFeatures.CHAFFCOOLDOWN.name = "Set Chaff/Flare Cooldown"  
+	
+--[[
+end:]]
+
+--[[INFO:[3.0.2.6][Removed]
+start:]]
+
+--[[
+	LocalFeatures.GlobalState.name = "State = "
+	LocalFeatures.DisableCap.name = "Disable Stat Cap"
+	LocalFeatures.SendAll_To_Beach.name = "Player Broadcast to Del Pero : 2"
+	LocalFeatures.MissionEvents.name = "Mission: "
+	LocalFeatures.LobbyTreatTroll.name = "Treat Troll: "
+	LocalFeatures.DoomsDay2A2.name = "Dooms Day ACT2 2xPlayer Finale"
+	LocalFeatures.DoomsDayA2.name = "Dooms Day ACT2 4xPlayer Finale"
+	LocalFeatures.CasinoHeist2P.name = "Casino Heist 2xPlayer Finale Payout"
+	LocalFeatures.CasinoHeist4P.name = "Casino Heist 4xPlayer Finale Payout"
+]]
 --[[
 end:]]
 
@@ -360,7 +386,7 @@ start:]]
 		Features.GriefThisCunt.feats[pid].name = "Grief This Cunt"
 		Features.FramePlayer.feats[pid].name = "Grief Others (Frame Player)"
 		Features.ScriptEvents.feats[pid].name = "Script Events"
-		OnlineFeatures.NoGod4u.feats[pid].name = "Try To Remove GOD Mode!"
+
 		OnlineFeatures.Get_SE_PID.feats[pid].name = "Get This Players Script Events"
 		OnlineFeatures.LastAimedAt.feats[pid].name = "Last Aimed at: "
 		Features.PlayerVehicleDecorators.feats[pid].name = "Decorators"
@@ -427,7 +453,7 @@ start:]]
 		OnlineFeatures.NOCOPS.feats[pid].name = "Cops Turn a Blind Eye"
 		OnlineFeats.NetworkBail.feats[pid].name = "Network Bail Kick"
 		OnlineFeats.ErrorKick.feats[pid].name = "Micheal Error Kick"
-		OnlineFeats.ForceErrorKick.feats[pid].name = "Force Error Kick"
+
 		OnlineFeats.ScriptKick.feats[pid].name = "Script Kick"
 		OnlineFeats.RandScriptKick.feats[pid].name = "Random Script Event Spam"
 		OnlineFeats.ScriptKick.feats[pid].name = "Script Event: "
@@ -439,9 +465,6 @@ start:]]
 		OnlineFeatures.VehSyncCrashV2.feats[pid].name = "Lester Cummy Windsock Crash v2"
 		OnlineFeatures.VehSyncCrash2.feats[pid].name = "Use Ruiner Crash & Bail to Space"
 		OnlineFeatures.TestCrash.feats[pid].name = "Test Crash"
-		OnlineFeatures.Island_Events.feats[pid].name = "Island Events: "
-		OnlineFeatures.MissionEvents.feats[pid].name = "Mission: "
-		OnlineFeatures.Passive_Events.feats[pid].name = "Passive Mode: "
 		OnlineFeatures.LockedOnTroll.feats[pid].name = "Trigger Vehicle Locked On"
 		OnlineFeatures.TeleportPlayernext2me.feats[pid].name = "Teleport Next To Me"
 		OnlineFeatures.TeleportPlayerinfront.feats[pid].name = "Teleport in front of Me"
@@ -453,6 +476,18 @@ start:]]
 --[[
 end:]]
 
+--[[INFO:[3.0.2.6][Removed]
+start:]]
+
+
+	--[[OnlineFeatures.NoGod4u.feats[pid].name = "Try To Remove GOD Mode!"
+		OnlineFeatures.Island_Events.feats[pid].name = "Island Events: "
+		OnlineFeatures.MissionEvents.feats[pid].name = "Mission: "
+		OnlineFeatures.Passive_Events.feats[pid].name = "Passive Mode: "
+		OnlineFeats.ForceErrorKick.feats[pid].name = "Force Error Kick"
+		]]
+--[[
+end:]]
 
 			
 	end
@@ -463,21 +498,11 @@ end
 
 
 function Moist_Translate.localmenu_hints()
-	--[[
-INFO:
 
-[---------------------- Hints @ Start of Translation Versioning ----------------------]													
-			|| MoistScript_NG_Translation_Version || Moist Script NG || 3.0.2.5 ||
-[-------------------------------------------------------------------------------------]	
-
-start:]]
-	
 	LocalFeatures.Online_Data.hint = "Various Info on the Current Session"
 	LocalFeatures.Online_ChatOptions.hint = "Add Custom Spam to Custom Save File, Remove from Custom Save File. Adjust Send Delay, Switch Chat Type"
 	LocalFeatures.SaveOptions_Hotkey.hint = "<LCTRL>+<LSHIFT>+<S> \nHold Left Control + Left Shift Down then Press S Key and release to save"
 	LocalFeatures.MissionSetup_Hotkey.hint = "<LCTRL>+<LSHIFT>+<M> \nHold Left Control + Left Shift Down and Press M Key \nto switch Mission Protection Settings on/off\ntThis will only turn the feature on and off the feature will do the rest when a mission is detected"
-	LocalFeatures.MissionEvents.hint = "Forces all Players to a Job / Mission Screen"
-	LocalFeatures.LobbyTreatTroll.hint = "Halloween Jack-O-Lantern treats for all players"
 	LocalFeatures.SessionSyncCrash.hint = "Spawns a Ruiner 2000 with a parachute that can crash most if not all of the session when used!"
 	LocalFeatures.SH_Helper.hint = "2Take1 VIP Subscription Required\nThis will switch script host between players that are in god mode, to help others that could be either stuck loading or not loaded into session fully"
 	LocalFeatures.AvengerTeleport.hint = "Teleports you into Your Avenger While it is inside your Facility. Please Be Aware use of Entity / session Clean-ups will cause this to not work and avenger no longer to be inside Facility"
@@ -485,14 +510,9 @@ start:]]
 	LocalFeatures.ClubMoneyF.hint = "Fast Nightclub Earnings Money Method for self, go to your nightclub office safe open it stand in the threshold of the doorway, turn on and enjoy some fast cash, periodically this will pause for a moment to allow transactions to clear and transfer the money into your bank! I found this to be slower in full sessions solo takes no time at all to clock up a few million! Dont Be retarded with its use! Few Million every now and then do some other stuff then you should be ok! I have done this for a few weeks got 3 billion in the bank now and no issues just be casual with its use!"
 	LocalFeatures.ClubMoneyFO.hint = "VIP Required!!\nFast Nightclub Earnings Money Method for self, No Need to be in your nightclub for this method, turn on and enjoy some fast cash, Don't Be retarded with its use! Few Million every now and then do some other stuff then you should be ok! i have done this for a few weeks got 3 billion in the bank now and no issues just be casual with its use!"
 	LocalFeatures.ClubMoneyS.hint = "Slower Rate Nightclub Earnings Money Method for self, will wait longer and check transactions are not pending and wait until they are clear! **  go to your nightclub office safe open it stand in the threshold of the doorway, turn on and enjoy some fast cash, periodically this will pause for a moment to allow transactions to clear and transfer the money into your bank! I found this to be slower in full sessions solo takes no time at all to clock up a few million! Don't Be retarded with its use! Few Million every now and then do some other stuff then you should be ok! I have done this for a few weeks got 3 billion in the bank now and no issues just be casual with its use!**"
-	LocalFeatures.DoomsDay2A2.hint = "turn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 2.5m each"
-	LocalFeatures.DoomsDayA2.hint = "if only 2 are playing use the 2xplayer otherwise its going to look odd if you do it for randoms\nother than that it dont matter which option payouts all the same!. \nturn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 2.5m each"
-	LocalFeatures.CasinoHeist2P.hint = "if only 2 are playing use the 2xplayer otherwise its going to look odd if you do it for randoms\nother than that it dont matter which option payouts all the same!. \nturn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 3.5m each"
-	LocalFeatures.CasinoHeist4P.hint = "turn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 3.5m each"
 	LocalFeatures.SubGM_ExtRange_NoCD.hint = "Extends the Range of the kosatka Guided Missiles & Removes the Cool Down"
 	LocalFeatures.Drone_RangeNoCD.hint = "Improves the TerrorByte Drone:\nRemoves Cooldown between uses\nRemoves Shock Recharge Time\nIncreases Forward Speed\nIncreases Distance Range & Height Range" 
 	LocalFeatures.CEO_Veh_CD.hint = "Ceo Vehicle Cooldown Removal Toggle on to Never have a cool down or off to restore the default" 
-	LocalFeatures.DisableCap.hint = "Disable Stat Cap for modifiying stats like your armour and snacks beyond the 15/20 max" 
 	LocalFeatures.VehPara.hint = "Gives your Current Vehicle a Parachute if it does not already have one"
 	LocalFeatures.NoMoreOneShot.hint = "Sets your Ped to not take critical hits! \n No More One Shot Hits if shot in head the damage would be similar to that of a body shot"
 	LocalFeatures.ThermalAnywhere.hint = "Enable Thermal Vision Anywhere without scope or helmet"
@@ -529,23 +549,32 @@ start:]]
 	LocalFeatures.DetectAims.hint = "Detect when someone is Aiming at someone else and add that info to the Player Attributes Section\nAlso Notifies you when you are being aimed at"
 	LocalFeatures.CounterMissileAttack.hint = "Once a Sub Missile is detected and Marked a Counter Missile Attack is Launched Locked Onto the Sub Missile to take it out the sky and Destroy it!"
 	LocalFeatures.LockonAnyVehExclude.hint = 'Specifically made for the "Any Vehicle Lockon Missiles (Players)" function, this will prevent the targeting Features from turning off shooting Control and finding lockon targets. Specifically this is for all aircraft Heli or Plane/Jet So you dont turn off a turning control and shoot instead of turn. Functionality Restored when in another vehicle'
-	
+--[[INFO:[3.0.2.6][Additions]
+start:]]
+	LocalFeatures["Stats"].hint = "Features using Stats & Globals\nCool Down Removal, Money Methods, Customise Stats"
 --[[
 end:]]
+
+--[[INFO:[3.0.2.6][Removed]
+start:]]
+--[[
+	LocalFeatures.MissionEvents.hint = "Forces all Players to a Job / Mission Screen"
+	LocalFeatures.LobbyTreatTroll.hint = "Halloween Jack-O-Lantern treats for all players"
+	LocalFeatures.DisableCap.hint = "Disable Stat Cap for modifiying stats like your armour and snacks beyond the 15/20 max" 
+	LocalFeatures.DoomsDay2A2.hint = "turn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 2.5m each"
+	LocalFeatures.DoomsDayA2.hint = "if only 2 are playing use the 2xplayer otherwise its going to look odd if you do it for randoms\nother than that it dont matter which option payouts all the same!. \nturn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 2.5m each"
+	LocalFeatures.CasinoHeist2P.hint = "if only 2 are playing use the 2xplayer otherwise its going to look odd if you do it for randoms\nother than that it dont matter which option payouts all the same!. \nturn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 3.5m each"
+	LocalFeatures.CasinoHeist4P.hint = "turn on before starting the finale leave all pay-outs as they are set and just launch the job all will get 3.5m each"
+]]
+--[[
+end:]]
+
 
 end
 
 
 function Moist_Translate.onlinemenu_hints()
 	for pid = 0, 31 do
---[[
-INFO:
-
-[---------------------- Hints @ Start of Translation Versioning ----------------------]													
-			|| MoistScript_NG_Translation_Version || Moist Script NG || 3.0.2.5 ||
-[-------------------------------------------------------------------------------------]	
-
-start:]]
 		FeaturesonlineParent.feats[pid].hint = "Moist Script Features"
 		Features.RemovePlayer.feats[pid].hint = "Various Ways to Remove or Crash a Player"
 		Features.PlayerOptions.feats[pid].hint = "Useful Player Options, Exclude, Ghost to them, Change team ID. Add Waypoint on Their Location"
@@ -555,10 +584,8 @@ start:]]
 		OnlineFeats.SaveCoords.feats[pid].hint = "save players location to file"
 		OnlineFeats.TeamChatA.feats[pid].hint = "-1 = default setting in free mode, anything else is a team and ID gives different colour for other players everyone in that team will be able to see each others team chat"
 		OnlineFeats.OrgChat.feats[pid].hint = "locally sets you into their current ORG or MC, enabling you to see their private organisation chat. This is a WIP so be warned it could potentially break your session or your game!"
-		Features.Troll.feats[pid].hint = "Be An Annoying Troll & Send them around all apartments & Onto Missions Screens"
 		Features.GriefThisCunt.feats[pid].hint = "Various Ways To Grief & Kill them if they are Killable"
 		Features.FramePlayer.feats[pid].hint = "Frame This Player & Grief Others in their name!"
-		OnlineFeatures.NoGod4u.feats[pid].hint = "Either removes god or breaks the players game"
 		OnlineFeatures.Has_Spawned_Net.feats[pid].hint = "Shows if you Received the Ped Spawned Network Event from this Player"
 		OnlineFeatures.Is_Passive.feats[pid].hint = "Shows if Player is currently Passive (Pussy Mode Activated!) R* Anti Griefing Protection"
 		OnlineFeatures.BountyValue.feats[pid].hint = "Shows the players bounty value if we managed to get that data"
@@ -573,13 +600,21 @@ start:]]
 		OnlineFeatures.Lester_Savage.feats[pid].hint = "Send Lester in a Savage Heli to grief them"
 		OnlineFeatures.Lester_Savage_Escort.feats[pid].hint = "Send Lester in a Savage Heli to Protect them"
 		OnlineFeats.PlayerGlobalState.feats[pid].hint = "-1 : not joined or Dead\n0 : Loading\n9 : Probably Respawning\n99 : Fully joined the Session"
-		OnlineFeatures.MissionEvents.feats[pid].hint = "Forces Player to a Job / Mission"
-		OnlineFeatures.Passive_Events.feats[pid].hint = "Disables the Option for them to enter Passive Mode or Enables it again Depending on selection. This will make them a key player in an event preventing any passive mode use"
-		OnlineFeatures.LockedOnTroll.feats[pid].hint = "Triggers Vehicle being locked onto audio alert for that player"
+	OnlineFeatures.LockedOnTroll.feats[pid].hint = "Triggers Vehicle being locked onto audio alert for that player"
 		OnlineFeats.PlayerObliteration.feats[pid].hint = "Enables Orbital Kills for player with any type of kill"
 --[[
 end:]]
 
+--[[INFO:[3.0.2.6][Removed]
+start:]]
+--[[
+	
+		OnlineFeatures.NoGod4u.feats[pid].hint = "Either removes god or breaks the players game"
+		Features.Troll.feats[pid].hint = "Be An Annoying Troll & Send them around all apartments & Onto Missions Screens"
+		OnlineFeatures.MissionEvents.feats[pid].hint = "Forces Player to a Job / Mission"
+		OnlineFeatures.Passive_Events.feats[pid].hint = "Disables the Option for them to enter Passive Mode or Enables it again Depending on selection. This will make them a key player in an event preventing any passive mode use"
+	
+]]
 	end
 end
 
