@@ -9,10 +9,7 @@ end
 --[[From Version 3.0.2.5 This Translation layout will be updated indicating the changes / additions inside each function Below
 	
 start of new Build features will be commented like so:]]
---[[
-	
-
-[---------------------- Example Build Indicators ----------------------]]]
+--[[---------------------- Example Build Indicators ----------------------]]
 
 --[[INFO:[3.0.2.9]				(start of new stuff)
 
@@ -36,7 +33,7 @@ start:]]
 --[[							(to indicate end of new / removed stuff)
 end:]]
 
-[--------------------------------- END ---------------------------------]]]
+--[[--------------------------------- END ---------------------------------]]
 
 
 

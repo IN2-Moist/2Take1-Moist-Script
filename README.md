@@ -2,6 +2,16 @@
 
 <hr>
 
+# For Reference Only!
+
+<hr>
+
+### Please see:
+### [https://github.com/IN2-Moist/2Take1-Moist-Script/wiki](https://github.com/IN2-Moist/2Take1-Moist-Script/wiki)
+### For the most up to date Help.
+
+<hr>
+
 # Next Generation Moist Script
 
 # |-| 3.0.2.5 |-|
@@ -66,7 +76,7 @@ REWRITE due to complete layout change in version 3.0.2.5
 	Missile Type By Name for Missile Functions Below.
 	
 * Aim Snipe headshot
-	Attempts to shoot a heavy sniper bullet into a player / npc you aim at or their vehicle good line of sight of them in their vehicle will help.
+Attempts to shoot a heavy sniper bullet into a player / npc you aim at or their vehicle good line of sight of them in their vehicle will help.
 
 * Homing aim
 	Shoots homing missile locked on to the vehicle, player or npc you aim and shoot at.
