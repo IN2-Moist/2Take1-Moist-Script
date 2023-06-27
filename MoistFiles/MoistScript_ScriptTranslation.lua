@@ -116,9 +116,7 @@ start:]]
 	LocalFeatures.stringstatset.name = "Set Stat: "
 	LocalFeatures.stringstatset.name = "Set Stat with Created logo: "
 	LocalFeatures.stringstatset.name = "Set Stat with Verified logo: "
-	LocalFeatures.VehStats.name = "Get My Veh Stats"
-	LocalFeatures.Veh_Stats.name = "Set My Veh Stats"
-	LocalFeatures.VehStat.name = "Get Veh Stat in Slot: "
+
 	LocalFeatures.ClubMoneyF.name = "Auto Nightclub Vault Money Fast Method"
 	LocalFeatures.ClubMoneyFO.name = "Fast Nightclub Vault Money [VIP]"
 	LocalFeatures.ClubMoneyS.name = "Auto Nightclub Vault Money (Slower Method)"
@@ -346,6 +344,17 @@ start:]]
 ]]
 --[[
 end:]]
+--[[INFO:[3.0.2.7][Removed]
+start:]]
+
+--[[
+
+	LocalFeatures.VehStats.name = "Get My Veh Stats"
+	LocalFeatures.Veh_Stats.name = "Set My Veh Stats"
+	LocalFeatures.VehStat.name = "Get Veh Stat in Slot: "
+]]
+--[[
+end:]]
 
 end
 
@@ -442,8 +451,6 @@ start:]]
 		OnlineFeatures.GamerTagON.feats[pid].name = "Enable Gamer TAG"
 		OnlineFeatures.GangHarrasment.feats[pid].name = "Gangs will Hassle Player"
 		OnlineFeatures.InvSpam.feats[pid].name = "Spam Apt Invites"
-		OnlineFeatures.DisableGame.feats[pid].name = "Disable Players Game"
-		OnlineFeatures.BlackScreenOfDeath.feats[pid].name = "Black screen?"
 		OnlineFeatures.GangGrief.feats[pid].name = "Gangs will Grief Player"
 		OnlineFeatures.DisablePlayerInterior.feats[pid].name = "Disable Player Interior"
 		OnlineFeatures.OTR.feats[pid].name = "Off The Radar"
@@ -477,12 +484,23 @@ end:]]
 start:]]
 
 
-	--[[OnlineFeatures.NoGod4u.feats[pid].name = "Try To Remove GOD Mode!"
+	--[[
+		OnlineFeatures.NoGod4u.feats[pid].name = "Try To Remove GOD Mode!"
 		OnlineFeatures.Island_Events.feats[pid].name = "Island Events: "
 		OnlineFeatures.MissionEvents.feats[pid].name = "Mission: "
 		OnlineFeatures.Passive_Events.feats[pid].name = "Passive Mode: "
 		OnlineFeats.ForceErrorKick.feats[pid].name = "Force Error Kick"
 		]]
+--[[
+end:]]
+
+--[[INFO:[3.0.2.6][Removed]
+start:]]
+--[[
+
+		OnlineFeatures.DisableGame.feats[pid].name = "Disable Players Game"
+		OnlineFeatures.BlackScreenOfDeath.feats[pid].name = "Black screen?"
+]]
 --[[
 end:]]
 
@@ -638,21 +656,39 @@ start:]]
 	LocalFeatures.save_settings:set_str_data({"Save","Reset"})
 	LocalFeatures.OrbitalProtex:set_str_data({"& Notify","Protect & Notify","& Protect"})
 	LocalFeatures.chatclipboard:set_str_data({"Public Chat Once", "Team Chat Once","Public Chat Repeat", "Team Chat Repeat"})
-	LocalFeatures.SendAll_To_Beach:set_str_data({"Beach","Beach Bounty War!"})
-	LocalFeatures.MissionEvents:set_str_data({"Force to Severe Weather", "Force to Half Track", "Force to Night Shark AAT", "Force to APC Mission", "Force to MOC Mission", "Force to Tampa Mission", "Force to Opressor Mission1", "Force to Opressor Mission2"})
-	LocalFeatures.SessionKick:set_str_data({"Bail Kick","Desync Kick","Host Kick","Broadcast Freemode Error"})
 	FreeCamInt:set_str_data({"Initialise","Reset"})
-	LocalFeatures.GarbageTools:set_str_data({"count","collect","stop","restart","isrunning"})
-	LocalFeatures.GarbageTools:set_str_data({"count","collect","stop","restart","CollectV2"})
 	LocalFeatures.MySexiness:set_str_data({"JEER_AT_HOT_PED","HURRIEDFEMALES_SEXY","HOT_PERSON"})
 	LocalFeatures.CbobMagnet:set_str_data({"Hook","Magnet"})
-	LocalFeatures.HomingAimAmmo:set_str_data({"RUINER_ROCKET","DELUXO_MISSILE"})
-	LocalFeatures.WeatherOverride:set_str_data({"FUCK","Extra Sunny","Clear","Clouds","Smog","Fog","Clouds","Rain","Thunder","Clearing","Neutral","Snow","Blizzard","Snow Light","Xmas","Halloween","Psychedelic Screen Fuck"})
+	LocalFeatures.HomingAimAmmo:set_str_data({"RUINER_ROCKET","DELUXO_MISSILE"}))
 	LocalFeatures.setDefenceZone:set_str_data({"Self off","Others off","Self On","Others On"})
 	LocalFeatures.MiniMapFull:set_str_data({"Current POS Lock!","Unlock Mini map"})
 	LocalFeatures.ShowUIPart:set_str_data({"Show Ammo","Display Sniper Scope","Display Area Name","Render Race Track","Unload MP Map Data Load SP","Load MP Map Data"})
 --[[
 end:]]
+
+--[[INFO:[3.0.2.7][Changed]
+start:]]
+--[[
+	LocalFeatures["SessionKick"]:set_str_data({"Bail Kick","Host Kick"})
+
+	LocalFeatures.WeatherOverride:set_str_data({"Extra Sunny","Clear","Clouds","Smog","Fog","Clouds","Rain","Thunder","Clearing","Neutral","Snow","Blizzard","Snow Light","Xmas","Halloween"}
+]]
+--[[
+end:]]
+
+--[[INFO:[3.0.2.7][Removed]
+start:]]
+--[[	
+	LocalFeatures.SendAll_To_Beach:set_str_data({"Beach","Beach Bounty War!"})
+	LocalFeatures.MissionEvents:set_str_data({"Force to Severe Weather", "Force to Half Track", "Force to Night Shark AAT", "Force to APC Mission", "Force to MOC Mission", "Force to Tampa Mission", "Force to Opressor Mission1", "Force to Opressor Mission2"})
+	LocalFeatures.GarbageTools:set_str_data({"count","collect","stop","restart","isrunning"})
+	LocalFeatures.GarbageTools:set_str_data({"count","collect","stop","restart","CollectV2"})
+]]
+--[[
+end:]]
+	
+
+
 
 end
 --online str data
@@ -673,9 +709,16 @@ start:]]
 		OnlineFeatures.SE_Crash.feats[pid]:set_str_data({"Vector Method","Stat Method","Moist Method","Bit Method"})
 		OnlineFeatures.SE_CrashV2.feats[pid]:set_str_data({"Vector Method","Stat Method","Moist Method","Bit Method"})
 		OnlineFeatures.SE_CrashV3.feats[pid]:set_str_data({"Vector Method","Stat Method","Moist Method","Bit Method"})
+
+--[[
+end:]]
+--[[INFO:[3.0.2.7][Removed]
+start:]]
+--[[
 		OnlineFeatures.Island_Events.feats[pid]:set_str_data({"SendToIsland v1","SendToIsland v2","Kick From Island","IslandForceRemove","test Method"})
 		OnlineFeatures.MissionEvents.feats[pid]:set_str_data({"Force to Severe Weather","Force to Half Track","Force to Night Shark AAT","Force to APC Mission","Force to MOC Mission","Force to Tampa Mission","Force to Opressor Mission1","Force to Opressor Mission2"})
-		OnlineFeatures.Passive_Events.feats[pid]:set_str_data({"Disable Option","Enable Option"})		
+		OnlineFeatures.Passive_Events.feats[pid]:set_str_data({"Disable Option","Enable Option"}
+]]
 --[[
 end:]]
 
