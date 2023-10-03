@@ -2,7 +2,7 @@
   "main": [
     [
       "MoistScript_NextGen.luac",
-      "d5c918ecce3e6be6"
+      "bffc3d11c00f9d3e"
     ]
   ],
   "MoistFiles": [
@@ -23,6 +23,10 @@
       "7fb438590cdd1071"
     ],
     [
+      "target.png",
+      "f190633272318959"
+    ],
+    [
       "kicks.ini",
       "8c9ead6825185aab"
     ],
@@ -32,23 +36,23 @@
     ],
     [
       "MoistScript_Blacklist_Module.lua",
-      "bd646dfabf976598"
+      "79193c45e08faee3"
     ],
     [
       "MoistScript_ESP_Module.lua",
-      "afe11e22494d15a9"
+      "17fb03a6c15700f4"
     ],
     [
       "MoistScript_GTA_Natives.lua",
-      "d86a2702e9070e6b"
+      "87ce4b851ce86f44"
     ],
     [
       "MoistScript_MoistBasics_Module.lua",
-      "b6595c90a722b46f"
+      "3c8d9f446ea2c53"
     ],
     [
       "MoistScript_PlayerBar_Module.lua",
-      "f14f55ccffb7d91"
+      "852169e3b8aa75d0"
     ],
     [
       "MoistScript_PlayerHistory_Module.lua",
@@ -56,7 +60,7 @@
     ],
     [
       "MoistScript_ScriptLoader_Module.lua",
-      "ded0c3c083c16685"
+      "749f9c75423b8a15"
     ],
     [
       "MoistScript_Teleport_Module.lua",
@@ -64,11 +68,11 @@
     ],
     [
       "MoistScript_Translate_Module.lua",
-      "19866c2b09fdcc5b"
+      "baff07f5334cc100"
     ],
     [
       "Moist_InteriorLibs.lua",
-      "323423389ac13506"
+      "be7471659bdeb8e"
     ],
     [
       "PedConfigFlags.lua",
