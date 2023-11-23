@@ -5,6 +5,8 @@
 ## WIP Images need to be organised!
 
 
+![removeplayer options](https://github.com/IN2-Moist/2Take1-Moist-Script/assets/4621091/447d1efe-54b5-4678-ba3c-521b5d1c5087)
+
 
 ![alarm-zones](https://github.com/IN2-Moist/2Take1-Moist-Script/assets/4621091/c8301579-f0d7-4b8a-885e-aa2e9f6e2c40)
 
