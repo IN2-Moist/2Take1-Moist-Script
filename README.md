@@ -216,7 +216,7 @@
 
 ## Mission Protection Settings Hotkey
 
-> | <LCTRL>+<LSHIFT>+<M> | Hold Left Control + Left Shift Down and Press M Key to switch Mission Protection Settings on/off tThis will only turn the feature on and off the feature will do the rest when a mission is detected
+> | <LCTRL>+<LSHIFT>+<M> | Hold Left Control + Left Shift Down and Press M Key to switch Mission Protection Settings on/off This will only turn the feature on and off the feature will do the rest when a mission is detected
 
 ## Set Time Scale
 
