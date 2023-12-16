@@ -1,4 +1,6 @@
-# Moist Script NG 3.0.3.2 Read Me
+# Moist Script NG 3.0.3.4 Read Me
+
+## Updated for GTA 1.68
 
 > This is [The MoistScript NG Wiki Content](https://github.com/IN2-Moist/2Take1-Moist-Script/wiki)
 
