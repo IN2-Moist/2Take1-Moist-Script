@@ -4,8 +4,6 @@
 
 > This is [The MoistScript NG Wiki Content](https://github.com/IN2-Moist/2Take1-Moist-Script/wiki)
 
-![aa](https://user-images.githubusercontent.com/4621091/258976694-7be8bc3b-b62a-48c2-8e2b-4a798d577352.png)
-
 <hr>
 
 ## Changes in 3.0.3.5
