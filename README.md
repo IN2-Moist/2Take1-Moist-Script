@@ -1,10 +1,70 @@
-# Moist Script NG 3.0.3.4 Read Me
+# Moist Script NG 3.0.3.5 Read Me
 
 ## Updated for GTA 1.68
 
 > This is [The MoistScript NG Wiki Content](https://github.com/IN2-Moist/2Take1-Moist-Script/wiki)
 
 ![aa](https://user-images.githubusercontent.com/4621091/258976694-7be8bc3b-b62a-48c2-8e2b-4a798d577352.png)
+
+<hr>
+
+## Changes in 3.0.3.5
+<hr>
+
+
+ - Removed: Test Features Section & Contained Features
+   
+> This is replaced with Beta Module Section when Beta Module is Loaded and has new features.
+> Camera Functions Moved to Player Features
+> Script Host Helper Moved to Moists Session Attributes
+> Teleport to Avenger inside Facility Moved into -> Player Features -> Teleport Features - > Teleport Options
+
+- Added: Beta Test Module
+  
+> This will Update Whenever i have added or changed any test feature. This is not updated with the script update features this will check for version change on script execution / Module Loaded.
+>  Update Check & Download is done before the module is actually loaded this will avoid, need to unload the script and have the user load it again manually!
+
+- Removed: the Moists Script Host Request for non VIP users.
+  
+- Added: Moists (Non VIP) :  < Next Script Host in Queue | Force Script Host >
+
+> Feature Selectable Option Both for non VIP users to gain script host.
+
+`Special Thanks:` **.bigsmoke.**
+> His Research of this feature made the new options a possibility
+
+- Fixed: Vehicle Gifting not doing Vehicle Upgrades Properly
+
+- Added: F1 (aka: Open Wheel) Tyre / Wheel  Option to The Spawner
+
+- Changed: Money Stats & Tunables
+
+- Now: Money Stats Tunables & Recovery
+
+- Added: Force Cloud Save to Stats
+
+- Added: Disable Stat Caps Option
+  
+> (Requires Some Further Research Need to make this so it will save properly with stupid Amount of Armour / Snacks and Stick for When you Next Start the Game!)
+
+- Added: Setup Office Floor Money Decor
+
+- Changed: CEO Vehicle Request Cool-Down
+  
+- Now: AIO Vehicle Request No Cool-down
+  
+> Seems to work fine on normal Vehicles and Special Vehiles like Anti-Aircraft Trailer and Ruiner 2000. Not Managed to get it working with personal Air-craft as yet!
+
+- Improved Entity Cleanup Features
+  
+> Functions will now Fix any interior you are in, so all doors that are missing are fixed etc so no more falling though door and dying in Eclipse Apt's
+
+- Added Dynamic Playerbar
+  
+> Similar to the V2 Playerbar only this one will adjust the layout as needed to stop text overlapping when players get lots of tags or tags with large detail in like speed & OTR Time.
+> Layout will adjust on the fly as needed to Keep the players names seperate and not overlapping.
+
+<hr>
 
 # Extracted List of Features and the in menu Hints
 ### **Not in any order**
