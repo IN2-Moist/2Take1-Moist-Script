@@ -1,4 +1,4 @@
-# Moist Script NG 3.0.3.5 Read Me
+# Moist Script NG 3.0.3.6 Read Me
 
 ## Updated for GTA 1.68
 
@@ -6,9 +6,20 @@
 
 <hr>
 
-## Changes in 3.0.3.5
+## Changes in 3.0.3.6
 <hr>
 
+- Fixed Raiju Cannons not working Correctly with other vehicles using the bypass Raiju Only Option.
+- Improved Lockon Missiles Targeting Features
+- Added Explosions around Player to online Grief this Cunt (Selectable Explosion ID)
+
+- Improved Sending Script Events
+- Changed Rando Crash Kick now Rando Crash Kick Ver:  Selectable: <1 | 2>
+- Updated All Crash / Kick Script Events
+- Added Disable Game for all to Session Griefing
+
+- Some Minor Improvements to Playerbar and Player History Modules
+- Faster Player Join Logging
 
  - Removed: Test Features Section & Contained Features
    
