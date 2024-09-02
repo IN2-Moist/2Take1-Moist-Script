@@ -1,8 +1,18 @@
-# Moist Script NG 3.0.3.7 Read Me
+# Moist Script NG 3.0.3.8 Read Me
 
 ## Updated for GTA 1.69
 
 > This is [The MoistScript NG Wiki Content](https://github.com/IN2-Moist/2Take1-Moist-Script/wiki)
+
+<hr>
+
+## Changes in 3.0.3.8
+
+<hr>
+
+- Fixed Some incorrect offsets:
+
+	Fixes Lockon Missile Features
 
 <hr>
 
