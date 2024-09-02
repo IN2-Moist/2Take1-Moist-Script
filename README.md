@@ -1,77 +1,26 @@
-# Moist Script NG 3.0.3.6 Read Me
+# Moist Script NG 3.0.3.7 Read Me
 
-## Updated for GTA 1.68
+## Updated for GTA 1.69
 
 > This is [The MoistScript NG Wiki Content](https://github.com/IN2-Moist/2Take1-Moist-Script/wiki)
 
 <hr>
 
-## Changes in 3.0.3.6
+## Changes in 3.0.3.7
+
 <hr>
 
-- Fixed Raiju Cannons not working Correctly with other vehicles using the bypass Raiju Only Option.
-- Improved Lockon Missiles Targeting Features
-- Added Explosions around Player to online Grief this Cunt (Selectable Explosion ID)
+- Removed Any Global Shit I Know is not updated yet. If you find anything not working/updated that i have missed please drop me a DM.
 
-- Improved Sending Script Events
-- Changed Rando Crash Kick now Rando Crash Kick Ver:  Selectable: <1 | 2>
-- Updated All Crash / Kick Script Events
-- Added Disable Game for all to Session Griefing
+- Updated all essential features
 
-- Some Minor Improvements to Playerbar and Player History Modules
-- Faster Player Join Logging
+- Removed Some Crash Kick Script Event Features
 
- - Removed: Test Features Section & Contained Features
-   
-> This is replaced with Beta Module Section when Beta Module is Loaded and has new features.
-> Camera Functions Moved to Player Features
-> Script Host Helper Moved to Moists Session Attributes
-> Teleport to Avenger inside Facility Moved into -> Player Features -> Teleport Features - > Teleport Options
+- Added Some New Crash Kick Events to the Script Event Features
 
-- Added: Beta Test Module
-  
-> This will Update Whenever i have added or changed any test feature. This is not updated with the script update features this will check for version change on script execution / Module Loaded.
->  Update Check & Download is done before the module is actually loaded this will avoid, need to unload the script and have the user load it again manually!
+- Added Kosatka Fast Travel Discount within Sub Missile Cooldown & Range Feature
 
-- Removed: the Moists Script Host Request for non VIP users.
-  
-- Added: Moists (Non VIP) :  < Next Script Host in Queue | Force Script Host >
-
-> Feature Selectable Option Both for non VIP users to gain script host.
-
-`Special Thanks:` **.bigsmoke.**
-> His Research of this feature made the new options a possibility
-
-- Fixed: Vehicle Gifting not doing Vehicle Upgrades Properly
-
-- Added: F1 (aka: Open Wheel) Tyre / Wheel  Option to The Spawner
-
-- Changed: Money Stats & Tunables
-
-- Now: Money Stats Tunables & Recovery
-
-- Added: Force Cloud Save to Stats
-
-- Added: Disable Stat Caps Option
-  
-> (Requires Some Further Research Need to make this so it will save properly with stupid Amount of Armour / Snacks and Stick for When you Next Start the Game!)
-
-- Added: Setup Office Floor Money Decor
-
-- Changed: CEO Vehicle Request Cool-Down
-  
-- Now: AIO Vehicle Request No Cool-down
-  
-> Seems to work fine on normal Vehicles and Special Vehiles like Anti-Aircraft Trailer and Ruiner 2000. Not Managed to get it working with personal Air-craft as yet!
-
-- Improved Entity Cleanup Features
-  
-> Functions will now Fix any interior you are in, so all doors that are missing are fixed etc so no more falling though door and dying in Eclipse Apt's
-
-- Added Dynamic Playerbar
-  
-> Similar to the V2 Playerbar only this one will adjust the layout as needed to stop text overlapping when players get lots of tags or tags with large detail in like speed & OTR Time.
-> Layout will adjust on the fly as needed to Keep the players names seperate and not overlapping.
+- Various other stuff i was working on before the update cant remember it all its been so long
 
 <hr>
 
